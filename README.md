@@ -6,6 +6,8 @@ Mittels einer App für Android und iOS können QR-Codes erstellt und gescannt we
 Die enthaltenen Informationen triggern auf der scannenden Seite halb-/automatische Aktionen, wie zum Beispiel den Versand einer vorformatierten E-Mail an einen übertragenenen Empfänger.
 Mit der App können sowohl QR-Codes erstellt, als auch gelesen und ausgeführt werden.
 
+Entwickelt werden soll die App in ihrer Basisfunktionalität im OL Civic Data Lab Hackathon [1]. Das Protokoll, also welche Daten/Aktionen im QR-Code ausgetauscht werden können ist noch nicht festgelegt und gerade dafür bietet sich ein Hackathon mit vielen Teilnehmern aus verschiedensten Fachrichtungen und mit unterschiedlichsten Interessen an um einen schönen Strauß an Anwendungsmöglichkeiten zu bekommen.
+
 ## Szenario 1:
 Aktuell müssen - zum Beispiel in Restaurants und bei Frisören (Geschäft) - zur Corona-Kontaktnachverfolgung bei jedem Besuch die Kontakdaten des Kunden aufgenommen für wenige Wochen aufbewahrt werden.
 Bis auf kleine Unterschiede im Umfang der erhobenen Daten findet immer der gleiche Vorgang statt.
@@ -20,5 +22,7 @@ Als Kunde kann der QR-Code dann mit dieser App gescannt werden. Daraufhin wird d
 Mit einem Klick auf "Absenden" wird dann eine entsprechend formatierte und gefüllte Mail an die übergebene E-Mailadresse gesendet.
 
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
+
+[1] https://hackathon.kreativitaet-trifft-technik.de/
 
 
