@@ -1,5 +1,5 @@
 # EasyScanAndAction
-Aktionen/Aufgaben/Informationen per QR-Übertragen und ausführen
+Aktionen/Aufgaben/Informationen per QR-Code übertragen und ausführen
 
 ## In aller Kürze:
 Mittels einer App für Android und iOS können QR-Codes erstellt und gescannt werden.
