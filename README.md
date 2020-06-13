@@ -24,8 +24,8 @@ Mit einem Klick auf "Absenden" wird dann eine entsprechend formatierte und gefü
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
 
 ## Technik
-QT/QML [2]
-qzxing [3]
+QT/QML [2] \
+qzxing [3] \
 
 ## Lizenz
 Es wird eine OpenSource-Lizenz, muss noch entschieden werden
