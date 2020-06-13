@@ -25,13 +25,13 @@ Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schnel
 
 ## Technik
 QT/QML [2] \
-qzxing [3] \
+qzxing [3] 
 
 ## Lizenz
 Es wird eine OpenSource-Lizenz, muss noch entschieden werden
 
 [1] https://hackathon.kreativitaet-trifft-technik.de/ \
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
-[3] https://github.com/ftylitak/qzxing \
+[3] https://github.com/ftylitak/qzxing 
 
 
