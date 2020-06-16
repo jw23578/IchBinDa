@@ -23,6 +23,15 @@ Mit einem Klick auf "Absenden" wird dann eine entsprechend formatierte und gefü
 
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
 
+## QR-Code Protokoll (mögliche enthaltene Daten)
+* AktionsID
+* Kontakten die abgefragt werden sollen
+* E-Mailadresse des Geschäfts
+* Name des Geschäfts
+* URL zur Speisekarte
+* URL zur Getränkekarte
+* WLAN Zugangsdaten 
+
 ## Technik
 QT/QML [2] \
 qzxing [3] 
