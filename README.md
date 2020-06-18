@@ -43,4 +43,7 @@ Es wird eine OpenSource-Lizenz, muss noch entschieden werden
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
 [3] https://github.com/ftylitak/qzxing 
 
+## Kontakt
+
+esaa@jw78.de
 
