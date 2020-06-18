@@ -44,6 +44,6 @@ Es wird eine OpenSource-Lizenz, muss noch entschieden werden
 [3] https://github.com/ftylitak/qzxing 
 
 ## Kontakt
-
+Jens Wienöbst \
 esaa@jw78.de
 
