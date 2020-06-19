@@ -23,6 +23,11 @@ Mit einem Klick auf "Absenden" wird dann eine entsprechend formatierte und gefü
 
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
 
+## Szenario 2:
+Einmalzugang nach Bezahlung. Beispielsweise zu einem Fitnessstudio.\
+Der Kunde kann im Fitnessstudio einen QR-Code scannen über den in diesem Fall ein Bezahlvorgang angezeigt und dann mittels der App gestartet/erledigt werden kann. Sobald das Fitnessstudio den Geldeingang registriert hat wird das Drehkreuz bzw. die Tür geöffnet.\
+In diesem Szenario ist die App alleine nicht ausreichend, da das Drehkreuz bzw. der Türöffner vom Fitnessstudio angesteuert werden muss.
+
 ## QR-Code Protokoll (mögliche enthaltene Daten)
 * AktionsID
 * Kontakten die abgefragt werden sollen
