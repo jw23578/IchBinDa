@@ -23,6 +23,15 @@ Mit einem Klick auf "Absenden" wird dann eine entsprechend formatierte und gefü
 
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
 
+## QR-Code Protokoll (mögliche enthaltene Daten)
+* AktionsID
+* Kontakten die abgefragt werden sollen
+* E-Mailadresse des Geschäfts
+* Name des Geschäfts
+* URL zur Speisekarte
+* URL zur Getränkekarte
+* WLAN Zugangsdaten 
+
 ## Technik
 QT/QML [2] \
 qzxing [3] 
@@ -34,4 +43,13 @@ Es wird eine OpenSource-Lizenz, muss noch entschieden werden
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
 [3] https://github.com/ftylitak/qzxing 
 
+## Download
+
+Derzeit nur eine Hello Hackathon - App 
+
+https://www.jw78.de/download/esaa.apk
+
+## Kontakt
+Jens Wienöbst \
+esaa@jw78.de
 
