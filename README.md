@@ -43,6 +43,12 @@ Es wird eine OpenSource-Lizenz, muss noch entschieden werden
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
 [3] https://github.com/ftylitak/qzxing 
 
+## Download
+
+Derzeit nur eine Hello Hackathon - App 
+
+https://www.jw78.de/download/esaa.apk
+
 ## Kontakt
 Jens Wienöbst \
 esaa@jw78.de
