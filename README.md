@@ -38,6 +38,9 @@ In diesem Szenario ist die App alleine nicht ausreichend, da das Drehkreuz bzw. 
 * URL zur Speisekarte
 * URL zur Getränkekarte
 * WLAN Zugangsdaten 
+* URL zum Logo des Geschäfts
+* URL zum Public-Key mit dem die Daten verschlüsselt werden sollen
+* Ob ein eindeutiges Token erzeugt werden soll, das veröffentlicht werden kann, ohne dass Rückschlüsse auf den Kunden gezogen werden können.
 
 ## Technik
 QT/QML [2] \
