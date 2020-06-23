@@ -16,6 +16,7 @@ Das Geschäft erstellt mit der App einen QR-Code, der Folgendes enthält:
 - Eine AktionsId (Daten abfragen und senden)
 - Umfang der gewünschten Kontaktdaten
 - E-Mail-Adresse, an die die Kontaktdaten geschickt werden sollen.
+
 Der QR-Code wird als PDF erstellt, ausgedruckt und für den Kunden scannbar am Eingangstresen oder auf den Tischen angebracht.
 
 Der Kunde kann den QR-Code mit dieser App scannen. Daraufhin wird die AktionsID interpretiert und die gewünschten Daten in einem Formular abgefragt. Nur beim ersten Mal müssen die Daten eingegeben werden. Beim zweiten Besuch oder auch in einem anderen Geschäft, das die App verwendet, werden die Daten dann automatisch vorausgefüllt.
