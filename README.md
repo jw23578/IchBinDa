@@ -3,8 +3,9 @@ Aktionen/Aufgaben/Informationen per QR-Code übertragen und ausführen
 
 ## In aller Kürze:
 Mittels der App können QR-Codes sowohl erstellt als auch gelesen und ausgeführt werden.
-Bei einem Scan triggern die enthaltenen Informationen (halb-)automatische Aktionen, wie den Versand einer vorformatierten E-Mail an einen - im QR-Code enthaltenen - Empfänger.
-Die App eignet sich für Android und iOS.
+Bei einem Scan triggern die enthaltenen Informationen (halb-)automatische Aktionen, wie den Versand einer vorformatierten E-Mail an einen - im QR-Code enthaltenen - Empfänger.\
+Die App eignet sich für Android und iOS.\
+Die QR-Codes werden als PDF und Bilddatei zur Verfügung gestellt und können individuell in Aufsteller oder Speisekarten integriert werden.
 
 Entwickelt werden soll die App in ihrer Basisfunktionalität im OL Civic Data Lab Hackathon [1]. Das Protokoll, also welche Daten/Aktionen im QR-Code ausgetauscht werden können ist noch nicht festgelegt. Gerade um einen schönen Strauß an Anwendungsmöglichkeiten zu bekommen, bietet sich ein Hackathon mit vielen Teilnehmern aus verschiedensten Fachrichtungen und mit unterschiedlichen Interessen an 
 
