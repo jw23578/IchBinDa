@@ -18,6 +18,7 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    esaaapp.cpp \
 zint-master/backend/2of5.c \
 zint-master/backend/auspost.c \
 zint-master/backend/aztec.c \
@@ -52,6 +53,8 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    esaaapp.h \
+    qt_extension_macros.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
 zint-master/backend/code49.h \
