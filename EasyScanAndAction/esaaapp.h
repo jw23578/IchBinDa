@@ -12,6 +12,11 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, surname, Surname, "");
 public:
     ESAAApp(QQmlApplicationEngine &e);
+
+    Q_INVOKABLE void showMessage(const QString &mt);
+
+signals:
+    void showMessageSignal(const QString &mt);
 };
 
 #endif // ESAAAPP_H

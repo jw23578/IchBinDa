@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>QML/QuestionPage.qml</file>
+        <file>QML/ESAATextInput.qml</file>
+        <file>QML/Message.qml</file>
     </qresource>
 </RCC>

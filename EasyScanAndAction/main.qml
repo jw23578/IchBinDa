@@ -1,5 +1,6 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
+import "QML"
 
 Window {
     id: mainWindow
@@ -71,5 +72,18 @@ Window {
                 onClicked: Qt.openUrlExternally("https://github.com/jw23578/EasyScanAndAction");
             }
         }
+    }
+    QuestionPage
+    {
+
+    }
+    Message
+    {
+        id: message
+    }
+    Connections
+    {
+        target: ESAA
+        onShowMessageSignal: message.show(mt)
     }
 }
