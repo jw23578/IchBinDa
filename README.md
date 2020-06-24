@@ -44,14 +44,16 @@ In diesem Szenario ist die App alleine nicht ausreichend, da das Drehkreuz bzw. 
 
 ## Technik
 QT/QML [2] \
-qzxing [3] 
+qzxing [3] \
+Zint [4]
 
 ## Lizenz
 Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 
 [1] https://hackathon.kreativitaet-trifft-technik.de/ \
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
-[3] https://github.com/ftylitak/qzxing 
+[3] https://github.com/ftylitak/qzxing \
+[4] https://github.com/zint/zint
 
 ## Download
 
