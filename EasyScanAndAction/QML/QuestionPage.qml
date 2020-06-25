@@ -15,27 +15,47 @@ Item
         Column
         {
             id: dataColumn
-            width: parent.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - parent.width / 10
             height: parent.height * 2
-            Text {
-                text: qsTr("Vorname")
-            }
-            ESAATextInput
+            ESAALineInputWithCaption
             {
+                caption: qsTr("Vorname")
                 width: parent.width
-                height: 20
                 focus: true
                 id: fstname
             }
 
-            Text {
-                text: qsTr("Nachname")
-            }
-            ESAATextInput
+            ESAALineInputWithCaption
             {
+                caption: qsTr("Nachname")
                 width: parent.width
-                height: 20
                 id: surname
+            }
+
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Straße")
+                width: parent.width
+                id: street
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Hausnummer")
+                width: parent.width
+                id: streetnumber
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Postleitzahl")
+                width: parent.width
+                id: zip
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Ort")
+                width: parent.width
+                id: location
             }
         }
     }

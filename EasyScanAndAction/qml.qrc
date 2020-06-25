@@ -4,5 +4,7 @@
         <file>QML/QuestionPage.qml</file>
         <file>QML/ESAATextInput.qml</file>
         <file>QML/Message.qml</file>
+        <file>QML/ESAAText.qml</file>
+        <file>QML/ESAALineInputWithCaption.qml</file>
     </qresource>
 </RCC>
