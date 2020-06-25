@@ -24,6 +24,7 @@ Item
                 width: parent.width
                 focus: true
                 id: fstname
+                text: ESAA.fstname
             }
 
             ESAALineInputWithCaption
@@ -31,6 +32,7 @@ Item
                 caption: qsTr("Nachname")
                 width: parent.width
                 id: surname
+                text: ESAA.surname
             }
 
             ESAALineInputWithCaption
@@ -66,6 +68,12 @@ Item
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         text: "Kontaktdaten senden"
-        onClicked: ESAA.showMessage("gleich wird gesendet")
+        onClicked:
+        {
+            ESAA.fstname = fstname.text
+            ESAA.surname = surname.text
+            ESAA.sendContactData();
+            ESAA.showMessage("gleich wird gesendet")
+        }
     }
 }

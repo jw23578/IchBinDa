@@ -3,6 +3,7 @@ import QtQuick 2.0
 Item
 {
     property alias caption: captionText.text
+    property alias text: input.text
     height: caption.length ? captionText.height + input.height : input.height
     ESAAText
     {
