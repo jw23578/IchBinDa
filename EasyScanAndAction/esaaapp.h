@@ -14,6 +14,10 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
 
+    JWPROPERTY(bool, adressWanted, AdressWanted, false);
+    JWPROPERTY(bool, emailWanted, EMailWanted, false);
+    JWPROPERTY(bool, mobileWanted, MobileWanted, false);
+
     QString dataFileName;
     void saveData();
     void loadData();

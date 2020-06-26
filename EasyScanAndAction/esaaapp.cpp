@@ -88,6 +88,9 @@ void ESAAApp::action(const QString &qrCodeJSON)
        qDebug() << "wantedData: " << wantedData;
        qDebug() << "logo: " << logo;
        qDebug() << "backgroundColor: " << backgroundColor;
+       setAdressWanted(wantedData.contains("adress"));
+       setEMailWanted(wantedData.contains("email"));
+       setMobileWanted(wantedData.contains("mobile"));
        setLogoUrl(logo);
        setColor(backgroundColor);
    }

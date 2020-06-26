@@ -46,24 +46,42 @@ Rectangle
                 caption: qsTr("Straße")
                 width: parent.width
                 id: street
+                visible: ESAA.adressWanted
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Hausnummer")
                 width: parent.width
                 id: streetnumber
+                visible: ESAA.adressWanted
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Postleitzahl")
                 width: parent.width
                 id: zip
+                visible: ESAA.adressWanted
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Ort")
                 width: parent.width
                 id: location
+                visible: ESAA.adressWanted
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("E-Mail-Adresse")
+                width: parent.width
+                id: emailadress
+                visible: ESAA.emailWanted
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Handynummer")
+                width: parent.width
+                id: mobile
+                visible: ESAA.mobileWanted
             }
             Item
             {
