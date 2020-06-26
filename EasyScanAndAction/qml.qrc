@@ -6,5 +6,6 @@
         <file>QML/Message.qml</file>
         <file>QML/ESAAText.qml</file>
         <file>QML/ESAALineInputWithCaption.qml</file>
+        <file>QML/ScannerPage.qml</file>
     </qresource>
 </RCC>

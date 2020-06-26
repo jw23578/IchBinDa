@@ -88,6 +88,33 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+android{
+    DEFINES += DMOBILEDEVICE
+message("android")
+message($$QT_ARCH)
+    QT += androidextras
+    INCLUDEPATH += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/include
+
+contains(QT_ARCH, "arm64") {
+    message("for arm64")
+    LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/arm64-v8a/lib/libcrypto.so
+    LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/arm64-v8a/lib/libssl.so
+    ANDROID_EXTRA_LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/arm64-v8a/lib/libcrypto.so
+    ANDROID_EXTRA_LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/arm64-v8a/lib/libssl.so
+}
+else
+{
+    contains(QT_ARCH, "arm") {
+        message("for arm")
+        LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/armeabi-v7a/lib/libcrypto.so
+        LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/armeabi-v7a/lib/libssl.so
+        ANDROID_EXTRA_LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/armeabi-v7a/lib/libcrypto.so
+        ANDROID_EXTRA_LIBS += /home/jenz/dev/third/openssl-android-prebuild/openssl-1.1.1a-clang/armeabi-v7a/lib/libssl.so
+    }
+}
+}
+
+
 DISTFILES += \
     android/AndroidManifest.xml \
     android/build.gradle \

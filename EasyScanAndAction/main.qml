@@ -1,5 +1,5 @@
-import QtQuick 2.14
-import QtQuick.Window 2.14
+import QtQuick 2.13
+import QtQuick.Window 2.13
 import "QML"
 
 Window {
@@ -77,13 +77,19 @@ Window {
     {
 
     }
+    ScannerPage
+    {
+        id: scannerpage
+    }
     Message
     {
         id: message
     }
+
     Connections
     {
         target: ESAA
         onShowMessageSignal: message.show(mt)
+        onScanSignal: scannerpage.show()
     }
 }

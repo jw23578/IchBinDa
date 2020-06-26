@@ -1,6 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "esaaapp.h"
+#include "QZXing.h"
+#include <QQuickImageProvider>
+#include "QZXingImageProvider.h"
+#include "QZXingFilter.h"
+#include <QtSvg>
+
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +15,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+    qmlRegisterType<QZXing>("QZXing", 2, 3, "QZXing");
+    qmlRegisterType<QZXingFilter>("QZXing", 2, 3, "QZXingFilter");
+    engine.addImageProvider(QLatin1String("QZXing"), new QZXingImageProvider());
     ESAAApp esaa(engine);
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

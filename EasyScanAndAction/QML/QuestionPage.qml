@@ -1,23 +1,29 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.14
+import QtQuick.Controls 2.13
 import QtQuick.Dialogs 1.1
 
-Item
+Rectangle
 {
+    color: ESAA.color
     anchors.fill: parent
     Flickable
     {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: sendButton.top
+        id: theFlick
+        anchors.fill: parent
         contentHeight: dataColumn.height
         Column
         {
             id: dataColumn
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - parent.width / 10
-            height: parent.height * 2
+            Image
+            {
+                width: parent.width
+                height: width
+                source: ESAA.logoUrl
+                fillMode: Image.PreserveAspectFit
+            }
+
             ESAALineInputWithCaption
             {
                 caption: qsTr("Vorname")
@@ -59,21 +65,45 @@ Item
                 width: parent.width
                 id: location
             }
-        }
-    }
-    Button
-    {
-        id: sendButton
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        text: "Kontaktdaten senden"
-        onClicked:
-        {
-            ESAA.fstname = fstname.text
-            ESAA.surname = surname.text
-            ESAA.sendContactData();
-            ESAA.showMessage("gleich wird gesendet")
+            Item
+            {
+                width: parent.width
+                height: width / 5
+            }
+            Button
+            {
+                id: sendButton
+                width: parent.width
+                text: "Kontaktdaten senden"
+                onClicked:
+                {
+                    ESAA.fstname = fstname.text
+                    ESAA.surname = surname.text
+                    ESAA.sendContactData();
+                    ESAA.showMessage("gleich wird gesendet")
+                }
+            }
+            Item
+            {
+                width: parent.width
+                height: width / 5
+            }
+            Button
+            {
+                width: parent.width
+                text: "Scanner öffnen"
+                onClicked:
+                {
+                    theFlick.contentY = 0
+                    ESAA.scan()
+                }
+            }
+
+            Item
+            {
+                width: parent.width
+                height: width
+            }
         }
     }
 }

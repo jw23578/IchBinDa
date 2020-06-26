@@ -61,7 +61,34 @@ void ESAAApp::showMessage(const QString &mt)
     emit showMessageSignal(mt);
 }
 
+void ESAAApp::scan()
+{
+    emit scanSignal();
+}
+
 void ESAAApp::sendContactData()
 {
     saveData();
+}
+
+void ESAAApp::action(const QString &qrCodeJSON)
+{
+    qDebug() << "qrCodeJSON: " << qrCodeJSON;
+   QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
+   QJsonObject data(qrJSON.object());
+   int actionID(data["ai"].toInt());
+   if (actionID == actionIDCoronaKontaktdatenerfassung)
+   {
+       qDebug() << "actionIDCoronaKontaktdatenerfassung";
+       QString email(data["e"].toString());
+       QString wantedData(data["d"].toString());
+       QString logo(data["logo"].toString());
+       QString backgroundColor(data["color"].toString());
+       qDebug() << "email: " << email;
+       qDebug() << "wantedData: " << wantedData;
+       qDebug() << "logo: " << logo;
+       qDebug() << "backgroundColor: " << backgroundColor;
+       setLogoUrl(logo);
+       setColor(backgroundColor);
+   }
 }
