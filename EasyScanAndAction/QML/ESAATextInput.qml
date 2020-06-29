@@ -3,6 +3,8 @@ import QtQuick 2.0
 FocusScope
 {
     property alias text: input.text
+    property alias displayText: input.displayText
+    property alias inputMethodHints: input.inputMethodHints
 //    property alias contentHeight: input.contentHeight
     height: input.contentHeight + 10
     Rectangle

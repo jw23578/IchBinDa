@@ -7,5 +7,9 @@
         <file>QML/ESAAText.qml</file>
         <file>QML/ESAALineInputWithCaption.qml</file>
         <file>QML/ScannerPage.qml</file>
+        <file>QML/CreateQRCodePage.qml</file>
+        <file>QML/ESAASwitch.qml</file>
+        <file>QML/FirstStart.qml</file>
+        <file>QML/ESAAButton.qml</file>
     </qresource>
 </RCC>

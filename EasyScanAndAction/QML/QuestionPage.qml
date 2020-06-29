@@ -46,41 +46,50 @@ Rectangle
                 caption: qsTr("Straße")
                 width: parent.width
                 id: street
+                text: ESAA.street
                 visible: ESAA.adressWanted
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Hausnummer")
                 width: parent.width
-                id: streetnumber
+                id: housenumber
+                text: ESAA.housenumber
                 visible: ESAA.adressWanted
+                inputMethodHints: Qt.ImhPreferNumbers
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Postleitzahl")
                 width: parent.width
                 id: zip
+                text: ESAA.zip
                 visible: ESAA.adressWanted
+                inputMethodHints: Qt.ImhDigitsOnly
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Ort")
                 width: parent.width
                 id: location
+                text: ESAA.location
                 visible: ESAA.adressWanted
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("E-Mail-Adresse")
                 width: parent.width
-                id: emailadress
+                id: emailAdress
+                text: ESAA.emailAdress
                 visible: ESAA.emailWanted
+                inputMethodHints: Qt.ImhPreferLowercase
             }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Handynummer")
                 width: parent.width
                 id: mobile
+                text: ESAA.mobile
                 visible: ESAA.mobileWanted
             }
             Item
@@ -95,8 +104,86 @@ Rectangle
                 text: "Kontaktdaten senden"
                 onClicked:
                 {
-                    ESAA.fstname = fstname.text
-                    ESAA.surname = surname.text
+                    if (fstname.visible)
+                    {
+                        if (fstname.text == "")
+                        {
+                            fstname.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deinen Vornamen ein"))
+                            return;
+                        }
+                        ESAA.fstname = fstname.text
+                    }
+                    if (surname.visible)
+                    {
+                        if (surname.text == "")
+                        {
+                            surname.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deinen Nachnamen ein"))
+                            return;
+                        }
+                        ESAA.surname = surname.text
+                    }
+                    if (street.visible)
+                    {
+                        if (street.text == "")
+                        {
+                            street.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deine Straße ein"))
+                            return;
+                        }
+                        ESAA.street = street.text
+                    }
+                    if (housenumber.visible)
+                    {
+                        if (housenumber.text == "")
+                        {
+                            housenumber.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deine Hausnummer ein"))
+                            return;
+                        }
+                        ESAA.housenumber = housenumber.text
+                    }
+                    if (zip.visible)
+                    {
+                        if (zip.text == "")
+                        {
+                            zip.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deine Postleitzahl ein"))
+                            return;
+                        }
+                        ESAA.zip = zip.text
+                    }
+                    if (location.visible)
+                    {
+                        if (location.text == "")
+                        {
+                            location.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deinen Ort ein"))
+                            return;
+                        }
+                        ESAA.location = location.text
+                    }
+                    if (emailAdress.visible)
+                    {
+                        if (emailAdress.text == "")
+                        {
+                            emailAdress.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deine E-Mail-Adresse ein"))
+                            return;
+                        }
+                        ESAA.emailAdress = emailAdress.text
+                    }
+                    if (mobile.visible)
+                    {
+                        if (mobile.text == "")
+                        {
+                            mobile.forceActiveFocus()
+                            ESAA.showMessage(qsTr("Bitte gib noch deine Handynummer ein"))
+                            return;
+                        }
+                        ESAA.mobile = mobile.text
+                    }
                     ESAA.sendContactData();
                     ESAA.showMessage("gleich wird gesendet")
                 }

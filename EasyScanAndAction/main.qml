@@ -80,7 +80,13 @@ Window {
     ScannerPage
     {
         id: scannerpage
+        visible: !ESAA.firstStart
     }
+    FirstStart
+    {
+        visible: ESAA.firstStart
+    }
+
     Message
     {
         id: message

@@ -4,6 +4,8 @@ Item
 {
     property alias caption: captionText.text
     property alias text: input.text
+    property alias displayText: input.displayText
+    property alias inputMethodHints: input.inputMethodHints
     height: caption.length ? captionText.height + input.height : input.height
     ESAAText
     {

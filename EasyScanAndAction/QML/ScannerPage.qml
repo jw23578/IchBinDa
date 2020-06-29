@@ -149,13 +149,51 @@ Rectangle
             height: output.contentRect.height * heightFaktor
         }
     }
+
     Button
     {
+        anchors.bottom: qrcodebutton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: "Hilfe"
+        onClicked: ESAA.firstStart = true
+    }
+    Button
+    {
+        id: qrcodebutton
+        anchors.bottom: quitButton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: "QR-Code erzeugen"
+        onClicked: createqrcodepage.visible = true
+    }
+
+    Button
+    {
+        id: quitButton
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        text: "Simulieren"
-        onClicked: ESAA.action("{}")
+        text: "Beenden"
+        onClicked: Qt.quit()
+    }
+
+    CreateQRCodePage
+    {
+        id: createqrcodepage
+        anchors.fill: parent
+        visible: false
+        onVisibleChanged:
+        {
+            if (visible)
+            {
+                camera.stop()
+            }
+            else
+            {
+                camera.start()
+            }
+        }
     }
 
     Component.onCompleted:
