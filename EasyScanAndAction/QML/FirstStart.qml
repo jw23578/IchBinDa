@@ -3,6 +3,11 @@ import QtQuick.Controls 2.13
 
 Rectangle
 {
+//    Background
+//    {
+
+//    }
+
     anchors.fill: parent
     Column
     {
@@ -14,7 +19,7 @@ Rectangle
             ESAAText
             {
                 anchors.centerIn: parent
-                text: "Die ContactApp!"
+                text: ESAA.appName
                 font.pointSize: screen.height / 40
             }
         }

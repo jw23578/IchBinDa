@@ -23,7 +23,11 @@ Rectangle
                 source: ESAA.logoUrl
                 fillMode: Image.PreserveAspectFit
             }
-
+            ESAAText
+            {
+                width: parent.width
+                text: ESAA.locationName
+            }
             ESAALineInputWithCaption
             {
                 caption: qsTr("Vorname")
@@ -101,7 +105,7 @@ Rectangle
             {
                 id: sendButton
                 width: parent.width
-                text: "Kontaktdaten senden"
+                text: "Kontaktdaten senden an\n" + ESAA.locationContactMailAdress
                 onClicked:
                 {
                     if (fstname.visible)
@@ -113,6 +117,7 @@ Rectangle
                             return;
                         }
                         ESAA.fstname = fstname.text
+                        ESAA.addData2Send(qsTr("Vorname"), fstname.text)
                     }
                     if (surname.visible)
                     {
@@ -123,6 +128,7 @@ Rectangle
                             return;
                         }
                         ESAA.surname = surname.text
+                        ESAA.addData2Send(qsTr("Nachname"), surname.text)
                     }
                     if (street.visible)
                     {
@@ -133,6 +139,7 @@ Rectangle
                             return;
                         }
                         ESAA.street = street.text
+                        ESAA.addData2Send(qsTr("Straße"), street.text)
                     }
                     if (housenumber.visible)
                     {
@@ -143,6 +150,7 @@ Rectangle
                             return;
                         }
                         ESAA.housenumber = housenumber.text
+                        ESAA.addData2Send(qsTr("Hausnummer"), surname.text)
                     }
                     if (zip.visible)
                     {
@@ -152,6 +160,7 @@ Rectangle
                             ESAA.showMessage(qsTr("Bitte gib noch deine Postleitzahl ein"))
                             return;
                         }
+                        ESAA.addData2Send(qsTr("Postleitzahl"), zip.text)
                         ESAA.zip = zip.text
                     }
                     if (location.visible)
@@ -162,6 +171,7 @@ Rectangle
                             ESAA.showMessage(qsTr("Bitte gib noch deinen Ort ein"))
                             return;
                         }
+                        ESAA.addData2Send(qsTr("Ort"), location.text)
                         ESAA.location = location.text
                     }
                     if (emailAdress.visible)
@@ -173,6 +183,7 @@ Rectangle
                             return;
                         }
                         ESAA.emailAdress = emailAdress.text
+                        ESAA.addData2Send(qsTr("E-Mail-Adresse"), emailAdress.text)
                     }
                     if (mobile.visible)
                     {
@@ -182,6 +193,7 @@ Rectangle
                             ESAA.showMessage(qsTr("Bitte gib noch deine Handynummer ein"))
                             return;
                         }
+                        ESAA.addData2Send(qsTr("Handynummer"), mobile.text)
                         ESAA.mobile = mobile.text
                     }
                     ESAA.sendContactData();

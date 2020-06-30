@@ -16,8 +16,11 @@ class ESAAApp: public QObject
 
     // App Zustand
     JWPROPERTY(bool, firstStart, FirstStart, true);
+    JWPROPERTY(QString, appName, AppName, "Ich bin da!");
 
     // Aktuelle Location
+    JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
+    JWPROPERTY(QString, locationName, LocationName, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
 
@@ -63,9 +66,12 @@ class ESAAApp: public QObject
     QString genTempFileName(const QString &extension);
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
+    std::vector<QString> data2send;
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE void clearData2Send();
+    Q_INVOKABLE void addData2Send(const QString &field, const QString &value);
     Q_INVOKABLE void firstStartDone();
     Q_INVOKABLE void showMessage(const QString &mt);
     Q_INVOKABLE void scan();

@@ -12,5 +12,6 @@
         <file>QML/FirstStart.qml</file>
         <file>QML/ESAAButton.qml</file>
         <file>EMailConfig.txt</file>
+        <file>QML/Background.qml</file>
     </qresource>
 </RCC>

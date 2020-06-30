@@ -23,15 +23,25 @@ void ESAAApp::sendMail()
     smtpServer.setPassword(smtpPassword);
 
     SimpleMail::MimeMessage message;
-    message.setSender(SimpleMail::EmailAddress("esaa@jw78.de", "ESAA"));
-    message.addTo(SimpleMail::EmailAddress("<jens@wienoebst.com>"));
+    message.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
+    message.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
 
-    message.setSubject("Testing Subject");
+    QString subject("Kontaktdaten ");
+    subject += locationName();
+    message.setSubject(subject);
 
     auto text = new SimpleMail::MimeText;
 
     // Now add some text to the email.
-    text->setText("Hi,\nThis is a simple email message.\n");
+    QString work;
+    work += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    for (size_t i(0); i < data2send.size(); ++i)
+    {
+        work += data2send[i] + "\n";
+    }
+
+    text->setText(work);
 
     // Now add it to the mail
     message.addPart(text);
@@ -163,6 +173,16 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e)
     }
 }
 
+void ESAAApp::clearData2Send()
+{
+    data2send.clear();
+}
+
+void ESAAApp::addData2Send(const QString &field, const QString &value)
+{
+    data2send.push_back(field + ": " + value);
+}
+
 void ESAAApp::firstStartDone()
 {
     setFirstStart(false);
@@ -182,6 +202,7 @@ void ESAAApp::scan()
 void ESAAApp::sendContactData()
 {
     saveData();
+    sendMail();
 }
 
 QString ESAAApp::getTempPath()
@@ -233,6 +254,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString logo(data["logo"].toString());
         QString backgroundColor(data["color"].toString());
         QString locationId(data["id]"].toString());
+        QString theLocationName(data["ln"].toString());
         qDebug() << "email: " << email;
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
@@ -243,6 +265,8 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setMobileWanted(wantedData.contains("mobile"));
         setLogoUrl(logo);
         setColor(backgroundColor);
+        setLocationName(theLocationName);
+        setLocationContactMailAdress(email);
     }
 }
 
