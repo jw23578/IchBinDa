@@ -127,3 +127,5 @@ DISTFILES += \
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 include(QZXing/QZXing.pri)
+include(SimpleMailSRC/simplemail.pri)
+

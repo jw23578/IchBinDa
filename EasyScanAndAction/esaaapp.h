@@ -5,6 +5,7 @@
 #include "qt_extension_macros.h"
 #include <QQmlApplicationEngine>
 #include <QColor>
+#include <SimpleMailSRC/SimpleMail>
 
 class ESAAApp: public QObject
 {
@@ -34,6 +35,15 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, location, Location, "");
     JWPROPERTY(QString, emailAdress, EmailAdress, "");
     JWPROPERTY(QString, mobile, Mobile, "");
+
+    SimpleMail::Server smtpServer;
+    QString smtpHost;
+    int smtpPort;
+    QString smtpUser;
+    QString smtpPassword;
+    QString smtpSender;
+
+    void sendMail();
 
     struct SLocationInfo
     {

@@ -11,6 +11,37 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QImage>
+#include <QFile>
+
+void ESAAApp::sendMail()
+{
+    smtpServer.setHost(smtpHost);
+    smtpServer.setPort(smtpPort);
+    smtpServer.setConnectionType(SimpleMail::Server::SslConnection);
+
+    smtpServer.setUsername(smtpUser);
+    smtpServer.setPassword(smtpPassword);
+
+    SimpleMail::MimeMessage message;
+    message.setSender(SimpleMail::EmailAddress("esaa@jw78.de", "ESAA"));
+    message.addTo(SimpleMail::EmailAddress("<jens@wienoebst.com>"));
+
+    message.setSubject("Testing Subject");
+
+    auto text = new SimpleMail::MimeText;
+
+    // Now add some text to the email.
+    text->setText("Hi,\nThis is a simple email message.\n");
+
+    // Now add it to the mail
+    message.addPart(text);
+
+    SimpleMail::ServerReply *reply = smtpServer.sendMail(message);
+    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
+        qDebug() << "ServerReply finished" << reply->error() << reply->responseText();
+        reply->deleteLater();// Don't forget to delete it
+    });
+}
 
 void ESAAApp::saveData()
 {
@@ -111,6 +142,25 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e)
     dataFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
+
+    QString data;
+    QString EMailConfig(":/EMailConfig.txt");
+
+    QFile file(EMailConfig);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        char buf[1000];
+        file.readLine(buf, 1000);
+        smtpHost = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        smtpPort = QString(buf).trimmed().toInt();
+        file.readLine(buf, 1000);
+        smtpUser = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        smtpPassword = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        smtpSender = QString(buf).trimmed();
+    }
 }
 
 void ESAAApp::firstStartDone()
@@ -157,8 +207,8 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     struct zint_symbol *my_symbol;
     my_symbol = ZBarcode_Create();
     my_symbol->symbology = BARCODE_QRCODE;
-//    strcpy(my_symbol->bgcolour, "fed8a7");
-//    strcpy(my_symbol->fgcolour, "404040");
+    //    strcpy(my_symbol->bgcolour, "fed8a7");
+    //    strcpy(my_symbol->fgcolour, "404040");
     strcpy(my_symbol->outfile, filename.toStdString().c_str());;
     ZBarcode_Encode(my_symbol, (uint8_t*)code.toStdString().c_str(), 0);
     ZBarcode_Print(my_symbol, 0);
@@ -172,28 +222,28 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
 void ESAAApp::action(const QString &qrCodeJSON)
 {
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
-   QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
-   QJsonObject data(qrJSON.object());
-   int actionID(data["ai"].toInt());
-   if (actionID == actionIDCoronaKontaktdatenerfassung)
-   {
-       qDebug() << "actionIDCoronaKontaktdatenerfassung";
-       QString email(data["e"].toString());
-       QString wantedData(data["d"].toString());
-       QString logo(data["logo"].toString());
-       QString backgroundColor(data["color"].toString());
-       QString locationId(data["id]"].toString());
-       qDebug() << "email: " << email;
-       qDebug() << "wantedData: " << wantedData;
-       qDebug() << "logo: " << logo;
-       qDebug() << "backgroundColor: " << backgroundColor;
-       qDebug() << "locationId: " << locationId;
-       setAdressWanted(wantedData.contains("adress"));
-       setEMailWanted(wantedData.contains("email"));
-       setMobileWanted(wantedData.contains("mobile"));
-       setLogoUrl(logo);
-       setColor(backgroundColor);
-   }
+    QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
+    QJsonObject data(qrJSON.object());
+    int actionID(data["ai"].toInt());
+    if (actionID == actionIDCoronaKontaktdatenerfassung)
+    {
+        qDebug() << "actionIDCoronaKontaktdatenerfassung";
+        QString email(data["e"].toString());
+        QString wantedData(data["d"].toString());
+        QString logo(data["logo"].toString());
+        QString backgroundColor(data["color"].toString());
+        QString locationId(data["id]"].toString());
+        qDebug() << "email: " << email;
+        qDebug() << "wantedData: " << wantedData;
+        qDebug() << "logo: " << logo;
+        qDebug() << "backgroundColor: " << backgroundColor;
+        qDebug() << "locationId: " << locationId;
+        setAdressWanted(wantedData.contains("adress"));
+        setEMailWanted(wantedData.contains("email"));
+        setMobileWanted(wantedData.contains("mobile"));
+        setLogoUrl(logo);
+        setColor(backgroundColor);
+    }
 }
 
 QString ESAAApp::generateQRCode(const QString &locationName,
