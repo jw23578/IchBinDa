@@ -65,7 +65,7 @@ Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 
 ## Download
 
-Derzeit nur eine Hello Hackathon - App 
+Prototyp:
 
 https://www.jw78.de/download/esaa.apk
 
