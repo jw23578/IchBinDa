@@ -21,6 +21,7 @@ FocusScope
             anchors.fill: parent
             anchors.margins: parent.border.width + 4
             verticalAlignment: Text.AlignVCenter
+            font.family: "Roboto-Thin"
         }
     }
 }

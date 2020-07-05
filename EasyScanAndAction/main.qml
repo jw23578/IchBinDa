@@ -7,95 +7,211 @@ Window {
     visible: true
     width: 300
     height: 480
-    title: qsTr("EasyScanAndAction")
-    Column
+    title: qsTr("Ich bin da!")
+    property var activePage: null
+    property bool moveLeft: true
+    Image
     {
-        anchors.centerIn: parent
-        height: t1.height * 15
-        width: parent.width
-        spacing: mainWindow.height / 40
-        Text {
-            id: t1
-            wrapMode: Text.WordWrap
-            width: parent.width
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Hello Hackathon Oldenburg")
-        }
-        Text {
-            width: parent.width
-            wrapMode: Text.WordWrap
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("#2030")
-        }
-        Text {
-            width: parent.width
-            wrapMode: Text.WordWrap
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("hackathon.kreativitaet-trifft-technik.de/")
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: Qt.openUrlExternally("https://hackathon.kreativitaet-trifft-technik.de/");
+        id: backgroundImage
+        height: parent.height
+        source: "qrc:/images/background.jpg"
+        fillMode: Image.PreserveAspectFit
+        Behavior on x {
+            NumberAnimation {
+                duration: 400
             }
         }
-        Item
+    }
+    function moveBackground()
+    {
+        var step = mainWindow.width / 4
+        var tx = moveLeft ? backgroundImage.x - step : backgroundImage.x + step
+        if (moveLeft)
         {
-            height: mainWindow.height / 10
-            width: parent.width
-        }
-        Text {
-            width: parent.width
-            wrapMode: Text.WordWrap
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Dies hier wird die")
-        }
-        Text {
-            width: parent.width
-            wrapMode: Text.WordWrap
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("EasyScanAndAction App")
-        }
-        Text {
-            width: parent.width
-            wrapMode: Text.WordWrap
-            height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("github.com/jw23578/EasyScanAndAction")
-            MouseArea
+            if (tx < -backgroundImage.width + mainWindow.width)
             {
-                anchors.fill: parent
-                onClicked: Qt.openUrlExternally("https://github.com/jw23578/EasyScanAndAction");
+                tx = -backgroundImage.width + mainWindow.width
+                moveLeft = false
+            }
+            backgroundImage.x = tx
+            return
+        }
+        if (tx > 0)
+        {
+            tx = 0
+            moveLeft = true
+        }
+        backgroundImage.x = tx
+    }
+    function showNewPage(currentPage, nextPage)
+    {
+        if (currentPage === splashscreen)
+        {
+            headerItem.initialAnimation()
+        }
+        else
+        {
+            headerItem.animate()
+        }
+        var direction = moveLeft
+        currentPage.hide(direction)
+        nextPage.show(direction)
+        moveBackground()
+        if (nextPage === scannerpage)
+        {
+            showCallMenueButton.start()
+        }
+        else
+        {
+            hideCallMenueButton.start()
+        }
+    }
+
+    ESAAHeader
+    {
+        id: headerItem
+        width: parent.width
+        height: parent.height / 15
+    }
+
+    Item
+    {
+        y: headerItem.height
+        id: contentItem
+        width: parent.width
+        height: parent.height - y
+        clip: true
+        QuestionPage
+        {
+            id: questionpage
+            onSaveContactData:
+            {
+                showNewPage(questionpage, scannerpage)
+            }
+            onAbort:
+            {
+                showNewPage(questionpage, scannerpage)
+            }
+        }
+        ScannerPage
+        {
+            id: scannerpage
+        }
+        FirstStart
+        {
+            id: firststart
+            onStartNow:
+            {
+                showNewPage(firststart, scannerpage)
+            }
+        }
+        MenuePage
+        {
+            id: menuepage
+            onClose:
+            {
+                showNewPage(menuepage, scannerpage)
+            }
+            onEditContactData:
+            {
+                ESAA.locationName = "MeineDaten"
+                showNewPage(menuepage, questionpage)
             }
         }
     }
-    QuestionPage
-    {
 
+    NumberAnimation {
+        target: callMenueButton
+        property: "anchors.verticalCenterOffset"
+        duration: 1000
+        easing.type: Easing.InOutQuint
+        id: showCallMenueButton
+        to: callMenueButton.width / 6
     }
-    ScannerPage
+    NumberAnimation {
+        target: callMenueButton
+        property: "anchors.verticalCenterOffset"
+        duration: 1000
+        easing.type: Easing.InOutQuint
+        id: hideCallMenueButton
+        to: width
+    }
+    Rectangle
     {
-        id: scannerpage
-        visible: !ESAA.firstStart
+        color: ESAA.menueButtonColor
+        border.color: ESAA.lineColor
+        border.width: 1
+        id: callMenueButton
+        width: parent.width / 4
+        radius: width /2
+        height: width
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenterOffset: width
+        anchors.verticalCenter: parent.bottom
+
+        Image
+        {
+            source: "qrc:/images/burgermenue.svg"
+            width: parent.width / 4
+            height: width
+            sourceSize.width: width
+            sourceSize.height: height
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -parent.height / 3.3
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked:
+            {
+                showNewPage(scannerpage, menuepage)
+            }
+        }
     }
-    FirstStart
-    {
-        visible: ESAA.firstStart
-    }
+
 
     Message
     {
         id: message
     }
+    AgreePage
+    {
+        id: agreepage
+        onAgreed:
+        {
+            showNewPage(agreepage, firststart)
+        }
+    }
 
+    SplashScreen
+    {
+        id: splashscreen
+        onSplashDone:
+        {
+            if (!ESAA.aggrementChecked)
+            {
+                showNewPage(splashscreen, agreepage)
+            }
+            else
+            {
+                showNewPage(splashscreen, scannerpage)
+            }
+        }
+    }
     Connections
     {
         target: ESAA
         onShowMessageSignal: message.show(mt)
         onScanSignal: scannerpage.show()
+        onValidQRCodeDetected:
+        {
+            hideCurrentPage()
+            questionpage.show()
+        }
+    }
+    Component.onCompleted:
+    {
+        splashscreen.start()
     }
 }

@@ -6,16 +6,28 @@
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
+#include "src/jwmobileext.h"
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
+
+    jw::mobileext mobileExtension;
     // Einstellungen
-    JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#ffa500");
-    JWPROPERTY(QColor, backgroundBottomColor, BackgroundBottomColor, "#ff4500");
+    JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
+    JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
+    JWPROPERTY(QColor, backgroundBottomColor, BackgroundBottomColor, "#023B28");
+    JWPROPERTY(QColor, fontColor, FontColor, "#938274")
+    JWPROPERTY(QColor, lineColor, LineColor, "#191919")
+    JWPROPERTY(QColor, menueButtonColor, MenueButtonColor, "#0E79B2")
+    JWPROPERTY(QColor, buttonColor, ButtonColor, "#191928");
+    JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
+    JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
 
     // App Zustand
+    JWPROPERTY(int, spacing, Spacing, 20);
     JWPROPERTY(bool, firstStart, FirstStart, true);
+    JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(QString, appName, AppName, "Ich bin da!");
 
     // Aktuelle Location
@@ -59,7 +71,6 @@ class ESAAApp: public QObject
     std::map<QString, SLocationInfo> email2locationInfo;
 
     QString dataFileName;
-    void saveData();
     void loadData();
     const int actionIDCoronaKontaktdatenerfassung = 1;
     QString getTempPath();
@@ -70,6 +81,7 @@ class ESAAApp: public QObject
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE void saveData();
     Q_INVOKABLE void clearData2Send();
     Q_INVOKABLE void addData2Send(const QString &field, const QString &value);
     Q_INVOKABLE void firstStartDone();
@@ -85,9 +97,12 @@ public:
                                        bool withEMail,
                                        bool widthMobile);
 
+    Q_INVOKABLE void recommend();
 signals:
     void showMessageSignal(const QString &mt);
     void scanSignal();
+    void validQRCodeDetected();
+    void invalidQRCodeDetected();
 };
 
 #endif // ESAAAPP_H

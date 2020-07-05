@@ -24,7 +24,6 @@ Rectangle
         id: colorDialog
         title: "Please choose a color"
         onAccepted: {
-            console.log("You chose: " + colorDialog.color)
             colorRectangle.color = colorDialog.color
         }
     }

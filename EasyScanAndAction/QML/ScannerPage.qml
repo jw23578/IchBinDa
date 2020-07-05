@@ -2,21 +2,19 @@ import QtQuick 2.12
 import QZXing 2.3
 import QtMultimedia 5.13
 import QtQuick.Controls 2.13
+import QtGraphicalEffects 1.0
 
-Rectangle
+ESAAPage
 {
     id: scannerpage
-    anchors.fill: parent
-    function show()
+    onShowing:
     {
-        visible = true
         camera.stop()
         camera.start()
     }
 
-    function close()
+    onHiding:
     {
-        visible = false
         camera.stop()
     }
 
@@ -39,33 +37,13 @@ Rectangle
     QZXingFilter {
         id: zxingFilter
         decoder {
-            //            enabledDecoders: QZXing.DecoderFormat_Aztec
-            //                             | QZXing.DecoderFormat_CODABAR
-            //                             | QZXing.DecoderFormat_CODE_128
-            //                             | QZXing.DecoderFormat_CODE_128_GS1
-            //                             | QZXing.DecoderFormat_CODE_39
-            //                             | QZXing.DecoderFormat_CODE_93
-            //                             | QZXing.DecoderFormat_DATA_MATRIX
-            //                             | QZXing.DecoderFormat_EAN_13
-            //                             | QZXing.DecoderFormat_EAN_8
-            //                             | QZXing.DecoderFormat_ITF
-            //                             | QZXing.DecoderFormat_MAXICODE
-            //                             | QZXing.DecoderFormat_PDF_417
-            //                             | QZXing.DecoderFormat_QR_CODE
-            //                             | QZXing.DecoderFormat_RSS_14
-            //                             | QZXing.DecoderFormat_RSS_EXPANDED
-            //                             | QZXing.DecoderFormat_UPC_A
-            //                             | QZXing.DecoderFormat_UPC_E
-            //                             | QZXing.DecoderFormat_UPC_EAN_EXTENSION
             enabledDecoders: QZXing.DecoderFormat_QR_CODE
             tryHarder: true
             onTagFound: {
-                captureZone.color = "green"
                 console.log(tag)
                 if (tag.length)
                 {
                     ESAA.action(tag)
-                    scannerpage.close()
                 }
             }
         }
@@ -94,110 +72,135 @@ Rectangle
     Camera
     {
         id: camera
-
-        //        imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-
-        //        exposure {
-        //            exposureCompensation: -1.0
-        //            exposureMode: Camera.ExposureBarcode
-        //        }
-
-        //        flash.mode: Camera.FlashRedEyeReduction
-
         focus.focusMode: Camera.FocusContinuous
         focus.focusPointMode:  Camera.FocusPointAuto
-
         Component.onCompleted: camera.searchAndLock()
     }
 
-    VideoOutput
+    Item
     {
-        clip: true
-        id: output
-        autoOrientation: true
-        source: camera
-        anchors.left: parent.left
-        anchors.right: parent.right
+        id: scanneritem
+        width: parent.width
         height: width
-        focus : visible // to receive focus and capture key events when visible
-        filters: [ zxingFilter ]
+        Rectangle
+        {
+            clip: true
+            radius: width / 15
+            anchors.centerIn: parent
+            width: parent.width * 9 / 10
+            height: width
+            id: the_rect
+            VideoOutput
+            {
+                id: output
+                autoOrientation: true
+                source: camera
+                anchors.fill: parent
+                focus : visible // to receive focus and capture key events when visible
+                filters: [ zxingFilter ]
 
-        fillMode: VideoOutput.PreserveAspectCrop
+                fillMode: VideoOutput.PreserveAspectCrop
+//                layer.enabled: true
+//                layer.effect:
+//                    OpacityMask
+//                {
+//                    maskSource: the_rect
+//                }
+                property double leftStartFaktor: 0.2
+                property double topStartFaktor: 0.2
+                property double widthFaktor: 1 - 2 * leftStartFaktor
+                property double heightFaktor: 1 - 2 * topStartFaktor
+                Rectangle
+                {
+                    id: topRect
+                    height: captureZone.y
+                    width: parent.width
+                    opacity: 0.4
+                    color: ESAA.backgroundTopColor
+                }
+                Rectangle
+                {
+                    id: bottomRect
+                    y: parent.height - height
+                    height: parent.height - captureZone.y - captureZone.height
+                    width: parent.width
+                    opacity: 0.4
+                    color: ESAA.backgroundTopColor
+                }
+                Rectangle
+                {
+                    id: leftRect
+                    y: captureZone.y
+                    height: captureZone.height
+                    width: captureZone.x
+                    opacity: 0.4
+                    color: ESAA.backgroundTopColor
+                }
+                Rectangle
+                {
+                    id: rightRect
+                    y: captureZone.y
+                    height: captureZone.height
+                    x: parent.width - width
+                    width: parent.width - captureZone.x - captureZone.width
+                    opacity: 0.4
+                    color: ESAA.backgroundTopColor
+                }
 
+                Item
+                {
+                    id: captureZone
+                    x: output.contentRect.width * parent.leftStartFaktor + output.contentRect.x
+                    y: output.contentRect.height * parent.topStartFaktor + output.contentRect.y
+                    width: output.contentRect.width * parent.widthFaktor
+                    height: output.contentRect.height * parent.heightFaktor
+                }
+            }
+        }
+    }
+    Item
+    {
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.top: scanneritem.bottom
+        width: parent.width / 2
+        id: leftItem
+        Text {
+            id: name
+            text: qsTr("Spenden")
+            anchors.centerIn: parent
+        }
         MouseArea
         {
             anchors.fill: parent
-            onClicked: {
-                //                camera.focus.customFocusPoint = Qt.point(mouse.x / width,  mouse.y / height);
-                //                camera.focus.focusMode = CameraFocus.FocusMacro;
-                //                camera.focus.focusPointMode = CameraFocus.FocusPointCustom;
-                console.log(output.orientation)
-            }
-        }
-        Rectangle
-        {
-            property double leftStartFaktor: 0.2
-            property double topStartFaktor: 0.2
-            property double widthFaktor: 1 - 2 * leftStartFaktor
-            property double heightFaktor: 1 - 2 * topStartFaktor
-            id: captureZone
-            color: "red"
-            opacity: 0.2
-            x: output.contentRect.width * leftStartFaktor + output.contentRect.x
-            y: output.contentRect.height * topStartFaktor + output.contentRect.y
-            width: output.contentRect.width * widthFaktor
-            height: output.contentRect.height * heightFaktor
+            onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
         }
     }
-
-    Button
+    Rectangle
     {
-        anchors.bottom: qrcodebutton.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        text: "Hilfe"
-        onClicked: ESAA.firstStart = true
-    }
-    Button
-    {
-        id: qrcodebutton
-        anchors.bottom: quitButton.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        text: "QR-Code erzeugen"
-        onClicked: createqrcodepage.visible = true
-    }
-
-    Button
-    {
-        id: quitButton
+        id: line
+        width: 1
+        anchors.left: leftItem.right
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        anchors.top: scanneritem.bottom
+        color: ESAA.lineColor
+    }
+    Item
+    {
+        anchors.left: line.right
+        anchors.bottom: parent.bottom
+        anchors.top: scanneritem.bottom
         anchors.right: parent.right
-        text: "Beenden"
-        onClicked: Qt.quit()
-    }
-
-    CreateQRCodePage
-    {
-        id: createqrcodepage
-        anchors.fill: parent
-        visible: false
-        onVisibleChanged:
+        Image
         {
-            if (visible)
-            {
-                camera.stop()
-            }
-            else
-            {
-                camera.start()
-            }
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            source: "qrc:/images/share-icon-40146.png"
         }
-    }
-
-    Component.onCompleted:
-    {
-        show()
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: ESAA.recommend()
+        }
     }
 }

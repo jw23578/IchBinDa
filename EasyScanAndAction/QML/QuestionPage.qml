@@ -1,11 +1,14 @@
-import QtQuick 2.0
+import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Dialogs 1.1
 
-Rectangle
+ESAAPage
 {
-    color: ESAA.color
-    anchors.fill: parent
+    onShowing: theFlick.contentY = 0
+    signal saveContactData
+    signal abort
+    property bool meineDaten: ESAA.locationName == "MeineDaten"
+    property color textColor: meineDaten ? ESAA.fontColor : "black"
     Flickable
     {
         id: theFlick
@@ -16,17 +19,21 @@ Rectangle
             id: dataColumn
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - parent.width / 10
+            spacing: ESAA.spacing / 2
+            topPadding: spacing
             Image
             {
                 width: parent.width
                 height: width
                 source: ESAA.logoUrl
                 fillMode: Image.PreserveAspectFit
+                visible: !meineDaten
             }
             ESAAText
             {
                 width: parent.width
                 text: ESAA.locationName
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -35,6 +42,7 @@ Rectangle
                 focus: true
                 id: fstname
                 text: ESAA.fstname
+                color: textColor
             }
 
             ESAALineInputWithCaption
@@ -43,6 +51,7 @@ Rectangle
                 width: parent.width
                 id: surname
                 text: ESAA.surname
+                color: textColor
             }
 
             ESAALineInputWithCaption
@@ -51,7 +60,8 @@ Rectangle
                 width: parent.width
                 id: street
                 text: ESAA.street
-                visible: ESAA.adressWanted
+                visible: meineDaten || ESAA.adressWanted
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -59,8 +69,9 @@ Rectangle
                 width: parent.width
                 id: housenumber
                 text: ESAA.housenumber
-                visible: ESAA.adressWanted
+                visible: meineDaten || ESAA.adressWanted
                 inputMethodHints: Qt.ImhPreferNumbers
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -68,8 +79,9 @@ Rectangle
                 width: parent.width
                 id: zip
                 text: ESAA.zip
-                visible: ESAA.adressWanted
+                visible: meineDaten || ESAA.adressWanted
                 inputMethodHints: Qt.ImhDigitsOnly
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -77,7 +89,8 @@ Rectangle
                 width: parent.width
                 id: location
                 text: ESAA.location
-                visible: ESAA.adressWanted
+                visible: meineDaten || ESAA.adressWanted
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -85,8 +98,9 @@ Rectangle
                 width: parent.width
                 id: emailAdress
                 text: ESAA.emailAdress
-                visible: ESAA.emailWanted
+                visible: meineDaten || ESAA.emailWanted
                 inputMethodHints: Qt.ImhPreferLowercase
+                color: textColor
             }
             ESAALineInputWithCaption
             {
@@ -94,20 +108,32 @@ Rectangle
                 width: parent.width
                 id: mobile
                 text: ESAA.mobile
-                visible: ESAA.mobileWanted
+                visible: meineDaten || ESAA.mobileWanted
+                color: textColor
             }
-            Item
-            {
-                width: parent.width
-                height: width / 5
-            }
-            Button
+            ESAAButton
             {
                 id: sendButton
                 width: parent.width
-                text: "Kontaktdaten senden an\n" + ESAA.locationContactMailAdress
+                text: meineDaten ? "Meine Daten speichern" : "Kontaktdaten senden an\n" + ESAA.locationContactMailAdress
+                color: textColor
                 onClicked:
                 {
+                    ESAA.clearData2Send()
+                    if (meineDaten)
+                    {
+                        ESAA.fstname = fstname.text
+                        ESAA.surname = surname.text
+                        ESAA.street = street.text
+                        ESAA.housenumber = housenumber.text
+                        ESAA.zip = zip.text
+                        ESAA.location = location.text
+                        ESAA.emailAdress = emailAdress.text
+                        ESAA.mobile = mobile.text
+                        saveContactData();
+                        return
+                    }
+
                     if (fstname.visible)
                     {
                         if (fstname.text == "")
@@ -200,26 +226,19 @@ Rectangle
                     ESAA.showMessage("gleich wird gesendet")
                 }
             }
-            Item
+            ESAAButton
             {
+                id: abortButton
                 width: parent.width
-                height: width / 5
-            }
-            Button
-            {
-                width: parent.width
-                text: "Scanner öffnen"
-                onClicked:
-                {
-                    theFlick.contentY = 0
-                    ESAA.scan()
-                }
+                text: "Abbrechen"
+                onClicked: abort()
+                color: textColor
             }
 
             Item
             {
                 width: parent.width
-                height: width
+                height: abortButton.height
             }
         }
     }

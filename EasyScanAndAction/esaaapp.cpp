@@ -88,6 +88,7 @@ void ESAAApp::saveData()
     data["contactData"] = contactData;
     data["locationInfos"] = locationInfos;
     data["firstStart"] = firstStart();
+    data["aggrementChecked"] = aggrementChecked();
     dataFile.write(QJsonDocument(data).toJson());
 }
 
@@ -102,6 +103,7 @@ void ESAAApp::loadData()
     QByteArray saveData = dataFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject data(loadDoc.object());
+    setAggreementChecked(data["aggrementChecked"].toBool());
     if (data.contains("firstStart"))
     {
         setFirstStart(data["firstStart"].toBool());
@@ -137,7 +139,8 @@ void ESAAApp::loadData()
 
 
 
-ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e)
+ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
+    mobileExtension(e, "ichbinda.jw78.de/MyIntentCaller")
 {
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     QDir dir;
@@ -267,7 +270,11 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setColor(backgroundColor);
         setLocationName(theLocationName);
         setLocationContactMailAdress(email);
+        emit validQRCodeDetected();
+        return;
     }
+    emit invalidQRCodeDetected();
+
 }
 
 QString ESAAApp::generateQRCode(const QString &locationName,
@@ -304,4 +311,11 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     qr["color"] = li.color.name();
     qr["logo"] = li.logoUrl;
     return generateQRcodeIntern(QJsonDocument(qr).toJson());
+}
+
+void ESAAApp::recommend()
+{
+    QString content("Ich benutze die ");
+    content += appName() + " App um meine Kontakten im Restauraung, Frisör und Co abzugeben. Hier kannst du sie herunterladen: ";
+    mobileExtension.shareText("Ich bin da!", "Ich bin da! Kontaktdatenaustausch per QR-Code", content);
 }

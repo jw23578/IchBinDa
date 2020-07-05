@@ -1,4 +1,4 @@
-QT += quick multimedia svg xml
+QT += quick multimedia svg xml qml
 
 CONFIG += c++11
 CONFIG += qzxing_qml
@@ -19,6 +19,7 @@ DEFINES += NO_PNG
 
 SOURCES += \
     esaaapp.cpp \
+    src/jwmobileext.cpp \
 zint-master/backend/2of5.c \
 zint-master/backend/auspost.c \
 zint-master/backend/aztec.c \
@@ -55,6 +56,7 @@ main.cpp
 HEADERS += \
     esaaapp.h \
     qt_extension_macros.h \
+    src/jwmobileext.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
 zint-master/backend/code49.h \
@@ -122,7 +124,18 @@ DISTFILES += \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew \
     android/gradlew.bat \
-    android/res/values/libs.xml
+    android/res/values/libs.xml \
+    src/ichbinda/jw78/de/JWAppActivity.java \
+    src/ichbinda/jw78/de/JWAppService.java \
+    src/ichbinda/jw78/de/JWJobService.java \
+    src/ichbinda/jw78/de/MyIntentCaller.java
+
+android {
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    ANDROID_JAVA_SOURCES.path = /src/ichbinda/jw78/de
+    ANDROID_JAVA_SOURCES.files = $$files($$PWD/src/ichbinda/jw78/de/*.java)
+    INSTALLS += ANDROID_JAVA_SOURCES
+}
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

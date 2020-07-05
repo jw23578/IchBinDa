@@ -1,76 +1,39 @@
-import QtQuick 2.0
+import QtQuick 2.13
 import QtQuick.Controls 2.13
 
-Rectangle
+ESAAPage
 {
-//    Background
-//    {
-
-//    }
-
-    anchors.fill: parent
+    signal startNow
     Column
     {
         anchors.fill: parent
-        Item
+        anchors.margins: ESAA.spacing
+        topPadding: spacing / 2
+        spacing: (height - 3 * b1.height) / 3
+        ESAAButton
         {
+            id: b1
             width: parent.width
-            height: parent.height / 4
-            ESAAText
-            {
-                anchors.centerIn: parent
-                text: ESAA.appName
-                font.pointSize: screen.height / 40
-            }
+            font.pixelSize: parent.height / 14
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Ich bin\nBetreiber"
+            onClicked: betreiberinfo.visible = true
         }
-        Item
+        ESAAButton
         {
             width: parent.width
-            height: parent.height / 4
-            ESAAText
-            {
-                anchors.centerIn: parent
-                text: "Ich bin\nAnbieter"
-                font.pointSize: screen.height / 50
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: betreiberinfo.visible = true
-            }
+            font.pixelSize: parent.height / 14
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Ich bin\nKunde/Besucher"
+            onClicked: kundeinfo.visible = true
         }
-        Rectangle
-        {
-            color: "grey"
-            width: parent.width
-            height: parent.height / 4
-            ESAAText
-            {
-                anchors.centerIn: parent
-                text: "Ich bin\nKunde/Besucher"
-                font.pointSize: screen.height / 50
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: kundeinfo.visible = true
-            }
-        }
-        Item
+        ESAAButton
         {
             width: parent.width
-            height: parent.height / 4
-            ESAAText
-            {
-                anchors.centerIn: parent
-                text: "Ich will\ndirekt loslegen"
-                font.pointSize: screen.height / 50
-            }
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: ESAA.firstStartDone();
-            }
+            font.pixelSize: parent.height / 14
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Ich möchte\ndirekt loslegen"
+            onClicked: startNow()
         }
     }
     Rectangle
@@ -78,13 +41,13 @@ Rectangle
         id: betreiberinfo
         visible: false
         anchors.fill: parent
-        Button
+        ESAAButton
         {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             text: "Los geht's"
-            onClicked: ESAA.firstStartDone()
+            onClicked: startNow()
         }
     }
     Rectangle
@@ -92,13 +55,13 @@ Rectangle
         id: kundeinfo
         visible: false
         anchors.fill: parent
-        Button
+        ESAAButton
         {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             text: "Los geht's"
-            onClicked: ESAA.firstStartDone()
+            onClicked: startNow()
         }
     }
 }
