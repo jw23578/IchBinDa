@@ -1,4 +1,4 @@
-# EasyScanAndAction
+# Ich bin da!
 Aktionen/Aufgaben/Informationen per QR-Code übertragen und ausführen
 
 ## In aller Kürze:
