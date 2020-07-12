@@ -1,5 +1,6 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.13
+import QtGraphicalEffects 1.13
 
 Button
 {
@@ -7,6 +8,7 @@ Button
     id: control
     text: qsTr("Button")
     font.pixelSize: ESAA.fontButtonPixelsize
+    property alias source: img.source
     property alias color: textItem.color
     property color buttonColor: ESAA.buttonColor
     contentItem: ESAAText {
@@ -28,6 +30,18 @@ Button
         border.color: ESAA.buttonBorderColor
         border.width: 1
         radius: ESAA.radius
+        Image
+        {
+            id: img
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 0.05 * parent.height
+            height: parent.height * 0.9
+            width: height
+            fillMode: Image.PreserveAspectFit
+            visible: source != ""
+            mipmap: true
+        }
     }
     property int pauseDuration: 0
     PauseAnimation {
@@ -54,5 +68,28 @@ Button
     {
         pauseDuration = pause
         pauseAni.start()
+    }
+
+    property int pauseDurationRotation: 0
+    PauseAnimation {
+        id: pauseAniRotation
+        duration: pauseDurationRotation
+        onFinished: rotationAnimation.start()
+    }
+    NumberAnimation
+    {
+        id: rotationAnimation
+        target: img
+        property: "rotation"
+        to: 0
+        duration: 800
+        easing.type: Easing.InOutQuint
+    }
+
+    function rotate(pause)
+    {
+        pauseDurationRotation = pause
+        img.rotation = -135
+        pauseAniRotation.start()
     }
 }

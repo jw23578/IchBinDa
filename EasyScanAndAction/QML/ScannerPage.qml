@@ -163,44 +163,15 @@ ESAAPage
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.top: scanneritem.bottom
-        width: parent.width / 2
-        id: leftItem
-        Text {
-            id: name
-            text: qsTr("Spenden")
-            anchors.centerIn: parent
-        }
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
-        }
-    }
-    Rectangle
-    {
-        id: line
-        width: 1
-        anchors.left: leftItem.right
-        anchors.bottom: parent.bottom
-        anchors.top: scanneritem.bottom
-        color: ESAA.lineColor
-    }
-    Item
-    {
-        anchors.left: line.right
-        anchors.bottom: parent.bottom
-        anchors.top: scanneritem.bottom
         anchors.right: parent.right
-        Image
+        ESAAButton
         {
-            anchors.fill: parent
-            fillMode: Image.PreserveAspectFit
-            source: "qrc:/images/share-icon-40146.png"
-        }
-        MouseArea
-        {
-            anchors.fill: parent
+            id: shareButton
+            width: parent.width * 0.8
+            anchors.centerIn: parent
+            text: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
+            source: "qrc:/images/share-icon-40146.png"
         }
     }
 }

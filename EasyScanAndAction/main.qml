@@ -136,6 +136,10 @@ Window {
             {
                 showNewPage(menuepage, createqrcodepage)
             }
+            onHelp:
+            {
+                showNewPage(menuepage, firststart)
+            }
         }
     }
 

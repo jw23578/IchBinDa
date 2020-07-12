@@ -6,9 +6,11 @@ ESAAPage
     signal editContactData
     signal close
     signal editQRCode
+    signal help
     onShowing:
     {
         shareButton.blink(400)
+        shareButton.rotate(400)
         spendenButton.blink(500)
     }
 
@@ -40,7 +42,7 @@ ESAAPage
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Hilfe"
-            onClicked: ESAA.firstStart = true
+            onClicked: help()
         }
         ESAAButton
         {
@@ -49,6 +51,7 @@ ESAAPage
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
+            source: "qrc:/images/share-icon-40146.png"
         }
         ESAAButton
         {
