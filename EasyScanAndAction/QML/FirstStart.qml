@@ -9,12 +9,12 @@ ESAAPage
         anchors.fill: parent
         anchors.margins: ESAA.spacing
         topPadding: spacing / 2
-        spacing: (height - 3 * b1.height) / 3
+        spacing: (height - 4 * b1.height) / 4
+
         ESAAButton
         {
             id: b1
             width: parent.width
-            font.pixelSize: parent.height / 14
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich bin\nBetreiber"
             onClicked: betreiberinfo.visible = true
@@ -22,15 +22,22 @@ ESAAPage
         ESAAButton
         {
             width: parent.width
-            font.pixelSize: parent.height / 14
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich bin\nKunde/Besucher"
             onClicked: kundeinfo.visible = true
         }
         ESAAButton
         {
+            id: shareButton
             width: parent.width
-            font.pixelSize: parent.height / 14
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Weiterempfehlen")
+            onClicked: ESAA.recommend()
+            source: "qrc:/images/share-icon-40146.png"
+        }
+        ESAAButton
+        {
+            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich möchte\ndirekt loslegen"
             onClicked: startNow()
