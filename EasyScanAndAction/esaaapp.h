@@ -7,6 +7,7 @@
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
 #include "src/jwmobileext.h"
+#include <set>
 
 class ESAAApp: public QObject
 {
@@ -15,23 +16,30 @@ class ESAAApp: public QObject
     jw::mobileext mobileExtension;
     // Einstellungen
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
+    JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
     JWPROPERTY(QColor, backgroundBottomColor, BackgroundBottomColor, "#023B28");
-    JWPROPERTY(QColor, fontColor, FontColor, "#938274")
+    JWPROPERTY(QColor, fontColor, FontColor, "#BF1363")
+    JWPROPERTY(QColor, fontColor2, FontColor2, "#938274")
     JWPROPERTY(QColor, lineColor, LineColor, "#191919")
     JWPROPERTY(QColor, menueButtonColor, MenueButtonColor, "#0E79B2")
     JWPROPERTY(QColor, buttonColor, ButtonColor, "#191928");
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
     JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
+    JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);
+    JWPROPERTY(int, radius, Radius, 5);
 
     // App Zustand
     JWPROPERTY(int, spacing, Spacing, 20);
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(QString, appName, AppName, "Ich bin da!");
+    std::set<QString> qrCodes;
+    static std::set<std::string> invalidEMailDomains;
 
     // Aktuelle Location
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
+    JWPROPERTY(QString, anonymContactMailAdress, AnonymContactMailAdress, "");
     JWPROPERTY(QString, locationName, LocationName, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
@@ -67,6 +75,7 @@ class ESAAApp: public QObject
         QColor color;
         QString locationId;
         QString locationName;
+        QString anonymReceiveEMail;
     };
     std::map<QString, SLocationInfo> email2locationInfo;
 
@@ -95,9 +104,15 @@ public:
                                        const QColor color,
                                        bool withAddress,
                                        bool withEMail,
-                                       bool widthMobile);
+                                       bool widthMobile,
+                                       const QString &anonymReceiveEMail);
+    Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver);
 
     Q_INVOKABLE void recommend();
+    Q_INVOKABLE bool isEmailValid(const QString& email);
+
+    Q_INVOKABLE void calculateRatios();
+
 signals:
     void showMessageSignal(const QString &mt);
     void scanSignal();

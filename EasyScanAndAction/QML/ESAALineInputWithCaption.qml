@@ -8,6 +8,7 @@ Item
     property alias displayText: input.displayText
     property alias inputMethodHints: input.inputMethodHints
     height: caption.length ? captionText.height + input.height : input.height
+
     ESAAText
     {
         id: captionText

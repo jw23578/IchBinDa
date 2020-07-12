@@ -12,6 +12,9 @@
 #include <QPixmap>
 #include <QImage>
 #include <QFile>
+#include <regex>
+#include <QGuiApplication>
+#include <QScreen>
 
 void ESAAApp::sendMail()
 {
@@ -48,9 +51,28 @@ void ESAAApp::sendMail()
 
     SimpleMail::ServerReply *reply = smtpServer.sendMail(message);
     QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
-        qDebug() << "ServerReply finished" << reply->error() << reply->responseText();
+        qDebug() << "Message ServerReply finished" << reply->error() << reply->responseText();
         reply->deleteLater();// Don't forget to delete it
     });
+
+    SimpleMail::MimeMessage visitMessage;
+    visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
+    visitMessage.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
+
+    subject = "Besuchmeldung " + locationName();
+    visitMessage.setSubject(subject);
+    work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    auto visitText = new SimpleMail::MimeText;
+    visitText->setText(work);
+    visitMessage.addPart(visitText);
+
+    reply = smtpServer.sendMail(message);
+    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
+        qDebug() << "VisitMessage ServerReply finished" << reply->error() << reply->responseText();
+        reply->deleteLater();// Don't forget to delete it
+    });
+
 }
 
 void ESAAApp::saveData()
@@ -81,6 +103,7 @@ void ESAAApp::saveData()
         locationInfo["locationId"] = it->second.locationId;
         locationInfo["color"] = it->second.color.name();
         locationInfo["locationName"] = it->second.locationName;
+        locationInfo["anonymReceiveEMail"] = it->second.anonymReceiveEMail;
         ++it;
     }
 
@@ -120,6 +143,7 @@ void ESAAApp::loadData()
             li.locationId = locationInfo["locationId"].toString();
             li.color = locationInfo["color"].toString();
             li.locationName = locationInfo["locationName"].toString();
+            li.anonymReceiveEMail = locationInfo["anonymReceiveEMail"].toString();
             email2locationInfo[li.contactReceiveEmail] = li;
         }
     }
@@ -238,8 +262,12 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     ZBarcode_Print(my_symbol, 0);
     ZBarcode_Delete(my_symbol);
 
-    QPixmap pix(QIcon(filename).pixmap(QSize(300, 300)));
+    QPixmap pix(QIcon(filename).pixmap(QSize(500, 500)));
     pix.toImage().save(getTempPath()+ "/qr.png");
+    pix.toImage().save(getTempPath()+ "/qr.jpg");
+    qrCodes.insert(filename);
+    qrCodes.insert(getTempPath()+ "/qr.png");
+    qrCodes.insert(getTempPath()+ "/qr.jpg");
     return filename;
 }
 
@@ -258,6 +286,8 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString backgroundColor(data["color"].toString());
         QString locationId(data["id]"].toString());
         QString theLocationName(data["ln"].toString());
+        QString anonymEMail(data["ae"].toString());
+        qDebug() << "anonymEMail: " << anonymEMail;
         qDebug() << "email: " << email;
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
@@ -270,6 +300,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setColor(backgroundColor);
         setLocationName(theLocationName);
         setLocationContactMailAdress(email);
+        setAnonymContactMailAdress(anonymEMail);
         emit validQRCodeDetected();
         return;
     }
@@ -283,7 +314,8 @@ QString ESAAApp::generateQRCode(const QString &locationName,
                                 const QColor color,
                                 bool withAddress,
                                 bool withEMail,
-                                bool withMobile)
+                                bool withMobile,
+                                const QString &anonymReceiveEMail)
 {
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
@@ -294,11 +326,14 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     li.locationName = locationName;
     li.color = color;
     li.logoUrl = theLogoUrl;
+    li.anonymReceiveEMail = anonymReceiveEMail;
+
     saveData();
     QJsonObject qr;
     qr["ai"] = 1;
     qr["id"] = li.locationId;
     qr["e"] = li.contactReceiveEmail;
+    qr["ae"] = li.anonymReceiveEMail;
     QString d;
     d += withEMail ? "email," : "";
     d += withAddress ? "adress," : "";
@@ -313,9 +348,106 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     return generateQRcodeIntern(QJsonDocument(qr).toJson());
 }
 
+void ESAAApp::sendQRCode(const QString &qrCodeReceiver)
+{
+    smtpServer.setHost(smtpHost);
+    smtpServer.setPort(smtpPort);
+    smtpServer.setConnectionType(SimpleMail::Server::SslConnection);
+
+    smtpServer.setUsername(smtpUser);
+    smtpServer.setPassword(smtpPassword);
+
+    SimpleMail::MimeMessage message;
+    message.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
+    message.addTo(SimpleMail::EmailAddress(qrCodeReceiver));
+
+    QString subject("QR-Code");
+    message.setSubject(subject);
+
+    // Now add some text to the email.
+    SimpleMail::MimeHtml *html = new SimpleMail::MimeHtml;
+
+    QString jpgGuid(genUUID());
+
+    html->setHtml(QLatin1String("<h1> Hello! </h1>"
+                                "<h2> This is the first image </h2>"
+                                "<img src=\"cid:") + jpgGuid + "\" />"
+                                                                "<h2> This is the second image </h2>");
+
+    // Now add it to the mail
+    message.addPart(html);
+
+    // Create a MimeInlineFile object for each image
+    std::set<QString>::iterator it(qrCodes.begin());
+    while (it != qrCodes.end())
+    {
+        auto image1 = new SimpleMail::MimeInlineFile(new QFile(*it));
+
+        // An unique content id must be setted
+        if (it->right(3) == "jpg")
+        {
+            image1->setContentId(jpgGuid.toLatin1());
+            image1->setContentType(QByteArrayLiteral("image/jpg"));
+        }
+        if (it->right(3) == "png")
+        {
+            image1->setContentId(genUUID().toLatin1());
+            image1->setContentType(QByteArrayLiteral("image/png"));
+        }
+        if (it->right(3) == "svg")
+        {
+            image1->setContentId(genUUID().toLatin1());
+            image1->setContentType(QByteArrayLiteral("image/svg+xml"));
+        }
+
+        message.addPart(image1);
+        ++it;
+    }
+
+    SimpleMail::ServerReply *reply = smtpServer.sendMail(message);
+    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
+        qDebug() << "QR-Code ServerReply finished" << reply->error() << reply->responseText();
+        reply->deleteLater();// Don't forget to delete it
+    });
+
+}
+
 void ESAAApp::recommend()
 {
     QString content("Ich benutze die ");
     content += appName() + " App um meine Kontakten im Restauraung, Frisör und Co abzugeben. Hier kannst du sie herunterladen: ";
     mobileExtension.shareText("Ich bin da!", "Ich bin da! Kontaktdatenaustausch per QR-Code", content);
+}
+
+std::set<std::string> ESAAApp::invalidEMailDomains;
+
+bool ESAAApp::isEmailValid(const QString &email)
+{
+    std::string work(email.toStdString());
+    const std::regex pattern("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,63})$");
+    bool result(std::regex_match(work, pattern));
+    if (result && invalidEMailDomains.size())
+    {
+        std::string domain(work.substr(work.find("@") + 1));
+        return invalidEMailDomains.find(domain) == invalidEMailDomains.end();
+    }
+    return result;
+}
+
+void ESAAApp::calculateRatios()
+{
+    qreal refDpi = 216.;
+    qreal refHeight = 1776.;
+    qreal refWidth = 1080.;
+    QRect rect = QGuiApplication::primaryScreen()->geometry();
+    qreal height = qMax(rect.width(), rect.height());
+    qreal width = qMin(rect.width(), rect.height());
+    qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+    qDebug() << "dpi: " << dpi;
+    qDebug() << "height: " << rect.height();
+    qDebug() << "width: " << rect.width();
+    qreal m_ratio = qMin(height/refHeight, width/refWidth);
+    qreal m_ratioFont = qMin(height*refDpi/(dpi*refHeight), width*refDpi/(dpi*refWidth));
+    qDebug() << "m_ratioFont: " << m_ratioFont;
+    setFontButtonPixelsize(m_ratioFont * 8.);
 }

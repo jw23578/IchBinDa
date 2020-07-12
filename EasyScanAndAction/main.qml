@@ -14,7 +14,7 @@ Window {
     {
         id: backgroundImage
         height: parent.height
-        source: "qrc:/images/background.jpg"
+        source: "qrc:/images/background2.jpg"
         fillMode: Image.PreserveAspectFit
         Behavior on x {
             NumberAnimation {
@@ -45,6 +45,8 @@ Window {
     }
     function showNewPage(currentPage, nextPage)
     {
+        currentPage.z = 0
+        nextPage.z = 1
         if (currentPage === splashscreen)
         {
             headerItem.initialAnimation()
@@ -71,7 +73,7 @@ Window {
     {
         id: headerItem
         width: parent.width
-        height: parent.height / 15
+        height: parent.height / 20
     }
 
     Item
@@ -105,6 +107,19 @@ Window {
                 showNewPage(firststart, scannerpage)
             }
         }
+        CreateQRCodePage
+        {
+            id: createqrcodepage
+            onClose: showNewPage(createqrcodepage, scannerpage)
+            onShowCode: showNewPage(createqrcodepage, showqrcodepage)
+        }
+        ShowQRCode
+        {
+            id: showqrcodepage
+            qrCodeFileName: createqrcodepage.qrCodeFileName
+            onBack: showNewPage(showqrcodepage, createqrcodepage)
+        }
+
         MenuePage
         {
             id: menuepage
@@ -116,6 +131,10 @@ Window {
             {
                 ESAA.locationName = "MeineDaten"
                 showNewPage(menuepage, questionpage)
+            }
+            onEditQRCode:
+            {
+                showNewPage(menuepage, createqrcodepage)
             }
         }
     }
@@ -206,12 +225,16 @@ Window {
         onScanSignal: scannerpage.show()
         onValidQRCodeDetected:
         {
-            hideCurrentPage()
-            questionpage.show()
+            showNewPage(scannerpage, questionpage)
         }
     }
     Component.onCompleted:
     {
+        ESAA.calculateRatios()
+        ESAA.spacing = Screen.height / 70
+        console.log("Spacing: " + ESAA.spacing)
+
+        console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
         splashscreen.start()
     }
 }

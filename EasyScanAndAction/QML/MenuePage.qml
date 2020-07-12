@@ -5,61 +5,67 @@ ESAAPage
 {
     signal editContactData
     signal close
+    signal editQRCode
+    onShowing:
+    {
+        shareButton.blink(400)
+        spendenButton.blink(500)
+    }
+
     Column
     {
         anchors.fill: parent
         anchors.margins: ESAA.spacing
         topPadding: spacing / 2
-        spacing: (height - 4 * qrcodebutton.height) / 4
+        spacing: (height - 6 * qrcodebutton.height) / 6
         ESAAButton
         {
             id: qrcodebutton
             width: parent.width
-            font.pixelSize: parent.height / 14
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "QR-Code\nerzeugen"
-            onClicked: createqrcodepage.visible = true
+            text: "QR-Code\nanlegen"
+            onClicked: editQRCode()
         }
         ESAAButton
         {
+            id: editButton
             width: parent.width
-            font.pixelSize: parent.height / 14
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Hilfe"
-            onClicked: ESAA.firstStart = true
-        }
-        ESAAButton
-        {
-            width: parent.width
-            font.pixelSize: parent.height / 14
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Meine\nKontaktdaten\nbearbeiten")
             onClicked: editContactData()
         }
         ESAAButton
         {
+            id: helpButton
             width: parent.width
-            font.pixelSize: parent.height / 14
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Hilfe"
+            onClicked: ESAA.firstStart = true
+        }
+        ESAAButton
+        {
+            id: shareButton
+            width: parent.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Weiterempfehlen")
+            onClicked: ESAA.recommend()
+        }
+        ESAAButton
+        {
+            id: spendenButton
+            width: parent.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Spenden")
+            onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
+        }
+
+        ESAAButton
+        {
+            id: closeButton
+            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Schließen"
             onClicked: close()
-        }
-    }
-    CreateQRCodePage
-    {
-        id: createqrcodepage
-        anchors.fill: parent
-        visible: false
-        onVisibleChanged:
-        {
-            if (visible)
-            {
-                camera.stop()
-            }
-            else
-            {
-                camera.start()
-            }
         }
     }
 }

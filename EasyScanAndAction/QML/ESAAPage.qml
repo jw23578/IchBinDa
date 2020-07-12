@@ -61,7 +61,7 @@ Item
     function show(moveLeft)
     {
         showing()        
-        opacity = 0
+        opacity = 0.8
         x = moveLeft ? width : -width
         y = 0
         moveInAnimation.start()

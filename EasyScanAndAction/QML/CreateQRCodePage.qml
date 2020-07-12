@@ -2,20 +2,22 @@ import QtQuick 2.3
 import QtQuick.Controls 2.13
 import QtQuick.Dialogs 1.0
 
-Rectangle
+ESAAPage
 {
-    anchors.fill: parent
-    color: "#deb887"
     id: createqrcodepage
+    signal close
+    signal showCode
+    property string qrCodeFileName: ""
     function generate()
     {
-        qrImage.source = "file://" + ESAA.generateQRCode(locationName.displayText,
-                                                         contactReceiveEMail.displayText,
-                                                         logoUrl.displayText,
-                                                         colorInput.displayText,
-                                                         adressSwitch.position > 0.9,
-                                                         emailSwitch.position > 0.9,
-                                                         mobileSwitch.position > 0.9);
+        qrCodeFileName = ESAA.generateQRCode(locationName.displayText,
+                                             contactReceiveEMail.displayText,
+                                             logoUrl.displayText,
+                                             colorInput.displayText,
+                                             adressSwitch.position > 0.9,
+                                             emailSwitch.position > 0.9,
+                                             mobileSwitch.position > 0.9,
+                                             anonymReceiveEMail.displayText);
     }
 
 
@@ -29,52 +31,62 @@ Rectangle
     }
     Flickable
     {
-        anchors.bottom: quitButton.top
+        anchors.bottom: showCodeButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
         contentHeight: theColumn.height * 1.5
+        clip: true
+        ESAATextBackground
+        {
+            anchors.fill: theColumn
+        }
+
         Column
         {
-            spacing: textId.height / 2
+            y: ESAA.spacing
+            spacing: ESAA.spacing
             id: theColumn
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - parent.width / 10
             Item
             {
                 width: parent.width
-                height: parent.spacing
+                height: 1
             }
-
             ESAALineInputWithCaption
             {
+                color: ESAA.fontColor2
                 id: locationName
-                width: parent.width
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 caption: qsTr("Name des Geschäfts")
-                onDisplayTextChanged: generate()
             }
             ESAALineInputWithCaption
             {
+                color: ESAA.fontColor2
                 id: logoUrl
                 caption: "Logo-Url"
-                width: parent.width
-                onDisplayTextChanged: generate()
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
             }
             ESAALineInputWithCaption
             {
-                width: parent.width
+                color: ESAA.fontColor2
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 caption: "Farbcode"
                 text: "#ffffff"
                 onDisplayTextChanged:
                 {
                     colorRectangle.color = displayText
-                    generate()
                 }
                 id: colorInput
             }
             Rectangle
             {
-                width: parent.width
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 color: "white"
                 height: colorInput.height
                 id: colorRectangle
@@ -82,57 +94,80 @@ Rectangle
 
             ESAALineInputWithCaption
             {
+                color: ESAA.fontColor2
                 id: contactReceiveEMail
-                caption: "E-Mail-Adresse an die die Kontaktdaten gesendet werden sollen"
-                width: parent.width
-                onDisplayTextChanged: generate()
+                caption: "E-Mail-Adresse an die die Kontaktdaten\ngesendet werden sollen"
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
             }
+            ESAALineInputWithCaption
+            {
+                color: ESAA.fontColor2
+                id: anonymReceiveEMail
+                caption: "Besuch anonym senden an"
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
             ESAAText
             {
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 id: textId
+                color: ESAA.fontColor2
                 text: "Welche Daten sollen erfasst werden?"
             }
 
             ESAASwitch
             {
                 id: adressSwitch
-                width: parent.width
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Adressdaten")
-                onClicked: generate()
             }
             ESAASwitch
             {
                 id: emailSwitch
-                width: parent.width
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("E-Mail-Adresse")
-                onClicked: generate()
             }
             ESAASwitch
             {
                 id: mobileSwitch
-                width: parent.width
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Handynummer")
-                onClicked: generate()
             }
-            Image
+            Item
             {
                 width: parent.width
-                height: width
-                id: qrImage
-                fillMode: Image.PreserveAspectFit
-                sourceSize.height: height
-                sourceSize.width: width
+                height: 1
             }
         }
     }
-    Button
+    ESAAButton
     {
-        id: quitButton
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        text: "Abbrechen"
-        onClicked: createqrcodepage.visible = false
+        id: showCodeButton
+        anchors.margins: ESAA.spacing
+        anchors.bottom: quitButton.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: theColumn.width
+        text: "QR-Code erzeugen"
+        onClicked: {
+            generate()
+            showCode()
+        }
     }
 
+    ESAAButton
+    {
+        id: quitButton
+        anchors.margins: ESAA.spacing
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: theColumn.width
+        text: "Abbrechen"
+        onClicked: close()
+    }
 }

@@ -13,7 +13,8 @@ FocusScope
         anchors.fill: parent
         border.color: "black"
         border.width: 1
-        radius: 5
+        radius: ESAA.radius
+        color: ESAA.fontColor2
         TextInput
         {
             id: input
@@ -21,7 +22,7 @@ FocusScope
             anchors.fill: parent
             anchors.margins: parent.border.width + 4
             verticalAlignment: Text.AlignVCenter
-            font.family: "Roboto-Thin"
+            font.family: "Roboto-Regular"
         }
     }
 }

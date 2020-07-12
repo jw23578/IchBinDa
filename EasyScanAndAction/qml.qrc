@@ -38,5 +38,9 @@
         <file>roboto/RobotoCondensed-LightItalic.ttf</file>
         <file>roboto/RobotoCondensed-Regular.ttf</file>
         <file>images/background.jpg</file>
+        <file>QML/ShowQRCode.qml</file>
+        <file>images/background2.jpg</file>
+        <file>images/inputBackground.jpg</file>
+        <file>QML/ESAATextBackground.qml</file>
     </qresource>
 </RCC>
