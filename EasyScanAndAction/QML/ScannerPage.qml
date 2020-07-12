@@ -11,6 +11,7 @@ ESAAPage
     {
         camera.stop()
         camera.start()
+        shareButton.rotate(400)
     }
 
     onHiding:

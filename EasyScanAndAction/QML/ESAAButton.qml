@@ -82,14 +82,14 @@ Button
         target: img
         property: "rotation"
         to: 0
-        duration: 800
+        duration: 1200
         easing.type: Easing.InOutQuint
     }
 
     function rotate(pause)
     {
         pauseDurationRotation = pause
-        img.rotation = -135
+        img.rotation = -720
         pauseAniRotation.start()
     }
 }
