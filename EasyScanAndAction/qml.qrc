@@ -11,7 +11,6 @@
         <file>QML/ESAASwitch.qml</file>
         <file>QML/FirstStart.qml</file>
         <file>QML/ESAAButton.qml</file>
-        <file>EMailConfig.txt</file>
         <file>QML/MenuePage.qml</file>
         <file>QML/ESAAPage.qml</file>
         <file>images/share-icon-40146.png</file>
@@ -42,5 +41,6 @@
         <file>images/background2.jpg</file>
         <file>images/inputBackground.jpg</file>
         <file>QML/ESAATextBackground.qml</file>
+        <file>EMailConfig.txt</file>
     </qresource>
 </RCC>
