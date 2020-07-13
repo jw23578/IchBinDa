@@ -8,12 +8,14 @@
 #include <SimpleMailSRC/SimpleMail>
 #include "src/jwmobileext.h"
 #include <set>
+#include <QNetworkAccessManager>
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
 
     jw::mobileext mobileExtension;
+    QNetworkAccessManager networkAccessManager;
     // Einstellungen
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
@@ -43,6 +45,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, locationName, LocationName, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
+    JWPROPERTY(QString, locationGUID, LocationGUID, "");
 
     // gewünschte Kontaktdaten
     JWPROPERTY(bool, adressWanted, AdressWanted, false);
@@ -66,6 +69,8 @@ class ESAAApp: public QObject
     QString smtpPassword;
     QString smtpSender;
 
+    QString idbTokenStoreURL;
+
     void sendMail();
 
     struct SLocationInfo
@@ -78,6 +83,8 @@ class ESAAApp: public QObject
         QString anonymReceiveEMail;
     };
     std::map<QString, SLocationInfo> email2locationInfo;
+
+    void saveVisit(const QString &idbToken);
 
     QString dataFileName;
     void loadData();
@@ -118,6 +125,8 @@ signals:
     void scanSignal();
     void validQRCodeDetected();
     void invalidQRCodeDetected();
+
+
 };
 
 #endif // ESAAAPP_H

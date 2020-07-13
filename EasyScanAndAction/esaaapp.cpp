@@ -15,6 +15,7 @@
 #include <regex>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QNetworkReply>
 
 void ESAAApp::sendMail()
 {
@@ -55,24 +56,62 @@ void ESAAApp::sendMail()
         reply->deleteLater();// Don't forget to delete it
     });
 
-    SimpleMail::MimeMessage visitMessage;
-    visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
-    visitMessage.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
+    if (locationContactMailAdress().size())
+    {
 
-    subject = "Besuchmeldung " + locationName();
-    visitMessage.setSubject(subject);
-    work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
-    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
-    auto visitText = new SimpleMail::MimeText;
-    visitText->setText(work);
-    visitMessage.addPart(visitText);
+        SimpleMail::MimeMessage visitMessage;
+        visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
+        visitMessage.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
 
-    reply = smtpServer.sendMail(message);
-    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
-        qDebug() << "VisitMessage ServerReply finished" << reply->error() << reply->responseText();
-        reply->deleteLater();// Don't forget to delete it
+        subject = "Besuchmeldung " + locationName();
+        visitMessage.setSubject(subject);
+        work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+        work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+        auto visitText = new SimpleMail::MimeText;
+        visitText->setText(work);
+        visitMessage.addPart(visitText);
+
+        reply = smtpServer.sendMail(message);
+        QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
+            qDebug() << "VisitMessage ServerReply finished" << reply->error() << reply->responseText();
+            reply->deleteLater();// Don't forget to delete it
+        });
+    }
+    QString idbToken(QDateTime::currentDateTime().toString(Qt::ISODate));
+    idbToken += QString(".") + locationGUID();
+    idbToken += QString(".") + genUUID();
+    QString url(idbTokenStoreURL + idbToken);
+    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
+        qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
+        networkReply->deleteLater();// Don't forget to delete it
     });
+    saveVisit(idbToken);
+}
 
+void ESAAApp::saveVisit(const QString &idbToken)
+{
+    QString visitFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visits-");
+    visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
+    visitFileName += QString(".json");
+    QFile visitFile(visitFileName);
+    QJsonObject data;
+    if (visitFile.open(QIODevice::ReadOnly))
+    {
+        QByteArray visitData(visitFile.readAll());
+        visitFile.close();
+        QJsonDocument loadDoc(QJsonDocument::fromJson(visitData));
+        data = loadDoc.object();
+    }
+    QJsonArray visits(data["visits"].toArray());
+    visits.append(idbToken);
+    data["visits"] = visits;
+    if (!visitFile.open(QIODevice::WriteOnly))
+    {
+        qWarning("visitFile konnte nicht zum speichern geöffnet werden.");
+        return;
+    }
+    visitFile.write(QJsonDocument(data).toJson());
 }
 
 void ESAAApp::saveData()
@@ -164,7 +203,8 @@ void ESAAApp::loadData()
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
-    mobileExtension(e, "ichbinda.jw78.de/MyIntentCaller")
+    mobileExtension(e, "ichbinda.jw78.de/MyIntentCaller"),
+    networkAccessManager(this)
 {
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     QDir dir;
@@ -197,6 +237,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         smtpPassword = QString(buf).trimmed();
         file.readLine(buf, 1000);
         smtpSender = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        idbTokenStoreURL = QString(buf).trimmed();
     }
 }
 
@@ -287,12 +329,13 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString locationId(data["id]"].toString());
         QString theLocationName(data["ln"].toString());
         QString anonymEMail(data["ae"].toString());
+        qDebug() << "locationId: " << locationId;
         qDebug() << "anonymEMail: " << anonymEMail;
         qDebug() << "email: " << email;
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
-        qDebug() << "locationId: " << locationId;
+        setLocationGUID(locationId);
         setAdressWanted(wantedData.contains("adress"));
         setEMailWanted(wantedData.contains("email"));
         setMobileWanted(wantedData.contains("mobile"));
