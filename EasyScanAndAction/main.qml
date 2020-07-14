@@ -74,6 +74,7 @@ Window {
         id: headerItem
         width: parent.width
         height: parent.height / 20
+        visible: !agreepage.visible && !splashscreen.visible
     }
 
     Item

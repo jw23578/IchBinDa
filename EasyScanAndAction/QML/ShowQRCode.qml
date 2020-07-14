@@ -65,7 +65,6 @@ ESAAPage {
         anchors.margins: ESAA.spacing
         anchors.bottom: quitButton.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - parent.width / 10
         text: "QR-Code senden"
         onClicked:
         {
@@ -86,7 +85,6 @@ ESAAPage {
         anchors.margins: ESAA.spacing
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - parent.width / 10
         text: "Abbrechen"
         onClicked: back()
     }

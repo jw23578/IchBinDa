@@ -9,8 +9,10 @@ ESAAPage
     id: scannerpage
     onShowing:
     {
+        console.log("show scanner")
         camera.stop()
         camera.start()
+        camera.searchAndLock()
         shareButton.rotate(400)
     }
 
@@ -72,10 +74,9 @@ ESAAPage
     }
     Camera
     {
-        id: camera
+        id: camera                
         focus.focusMode: Camera.FocusContinuous
         focus.focusPointMode:  Camera.FocusPointAuto
-        Component.onCompleted: camera.searchAndLock()
     }
 
     Item
@@ -175,4 +176,5 @@ ESAAPage
             source: "qrc:/images/share-icon-40146.png"
         }
     }
+    Component.onCompleted: camera.stop()
 }

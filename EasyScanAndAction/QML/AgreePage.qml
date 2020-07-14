@@ -7,14 +7,19 @@ ESAAPage
     Flickable
     {
         id: view
+        anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: button.top
+        contentHeight: theText.height
         flickableDirection: Flickable.VerticalFlick
+        clip: true
 
         TextArea
         {
+            id: theText
+            height: contentHeight
             width: parent.width
             readOnly: true
             textFormat: TextEdit.RichText

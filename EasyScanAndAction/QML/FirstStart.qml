@@ -14,14 +14,12 @@ ESAAPage
         ESAAButton
         {
             id: b1
-            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich bin\nBetreiber"
             onClicked: betreiberinfo.visible = true
         }
         ESAAButton
         {
-            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich bin\nKunde/Besucher"
             onClicked: kundeinfo.visible = true
@@ -29,7 +27,6 @@ ESAAPage
         ESAAButton
         {
             id: shareButton
-            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
@@ -37,7 +34,6 @@ ESAAPage
         }
         ESAAButton
         {
-            width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich möchte\ndirekt loslegen"
             onClicked: startNow()
@@ -51,8 +47,7 @@ ESAAPage
         ESAAButton
         {
             anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.horizontalCenter: parent.horizontalCenter
             text: "Los geht's"
             onClicked: startNow()
         }
@@ -65,8 +60,7 @@ ESAAPage
         ESAAButton
         {
             anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.horizontalCenter: parent.horizontalCenter
             text: "Los geht's"
             onClicked: startNow()
         }

@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.13
 
 Button
 {
-    width: parent.width * 3 / 4
+    width: parent.width - parent.width / 10
     id: control
     text: qsTr("Button")
     font.pixelSize: ESAA.fontButtonPixelsize
