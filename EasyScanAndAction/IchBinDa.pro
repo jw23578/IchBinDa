@@ -118,6 +118,7 @@ else
 
 
 DISTFILES += \
+    .gitignore \
     android/AndroidManifest.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.jar \
