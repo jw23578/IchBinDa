@@ -485,12 +485,24 @@ void ESAAApp::calculateRatios()
     QRect rect = QGuiApplication::primaryScreen()->geometry();
     qreal height = qMax(rect.width(), rect.height());
     qreal width = qMin(rect.width(), rect.height());
+#ifndef DMOBILEDEVICE
+    height = 480;
+    width = 300;
+#endif
     qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
     qDebug() << "dpi: " << dpi;
     qDebug() << "height: " << rect.height();
     qDebug() << "width: " << rect.width();
     qreal m_ratio = qMin(height/refHeight, width/refWidth);
     qreal m_ratioFont = qMin(height*refDpi/(dpi*refHeight), width*refDpi/(dpi*refWidth));
+    qDebug() << "m_ratio: " << m_ratio;
     qDebug() << "m_ratioFont: " << m_ratioFont;
-    setFontButtonPixelsize(m_ratioFont * 8.);
+    double baseFontSize(24);
+    double baseSpacing(45);
+#ifdef DMOBILEDEVICE
+    baseFontSize = 22;
+    baseSpacing = 40;
+#endif
+    setFontButtonPixelsize(m_ratioFont * baseFontSize);
+    setSpacing(baseSpacing * m_ratio);
 }

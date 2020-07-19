@@ -107,6 +107,11 @@ Window {
             {
                 showNewPage(firststart, scannerpage)
             }
+            onEditContactData:
+            {
+                ESAA.locationName = "MeineDaten"
+                showNewPage(firststart, questionpage)
+            }
         }
         CreateQRCodePage
         {
@@ -236,7 +241,6 @@ Window {
     Component.onCompleted:
     {
         ESAA.calculateRatios()
-        ESAA.spacing = Screen.height / 70
         console.log("Spacing: " + ESAA.spacing)
 
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)

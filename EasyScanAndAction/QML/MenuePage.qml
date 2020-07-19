@@ -33,7 +33,7 @@ ESAAPage
             id: editButton
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Meine\nKontaktdaten\nbearbeiten")
+            text: qsTr("Meine Kontaktdaten\nbearbeiten")
             onClicked: editContactData()
         }
         ESAAButton
