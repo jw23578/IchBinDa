@@ -67,9 +67,9 @@ Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 
 Prototyp:
 
-https://www.jw78.de/download/esaa.apk
+https://www.jw78.de/download/ibd.apk
 
 ## Kontakt
 Jens Wienöbst \
-esaa@jw78.de
+ichbinda@jw78.de
 
