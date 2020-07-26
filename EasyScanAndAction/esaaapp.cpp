@@ -77,19 +77,19 @@ void ESAAApp::sendMail()
             reply->deleteLater();// Don't forget to delete it
         });
     }
-    QString idbToken(QDateTime::currentDateTime().toString(Qt::ISODate));
-    idbToken += QString(".") + locationGUID();
-    idbToken += QString(".") + genUUID();
-    QString url(idbTokenStoreURL + idbToken);
+    QString ibdToken(QDateTime::currentDateTime().toString(Qt::ISODate));
+    ibdToken += QString(".") + locationGUID();
+    ibdToken += QString(".") + genUUID();
+    QString url(ibdTokenStoreURL + ibdToken);
     QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
         qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
         networkReply->deleteLater();// Don't forget to delete it
     });
-    saveVisit(idbToken);
+    saveVisit(ibdToken);
 }
 
-void ESAAApp::saveVisit(const QString &idbToken)
+void ESAAApp::saveVisit(const QString &ibdToken)
 {
     QString visitFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visits-");
     visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
@@ -104,7 +104,7 @@ void ESAAApp::saveVisit(const QString &idbToken)
         data = loadDoc.object();
     }
     QJsonArray visits(data["visits"].toArray());
-    visits.append(idbToken);
+    visits.append(ibdToken);
     data["visits"] = visits;
     if (!visitFile.open(QIODevice::WriteOnly))
     {
@@ -200,12 +200,64 @@ void ESAAApp::loadData()
     }
 }
 
+#include <fstream>
+
+std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
+{
+    Botan::AutoSeeded_RNG rng;
+
+    Botan::secure_vector<uint8_t> data(plainText.data(), plainText.data() + plainText.length());
+
+    const std::string OAEP_HASH = "SHA-256";
+    const std::string aead_algo = "AES-256/GCM";
+
+    std::unique_ptr<Botan::AEAD_Mode> aead =
+            Botan::AEAD_Mode::create(aead_algo, Botan::ENCRYPTION);
+
+    const Botan::OID aead_oid = Botan::OID::from_string(aead_algo);
+
+
+    const Botan::AlgorithmIdentifier hash_id(OAEP_HASH, Botan::AlgorithmIdentifier::USE_EMPTY_PARAM);
+    const Botan::AlgorithmIdentifier pk_alg_id("RSA/OAEP", hash_id.BER_encode());
+
+    Botan::PK_Encryptor_EME enc(*publicKey, rng, "OAEP(" + OAEP_HASH + ")");
+
+    const Botan::secure_vector<uint8_t> file_key = rng.random_vec(aead->key_spec().maximum_keylength());
+
+    const std::vector<uint8_t> encrypted_key = enc.encrypt(file_key, rng);
+
+    const Botan::secure_vector<uint8_t> nonce = rng.random_vec(aead->default_nonce_length());
+    aead->set_key(file_key);
+    aead->set_associated_data_vec(encrypted_key);
+    aead->start(nonce);
+
+    aead->finish(data);
+
+    std::vector<uint8_t> buf;
+    Botan::DER_Encoder der(buf);
+
+    der.start_cons(Botan::SEQUENCE)
+            .encode(pk_alg_id)
+            .encode(encrypted_key, Botan::OCTET_STRING)
+            .encode(aead_oid)
+            .encode(nonce, Botan::OCTET_STRING)
+            .encode(data, Botan::OCTET_STRING)
+            .end_cons();
+    std::string message(Botan::PEM_Code::encode(buf, "PUBKEY ENCRYPTED MESSAGE"));
+    return message;
+}
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mobileExtension(e, "ichbinda.jw78.de/MyIntentCaller"),
     networkAccessManager(this)
 {
+    QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
+    publicKeyFile.open(QIODevice::ReadOnly);
+    QByteArray publicKeyData(publicKeyFile.readAll());
+    Botan::DataSource_Memory datasource(publicKeyData.toStdString());
+    publicKey = Botan::X509::load_key(datasource);
+
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     QDir dir;
     if (!dir.exists(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)))
@@ -238,7 +290,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         file.readLine(buf, 1000);
         smtpSender = QString(buf).trimmed();
         file.readLine(buf, 1000);
-        idbTokenStoreURL = QString(buf).trimmed();
+        ibdTokenStoreURL = QString(buf).trimmed();
     }
 }
 
@@ -415,7 +467,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver)
     html->setHtml(QLatin1String("<h1> Hello! </h1>"
                                 "<h2> This is the first image </h2>"
                                 "<img src=\"cid:") + jpgGuid + "\" />"
-                                                                "<h2> This is the second image </h2>");
+                                                               "<h2> This is the second image </h2>");
 
     // Now add it to the mail
     message.addPart(html);

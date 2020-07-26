@@ -18,6 +18,7 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    botan_all.cpp \
     esaaapp.cpp \
     src/jwmobileext.cpp \
 zint-master/backend/2of5.c \
@@ -54,6 +55,7 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    botan_all.h \
     esaaapp.h \
     qt_extension_macros.h \
     src/jwmobileext.h \
@@ -126,6 +128,7 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
+    android/res/xml/filepaths.xml \
     src/ichbinda/jw78/de/JWAppActivity.java \
     src/ichbinda/jw78/de/JWAppService.java \
     src/ichbinda/jw78/de/JWJobService.java \

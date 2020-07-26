@@ -9,6 +9,7 @@
 #include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
+#include "botan_all.h"
 
 class ESAAApp: public QObject
 {
@@ -62,6 +63,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, emailAdress, EmailAdress, "");
     JWPROPERTY(QString, mobile, Mobile, "");
 
+    Botan::Public_Key *publicKey = nullptr;
+    std::string publicKeyEncrypt(const std::string &plainText);
     SimpleMail::Server smtpServer;
     QString smtpHost;
     int smtpPort;
@@ -69,7 +72,7 @@ class ESAAApp: public QObject
     QString smtpPassword;
     QString smtpSender;
 
-    QString idbTokenStoreURL;
+    QString ibdTokenStoreURL;
 
     void sendMail();
 
@@ -84,7 +87,7 @@ class ESAAApp: public QObject
     };
     std::map<QString, SLocationInfo> email2locationInfo;
 
-    void saveVisit(const QString &idbToken);
+    void saveVisit(const QString &ibdToken);
 
     QString dataFileName;
     void loadData();

@@ -42,5 +42,6 @@
         <file>images/inputBackground.jpg</file>
         <file>QML/ESAATextBackground.qml</file>
         <file>EMailConfig.txt</file>
+        <file>keys/publickey2020-07-26.txt</file>
     </qresource>
 </RCC>
