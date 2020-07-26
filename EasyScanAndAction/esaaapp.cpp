@@ -40,10 +40,21 @@ void ESAAApp::sendMail()
     QString work;
     work += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
     work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    work += fstname() + " aus " + location();
+
+    QString plainText;
+    plainText += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+    plainText += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
     for (size_t i(0); i < data2send.size(); ++i)
     {
-        work += data2send[i] + "\n";
+        plainText += data2send[i] + "\n";
     }
+    std::string encrypted(publicKeyEncrypt(plainText.toStdString()));
+    work += "\n\n";
+    work += encrypted.c_str();
+    work += "\n\n";
+    std::string publicKeyString(Botan::X509::PEM_encode(*publicKey));
+    work += publicKeyString.c_str();
 
     text->setText(work);
 
@@ -464,10 +475,8 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver)
 
     QString jpgGuid(genUUID());
 
-    html->setHtml(QLatin1String("<h1> Hello! </h1>"
-                                "<h2> This is the first image </h2>"
-                                "<img src=\"cid:") + jpgGuid + "\" />"
-                                                               "<h2> This is the second image </h2>");
+    html->setHtml(QLatin1String("<h1> Hier folgt der QR-Code </h1>"
+                                "<img src=\"cid:") + jpgGuid + "\" />");
 
     // Now add it to the mail
     message.addPart(html);
