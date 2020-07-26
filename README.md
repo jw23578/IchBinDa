@@ -69,7 +69,8 @@ Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 
 Prototyp:
 
-https://www.jw78.de/download/ibd.apk
+https://www.jw78.de/download/ibd.apk \
+(Hängt den Änderungen immer etwas hinterher)
 
 ## Kontakt
 Jens Wienöbst \
