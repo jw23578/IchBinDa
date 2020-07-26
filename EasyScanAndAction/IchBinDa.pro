@@ -120,6 +120,7 @@ else
 
 
 DISTFILES += \
+    ../README.md \
     .gitignore \
     android/AndroidManifest.xml \
     android/build.gradle \
