@@ -64,12 +64,12 @@ void ESAAApp::sendMail()
         reply->deleteLater();// Don't forget to delete it
     });
 
-    if (locationContactMailAdress().size())
+    if (anonymContactMailAdress().size())
     {
 
         SimpleMail::MimeMessage visitMessage;
         visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
-        visitMessage.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
+        visitMessage.addTo(SimpleMail::EmailAddress(anonymContactMailAdress()));
 
         subject = "Besuchmeldung " + locationName();
         visitMessage.setSubject(subject);
@@ -79,7 +79,7 @@ void ESAAApp::sendMail()
         visitText->setText(work);
         visitMessage.addPart(visitText);
 
-        reply = smtpServer.sendMail(message);
+        reply = smtpServer.sendMail(visitMessage);
         QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
             qDebug() << "VisitMessage ServerReply finished" << reply->error() << reply->responseText();
             reply->deleteLater();// Don't forget to delete it
