@@ -66,7 +66,6 @@ ESAAPage
             contentHeight: theText.height
             flickableDirection: Flickable.VerticalFlick
             clip: true
-
             TextArea
             {
                 id: theText
@@ -77,7 +76,8 @@ ESAAPage
                 wrapMode: Text.WordWrap
                 text: "Als Betreiber kannst du mit dieser App einen QR-Code anlegen in dem enthalten ist, welche Kontaktdaten du abfragen möchtest. " +
                       "Außerdem gibs du an, an welche E-Mail-Adresse die Kontaktdaten geschickt werden sollen." +
-                      "Für die Speicherung der Kontaktdaten wird kein zentraler Server eingesetzt, sondern ganz alleine dein E-Mail-Postfach für das du verantwortlich bist." +
+                      "Für die Speicherung der Kontaktdaten wird kein zentraler Server eingesetzt, sondern ganz alleine dein E-Mail-Postfach für das du verantwortlich bist.<br>" +
+                      "Die Kontaktdaten der Kunden/Besucher werden verschlüsselt in der Mail übertragen und können nicht von dir ausgelesen werden.<br>" +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."
                 color: ESAA.fontColor
@@ -128,8 +128,10 @@ ESAAPage
                 text: "Als Kunde/Besucher kannst du mit dieser App die IchBinDa-QR-Codes scannen " +
                       "und deine Kontaktdaten komfortabel an den Betreiber übermitteln. Du musst deine " +
                       "Daten nur einmal eingeben, für den nächsten Besuch sind die schon gespeichert und werden vorbelegt. " +
-                      "Deine Kontaktdaten werden nur in der App gespeichert und per E-Mail an den Betreiber übermittelt. Es gibt keinen zentralen Server auf dem " +
+                      "Deine Kontaktdaten werden nur in der App gespeichert und per verschlüsselter E-Mail an den Betreiber übermittelt. Es gibt keinen zentralen Server auf dem " +
                       "deine persönlichen Daten gespeichert würden.<br>" +
+                      "Der Betreiber/Anbieter ist nicht in der Lage auf deine Kontaktdaten zuzugreifen, dass ist nur entsprechenden Einrichtungen möglich, die den private Key zum Entschlüsseln bekommen. " +
+                      "Au0erdem muss diesen Einrichtungen vom Betreiber/Anbieter die E-Mail weitergeleitet werden.<br>" +
                       "Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. Dieses Token kann nur deine App erkennen. Der Standort und Datum/Uhrzeit sind in dem Token aber immer gleich, " +
                       "so dass Veranstaltungen bei denen es möglicherweise Corona Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +

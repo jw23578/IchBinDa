@@ -10,6 +10,7 @@
 #include <set>
 #include <QNetworkAccessManager>
 #include "botan_all.h"
+#include <QJsonObject>
 
 class ESAAApp: public QObject
 {
@@ -97,6 +98,7 @@ class ESAAApp: public QObject
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
     std::vector<QString> data2send;
+    QJsonObject jsonData2Send;
 public:
     ESAAApp(QQmlApplicationEngine &e);
 

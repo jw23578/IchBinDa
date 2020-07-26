@@ -25,9 +25,14 @@ ESAAPage
             textFormat: TextEdit.RichText
             wrapMode: Text.WordWrap
             text: "<h3>Zustimmung</h3><h4>Für Betreiber:</h4>" +
-                  "Du bekommst die Daten per E-Mail an eine beliebige Deiner E-Mail-Adressen gesendet und bist für die ordnungsgemäße Löschung nach Ablauf der Fristen zuständig. Bitte informiere Deine Kunden/Besucher entsprechend." +
+                  "Du bekommst die Daten verschlüsselt per E-Mail an eine beliebige Deiner E-Mail-Adressen gesendet." +
+                  "Durch die Verschlüsselung ist es nicht zwingend nötig die Daten nach bestimmten Fristen zu löschen. " +
                   "<h4>Für Kunden und Besucher:</h4>" +
-                  "Deine Daten werden per E-Mail an den Betreiber übertragen, die E-Mail selbst ist nicht verschlüsselt, beim Versand werden die gängigen Verschlüsselungsverfahren benutzt." +
+                  "Deine Daten werden verschlüsselt per E-Mail an den Betreiber übertragen, beim Versand werden außerdem die gängigen Verschlüsselungsverfahren benutzt.<br>" +
+                  "Deine Daten können nur eingesehen werden, wenn diese<br>" +
+                  "a) vom entsprechenden Stellen, zum Beispiel Gesundheitsamt, angefordert werden<br>" +
+                  "und<br>" +
+                  "b) der entsprechende private Key zum entschlüsseln vorliegt.<br>" +
                   "<br><br>Pro Besuch wird ein zufälliges Token erzeugt das mit Datum/Uhrzeit und einem Locationtoken auf einem Server gespeichert wird. Über diese Token können keine persönlichen Daten in Erfahrung gebracht werden." +
                   "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                   "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."

@@ -42,13 +42,10 @@ void ESAAApp::sendMail()
     work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
     work += fstname() + " aus " + location();
 
-    QString plainText;
-    plainText += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
-    plainText += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
-    for (size_t i(0); i < data2send.size(); ++i)
-    {
-        plainText += data2send[i] + "\n";
-    }
+
+    jsonData2Send["Date"] = QDateTime::currentDateTime().date().toString(Qt::ISODate);
+    jsonData2Send["Time"] = QDateTime::currentDateTime().time().toString(Qt::ISODate);
+    QString plainText(QJsonDocument(jsonData2Send).toJson());
     std::string encrypted(publicKeyEncrypt(plainText.toStdString()));
     work += "\n\n";
     work += encrypted.c_str();
@@ -308,11 +305,13 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 void ESAAApp::clearData2Send()
 {
     data2send.clear();
+    jsonData2Send = QJsonObject();
 }
 
 void ESAAApp::addData2Send(const QString &field, const QString &value)
 {
     data2send.push_back(field + ": " + value);
+    jsonData2Send[field] = value;
 }
 
 void ESAAApp::firstStartDone()
