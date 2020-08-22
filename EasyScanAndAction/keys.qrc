@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>keys/publickey2020-07-26.txt</file>
+    </qresource>
+</RCC>

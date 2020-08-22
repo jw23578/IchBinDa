@@ -87,10 +87,10 @@ Window {
         QuestionPage
         {
             id: questionpage
-            onSaveContactData:
+            onClose:
             {
                 showNewPage(questionpage, scannerpage)
-            }
+            }            
             onAbort:
             {
                 showNewPage(questionpage, scannerpage)

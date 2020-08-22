@@ -3,6 +3,7 @@ import QtQuick 2.0
 ESAAPage {
     signal back
     property string qrCodeFileName: ""
+    property alias sendEMailTo: qrCodeEMailAdresse.text
     Flickable
     {
         anchors.bottom: sendButton.top
@@ -55,6 +56,7 @@ ESAAPage {
                 width: parent.width - ESAA.spacing
                 caption: "QR-Code senden an"
                 id: qrCodeEMailAdresse
+                inputMethodHints: Qt.ImhEmailCharactersOnly
             }
         }
     }

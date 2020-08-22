@@ -69,6 +69,8 @@ ESAAPage
                 caption: "Logo-Url"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+
             }
             ESAALineInputWithCaption
             {
@@ -99,6 +101,7 @@ ESAAPage
                 caption: "E-Mail-Adresse an die die Kontaktdaten\ngesendet werden sollen"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
+                inputMethodHints: Qt.ImhEmailCharactersOnly
             }
             ESAALineInputWithCaption
             {
@@ -107,6 +110,7 @@ ESAAPage
                 caption: "Besuch anonym senden an"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
+                inputMethodHints: Qt.ImhEmailCharactersOnly
             }
 
             ESAAText
@@ -124,6 +128,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Adressdaten")
+                fontColor: ESAA.fontColor2
             }
             ESAASwitch
             {
@@ -131,6 +136,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("E-Mail-Adresse")
+                fontColor: ESAA.fontColor2
             }
             ESAASwitch
             {
@@ -138,6 +144,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Handynummer")
+                fontColor: ESAA.fontColor2
             }
             Item
             {
@@ -155,6 +162,19 @@ ESAAPage
         width: theColumn.width
         text: "QR-Code erzeugen"
         onClicked: {
+            if (locationName.displayText == "")
+            {
+                locationName.forceActiveFocus()
+                ESAA.showMessage("Bitte gib noch den Namen des Geschäfts an.")
+                return
+            }
+            if (contactReceiveEMail.displayText == "")
+            {
+                locationName.forceActiveFocus()
+                ESAA.showMessage("Bitte gib noch die E-Mail-Adresse, an die die verschlüsselten Kontaktdaten gesendet werden sollen, an.")
+                return
+            }
+
             generate()
             showCode()
         }

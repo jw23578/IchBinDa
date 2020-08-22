@@ -16,6 +16,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QNetworkReply>
+#include <QPainter>
 
 void ESAAApp::sendMail()
 {
@@ -31,6 +32,14 @@ void ESAAApp::sendMail()
     message.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
 
     QString subject("Kontaktdaten ");
+    if (visitEnd.isValid())
+    {
+        subject += "Besuchsende ";
+    }
+    else
+    {
+        subject += "Besuchsbeginn ";
+    }
     subject += locationName();
     message.setSubject(subject);
 
@@ -38,13 +47,18 @@ void ESAAApp::sendMail()
 
     // Now add some text to the email.
     QString work;
-    work += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
-    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    work += tr("Datum: ") + visitBegin.date().toString() + "\n";
+    work += tr("Uhrzeit: ") + visitBegin.time().toString() + "\n";
     work += fstname() + " aus " + location();
 
 
-    jsonData2Send["Date"] = QDateTime::currentDateTime().date().toString(Qt::ISODate);
-    jsonData2Send["Time"] = QDateTime::currentDateTime().time().toString(Qt::ISODate);
+    jsonData2Send["DateVisitBegin"] = visitBegin.date().toString(Qt::ISODate);
+    jsonData2Send["TimeVisitBegin"] = visitBegin.time().toString(Qt::ISODate);
+    if (visitEnd.isValid())
+    {
+        jsonData2Send["DateVisitEnd"] = visitEnd.date().toString(Qt::ISODate);
+        jsonData2Send["TimeVisitEnd"] = visitEnd.time().toString(Qt::ISODate);
+    }
     QString plainText(QJsonDocument(jsonData2Send).toJson());
     std::string encrypted(publicKeyEncrypt(plainText.toStdString()));
     work += "\n\n";
@@ -94,10 +108,10 @@ void ESAAApp::sendMail()
         qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
         networkReply->deleteLater();// Don't forget to delete it
     });
-    saveVisit(ibdToken);
+    saveVisit(ibdToken, visitBegin, visitEnd);
 }
 
-void ESAAApp::saveVisit(const QString &ibdToken)
+void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd)
 {
     QString visitFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visits-");
     visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
@@ -159,6 +173,7 @@ void ESAAApp::saveData()
     data["locationInfos"] = locationInfos;
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
+    data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
     dataFile.write(QJsonDocument(data).toJson());
 }
 
@@ -174,6 +189,10 @@ void ESAAApp::loadData()
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject data(loadDoc.object());
     setAggreementChecked(data["aggrementChecked"].toBool());
+    QDateTime help;
+    help.setSecsSinceEpoch(data["lastVisitDateTime"].toInt());
+    setLastVisitDateTime(help);
+
     if (data.contains("firstStart"))
     {
         setFirstStart(data["firstStart"].toBool());
@@ -304,13 +323,14 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
 void ESAAApp::clearData2Send()
 {
-    data2send.clear();
+    setData2send("");
     jsonData2Send = QJsonObject();
 }
 
 void ESAAApp::addData2Send(const QString &field, const QString &value)
 {
-    data2send.push_back(field + ": " + value);
+    setData2send(data2send() + field + ": " + value);
+    setData2send(data2send() + "<br>");
     jsonData2Send[field] = value;
 }
 
@@ -332,8 +352,12 @@ void ESAAApp::scan()
 
 void ESAAApp::sendContactData()
 {
+    setLastVisitDateTime(QDateTime::currentDateTime());
     saveData();
+    visitBegin = QDateTime::currentDateTime();
+    visitEnd = QDateTime();
     sendMail();
+    showLastTransmission();
 }
 
 QString ESAAApp::getTempPath()
@@ -366,7 +390,10 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     ZBarcode_Print(my_symbol, 0);
     ZBarcode_Delete(my_symbol);
 
-    QPixmap pix(QIcon(filename).pixmap(QSize(500, 500)));
+    QPixmap pix(500, 500);
+    QPainter painter(&pix);
+    painter.fillRect(pix.rect(), QColor(0xffffff));
+    painter.drawPixmap(25, 25, QIcon(filename).pixmap(QSize(450, 450)));
     pix.toImage().save(getTempPath()+ "/qr.png");
     pix.toImage().save(getTempPath()+ "/qr.jpg");
     qrCodes.insert(filename);
@@ -391,6 +418,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString locationId(data["id]"].toString());
         QString theLocationName(data["ln"].toString());
         QString anonymEMail(data["ae"].toString());
+        qDebug() << "locatioName: " << theLocationName;
         qDebug() << "locationId: " << locationId;
         qDebug() << "anonymEMail: " << anonymEMail;
         qDebug() << "email: " << email;
@@ -436,6 +464,7 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     saveData();
     QJsonObject qr;
     qr["ai"] = 1;
+    qr["ln"] = li.locationName;
     qr["id"] = li.locationId;
     qr["e"] = li.contactReceiveEmail;
     qr["ae"] = li.anonymReceiveEMail;
@@ -564,5 +593,30 @@ void ESAAApp::calculateRatios()
     baseSpacing = 40;
 #endif
     setFontButtonPixelsize(m_ratioFont * baseFontSize);
+    setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.5);
     setSpacing(baseSpacing * m_ratio);
+    setFontTextPixelsize(m_ratioFont * baseFontSize);
+}
+
+void ESAAApp::reset()
+{
+    QFile(dataFileName).remove();
+}
+
+void ESAAApp::showLastTransmission()
+{
+    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + locationName() + "</b><br><br>übertragen:<br><br>" + data2send());
+}
+
+void ESAAApp::finishVisit()
+{
+    setLastVisitDateTime(QDateTime::currentDateTime().addDays(-2));
+    saveData();
+    visitEnd = QDateTime::currentDateTime();
+    sendMail();
+}
+
+bool ESAAApp::isActiveVisit(const QDateTime &visitDateTime)
+{
+    return QDateTime::currentDateTime() < visitDateTime.addSecs(60 * 60 * 12);
 }

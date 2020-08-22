@@ -4,7 +4,21 @@ import QtQuick.Controls 2.13
 ESAAPage
 {
     signal startNow
+    function goStartNow()
+    {
+        betreiberinfo.visible = false
+        kundeinfo.visible = false
+        startNow()
+    }
+
     signal editContactData
+    function goEditContactData()
+    {
+        betreiberinfo.visible = false
+        kundeinfo.visible = false
+        editContactData()
+    }
+
     Column
     {
         anchors.fill: parent
@@ -41,7 +55,7 @@ ESAAPage
             visible: !betreiberinfo.visible && !kundeinfo.visible
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Ich möchte\ndirekt loslegen"
-            onClicked: startNow()
+            onClicked: goStartNow()
         }
     }
     Item
@@ -79,7 +93,7 @@ ESAAPage
                       "Für die Speicherung der Kontaktdaten wird kein zentraler Server eingesetzt, sondern ganz alleine dein E-Mail-Postfach für das du verantwortlich bist.<br>" +
                       "Die Kontaktdaten der Kunden/Besucher werden verschlüsselt in der Mail übertragen und können nicht von dir ausgelesen werden.<br>" +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
-                      "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."
+                      "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
                 color: ESAA.fontColor
 
             }
@@ -91,7 +105,7 @@ ESAAPage
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: ESAA.spacing
             text: "Los geht's"
-            onClicked: startNow()
+            onClicked: goStartNow()
         }
     }
     Item
@@ -113,7 +127,7 @@ ESAAPage
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: editButton.top
-            contentHeight: theText2.height
+            contentHeight: theText2.height + 2 * ESAA.spacing
             flickableDirection: Flickable.VerticalFlick
             clip: true
 
@@ -133,9 +147,9 @@ ESAAPage
                       "Der Betreiber/Anbieter ist nicht in der Lage auf deine Kontaktdaten zuzugreifen, dass ist nur entsprechenden Einrichtungen möglich, die den private Key zum Entschlüsseln bekommen. " +
                       "Au0erdem muss diesen Einrichtungen vom Betreiber/Anbieter die E-Mail weitergeleitet werden.<br>" +
                       "Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. Dieses Token kann nur deine App erkennen. Der Standort und Datum/Uhrzeit sind in dem Token aber immer gleich, " +
-                      "so dass Veranstaltungen bei denen es möglicherweise Corona Kontakte gab markiert werden können. " +
+                      "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
-                      "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."
+                      "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
                 color: ESAA.fontColor
 
             }
@@ -147,7 +161,7 @@ ESAAPage
             anchors.bottom: kundenInfoFinishedButton.top
             anchors.margins: ESAA.spacing
             text: qsTr("Meine Kontaktdaten\nbearbeiten")
-            onClicked: editContactData()
+            onClicked: goEditContactData()
         }
         ESAAButton
         {
@@ -155,7 +169,7 @@ ESAAPage
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Los geht's"
-            onClicked: startNow()
+            onClicked: goStartNow()
             anchors.margins: ESAA.spacing
         }
     }

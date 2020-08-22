@@ -93,7 +93,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 message($$QT_ARCH)
 
-message($$ANDROID_TARGET_ARCH)
 
 contains(QT_ARCH, "x86_64") {
     message("building for x86")
@@ -106,6 +105,7 @@ ANDROID_VERSION_CODE = "4"
 ANDROID_TARGET_SDK_VERSION = "29"
 
 android{
+    message($$ANDROID_TARGET_ARCH)
     message("building for android")
     DEFINES += DMOBILEDEVICE
     DEFINES += DMOBILEANDROID

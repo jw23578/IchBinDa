@@ -1,9 +1,9 @@
-package ichbinda.jw78.de;
+package ichbinda78.jw78.de;
 
-import ichbinda.jw78.de.R;
+import ichbinda78.jw78.de.R;
 import org.qtproject.qt5.android.bindings.QtActivity;
 import org.qtproject.qt5.android.bindings.QtService;
-import ichbinda.jw78.de.JWAppService;
+import ichbinda78.jw78.de.JWAppService;
 import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;

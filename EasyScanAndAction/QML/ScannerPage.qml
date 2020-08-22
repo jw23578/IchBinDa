@@ -10,9 +10,12 @@ ESAAPage
     onShowing:
     {
         console.log("show scanner")
-        camera.stop()
-        camera.start()
-        camera.searchAndLock()
+        if (!ESAA.isActiveVisit(ESAA.lastVisitDateTime))
+        {
+            camera.stop()
+            camera.start()
+            camera.searchAndLock()
+        }
         shareButton.rotate(400)
     }
 
@@ -78,9 +81,31 @@ ESAAPage
         focus.focusMode: Camera.FocusContinuous
         focus.focusPointMode:  Camera.FocusPointAuto
     }
+    Timer
+    {
+        interval: 1000
+        running: camera.cameraState == Camera.ActiveState
+        repeat: true
+        onTriggered:
+        {
+            console.log("hello")
+            camera.searchAndLock()
+        }
+    }
 
+    ESAAText
+    {
+        id: headertext
+        anchors.top: parent.top
+        anchors.topMargin: ESAA.spacing
+        anchors.bottomMargin: ESAA.spacing
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: "QR-Code einlesen"
+//        horizontalAlignment: Text.horizontalCenter
+    }
     Item
     {
+        anchors.top: headertext.bottom
         id: scanneritem
         width: parent.width
         height: width
@@ -157,6 +182,21 @@ ESAAPage
                     width: output.contentRect.width * parent.widthFaktor
                     height: output.contentRect.height * parent.heightFaktor
                 }
+                ESAAButton
+                {
+                    id: finishVisit
+                    width: parent.width * 0.8
+                    anchors.centerIn: parent
+                    text: qsTr("Besuch beenden")
+                    onClicked:
+                    {
+                        ESAA.finishVisit()
+                        camera.start()
+                        shareButton.rotate(400)
+                    }
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime);
+                }
             }
         }
     }
@@ -171,9 +211,21 @@ ESAAPage
             id: shareButton
             width: parent.width * 0.8
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: lastTransmissionbutton.visible ? -lastTransmissionbutton.height : 0
             text: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
             source: "qrc:/images/share-icon-40146.png"
+        }
+        ESAAButton
+        {
+            id: lastTransmissionbutton
+            width: parent.width * 0.8
+            anchors.top: shareButton.bottom
+            anchors.topMargin: ESAA.spacing
+            text: qsTr("Letzte Übertragung anzeigen")
+            onClicked: ESAA.showLastTransmission()
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: ESAA.data2send.length > 0
         }
     }
     Component.onCompleted: camera.stop()

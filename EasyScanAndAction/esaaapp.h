@@ -9,7 +9,11 @@
 #include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
-#include "botan_all.h"
+#ifdef DMOBILEANDROID
+#include "botan_all_arm64.h"
+#else
+#include "botan_all_x64.h"
+#endif
 #include <QJsonObject>
 
 class ESAAApp: public QObject
@@ -23,7 +27,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
     JWPROPERTY(QColor, backgroundBottomColor, BackgroundBottomColor, "#023B28");
-    JWPROPERTY(QColor, fontColor, FontColor, "#BF1363")
+    JWPROPERTY(QColor, fontColor, FontColor, "#0E79B2")
     JWPROPERTY(QColor, fontColor2, FontColor2, "#938274")
     JWPROPERTY(QColor, lineColor, LineColor, "#191919")
     JWPROPERTY(QColor, menueButtonColor, MenueButtonColor, "#0E79B2")
@@ -31,6 +35,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
     JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
     JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);
+    JWPROPERTY(int, fontTextPixelsize, FontTextPixelsize, 10);
+    JWPROPERTY(int, fontMessageTextPixelsize, FontMessageTextPixelsize, 20)
     JWPROPERTY(int, radius, Radius, 5);
 
     // App Zustand
@@ -38,6 +44,7 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(QString, appName, AppName, "Ich bin da!");
+    JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     std::set<QString> qrCodes;
     static std::set<std::string> invalidEMailDomains;
 
@@ -63,6 +70,10 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, location, Location, "");
     JWPROPERTY(QString, emailAdress, EmailAdress, "");
     JWPROPERTY(QString, mobile, Mobile, "");
+    JWPROPERTY(QString, data2send, Data2send, "");
+
+    QDateTime visitBegin;
+    QDateTime visitEnd;
 
     Botan::Public_Key *publicKey = nullptr;
     std::string publicKeyEncrypt(const std::string &plainText);
@@ -88,7 +99,7 @@ class ESAAApp: public QObject
     };
     std::map<QString, SLocationInfo> email2locationInfo;
 
-    void saveVisit(const QString &ibdToken);
+    void saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd);
 
     QString dataFileName;
     void loadData();
@@ -97,7 +108,6 @@ class ESAAApp: public QObject
     QString genTempFileName(const QString &extension);
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
-    std::vector<QString> data2send;
     QJsonObject jsonData2Send;
 public:
     ESAAApp(QQmlApplicationEngine &e);
@@ -124,6 +134,13 @@ public:
     Q_INVOKABLE bool isEmailValid(const QString& email);
 
     Q_INVOKABLE void calculateRatios();
+
+    Q_INVOKABLE void reset();
+
+    Q_INVOKABLE void showLastTransmission();
+
+    Q_INVOKABLE void finishVisit();
+    Q_INVOKABLE bool isActiveVisit(QDateTime const &visitDateTime);
 
 signals:
     void showMessageSignal(const QString &mt);

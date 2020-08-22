@@ -52,7 +52,7 @@ Rectangle
         visible: false
         id: textRow
         anchors.centerIn: parent
-        anchors.horizontalCenterOffset: -parent.width / 5
+        anchors.horizontalCenterOffset: -parent.width / 3.5
         height: parent.height
         spacing: parent.width / 4
         leftPadding: spacing
@@ -62,66 +62,87 @@ Rectangle
             text: "I"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "c"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "h"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: " "
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "b"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "i"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "n"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: " "
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "d"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "a"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
         }
         ESAAText
         {
             text: "!"
             font.pixelSize: parent.height * 3 / 4
             color: ESAA.fontColor
+            anchors.verticalCenter: parent.verticalCenter
+        }
+    }
+    MouseArea
+    {
+        anchors.fill: parent
+        pressAndHoldInterval: 10000
+        onPressAndHold:
+        {
+            ESAA.showMessage("Die Einstellungen wurden zurückgesetzt")
+            ESAA.reset()
         }
     }
 }

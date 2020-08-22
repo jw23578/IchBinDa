@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.1
 ESAAPage
 {
     onShowing: theFlick.contentY = 0
-    signal saveContactData
+    signal close
     signal abort
     property bool meineDaten: ESAA.locationName == "MeineDaten"
     property color textColor: ESAA.fontColor2
@@ -51,6 +51,8 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: ESAA.locationName
                 color: textColor
+                font.pixelSize: ESAA.fontTextPixelsize * 1.5
+                font.bold: true
             }
             ESAALineInputWithCaption
             {
@@ -123,7 +125,7 @@ ESAAPage
                 id: emailAdress
                 text: ESAA.emailAdress
                 visible: meineDaten || ESAA.emailWanted
-                inputMethodHints: Qt.ImhPreferLowercase
+                inputMethodHints: Qt.ImhEmailCharactersOnly
                 color: textColor
             }
             ESAALineInputWithCaption
@@ -134,6 +136,7 @@ ESAAPage
                 id: mobile
                 text: ESAA.mobile
                 visible: meineDaten || ESAA.mobileWanted
+                inputMethodHints: Qt.ImhDialableCharactersOnly
                 color: textColor
             }
             Item
@@ -151,7 +154,6 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         width: theColumn.width - ESAA.spacing
         text: meineDaten ? "Meine Daten speichern" : "Kontaktdaten senden an\n" + ESAA.locationContactMailAdress
-        color: textColor
         onClicked:
         {
             ESAA.clearData2Send()
@@ -166,6 +168,7 @@ ESAAPage
                 ESAA.emailAdress = emailAdress.text
                 ESAA.mobile = mobile.text
                 saveContactData();
+                ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
                 return
             }
 
@@ -258,7 +261,7 @@ ESAAPage
                 ESAA.mobile = mobile.text
             }
             ESAA.sendContactData();
-            ESAA.showMessage("gleich wird gesendet")
+            close()
         }
     }
     ESAAButton
@@ -270,6 +273,5 @@ ESAAPage
         width: theColumn.width - ESAA.spacing
         text: "Abbrechen"
         onClicked: abort()
-        color: textColor
     }
 }

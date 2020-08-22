@@ -1,4 +1,4 @@
-package ichbinda.jw78.de;
+package ichbinda78.jw78.de;
 
 import android.app.Service;
 import android.os.IBinder;
