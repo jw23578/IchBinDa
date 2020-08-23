@@ -5081,6 +5081,7 @@ class BOTAN_PUBLIC_API(2,0) DataSource_Memory final : public DataSource
       * @param in the string to read from
       */
       explicit DataSource_Memory(const std::string& in);
+      virtual ~DataSource_Memory() {}
 
       /**
       * Construct a memory source that reads from a byte array
