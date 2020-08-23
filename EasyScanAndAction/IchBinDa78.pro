@@ -119,8 +119,8 @@ ios{
 #    QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1
     QMAKE_TARGET_BUNDLE_PREFIX = de.gympool
     QMAKE_BUNDLE = dmjw
-    HEADERS += botan_all_arm32.h
-    SOURCES += botan_all_arm32.cpp
+    HEADERS += botan_all_iosarmv7.h
+    SOURCES += botan_all_iosarmv7.cpp
     message("iphoneos")
 }
 
