@@ -9,7 +9,7 @@
 #include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
-#ifdef DMOBILEANDROID
+#ifdef DMOBILEDEVICE
 #include "botan_all_arm32.h"
 #else
 #include "botan_all_x64.h"

@@ -128,7 +128,6 @@ android{
     message($$ANDROID_TARGET_ARCH)
     message("building for android")
     DEFINES += DMOBILEDEVICE
-    DEFINES += DMOBILEANDROID
     HEADERS += botan_all_arm32.h
     SOURCES += botan_all_arm32.cpp
     QT += androidextras
