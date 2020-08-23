@@ -23,7 +23,7 @@
 class ESAAApp: public QObject
 {
     Q_OBJECT
-
+    QString getWriteablePath();
     jw::mobileext mobileExtension;
     QNetworkAccessManager networkAccessManager;
     // Einstellungen

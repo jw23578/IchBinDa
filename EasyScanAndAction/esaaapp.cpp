@@ -18,6 +18,14 @@
 #include <QNetworkReply>
 #include <QPainter>
 
+QString ESAAApp::getWriteablePath()
+{
+#ifdef DMOBILEIOS
+    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+#endif
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+}
+
 void ESAAApp::sendMail()
 {
     smtpServer.setHost(smtpHost);
@@ -120,7 +128,7 @@ void ESAAApp::sendMail()
 
 int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin)
 {
-    QString visitCountFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visitsCount-");
+    QString visitCountFileName(getWriteablePath() + "/visitsCount-");
     visitCountFileName += locationGUID;
     visitCountFileName += QString(".json");
     QFile visitCountFile(visitCountFileName);
@@ -155,7 +163,7 @@ int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const
 
 void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd)
 {
-    QString visitFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visits-");
+    QString visitFileName(getWriteablePath() + "/visits-");
     visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
     visitFileName += QString(".json");
     QFile visitFile(visitFileName);
@@ -386,15 +394,15 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     QDir dir;
-    if (!dir.exists(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)))
+    if (!dir.exists(getWriteablePath()))
     {
-        dir.mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+        dir.mkdir(getWriteablePath());
     }
-    if (!dir.exists(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/temp"))
+    if (!dir.exists(getWriteablePath() + "/temp"))
     {
-        dir.mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/temp");
+        dir.mkdir(getWriteablePath() + "/temp");
     }
-    dataFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/esaaData.json";
+    dataFileName = getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
 
@@ -462,7 +470,7 @@ void ESAAApp::sendContactData()
 
 QString ESAAApp::getTempPath()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/temp";
+    return getWriteablePath() + "/temp";
 }
 
 QString ESAAApp::genUUID()
