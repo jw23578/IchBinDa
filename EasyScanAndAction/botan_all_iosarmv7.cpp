@@ -5,7 +5,7 @@
 * Botan is released under the Simplified BSD License (see license.txt)
 */
 
-#include "botan_all.h"
+#include "botan_all_iosarmv7.h"
 
 #include <algorithm>
 #include <array>
