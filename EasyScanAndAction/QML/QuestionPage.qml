@@ -36,6 +36,14 @@ ESAAPage
                 width: parent.width
                 height: 1
             }
+            Rectangle
+            {
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: parent.height / 10
+                color: ESAA.color
+            }
+
             Image
             {
                 width: parent.width - 2 * ESAA.spacing

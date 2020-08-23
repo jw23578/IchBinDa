@@ -43,5 +43,6 @@
         <file>QML/ESAATextBackground.qml</file>
         <file>EMailConfig.txt</file>
         <file>images/messageBackground.jpg</file>
+        <file>QML/ESAASendedDataPage.qml</file>
     </qresource>
 </RCC>
