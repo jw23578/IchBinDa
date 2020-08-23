@@ -105,6 +105,26 @@ ANDROID_VERSION_NAME = "Version 1"
 ANDROID_VERSION_CODE = "4"
 ANDROID_TARGET_SDK_VERSION = "29"
 
+ios
+{
+    DEFINES += DMOBILEDEVICE
+    CONFIG += device
+#    QMAKE_INFO_PLIST = ios/Info.plist
+    OBJECTIVE_SOURCES += ios/ios_functions.mm
+#    OBJECTIVE_SOURCES += ios/GymPoolAppDelegate.mm
+#    ios_icon.files = $$files(ios/icons/*.png)
+#    QMAKE_ASSET_CATALOGS += ios/AppIcon.xcassets
+#    QMAKE_ASSET_CATALOGS_APP_ICON = AppIcon
+#    QMAKE_ASSET_CATALOGS_LAUNCH_IMAGE = LaunchImage
+#    QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1
+    QMAKE_TARGET_BUNDLE_PREFIX = www.jw78
+    QMAKE_BUNDLE = jw78
+    HEADERS += botan_all_arm32.h
+    SOURCES += botan_all_arm32.cpp
+    message("iphoneos")
+}
+
+
 android{
     message($$ANDROID_TARGET_ARCH)
     message("building for android")
