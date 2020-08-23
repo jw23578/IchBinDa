@@ -18,12 +18,12 @@ Das Geschäft erstellt mit der App einen QR-Code, der Folgendes enthält:
 - Umfang der gewünschten Kontaktdaten
 - E-Mail-Adresse, an die die Kontaktdaten geschickt werden sollen.
 
-Der QR-Code wird als PDF erstellt, ausgedruckt und für den Kunden scannbar am Eingangstresen oder auf den Tischen angebracht.
+Der QR-Code wird als PDF erstellt, ausgedruckt und für den Kunden sicht- und scannbar am Eingangstresen oder auf den Tischen angebracht.
 
-Der Kunde kann den QR-Code mit dieser App scannen. Daraufhin wird die Aktions-ID interpretiert und die gewünschten Daten in einem Formular abgefragt. Nur beim ersten Mal müssen die Daten eingegeben werden. Beim zweiten Besuch oder auch in einem anderen Geschäft, das die App verwendet, werden die Daten dann automatisch vorausgefüllt.
-Mit einem Klick auf Absenden wird eine entsprechend formatierte und gefüllte Mail an die übergebene E-Mail-Adresse gesendet.
+Der Kunde kann den QR-Code mit dieser App scannen. Daraufhin wird die Aktions-ID interpretiert und die gewünschten Daten in einem Formular abgefragt. Ausschließlich beim ersten Mal müssen die Daten eingegeben werden. Beim zweiten Besuch oder auch in einem anderen Geschäft, das die App verwendet, werden die Daten dann automatisch vorausgefüllt.
+Mit einem Klick auf Absenden wird eine entsprechend formatierte und gefüllte Mail mit verschlüsseltem Inhalt an die übergebene E-Mail-Adresse gesendet.
 
-Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller und einfacher.
+Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller, einfacher und sicherer.
 
 ### Mögliche Einrichtungen für die Kontaktdatenerfassung bzgl. Corona:
 * Restaurant
@@ -67,9 +67,10 @@ Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 
 ## Download
 
-Prototyp:
-
-https://www.jw78.de/download/ibd.apk
+Prototyp: \
+Upload: 17.8.2020 19:00 \
+https://www.jw78.de/download/ibd.apk \
+(Hängt den Änderungen immer etwas hinterher)
 
 ## Kontakt
 Jens Wienöbst \
