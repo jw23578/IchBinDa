@@ -17,7 +17,9 @@ ESAAPage
                                              adressSwitch.position > 0.9,
                                              emailSwitch.position > 0.9,
                                              mobileSwitch.position > 0.9,
-                                             anonymReceiveEMail.displayText);
+                                             anonymReceiveEMail.displayText,
+                                             parseInt(visitCounts.displayText),
+                                             colorInputVisitCount.displayText);
     }
 
 
@@ -111,6 +113,38 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 inputMethodHints: Qt.ImhEmailCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: ESAA.fontColor2
+                id: visitCounts
+                caption: "Jeden xten Besuch anzeigen"
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                inputMethodHints: Qt.ImhDigitsOnly
+            }
+            ESAALineInputWithCaption
+            {
+                visible: parseInt(visitCounts.displayText) > 0
+                color: ESAA.fontColor2
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                caption: "Farbcode für xten Besuch"
+                text: "#ffffff"
+                onDisplayTextChanged:
+                {
+                    colorRectangleVisitCount.color = displayText
+                }
+                id: colorInputVisitCount
+            }
+            Rectangle
+            {
+                visible: parseInt(visitCounts.text) > 0
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "white"
+                height: colorInputVisitCount.height
+                id: colorRectangleVisitCount
             }
 
             ESAAText

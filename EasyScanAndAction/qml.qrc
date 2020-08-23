@@ -44,5 +44,6 @@
         <file>EMailConfig.txt</file>
         <file>images/messageBackground.jpg</file>
         <file>QML/ESAASendedDataPage.qml</file>
+        <file>QML/BadMessage.qml</file>
     </qresource>
 </RCC>

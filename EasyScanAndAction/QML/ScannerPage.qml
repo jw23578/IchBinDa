@@ -78,8 +78,8 @@ ESAAPage
     Camera
     {
         id: camera                
-        focus.focusMode: Camera.FocusContinuous
-        focus.focusPointMode:  Camera.FocusPointAuto
+//        focus.focusMode: Camera.FocusContinuous
+//        focus.focusPointMode:  Camera.FocusPointAuto
     }
     Timer
     {

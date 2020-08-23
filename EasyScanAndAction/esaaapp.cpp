@@ -185,6 +185,8 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["locationContactMailAdress"] = locationContactMailAdress();
     visitObject["locationName"] = locationName();
     visitObject["visitCount"] = lastVisitCount();
+    visitObject["lastVisitCountXColor"] = lastVisitCountXColor().name();
+    visitObject["lastVisitCountX"] = lastVisitCountX();
     QJsonArray visits(data["visits"].toArray());
     bool found(false);
     for (int i(0); i < visits.size(); ++i)
@@ -256,6 +258,9 @@ void ESAAApp::saveData()
     data["lastVisitLocation"] = lastVisitLocation();
     data["lastVisitEmailAdress"] = lastVisitEmailAdress();
     data["lastVisitMobile"] = lastVisitMobile();
+    data["lastVisitCountXColor"] = lastVisitCountXColor().name();
+    data["lastVisitCountX"] = lastVisitCountX();
+
 
     dataFile.write(QJsonDocument(data).toJson());
 }
@@ -284,6 +289,8 @@ void ESAAApp::loadData()
     setLastVisitLocation(data["lastVisitLocation"].toString());
     setLastVisitEmailAdress(data["lastVisitEmailAdress"].toString());
     setLastVisitMobile(data["lastVisitMobile"].toString());
+    setLastVisitCountXColor(data["lastVisitCountXColor"].toString());
+    setLastVisitCountX(data["lastVisitCountX"].toInt());
 
     if (data.contains("firstStart"))
     {
@@ -501,6 +508,11 @@ void ESAAApp::action(const QString &qrCodeJSON)
     QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
     QJsonObject data(qrJSON.object());
     int actionID(data["ai"].toInt());
+    if (actionID == 0)
+    {
+        emit showBadMessageSignal("Das ist leider kein \"IchBinDa!\"-QR-Code.");
+        return;
+    }
     if (actionID == actionIDCoronaKontaktdatenerfassung)
     {
         qDebug() << "actionIDCoronaKontaktdatenerfassung";
@@ -527,6 +539,8 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setLocationName(theLocationName);
         setLocationContactMailAdress(email);
         setAnonymContactMailAdress(anonymEMail);
+        setLastVisitCountX(data["x"].toInt());
+        setLastVisitCountXColor(data["colorx"].toString());
         emit validQRCodeDetected();
         return;
     }
@@ -541,7 +555,9 @@ QString ESAAApp::generateQRCode(const QString &locationName,
                                 bool withAddress,
                                 bool withEMail,
                                 bool withMobile,
-                                const QString &anonymReceiveEMail)
+                                const QString &anonymReceiveEMail,
+                                int visitCountX,
+                                const QString &visitCountXColor)
 {
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
@@ -572,6 +588,8 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     qr["d"] = d;
     qr["color"] = li.color.name();
     qr["logo"] = li.logoUrl;
+    qr["x"] = visitCountX;
+    qr["xcolor"]  = visitCountXColor;
     return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
 }
 

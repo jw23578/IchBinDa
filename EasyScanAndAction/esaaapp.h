@@ -82,6 +82,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, lastVisitLocation, LastVisitLocation, "");
     JWPROPERTY(QString, lastVisitEmailAdress, LastVisitEmailAdress, "");
     JWPROPERTY(QString, lastVisitMobile, LastVisitMobile, "");
+    JWPROPERTY(QColor, lastVisitCountXColor, LastVisitCountXColor, "");
+    JWPROPERTY(int, lastVisitCountX, LastVisitCountX, 0);
     QDateTime visitBegin;
     QDateTime visitEnd;
 
@@ -138,7 +140,9 @@ public:
                                        bool withAddress,
                                        bool withEMail,
                                        bool widthMobile,
-                                       const QString &anonymReceiveEMail);
+                                       const QString &anonymReceiveEMail,
+                                       int visitCountX,
+                                       const QString &visitCountXColor);
     Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver);
 
     Q_INVOKABLE void recommend();
@@ -155,6 +159,7 @@ public:
 
 signals:
     void showMessageSignal(const QString &mt);
+    void showBadMessageSignal(const QString &mt);
     void scanSignal();
     void validQRCodeDetected();
     void invalidQRCodeDetected();

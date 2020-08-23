@@ -204,6 +204,11 @@ Window {
     {
         id: message
     }
+    BadMessage
+    {
+        id: badMessage
+    }
+
     AgreePage
     {
         id: agreepage
@@ -232,6 +237,7 @@ Window {
     {
         target: ESAA
         onShowMessageSignal: message.show(mt)
+        onShowBadMessageSignal: badMessage.show(mt)
         onScanSignal: scannerpage.show()
         onValidQRCodeDetected:
         {
