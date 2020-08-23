@@ -44,7 +44,6 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(QString, appName, AppName, "Ich bin da!");
-    JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     std::set<QString> qrCodes;
     static std::set<std::string> invalidEMailDomains;
 
@@ -72,6 +71,17 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, mobile, Mobile, "");
     JWPROPERTY(QString, data2send, Data2send, "");
 
+    QString ibdToken;
+    JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
+    JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
+    JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
+    JWPROPERTY(QString, lastVisitSurname, LastVisitSurname, "");
+    JWPROPERTY(QString, lastVisitStreet, LastVisitStreet, "");
+    JWPROPERTY(QString, lastVisitHousenumber, LastVisitHousenumber, "");
+    JWPROPERTY(QString, lastVisitZip, LastVisitZip, "");
+    JWPROPERTY(QString, lastVisitLocation, LastVisitLocation, "");
+    JWPROPERTY(QString, lastVisitEmailAdress, LastVisitEmailAdress, "");
+    JWPROPERTY(QString, lastVisitMobile, LastVisitMobile, "");
     QDateTime visitBegin;
     QDateTime visitEnd;
 
@@ -99,6 +109,7 @@ class ESAAApp: public QObject
     };
     std::map<QString, SLocationInfo> email2locationInfo;
 
+    int updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin);
     void saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd);
 
     QString dataFileName;

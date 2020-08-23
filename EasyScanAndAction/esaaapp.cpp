@@ -99,9 +99,12 @@ void ESAAApp::sendMail()
             reply->deleteLater();// Don't forget to delete it
         });
     }
-    QString ibdToken(QDateTime::currentDateTime().toString(Qt::ISODate));
-    ibdToken += QString(".") + locationGUID();
-    ibdToken += QString(".") + genUUID();
+    if (visitEnd.isNull())
+    {
+        ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
+        ibdToken += QString(".") + locationGUID();
+        ibdToken += QString(".") + genUUID();
+    }
     QString url(ibdTokenStoreURL + ibdToken);
     QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
@@ -109,7 +112,46 @@ void ESAAApp::sendMail()
         networkReply->deleteLater();// Don't forget to delete it
     });
     saveVisit(ibdToken, visitBegin, visitEnd);
+    if (visitEnd.isValid())
+    {
+        ibdToken = "";
+    }
 }
+
+int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin)
+{
+    QString visitCountFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/visitsCount-");
+    visitCountFileName += locationGUID;
+    visitCountFileName += QString(".json");
+    QFile visitCountFile(visitCountFileName);
+    QJsonObject data;
+    if (visitCountFile.open(QIODevice::ReadOnly))
+    {
+        QByteArray visitCountData(visitCountFile.readAll());
+        visitCountFile.close();
+        QJsonDocument loadDoc(QJsonDocument::fromJson(visitCountData));
+        data = loadDoc.object();
+    }
+    QString d(visitBegin.date().toString(Qt::ISODate));
+    QJsonArray visits(data["visits"].toArray());
+    for (int i(0); i < visits.size(); ++i)
+    {
+        if (visits[i].toString() == d)
+        {
+            return visits.size();
+        }
+    }
+    visits.append(d);
+    data["visits"] = visits;
+    if (!visitCountFile.open(QIODevice::WriteOnly))
+    {
+        qWarning("visitFile konnte nicht zum speichern geöffnet werden.");
+        return 0;
+    }
+    visitCountFile.write(QJsonDocument(data).toJson());
+    return visits.size();
+}
+
 
 void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd)
 {
@@ -125,8 +167,40 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
         QJsonDocument loadDoc(QJsonDocument::fromJson(visitData));
         data = loadDoc.object();
     }
+    QJsonObject visitObject;
+    visitObject["begin"] = visitBegin.toString((Qt::ISODate));
+    visitObject["end"] = visitEnd.toString((Qt::ISODate));
+    visitObject["ibdToken"] = ibdToken;
+    visitObject["fstname"] = lastVisitFstname();
+    visitObject["surname"] = lastVisitSurname();
+    visitObject["street"] = lastVisitStreet();
+    visitObject["housenumber"] = lastVisitHousenumber();
+    visitObject["zip"] = lastVisitZip();
+    visitObject["location"] = lastVisitLocation();
+    visitObject["emailAdress"] = lastVisitEmailAdress();
+    visitObject["mobile"] = lastVisitMobile();
+    visitObject["locationGUID"] = locationGUID();
+    visitObject["logoUrl"] = logoUrl();
+    visitObject["color"] = color().name();
+    visitObject["locationContactMailAdress"] = locationContactMailAdress();
+    visitObject["locationName"] = locationName();
+    visitObject["visitCount"] = lastVisitCount();
     QJsonArray visits(data["visits"].toArray());
-    visits.append(ibdToken);
+    bool found(false);
+    for (int i(0); i < visits.size(); ++i)
+    {
+        QJsonObject visit(visits[i].toObject());
+        if (visit["ibdToken"] == ibdToken)
+        {
+            found = true;
+            visits[i] = visitObject;
+            break;
+        }
+    }
+    if (!found)
+    {
+        visits.append(visitObject);
+    }
     data["visits"] = visits;
     if (!visitFile.open(QIODevice::WriteOnly))
     {
@@ -174,6 +248,15 @@ void ESAAApp::saveData()
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
     data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
+    data["lastVisitFstname"] = lastVisitFstname();
+    data["lastVisitSurname"] = lastVisitSurname();
+    data["lastVisitStreet"] = lastVisitStreet();
+    data["lastVisitHousenumber"] = lastVisitHousenumber();
+    data["lastVisitZip"] = lastVisitZip();
+    data["lastVisitLocation"] = lastVisitLocation();
+    data["lastVisitEmailAdress"] = lastVisitEmailAdress();
+    data["lastVisitMobile"] = lastVisitMobile();
+
     dataFile.write(QJsonDocument(data).toJson());
 }
 
@@ -192,6 +275,15 @@ void ESAAApp::loadData()
     QDateTime help;
     help.setSecsSinceEpoch(data["lastVisitDateTime"].toInt());
     setLastVisitDateTime(help);
+
+    setLastVisitFstname(data["lastVisitFstname"].toString());
+    setLastVisitSurname(data["lastVisitSurname"].toString());
+    setLastVisitStreet(data["lastVisitStreet"].toString());
+    setLastVisitHousenumber(data["lastVisitHousenumber"].toString());
+    setLastVisitZip(data["lastVisitZip"].toString());
+    setLastVisitLocation(data["lastVisitLocation"].toString());
+    setLastVisitEmailAdress(data["lastVisitEmailAdress"].toString());
+    setLastVisitMobile(data["lastVisitMobile"].toString());
 
     if (data.contains("firstStart"))
     {
@@ -355,6 +447,7 @@ void ESAAApp::sendContactData()
     setLastVisitDateTime(QDateTime::currentDateTime());
     saveData();
     visitBegin = QDateTime::currentDateTime();
+    setLastVisitCount(updateAndGetVisitCount(locationGUID(), visitBegin));
     visitEnd = QDateTime();
     sendMail();
     showLastTransmission();
@@ -415,7 +508,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString wantedData(data["d"].toString());
         QString logo(data["logo"].toString());
         QString backgroundColor(data["color"].toString());
-        QString locationId(data["id]"].toString());
+        QString locationId(data["id"].toString());
         QString theLocationName(data["ln"].toString());
         QString anonymEMail(data["ae"].toString());
         qDebug() << "locatioName: " << theLocationName;
@@ -479,7 +572,7 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     qr["d"] = d;
     qr["color"] = li.color.name();
     qr["logo"] = li.logoUrl;
-    return generateQRcodeIntern(QJsonDocument(qr).toJson());
+    return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
 }
 
 void ESAAApp::sendQRCode(const QString &qrCodeReceiver)

@@ -179,6 +179,14 @@ ESAAPage
                 ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
                 return
             }
+            ESAA.lastVisitFstname = ""
+            ESAA.lastVisitSurname = ""
+            ESAA.lastVisitStreet = ""
+            ESAA.lastVisitHousenumber = ""
+            ESAA.lastVisitZip = ""
+            ESAA.lastVisitLocation = ""
+            ESAA.lastVisitEmailAdress = ""
+            ESAA.lastVisitMobile = ""
 
             if (fstname.visible)
             {
@@ -189,6 +197,7 @@ ESAAPage
                     return;
                 }
                 ESAA.fstname = fstname.text
+                ESAA.lastVisitFstname = fstname.text
                 ESAA.addData2Send(qsTr("Vorname"), fstname.text)
             }
             if (surname.visible)
@@ -200,6 +209,7 @@ ESAAPage
                     return;
                 }
                 ESAA.surname = surname.text
+                ESAA.lastVisitSurname = surname.text
                 ESAA.addData2Send(qsTr("Nachname"), surname.text)
             }
             if (street.visible)
@@ -211,6 +221,7 @@ ESAAPage
                     return;
                 }
                 ESAA.street = street.text
+                ESAA.lastVisitStreet = street.text
                 ESAA.addData2Send(qsTr("Straße"), street.text)
             }
             if (housenumber.visible)
@@ -222,6 +233,7 @@ ESAAPage
                     return;
                 }
                 ESAA.housenumber = housenumber.text
+                ESAA.lastVisitHousenumber = housenumber.text
                 ESAA.addData2Send(qsTr("Hausnummer"), surname.text)
             }
             if (zip.visible)
@@ -234,6 +246,7 @@ ESAAPage
                 }
                 ESAA.addData2Send(qsTr("Postleitzahl"), zip.text)
                 ESAA.zip = zip.text
+                ESAA.lastVisitZip = zip.text
             }
             if (location.visible)
             {
@@ -245,6 +258,7 @@ ESAAPage
                 }
                 ESAA.addData2Send(qsTr("Ort"), location.text)
                 ESAA.location = location.text
+                ESAA.lastVisitLocation = location.text
             }
             if (emailAdress.visible)
             {
@@ -255,6 +269,7 @@ ESAAPage
                     return;
                 }
                 ESAA.emailAdress = emailAdress.text
+                ESAA.lastVisitEmailAdress = emailAdress.text
                 ESAA.addData2Send(qsTr("E-Mail-Adresse"), emailAdress.text)
             }
             if (mobile.visible)
@@ -267,6 +282,7 @@ ESAAPage
                 }
                 ESAA.addData2Send(qsTr("Handynummer"), mobile.text)
                 ESAA.mobile = mobile.text
+                ESAA.lastVisitMobile = mobile.text
             }
             ESAA.sendContactData();
             close()
