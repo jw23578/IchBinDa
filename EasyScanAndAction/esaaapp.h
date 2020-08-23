@@ -10,7 +10,7 @@
 #include <set>
 #include <QNetworkAccessManager>
 #ifdef DMOBILEANDROID
-#include "botan_all_arm64.h"
+#include "botan_all_arm32.h"
 #else
 #include "botan_all_x64.h"
 #endif
