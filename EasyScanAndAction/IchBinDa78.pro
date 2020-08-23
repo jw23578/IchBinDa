@@ -105,8 +105,7 @@ ANDROID_VERSION_NAME = "Version 1"
 ANDROID_VERSION_CODE = "4"
 ANDROID_TARGET_SDK_VERSION = "29"
 
-ios
-{
+ios{
     DEFINES += DMOBILEDEVICE
     CONFIG += device
 #    QMAKE_INFO_PLIST = ios/Info.plist
