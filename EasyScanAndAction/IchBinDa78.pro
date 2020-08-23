@@ -107,6 +107,7 @@ ANDROID_TARGET_SDK_VERSION = "29"
 
 ios{
     DEFINES += DMOBILEDEVICE
+    DEFINES += BOTAN_TARGET_OS_IS_IOS
     CONFIG += device
 #    QMAKE_INFO_PLIST = ios/Info.plist
     OBJECTIVE_SOURCES += ios/ios_functions.mm
