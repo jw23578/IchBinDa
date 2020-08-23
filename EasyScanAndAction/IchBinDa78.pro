@@ -105,12 +105,13 @@ ANDROID_VERSION_NAME = "Version 1"
 ANDROID_VERSION_CODE = "4"
 ANDROID_TARGET_SDK_VERSION = "29"
 
+VERSIOn = 1.1.1
 ios{
     DEFINES += DMOBILEDEVICE
     DEFINES += DMOBILEIOS
     DEFINES += BOTAN_TARGET_OS_IS_IOS
     CONFIG += device
-#    QMAKE_INFO_PLIST = ios/Info.plist
+    QMAKE_INFO_PLIST = ios/Info.plist
     OBJECTIVE_SOURCES += ios/ios_functions.mm
 #    OBJECTIVE_SOURCES += ios/GymPoolAppDelegate.mm
 #    ios_icon.files = $$files(ios/icons/*.png)
