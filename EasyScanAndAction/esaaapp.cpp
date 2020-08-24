@@ -20,9 +20,6 @@
 
 QString ESAAApp::getWriteablePath()
 {
-#ifdef DMOBILEIOS
-    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#endif
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 }
 
@@ -394,9 +391,11 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     QDir dir;
-    if (!dir.exists(getWriteablePath()))
+    QString path(getWriteablePath());
+    if (!dir.exists(path))
     {
-        dir.mkdir(getWriteablePath());
+        qDebug() << "erzeuge: " << path;
+        qDebug() << (dir.mkpath(path) ? "erfolgreich" : "nicht erfolgreich");
     }
     if (!dir.exists(getWriteablePath() + "/temp"))
     {
