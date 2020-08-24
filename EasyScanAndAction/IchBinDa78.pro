@@ -119,7 +119,7 @@ ios{
 #    QMAKE_ASSET_CATALOGS_APP_ICON = AppIcon
 #    QMAKE_ASSET_CATALOGS_LAUNCH_IMAGE = LaunchImage
 #    QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1
-    QMAKE_TARGET_BUNDLE_PREFIX = de.gympool
+    QMAKE_TARGET_BUNDLE_PREFIX = de.ichbinda
     QMAKE_BUNDLE = dmjw
     HEADERS += botan_all_iosarmv7.h
     SOURCES += botan_all_iosarmv7.cpp
