@@ -120,7 +120,7 @@ ios{
 #    QMAKE_ASSET_CATALOGS_LAUNCH_IMAGE = LaunchImage
 #    QMAKE_APPLE_TARGETED_DEVICE_FAMILY = 1
     QMAKE_TARGET_BUNDLE_PREFIX = de.ichbinda
-    QMAKE_BUNDLE = dmjw
+    QMAKE_BUNDLE = jw78
     HEADERS += botan_all_iosarmv7.h
     SOURCES += botan_all_iosarmv7.cpp
     message("iphoneos")
