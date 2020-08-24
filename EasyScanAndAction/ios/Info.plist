@@ -33,10 +33,10 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UISupportedInterfaceOrientations</key>
-        <key>NSCameraUsageDescription</key>
-        <string>You can scan QR-Codes to trigger actions</string>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
         </array>
+        <key>NSCameraUsageDescription</key>
+        <string>You can scan QR-Codes to trigger actions</string>
 </dict>
 </plist>
