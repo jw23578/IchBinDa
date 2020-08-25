@@ -6,11 +6,20 @@ import QtGraphicalEffects 1.0
 
 ESAAPage
 {
+    property int changeCounter: 0
+    Timer
+    {
+        interval: 10000
+        repeat: true
+        running: true
+        onTriggered: changeCounter += 1
+    }
+
     id: scannerpage
     onShowing:
     {
         console.log("show scanner")
-        if (!ESAA.isActiveVisit(ESAA.lastVisitDateTime))
+        if (!ESAA.isActiveVisit(ESAA.lastVisitDateTime, 1))
         {
             camera.stop()
             camera.start()
@@ -26,6 +35,7 @@ ESAAPage
 
     signal playBackClicked;
     signal basketClicked;
+    signal questionVisitEnd;
 
     function decode(preview) {
         photoPreview.source = preview
@@ -182,6 +192,14 @@ ESAAPage
                     width: output.contentRect.width * parent.widthFaktor
                     height: output.contentRect.height * parent.heightFaktor
                 }
+                Rectangle
+                {
+                    anchors.fill: parent
+                    color: "black"
+                    opacity: 0.8
+                    visible: finishVisit.visible
+                }
+
                 ESAAButton
                 {
                     id: finishVisit
@@ -190,12 +208,10 @@ ESAAPage
                     text: qsTr("Besuch beenden")
                     onClicked:
                     {
-                        ESAA.finishVisit()
-                        camera.start()
-                        shareButton.rotate(400)
+                        questionVisitEnd();
                     }
                     anchors.horizontalCenter: parent.horizontalCenter
-                    visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime);
+                    visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter);
                 }
             }
         }
@@ -225,7 +241,7 @@ ESAAPage
             text: qsTr("Letzte Übertragung anzeigen")
             onClicked: ESAA.showLastTransmission()
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: ESAA.data2send.length > 0
+            visible: finishVisit.visible
         }
     }
     Component.onCompleted: camera.stop()

@@ -99,6 +99,11 @@ Window {
         ScannerPage
         {
             id: scannerpage
+            onQuestionVisitEnd:
+            {
+                console.log("123")
+                showNewPage(scannerpage, visitEndPage)
+            }
         }
         FirstStart
         {
@@ -212,6 +217,19 @@ Window {
     {
         id: sendedDataPage
         onClose: showNewPage(sendedDataPage, scannerpage)
+    }
+    VisitEndQuestion
+    {
+        id: visitEndPage
+        onEndVisit:
+        {
+            ESAA.finishVisit()
+            showNewPage(visitEndPage, scannerpage)
+        }
+        onClose:
+        {
+            showNewPage(visitEndPage, scannerpage)
+        }
     }
 
     AgreePage

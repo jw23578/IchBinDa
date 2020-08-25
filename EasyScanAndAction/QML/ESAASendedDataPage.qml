@@ -51,6 +51,16 @@ ESAAPage
                 height: parent.height
                 color: ESAA.lastVisitColor
             }
+            Rectangle
+            {
+                x: parent.width - parent.height
+                width: parent.height
+                height: parent.height
+                color: ESAA.lastVisitCountX > 0
+                       && ESAA.lastVisitCount > 0
+                       && ESAA.lastVisitCount % ESAA.lastVisitCountX ?
+                           ESAA.lastVisitCountXColor : "transparent"
+            }
         }
 
         ESAAText
@@ -72,7 +82,7 @@ ESAAPage
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: theColumn1.bottom
-        contentHeight: theColumn.height * 1.5
+        contentHeight: theColumn.height * 1.1
         clip: true
         ESAATextBackground
         {

@@ -747,7 +747,8 @@ void ESAAApp::finishVisit()
     sendMail();
 }
 
-bool ESAAApp::isActiveVisit(const QDateTime &visitDateTime)
+bool ESAAApp::isActiveVisit(const QDateTime &visitDateTime, int changeCounter)
 {
+    changeCounter += 10;
     return QDateTime::currentDateTime() < visitDateTime.addSecs(60 * 60 * 12);
 }

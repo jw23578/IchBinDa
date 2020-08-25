@@ -164,7 +164,7 @@ public:
     Q_INVOKABLE void showLastTransmission();
 
     Q_INVOKABLE void finishVisit();
-    Q_INVOKABLE bool isActiveVisit(QDateTime const &visitDateTime);
+    Q_INVOKABLE bool isActiveVisit(QDateTime const &visitDateTime, int changeCounter);
 
 signals:
     void showMessageSignal(const QString &mt);

@@ -45,5 +45,6 @@
         <file>images/messageBackground.jpg</file>
         <file>QML/ESAASendedDataPage.qml</file>
         <file>QML/BadMessage.qml</file>
+        <file>QML/VisitEndQuestion.qml</file>
     </qresource>
 </RCC>
