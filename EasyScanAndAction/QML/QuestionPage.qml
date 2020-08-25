@@ -188,6 +188,11 @@ ESAAPage
             ESAA.lastVisitEmailAdress = ""
             ESAA.lastVisitMobile = ""
 
+            ESAA.lastVisitLocationName = ESAA.locationName
+            ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
+            ESAA.lastVisitLogoUrl = ESAA.logoUrl
+            ESAA.lastVisitColor = ESAA.color
+
             if (fstname.visible)
             {
                 if (fstname.text == "")

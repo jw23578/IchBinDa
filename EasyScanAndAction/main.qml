@@ -208,6 +208,11 @@ Window {
     {
         id: badMessage
     }
+    ESAASendedDataPage
+    {
+        id: sendedDataPage
+        onClose: showNewPage(sendedDataPage, scannerpage)
+    }
 
     AgreePage
     {
@@ -236,6 +241,7 @@ Window {
     Connections
     {
         target: ESAA
+        onShowSendedData: showNewPage(scannerpage, sendedDataPage)
         onShowMessageSignal: message.show(mt)
         onShowBadMessageSignal: badMessage.show(mt)
         onScanSignal: scannerpage.show()

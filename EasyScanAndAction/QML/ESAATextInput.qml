@@ -5,6 +5,7 @@ FocusScope
     property alias text: input.text
     property alias displayText: input.displayText
     property alias inputMethodHints: input.inputMethodHints
+    property alias readOnly: input.readOnly
 //    property alias contentHeight: input.contentHeight
     height: input.contentHeight + 10
     Rectangle
@@ -12,9 +13,9 @@ FocusScope
         id: rectangle
         anchors.fill: parent
         border.color: "black"
-        border.width: 1
+        border.width: input.readOnly ? 0 : 1
         radius: ESAA.radius
-        color: ESAA.fontColor2
+        color: input.readOnly ? "white" : input.activeFocus ? Qt.lighter(ESAA.fontColor2) : ESAA.fontColor2
         TextInput
         {
             id: input

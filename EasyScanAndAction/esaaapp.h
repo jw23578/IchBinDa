@@ -52,9 +52,9 @@ class ESAAApp: public QObject
     static std::set<std::string> invalidEMailDomains;
 
     // Aktuelle Location
-    JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
     JWPROPERTY(QString, anonymContactMailAdress, AnonymContactMailAdress, "");
     JWPROPERTY(QString, locationName, LocationName, "");
+    JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
     JWPROPERTY(QString, locationGUID, LocationGUID, "");
@@ -76,6 +76,11 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, data2send, Data2send, "");
 
     QString ibdToken;
+    JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
+    JWPROPERTY(QString, lastVisitLogoUrl, LastVisitLogoUrl, "");
+    JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
+
+    JWPROPERTY(QString, lastVisitLocationName, LastVisitLocationName, "");
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
     JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
@@ -167,6 +172,7 @@ signals:
     void scanSignal();
     void validQRCodeDetected();
     void invalidQRCodeDetected();
+    void showSendedData();
 
 
 };

@@ -173,9 +173,13 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
         data = loadDoc.object();
     }
     QJsonObject visitObject;
+    visitObject["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
+    visitObject["lastVisitLogoUrl"] = lastVisitLogoUrl();
+    visitObject["lastVisitColor"] = lastVisitColor().name();
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
     visitObject["ibdToken"] = ibdToken;
+    visitObject["locationName"] = lastVisitLocationName();
     visitObject["fstname"] = lastVisitFstname();
     visitObject["surname"] = lastVisitSurname();
     visitObject["street"] = lastVisitStreet();
@@ -188,7 +192,6 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["logoUrl"] = logoUrl();
     visitObject["color"] = color().name();
     visitObject["locationContactMailAdress"] = locationContactMailAdress();
-    visitObject["locationName"] = locationName();
     visitObject["visitCount"] = lastVisitCount();
     visitObject["lastVisitCountXColor"] = lastVisitCountXColor().name();
     visitObject["lastVisitCountX"] = lastVisitCountX();
@@ -250,11 +253,15 @@ void ESAAApp::saveData()
     }
 
     QJsonObject data;
+    data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
+    data["lastVisitLogoUrl"] = lastVisitLogoUrl();
+    data["lastVisitColor"] = lastVisitColor().name();
     data["contactData"] = contactData;
     data["locationInfos"] = locationInfos;
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
     data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
+    data["lastVisitLocationName"] = lastVisitLocationName();
     data["lastVisitFstname"] = lastVisitFstname();
     data["lastVisitSurname"] = lastVisitSurname();
     data["lastVisitStreet"] = lastVisitStreet();
@@ -286,6 +293,11 @@ void ESAAApp::loadData()
     help.setSecsSinceEpoch(data["lastVisitDateTime"].toInt());
     setLastVisitDateTime(help);
 
+    setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
+    setLastVisitLogoUrl(data["lastVisitLogoUrl"].toString());
+    setLastVisitColor(data["lastVisitColor"].toString());
+
+    setLastVisitLocationName(data["lastVisitLocationName"].toString());
     setLastVisitFstname(data["lastVisitFstname"].toString());
     setLastVisitSurname(data["lastVisitSurname"].toString());
     setLastVisitStreet(data["lastVisitStreet"].toString());
@@ -723,7 +735,8 @@ void ESAAApp::reset()
 
 void ESAAApp::showLastTransmission()
 {
-    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + locationName() + "</b><br><br>übertragen:<br><br>" + data2send());
+    emit showSendedData();
+//    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + locationName() + "</b><br><br>übertragen:<br><br>" + data2send());
 }
 
 void ESAAApp::finishVisit()
