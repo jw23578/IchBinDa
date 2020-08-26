@@ -7,7 +7,7 @@ ESAAPage
     onShowing: theFlick.contentY = 0
     signal close
     signal abort
-    property bool meineDaten: ESAA.locationName == "MeineDaten"
+    property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.fontColor2
     Flickable
     {
@@ -57,7 +57,7 @@ ESAAPage
             {
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: ESAA.locationName
+                text: ESAA.facilityName
                 color: textColor
                 font.pixelSize: ESAA.fontTextPixelsize * 1.5
                 font.bold: true
@@ -188,7 +188,7 @@ ESAAPage
             ESAA.lastVisitEmailAdress = ""
             ESAA.lastVisitMobile = ""
 
-            ESAA.lastVisitLocationName = ESAA.locationName
+            ESAA.lastVisitFacilityName = ESAA.facilityName
             ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
             ESAA.lastVisitLogoUrl = ESAA.logoUrl
             ESAA.lastVisitColor = ESAA.color

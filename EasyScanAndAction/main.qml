@@ -114,7 +114,7 @@ Window {
             }
             onEditContactData:
             {
-                ESAA.locationName = "MeineDaten"
+                ESAA.facilityName = "MeineDaten"
                 showNewPage(firststart, questionpage)
             }
         }
@@ -140,7 +140,7 @@ Window {
             }
             onEditContactData:
             {
-                ESAA.locationName = "MeineDaten"
+                ESAA.facilityName = "MeineDaten"
                 showNewPage(menuepage, questionpage)
             }
             onEditQRCode:

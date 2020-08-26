@@ -53,7 +53,7 @@ class ESAAApp: public QObject
 
     // Aktuelle Location
     JWPROPERTY(QString, anonymContactMailAdress, AnonymContactMailAdress, "");
-    JWPROPERTY(QString, locationName, LocationName, "");
+    JWPROPERTY(QString, facilityName, FacilityName, "");
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
@@ -80,7 +80,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, lastVisitLogoUrl, LastVisitLogoUrl, "");
     JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
-    JWPROPERTY(QString, lastVisitLocationName, LastVisitLocationName, "");
+    JWPROPERTY(QString, lastVisitFacilityName, LastVisitFacilityName, "");
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
     JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
@@ -115,7 +115,7 @@ class ESAAApp: public QObject
         QString logoUrl;
         QColor color;
         QString locationId;
-        QString locationName;
+        QString facilityName;
         QString anonymReceiveEMail;
     };
     std::map<QString, SLocationInfo> email2locationInfo;
@@ -142,7 +142,7 @@ public:
     Q_INVOKABLE void scan();
     Q_INVOKABLE void sendContactData();
     Q_INVOKABLE void action(const QString &qrCodeJSON);
-    Q_INVOKABLE QString generateQRCode(const QString &locationName,
+    Q_INVOKABLE QString generateQRCode(const QString &facilityName,
                                        const QString &contactReceiveEMail,
                                        const QString &theLogoUrl,
                                        const QColor color,
@@ -152,7 +152,7 @@ public:
                                        const QString &anonymReceiveEMail,
                                        int visitCountX,
                                        const QString &visitCountXColor);
-    Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver);
+    Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName);
 
     Q_INVOKABLE void recommend();
     Q_INVOKABLE bool isEmailValid(const QString& email);

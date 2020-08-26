@@ -10,7 +10,7 @@ ESAAPage
     property string qrCodeFileName: ""
     function generate()
     {
-        qrCodeFileName = ESAA.generateQRCode(locationName.displayText,
+        qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
                                              contactReceiveEMail.displayText,
                                              logoUrl.displayText,
                                              colorInput.displayText,
@@ -59,7 +59,7 @@ ESAAPage
             ESAALineInputWithCaption
             {
                 color: ESAA.fontColor2
-                id: locationName
+                id: facilityName
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 caption: qsTr("Name des Geschäfts")
@@ -196,15 +196,15 @@ ESAAPage
         width: theColumn.width
         text: "QR-Code erzeugen"
         onClicked: {
-            if (locationName.displayText == "")
+            if (facilityName.displayText == "")
             {
-                locationName.forceActiveFocus()
+                facilityName.forceActiveFocus()
                 ESAA.showMessage("Bitte gib noch den Namen des Geschäfts an.")
                 return
             }
             if (contactReceiveEMail.displayText == "")
             {
-                locationName.forceActiveFocus()
+                facilityName.forceActiveFocus()
                 ESAA.showMessage("Bitte gib noch die E-Mail-Adresse, an die die verschlüsselten Kontaktdaten gesendet werden sollen, an.")
                 return
             }

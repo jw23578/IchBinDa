@@ -45,7 +45,7 @@ void ESAAApp::sendMail()
     {
         subject += "Besuchsbeginn ";
     }
-    subject += locationName();
+    subject += facilityName();
     message.setSubject(subject);
 
     auto text = new SimpleMail::MimeText;
@@ -90,7 +90,7 @@ void ESAAApp::sendMail()
         visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
         visitMessage.addTo(SimpleMail::EmailAddress(anonymContactMailAdress()));
 
-        subject = "Besuchmeldung " + locationName();
+        subject = "Besuchmeldung " + facilityName();
         visitMessage.setSubject(subject);
         work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
         work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
@@ -179,7 +179,7 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
     visitObject["ibdToken"] = ibdToken;
-    visitObject["locationName"] = lastVisitLocationName();
+    visitObject["facilityName"] = lastVisitFacilityName();
     visitObject["fstname"] = lastVisitFstname();
     visitObject["surname"] = lastVisitSurname();
     visitObject["street"] = lastVisitStreet();
@@ -247,7 +247,7 @@ void ESAAApp::saveData()
         locationInfo["logoUrl"] = it->second.logoUrl;
         locationInfo["locationId"] = it->second.locationId;
         locationInfo["color"] = it->second.color.name();
-        locationInfo["locationName"] = it->second.locationName;
+        locationInfo["facilityName"] = it->second.facilityName;
         locationInfo["anonymReceiveEMail"] = it->second.anonymReceiveEMail;
         ++it;
     }
@@ -261,7 +261,7 @@ void ESAAApp::saveData()
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
     data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
-    data["lastVisitLocationName"] = lastVisitLocationName();
+    data["lastVisitFacilityName"] = lastVisitFacilityName();
     data["lastVisitFstname"] = lastVisitFstname();
     data["lastVisitSurname"] = lastVisitSurname();
     data["lastVisitStreet"] = lastVisitStreet();
@@ -297,7 +297,7 @@ void ESAAApp::loadData()
     setLastVisitLogoUrl(data["lastVisitLogoUrl"].toString());
     setLastVisitColor(data["lastVisitColor"].toString());
 
-    setLastVisitLocationName(data["lastVisitLocationName"].toString());
+    setLastVisitFacilityName(data["lastVisitFacilityName"].toString());
     setLastVisitFstname(data["lastVisitFstname"].toString());
     setLastVisitSurname(data["lastVisitSurname"].toString());
     setLastVisitStreet(data["lastVisitStreet"].toString());
@@ -324,7 +324,7 @@ void ESAAApp::loadData()
             li.logoUrl = locationInfo["logoUrl"].toString();
             li.locationId = locationInfo["locationId"].toString();
             li.color = locationInfo["color"].toString();
-            li.locationName = locationInfo["locationName"].toString();
+            li.facilityName= locationInfo["facilityName"].toString();
             li.anonymReceiveEMail = locationInfo["anonymReceiveEMail"].toString();
             email2locationInfo[li.contactReceiveEmail] = li;
         }
@@ -540,9 +540,9 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString logo(data["logo"].toString());
         QString backgroundColor(data["color"].toString());
         QString locationId(data["id"].toString());
-        QString theLocationName(data["ln"].toString());
+        QString theFacilityName(data["ln"].toString());
         QString anonymEMail(data["ae"].toString());
-        qDebug() << "locatioName: " << theLocationName;
+        qDebug() << "facilityName: " << theFacilityName;
         qDebug() << "locationId: " << locationId;
         qDebug() << "anonymEMail: " << anonymEMail;
         qDebug() << "email: " << email;
@@ -555,7 +555,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setMobileWanted(wantedData.contains("mobile"));
         setLogoUrl(logo);
         setColor(backgroundColor);
-        setLocationName(theLocationName);
+        setFacilityName(theFacilityName);
         setLocationContactMailAdress(email);
         setAnonymContactMailAdress(anonymEMail);
         setLastVisitCountX(data["x"].toInt());
@@ -567,7 +567,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
 
 }
 
-QString ESAAApp::generateQRCode(const QString &locationName,
+QString ESAAApp::generateQRCode(const QString &facilityName,
                                 const QString &contactReceiveEMail,
                                 const QString &theLogoUrl,
                                 const QColor color,
@@ -584,7 +584,7 @@ QString ESAAApp::generateQRCode(const QString &locationName,
         li.locationId = genUUID();
     }
     li.contactReceiveEmail = contactReceiveEMail;
-    li.locationName = locationName;
+    li.facilityName = facilityName;
     li.color = color;
     li.logoUrl = theLogoUrl;
     li.anonymReceiveEMail = anonymReceiveEMail;
@@ -592,7 +592,7 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     saveData();
     QJsonObject qr;
     qr["ai"] = 1;
-    qr["ln"] = li.locationName;
+    qr["ln"] = li.facilityName;
     qr["id"] = li.locationId;
     qr["e"] = li.contactReceiveEmail;
     qr["ae"] = li.anonymReceiveEMail;
@@ -612,7 +612,7 @@ QString ESAAApp::generateQRCode(const QString &locationName,
     return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
 }
 
-void ESAAApp::sendQRCode(const QString &qrCodeReceiver)
+void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName)
 {
     smtpServer.setHost(smtpHost);
     smtpServer.setPort(smtpPort);
@@ -625,7 +625,8 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver)
     message.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
     message.addTo(SimpleMail::EmailAddress(qrCodeReceiver));
 
-    QString subject("QR-Code");
+    QString subject("QR-Code ");
+    subject += facilityName;
     message.setSubject(subject);
 
     // Now add some text to the email.
@@ -736,7 +737,7 @@ void ESAAApp::reset()
 void ESAAApp::showLastTransmission()
 {
     emit showSendedData();
-//    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + locationName() + "</b><br><br>übertragen:<br><br>" + data2send());
+//    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + facilityName() + "</b><br><br>übertragen:<br><br>" + data2send());
 }
 
 void ESAAApp::finishVisit()
