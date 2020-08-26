@@ -4,13 +4,14 @@ ESAAPage {
     signal back
     property string qrCodeFileName: ""
     property alias sendEMailTo: qrCodeEMailAdresse.text
+    property string facilityName: ""
     Flickable
     {
         anchors.bottom: sendButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.5
+        contentHeight: theColumn.height * 1.2
         clip: true
         Rectangle
         {
@@ -77,7 +78,7 @@ ESAAPage {
                 return
             }
 
-            ESAA.sendQRCode(qrCodeEMailAdresse.displayText)
+            ESAA.sendQRCode(qrCodeEMailAdresse.displayText, facilityName)
         }
     }
 

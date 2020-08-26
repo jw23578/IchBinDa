@@ -16,7 +16,7 @@ ESAAPage
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.5
+        contentHeight: theColumn.height * 1.2
         clip: true
         ESAATextBackground
         {

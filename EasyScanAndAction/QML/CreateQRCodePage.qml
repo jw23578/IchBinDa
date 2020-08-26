@@ -8,6 +8,8 @@ ESAAPage
     signal close
     signal showCode
     property string qrCodeFileName: ""
+    property alias theFacilityName: facilityName.displayText
+    property alias theContactReceiveEMail: contactReceiveEMail.displayText
     function generate()
     {
         qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
@@ -37,7 +39,7 @@ ESAAPage
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.5
+        contentHeight: theColumn.height * 1.2
         clip: true
         ESAATextBackground
         {

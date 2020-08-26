@@ -130,6 +130,9 @@ class ESAAApp: public QObject
     QString genTempFileName(const QString &extension);
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
+
+    QString lastActionJSON;
+    QDateTime lastActionDateTime;
     QJsonObject jsonData2Send;
 public:
     ESAAApp(QQmlApplicationEngine &e);

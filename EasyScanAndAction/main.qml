@@ -122,7 +122,12 @@ Window {
         {
             id: createqrcodepage
             onClose: showNewPage(createqrcodepage, scannerpage)
-            onShowCode: showNewPage(createqrcodepage, showqrcodepage)
+            onShowCode:
+            {
+                showqrcodepage.facilityName = createqrcodepage.theFacilityName
+                showqrcodepage.sendEMailTo = createqrcodepage.theContactReceiveEMail
+                showNewPage(createqrcodepage, showqrcodepage)
+            }
         }
         ShowQRCode
         {

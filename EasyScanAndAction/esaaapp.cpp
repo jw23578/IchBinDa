@@ -524,6 +524,13 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
 void ESAAApp::action(const QString &qrCodeJSON)
 {
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
+    if (lastActionDateTime.addSecs(60) > QDateTime::currentDateTime() && qrCodeJSON == lastActionJSON)
+    {
+        qDebug() << "der gleiche code wie vor max einer minute wird abgelehnt";
+        return;
+    }
+    lastActionJSON = qrCodeJSON;
+    lastActionDateTime = QDateTime::currentDateTime();
     QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
     QJsonObject data(qrJSON.object());
     int actionID(data["ai"].toInt());
