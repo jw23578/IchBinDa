@@ -50,7 +50,11 @@ public:
   }
   Ref(const Ref &other) :
       object_(0) {
-    reset(other.object_);
+    long long i((long long)&other);
+    if (i > 4)
+    {
+        reset(other.object_);
+    }
   }
 
   template<class Y>

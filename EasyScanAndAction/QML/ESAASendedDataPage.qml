@@ -9,11 +9,11 @@ ESAAPage
     id: showSendedDataPage
     onShowing: theFlick.contentY = 0
     signal close
-    property color textColor: ESAA.fontColor2
+    property color textColor: ESAA.textColor
     Column
     {
         id: theColumn1
-        y: ESAA.spacing
+        y: ESAA.spacing * 2
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - parent.width / 10
         spacing: ESAA.spacing / 2
@@ -67,7 +67,8 @@ ESAAPage
         {
             id: messageText
             width: parent.width
-            font.pixelSize: ESAA.fontMessageTextPixelsize
+//            font.pixelSize: ESAA.fontMessageTextPixelsize
+            color: ESAA.textColor
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
             text: "Folgende Daten wurden verschlüsselt an " + ESAA.lastVisitLocationContactMailAdress + " übertragen"
@@ -84,10 +85,6 @@ ESAAPage
         anchors.top: theColumn1.bottom
         contentHeight: theColumn.height * 1.1
         clip: true
-        ESAATextBackground
-        {
-            anchors.fill: theColumn
-        }
 
         Column
         {

@@ -79,7 +79,8 @@ zint-master/backend/sjis.h \
 zint-master/backend/zint.h
 
 RESOURCES += qml.qrc \
-    keys.qrc
+    keys.qrc \
+    ressourcen.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -102,7 +103,7 @@ contains(QT_ARCH, "x86_64") {
 }
 
 ANDROID_VERSION_NAME = "Version 1"
-ANDROID_VERSION_CODE = "4"
+ANDROID_VERSION_CODE = "5"
 ANDROID_TARGET_SDK_VERSION = "29"
 
 VERSION = 1.1.5
@@ -165,6 +166,12 @@ DISTFILES += \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew \
     android/gradlew.bat \
+    android/res/mipmap-ldpi/ic_launcher.png \
+    android/res/mipmap-hdpi/ic_launcher.png \
+    android/res/mipmap-mdpi/ic_launcher.png \
+    android/res/mipmap-xhdpi/ic_launcher.png \
+    android/res/mipmap-xxhdpi/ic_launcher.png \
+    android/res/mipmap-xxxhdpi/ic_launcher.png \
     android/res/values/libs.xml \
     android/res/xml/filepaths.xml \
     ios/ios_functions.mm \
@@ -185,4 +192,6 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
 
-android: include(/home/jenz/Android/Sdk/android_openssl/openssl.pri)
+android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
+
+ANDROID_ABIS = armeabi-v7a arm64-v8a

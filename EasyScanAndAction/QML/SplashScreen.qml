@@ -20,7 +20,7 @@ ESAAPage
                 anchors.centerIn: parent
                 text: "Ich"
                 font.pixelSize: parent.height * 3 / 5
-                color: ESAA.fontColor
+                color: ESAA.textColor
             }
         }
         Item
@@ -34,7 +34,7 @@ ESAAPage
                 anchors.centerIn: parent
                 text: "bin"
                 font.pixelSize: parent.height * 3 / 5
-                color: ESAA.fontColor
+                color: ESAA.textColor
             }
         }
         Item
@@ -48,7 +48,7 @@ ESAAPage
                 anchors.centerIn: parent
                 text: "da!"
                 font.pixelSize: parent.height * 3 / 5
-                color: ESAA.fontColor
+                color: ESAA.textColor
             }
         }
     }

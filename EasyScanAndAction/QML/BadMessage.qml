@@ -6,17 +6,10 @@ Item
     id: message
     anchors.fill: parent
     visible: false
-    Image
+    Rectangle
     {
         anchors.fill: parent
-        source: "qrc:/images/messageBackground.jpg"
-        fillMode: Image.PreserveAspectCrop
-        Rectangle
-        {
-            anchors.fill: parent
-            color: "red"
-            opacity: 0.6
-        }
+        color: "steelblue"
     }
     Flickable
     {
@@ -36,6 +29,7 @@ Item
             font.pixelSize: ESAA.fontMessageTextPixelsize
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
+            color: ESAA.textColor
         }
     }
 

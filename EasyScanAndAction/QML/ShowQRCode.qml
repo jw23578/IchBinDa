@@ -48,7 +48,7 @@ ESAAPage {
                     fillMode: Image.PreserveAspectFit
                     sourceSize.height: height
                     sourceSize.width: width
-                    source: "file://" + qrCodeFileName
+                    source: qrCodeFileName ? "file://" + qrCodeFileName : ""
                 }
             }
             ESAALineInputWithCaption

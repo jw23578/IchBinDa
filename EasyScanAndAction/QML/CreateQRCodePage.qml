@@ -10,6 +10,7 @@ ESAAPage
     property string qrCodeFileName: ""
     property alias theFacilityName: facilityName.displayText
     property alias theContactReceiveEMail: contactReceiveEMail.displayText
+    property color textColor: ESAA.textColor
     function generate()
     {
         qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
@@ -35,17 +36,13 @@ ESAAPage
     }
     Flickable
     {
+        anchors.margins: ESAA.spacing
         anchors.bottom: showCodeButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.2
+        contentHeight: theColumn.height * 1.3
         clip: true
-        ESAATextBackground
-        {
-            anchors.fill: theColumn
-        }
-
         Column
         {
             y: ESAA.spacing
@@ -53,14 +50,9 @@ ESAAPage
             id: theColumn
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - parent.width / 10
-            Item
-            {
-                width: parent.width
-                height: 1
-            }
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 id: facilityName
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -68,7 +60,7 @@ ESAAPage
             }
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 id: logoUrl
                 caption: "Logo-Url"
                 width: parent.width - 2 * ESAA.spacing
@@ -78,7 +70,7 @@ ESAAPage
             }
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 caption: "Farbcode"
@@ -100,16 +92,16 @@ ESAAPage
 
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 id: contactReceiveEMail
-                caption: "E-Mail-Adresse an die die Kontaktdaten\ngesendet werden sollen"
+                caption: "E-Mail-Adresse an die die Kontaktdaten gesendet werden sollen"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 inputMethodHints: Qt.ImhEmailCharactersOnly
             }
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 id: anonymReceiveEMail
                 caption: "Besuch anonym senden an"
                 width: parent.width - 2 * ESAA.spacing
@@ -118,7 +110,7 @@ ESAAPage
             }
             ESAALineInputWithCaption
             {
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 id: visitCounts
                 caption: "Jeden xten Besuch anzeigen"
                 width: parent.width - 2 * ESAA.spacing
@@ -128,7 +120,7 @@ ESAAPage
             ESAALineInputWithCaption
             {
                 visible: parseInt(visitCounts.displayText) > 0
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 caption: "Farbcode für xten Besuch"
@@ -154,7 +146,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: textId
-                color: ESAA.fontColor2
+                color: createqrcodepage.textColor
                 text: "Welche Daten sollen erfasst werden?"
             }
 
@@ -164,7 +156,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Adressdaten")
-                fontColor: ESAA.fontColor2
+                fontColor: createqrcodepage.textColor
             }
             ESAASwitch
             {
@@ -172,7 +164,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("E-Mail-Adresse")
-                fontColor: ESAA.fontColor2
+                fontColor: createqrcodepage.textColor
             }
             ESAASwitch
             {
@@ -180,7 +172,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Handynummer")
-                fontColor: ESAA.fontColor2
+                fontColor: createqrcodepage.textColor
             }
             Item
             {
@@ -206,11 +198,22 @@ ESAAPage
             }
             if (contactReceiveEMail.displayText == "")
             {
-                facilityName.forceActiveFocus()
+                contactReceiveEMail.forceActiveFocus()
                 ESAA.showMessage("Bitte gib noch die E-Mail-Adresse, an die die verschlüsselten Kontaktdaten gesendet werden sollen, an.")
                 return
             }
-
+            if (!ESAA.isEmailValid(contactReceiveEMail.displayText))
+            {
+                contactReceiveEMail.forceActiveFocus()
+                ESAA.showMessage("Die E-Mail-Adresse, an die die verschlüsselten Kontaktdaten gesendet werden sollen ist ungültig.<br>Bitte korrigieren.")
+                return
+            }
+            if (anonymReceiveEMail.displayText != "" && !ESAA.isEmailValid(anonymReceiveEMail.displayText))
+            {
+                anonymReceiveEMail.forceActiveFocus()
+                ESAA.showMessage("Die E-Mail-Adresse, an die die Besuche anonym gesendet werden sollen ist ungültig.<br>Bitte korrigieren.")
+                return
+            }
             generate()
             showCode()
         }

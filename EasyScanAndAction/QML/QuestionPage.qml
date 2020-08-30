@@ -5,24 +5,21 @@ import QtQuick.Dialogs 1.1
 ESAAPage
 {
     onShowing: theFlick.contentY = 0
+    signal saveMeineDaten;
     signal close
     signal abort
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
-    property color textColor: ESAA.fontColor2
+    property color textColor: ESAA.textColor // ESAA.fontColor2
     Flickable
     {
         id: theFlick
+        anchors.margins: ESAA.spacing
         anchors.bottom: sendButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.2
+        contentHeight: theColumn.height * 1.3
         clip: true
-        ESAATextBackground
-        {
-            anchors.fill: theColumn
-        }
-
         Column
         {
             id: theColumn
@@ -30,23 +27,19 @@ ESAAPage
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - parent.width / 10
             spacing: ESAA.spacing / 2
-            topPadding: spacing
-            Item
-            {
-                width: parent.width
-                height: 1
-            }
+//            topPadding: spacing
             Rectangle
             {
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                height: parent.height / 10
+                height: parent.height / 20
                 color: ESAA.color
+                visible: !meineDaten
             }
 
             Image
             {
-                width: parent.width - 2 * ESAA.spacing
+                width: parent.width - 4 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
 //                height: width
                 source: ESAA.logoUrl
@@ -101,7 +94,6 @@ ESAAPage
                 id: housenumber
                 text: ESAA.housenumber
                 visible: meineDaten || ESAA.adressWanted
-                inputMethodHints: Qt.ImhPreferNumbers
                 color: textColor
             }
             ESAALineInputWithCaption
@@ -175,7 +167,7 @@ ESAAPage
                 ESAA.location = location.text
                 ESAA.emailAdress = emailAdress.text
                 ESAA.mobile = mobile.text
-                saveContactData();
+                ESAA.saveData();
                 ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
                 return
             }
@@ -289,7 +281,7 @@ ESAAPage
                 ESAA.mobile = mobile.text
                 ESAA.lastVisitMobile = mobile.text
             }
-            ESAA.sendContactData();
+            ESAA.sendContactData();            
             close()
         }
     }
@@ -301,6 +293,10 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         width: theColumn.width - ESAA.spacing
         text: "Abbrechen"
-        onClicked: abort()
+        onClicked:
+        {
+            ESAA.ignoreQRCode()
+            abort()
+        }
     }
 }

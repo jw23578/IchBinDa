@@ -1,7 +1,8 @@
 import QtQuick 2.0
 
-Text {
-    font.family: "Roboto-Regular"
+Text
+{
     color: ESAA.fontColor
+    font.family: "Roboto-Regular"
     font.pixelSize: ESAA.fontTextPixelsize
 }

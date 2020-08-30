@@ -7,18 +7,12 @@ ESAAPage
     signal close;
     signal endVisit;
 
-    Image
+    Rectangle
     {
         anchors.fill: parent
-        source: "qrc:/images/messageBackground.jpg"
-        fillMode: Image.PreserveAspectCrop
-        Rectangle
-        {
-            anchors.fill: parent
-            color: "red"
-            opacity: 0.3
-        }
+        color: "steelblue"
     }
+
     ESAAText
     {
         id: messageText
@@ -28,6 +22,7 @@ ESAAPage
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         horizontalAlignment: Text.horizontalCenter
         text: "Soll der Besuch beendet werden?"
+        color: ESAA.textColor
     }
 
     ESAAButton
@@ -36,7 +31,7 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: closeButton.top
         anchors.bottomMargin: parent.width / 10
-        text: "ja"
+        text: "Ja"
         onClicked: endVisit()
     }
     ESAAButton
@@ -45,7 +40,7 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.width / 10
-        text: "schließen"
+        text: "Abbrechen"
         onClicked: close()
     }
 }

@@ -4,6 +4,8 @@ import QtQuick.Controls 2.13
 Switch {
     id: control
     text: qsTr("Switch")
+    font.family: "Roboto-Regular"
+    font.pixelSize: ESAA.fontTextPixelsize
     property color fontColor: control.down ? "#17a81a" : "#21be2b"
 
     contentItem: Text {

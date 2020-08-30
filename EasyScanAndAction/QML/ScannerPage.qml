@@ -28,6 +28,12 @@ ESAAPage
         shareButton.rotate(400)
     }
 
+    PauseAnimation {
+        id: waitForSearchAndLock
+        duration: 20
+        onStopped: camera.searchAndLock()
+    }
+
     onHiding:
     {
         camera.stop()
@@ -87,21 +93,12 @@ ESAAPage
     }
     Camera
     {
-        id: camera                
-//        focus.focusMode: Camera.FocusContinuous
-//        focus.focusPointMode:  Camera.FocusPointAuto
+        id: camera
+        focus.focusMode: Camera.FocusContinuous
+        focus.focusPointMode:  Camera.FocusPointAuto
+        onCameraStatusChanged: if (cameraStatus == Camera.ActiveStatus) waitForSearchAndLock.start()
     }
-    Timer
-    {
-        interval: 1000
-        running: camera.cameraState == Camera.ActiveState
-        repeat: true
-        onTriggered:
-        {
-            console.log("hello")
-            camera.searchAndLock()
-        }
-    }
+
 
     ESAAText
     {
@@ -111,7 +108,8 @@ ESAAPage
         anchors.bottomMargin: ESAA.spacing
         anchors.horizontalCenter: parent.horizontalCenter
         text: "QR-Code einlesen"
-//        horizontalAlignment: Text.horizontalCenter
+        color: "white"
+        //        horizontalAlignment: Text.horizontalCenter
     }
     Item
     {
@@ -137,16 +135,17 @@ ESAAPage
                 filters: [ zxingFilter ]
 
                 fillMode: VideoOutput.PreserveAspectCrop
-//                layer.enabled: true
-//                layer.effect:
-//                    OpacityMask
-//                {
-//                    maskSource: the_rect
-//                }
+                //                layer.enabled: true
+                //                layer.effect:
+                //                    OpacityMask
+                //                {
+                //                    maskSource: the_rect
+                //                }
                 property double leftStartFaktor: 0.2
                 property double topStartFaktor: 0.2
                 property double widthFaktor: 1 - 2 * leftStartFaktor
                 property double heightFaktor: 1 - 2 * topStartFaktor
+
                 Rectangle
                 {
                     id: topRect
@@ -194,12 +193,36 @@ ESAAPage
                 }
                 Rectangle
                 {
+                    height: fokusText.contentHeight
+                    width: fokusText.contentWidth + ESAA.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    color: "black"
+                    opacity: 0.5
+                    id: textRectangle
+                    visible: !finishVisit.visible
+                }
+                ESAAText
+                {
+                    anchors.centerIn: textRectangle
+                    id: fokusText
+                    text: "Zum fokussieren tippen"
+                    color: ESAA.textColor
+                    visible: !finishVisit.visible
+                }
+
+                Rectangle
+                {
                     anchors.fill: parent
                     color: "black"
                     opacity: 0.8
                     visible: finishVisit.visible
                 }
-
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: camera.searchAndLock()
+                }
                 ESAAButton
                 {
                     id: finishVisit
@@ -213,6 +236,7 @@ ESAAPage
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter);
                 }
+
             }
         }
     }

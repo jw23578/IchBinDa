@@ -6,6 +6,7 @@ Item
     signal hiding;
     Rectangle
     {
+        visible: false
         anchors.fill: parent
         opacity: 0.8
         color: ESAA.backgroundTopColor

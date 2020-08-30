@@ -392,7 +392,7 @@ std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
-    mobileExtension(e, "ichbinda.jw78.de/MyIntentCaller"),
+    mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
     networkAccessManager(this)
 {
     QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
@@ -476,7 +476,12 @@ void ESAAApp::sendContactData()
     setLastVisitCount(updateAndGetVisitCount(locationGUID(), visitBegin));
     visitEnd = QDateTime();
     sendMail();
-    showLastTransmission();
+//    showLastTransmission();
+}
+
+void ESAAApp::ignoreQRCode()
+{
+    lastActionJSON = "";
 }
 
 QString ESAAApp::getTempPath()
@@ -685,7 +690,8 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
 void ESAAApp::recommend()
 {
     QString content("Ich benutze die ");
-    content += appName() + " App um meine Kontakten im Restauraung, Frisör und Co abzugeben. Hier kannst du sie herunterladen: ";
+    content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen: (PlayStore) ";
+    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de";
     mobileExtension.shareText("Ich bin da!", "Ich bin da! Kontaktdatenaustausch per QR-Code", content);
 }
 

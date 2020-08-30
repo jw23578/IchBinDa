@@ -63,12 +63,6 @@ ESAAPage
         id: betreiberinfo
         visible: false
         anchors.fill: parent
-        Rectangle
-        {
-            anchors.fill: parent
-            opacity: 0.8
-            color: ESAA.backgroundTopColor
-        }
         Flickable
         {
             id: view
@@ -94,7 +88,7 @@ ESAAPage
                       "Die Kontaktdaten der Kunden/Besucher werden verschlüsselt in der Mail übertragen und können nicht von dir ausgelesen werden.<br>" +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.fontColor
+                color: ESAA.textColor
 
             }
         }
@@ -113,12 +107,6 @@ ESAAPage
         id: kundeinfo
         visible: false
         anchors.fill: parent
-        Rectangle
-        {
-            anchors.fill: parent
-            opacity: 0.8
-            color: ESAA.backgroundTopColor
-        }
         Flickable
         {
             id: view2
@@ -150,7 +138,7 @@ ESAAPage
                       "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.fontColor
+                color: ESAA.textColor
 
             }
         }

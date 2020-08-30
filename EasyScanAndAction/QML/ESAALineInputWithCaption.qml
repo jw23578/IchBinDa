@@ -15,6 +15,7 @@ Item
         id: captionText
         anchors.top: parent.top
         width: parent.width
+        wrapMode: Text.WordWrap
     }
     ESAATextInput
     {

@@ -15,7 +15,7 @@ import android.support.v4.content.FileProvider;
 
 public class MyIntentCaller
 {
-    private static String AUTHORITY="ichbinda.jw78.de.fileprovider";
+    private static String AUTHORITY="ichbinda78.jw78.de.fileprovider";
     static public void shareText(String title, String subject,
                                  String content, QtActivity activity)
     {

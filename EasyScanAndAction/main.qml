@@ -9,40 +9,6 @@ Window {
     height: 480
     title: qsTr("Ich bin da!")
     property var activePage: null
-    property bool moveLeft: true
-    Image
-    {
-        id: backgroundImage
-        height: parent.height
-        source: "qrc:/images/background2.jpg"
-        fillMode: Image.PreserveAspectFit
-        Behavior on x {
-            NumberAnimation {
-                duration: 400
-            }
-        }
-    }
-    function moveBackground()
-    {
-        var step = mainWindow.width / 4
-        var tx = moveLeft ? backgroundImage.x - step : backgroundImage.x + step
-        if (moveLeft)
-        {
-            if (tx < -backgroundImage.width + mainWindow.width)
-            {
-                tx = -backgroundImage.width + mainWindow.width
-                moveLeft = false
-            }
-            backgroundImage.x = tx
-            return
-        }
-        if (tx > 0)
-        {
-            tx = 0
-            moveLeft = true
-        }
-        backgroundImage.x = tx
-    }
     function showNewPage(currentPage, nextPage)
     {
         currentPage.z = 0
@@ -55,10 +21,9 @@ Window {
         {
             headerItem.animate()
         }
-        var direction = moveLeft
+        var direction = true
         currentPage.hide(direction)
         nextPage.show(direction)
-        moveBackground()
         if (nextPage === scannerpage)
         {
             showCallMenueButton.start()
@@ -74,7 +39,14 @@ Window {
         id: headerItem
         width: parent.width
         height: parent.height / 20
-        visible: !agreepage.visible && !splashscreen.visible
+       // visible: !agreepage.visible && !splashscreen.visible
+    }
+    ContentBackground
+    {
+        anchors.top: headerItem.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
     }
 
     Item
@@ -89,7 +61,8 @@ Window {
             id: questionpage
             onClose:
             {
-                showNewPage(questionpage, scannerpage)
+                showNewPage(questionpage, sendedDataPage)
+
             }            
             onAbort:
             {
@@ -240,6 +213,10 @@ Window {
     AgreePage
     {
         id: agreepage
+        anchors.left: parent.left
+        anchors.top: headerItem.bottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         onAgreed:
         {
             showNewPage(agreepage, firststart)
@@ -281,4 +258,5 @@ Window {
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
         splashscreen.start()
     }
+
 }

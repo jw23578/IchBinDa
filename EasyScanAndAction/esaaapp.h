@@ -27,6 +27,7 @@ class ESAAApp: public QObject
     jw::mobileext mobileExtension;
     QNetworkAccessManager networkAccessManager;
     // Einstellungen
+    JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
@@ -144,6 +145,7 @@ public:
     Q_INVOKABLE void showMessage(const QString &mt);
     Q_INVOKABLE void scan();
     Q_INVOKABLE void sendContactData();
+    Q_INVOKABLE void ignoreQRCode();
     Q_INVOKABLE void action(const QString &qrCodeJSON);
     Q_INVOKABLE QString generateQRCode(const QString &facilityName,
                                        const QString &contactReceiveEMail,
