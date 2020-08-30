@@ -10,6 +10,10 @@ ESAAPage
         kundeinfo.visible = false
         startNow()
     }
+    onBackPressed:
+    {
+        goStartNow()
+    }
 
     signal editContactData
     function goEditContactData()

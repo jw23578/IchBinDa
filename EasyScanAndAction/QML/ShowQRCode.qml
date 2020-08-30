@@ -1,7 +1,12 @@
 import QtQuick 2.0
 
-ESAAPage {
+ESAAPage
+{
     signal back
+    onBackPressed:
+    {
+        back()
+    }
     property string qrCodeFileName: ""
     property alias sendEMailTo: qrCodeEMailAdresse.text
     property string facilityName: ""

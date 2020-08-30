@@ -8,6 +8,10 @@ ESAAPage
     signal saveMeineDaten;
     signal close
     signal abort
+    onBackPressed:
+    {
+        abort()
+    }
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.textColor // ESAA.fontColor2
     Flickable
@@ -119,17 +123,6 @@ ESAAPage
             }
             ESAALineInputWithCaption
             {
-                caption: qsTr("E-Mail-Adresse")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: emailAdress
-                text: ESAA.emailAdress
-                visible: meineDaten || ESAA.emailWanted
-                inputMethodHints: Qt.ImhEmailCharactersOnly
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
                 caption: qsTr("Handynummer")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -137,6 +130,17 @@ ESAAPage
                 text: ESAA.mobile
                 visible: meineDaten || ESAA.mobileWanted
                 inputMethodHints: Qt.ImhDialableCharactersOnly
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("E-Mail-Adresse")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: emailAdress
+                text: ESAA.emailAdress
+                visible: meineDaten || ESAA.emailWanted
+                inputMethodHints: Qt.ImhEmailCharactersOnly
                 color: textColor
             }
             Item

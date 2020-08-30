@@ -71,4 +71,9 @@ ESAAPage
             onClicked: close()
         }
     }
+    onBackPressed:
+    {
+        console.log("menuepage back")
+        close()
+    }
 }

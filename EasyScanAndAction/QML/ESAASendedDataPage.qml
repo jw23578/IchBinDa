@@ -9,6 +9,11 @@ ESAAPage
     id: showSendedDataPage
     onShowing: theFlick.contentY = 0
     signal close
+    onBackPressed:
+    {
+        close()
+    }
+
     property color textColor: ESAA.textColor
     Column
     {

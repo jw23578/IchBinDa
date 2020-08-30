@@ -7,6 +7,11 @@ ESAAPage
     id: createqrcodepage
     signal close
     signal showCode
+    onBackPressed:
+    {
+        console.log("create qr code")
+        close()
+    }
     property string qrCodeFileName: ""
     property alias theFacilityName: facilityName.displayText
     property alias theContactReceiveEMail: contactReceiveEMail.displayText

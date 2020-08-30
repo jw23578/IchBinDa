@@ -1,8 +1,9 @@
 import QtQuick 2.13
 import QtQuick.Window 2.13
+import QtQuick.Controls 2.15
 import "QML"
 
-Window {
+ApplicationWindow {
     id: mainWindow
     visible: true
     width: 300
@@ -32,14 +33,31 @@ Window {
         {
             hideCallMenueButton.start()
         }
+        nextPage.forceActiveFocus()
     }
-
+    Item
+    {
+        focus: true
+        Keys.onReleased:
+        {
+            console.log("Key pressed: "+event.key)
+            if (event.key == Qt.Key_Back)
+            {
+                console.log("Back button pressed.  Stack depth ")
+                event.accepted = true
+            }
+            else
+            {
+                event.accepted = false
+            }
+        }
+    }
     ESAAHeader
     {
         id: headerItem
         width: parent.width
         height: parent.height / 20
-       // visible: !agreepage.visible && !splashscreen.visible
+        // visible: !agreepage.visible && !splashscreen.visible
     }
     ContentBackground
     {
@@ -63,7 +81,7 @@ Window {
             {
                 showNewPage(questionpage, sendedDataPage)
 
-            }            
+            }
             onAbort:
             {
                 showNewPage(questionpage, scannerpage)
@@ -258,5 +276,7 @@ Window {
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
         splashscreen.start()
     }
-
+    onClosing: {
+        close.accepted = false
+    }
 }

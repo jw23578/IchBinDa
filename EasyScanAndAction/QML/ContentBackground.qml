@@ -1,11 +1,8 @@
 import QtQuick 2.0
 
-Rectangle {
-    gradient: Gradient
-    {
-        GradientStop { position: 0.0; color: "#cccccc" }
-        GradientStop { position: 1.0; color: "#cccccc" }
-    }
+Rectangle
+{
+    color: "#cccccc"
 
 //    MovingRectangle
 //    {

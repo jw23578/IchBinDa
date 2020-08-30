@@ -691,7 +691,7 @@ void ESAAApp::recommend()
 {
     QString content("Ich benutze die ");
     content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen: (PlayStore) ";
-    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de";
+    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de oder (AppStore) https://apps.apple.com/us/app/id1528926162";
     mobileExtension.shareText("Ich bin da!", "Ich bin da! Kontaktdatenaustausch per QR-Code", content);
 }
 

@@ -4,6 +4,20 @@ Item
 {
     signal showing;
     signal hiding;
+    signal backPressed
+    focus: true
+    Keys.onReleased:
+    {
+        console.log("ESAAPage Key pressed: "+event.key)
+        if (event.key == Qt.Key_Back)
+        {
+            console.log("Back button pressed.")
+            event.accepted = true
+            backPressed()
+            return
+        }
+        event.accepted = false
+    }
     Rectangle
     {
         visible: false

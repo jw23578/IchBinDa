@@ -6,6 +6,10 @@ ESAAPage
     id: message
     signal close;
     signal endVisit;
+    onBackPressed:
+    {
+        close()
+    }
 
     Rectangle
     {
