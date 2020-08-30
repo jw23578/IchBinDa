@@ -174,6 +174,19 @@ DISTFILES += \
     android/res/mipmap-xxxhdpi/ic_launcher.png \
     android/res/values/libs.xml \
     android/res/xml/filepaths.xml \
+    ios/Images.xcassets/AppIcon.appiconset/1024.png \
+    ios/Images.xcassets/AppIcon.appiconset/114.png \
+    ios/Images.xcassets/AppIcon.appiconset/120.png \
+    ios/Images.xcassets/AppIcon.appiconset/180.png \
+    ios/Images.xcassets/AppIcon.appiconset/29.png \
+    ios/Images.xcassets/AppIcon.appiconset/40.png \
+    ios/Images.xcassets/AppIcon.appiconset/57.png \
+    ios/Images.xcassets/AppIcon.appiconset/58.png \
+    ios/Images.xcassets/AppIcon.appiconset/60.png \
+    ios/Images.xcassets/AppIcon.appiconset/80.png \
+    ios/Images.xcassets/AppIcon.appiconset/87.png \
+    ios/Images.xcassets/AppIcon.appiconset/Contents.json \
+    ios/Images.xcassets/Contents.json \
     ios/ios_functions.mm \
     src/ichbinda/jw78/de/JWAppActivity.java \
     src/ichbinda/jw78/de/JWAppService.java \
