@@ -9,8 +9,8 @@ Die QR-Codes werden als PDF und Bilddatei zur Verfügung gestellt und können in
 
 Entwickelt werden soll die App in ihrer Basisfunktionalität im OL Civic Data Lab Hackathon [1]. Das Protokoll, also welche Daten/Aktionen im QR-Code ausgetauscht werden können, ist noch nicht festgelegt. Gerade um einen schönen Strauß an Anwendungsmöglichkeiten zu bekommen, bietet sich ein Hackathon mit vielen Teilnehmern aus verschiedensten Fachrichtungen und mit unterschiedlichen Interessen an.
 
-## Szenario 1 (Kontaktdatenerfassung bzgl. Corona):
-Aktuell müssen - zum Beispiel in Restaurants und in Frisörläden - zur Corona-Kontaktnachverfolgung bei jedem Besuch die Kontaktdaten des Kunden aufgenommen und für wenige Wochen aufbewahrt werden.
+## Szenario 1 (Kontaktdatenerfassung):
+Aktuell müssen - zum Beispiel in Restaurants und in Frisörläden - zur Kontaktnachverfolgung bei jedem Besuch die Kontaktdaten des Kunden aufgenommen und für wenige Wochen aufbewahrt werden.
 Bis auf kleine Unterschiede im Umfang der erhobenen Daten findet immer der gleiche Vorgang statt.
 Mit der App kann dieser Vorgang sowohl für den Kunden als auch für das Geschäft wesentlich komfortabler gestaltet werden:
 Das Geschäft erstellt mit der App einen QR-Code, der Folgendes enthält:
@@ -25,7 +25,7 @@ Mit einem Klick auf Absenden wird eine entsprechend formatierte und gefüllte Ma
 
 Papier ist damit nicht mehr nötig und die Datenerfassung geht wesentlich schneller, einfacher und sicherer.
 
-### Mögliche Einrichtungen für die Kontaktdatenerfassung bzgl. Corona:
+### Mögliche Einrichtungen für die Kontaktdatenerfassung:
 * Restaurant
 * Frisör
 * Gerichte
