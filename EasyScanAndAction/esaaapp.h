@@ -148,6 +148,7 @@ public:
     Q_INVOKABLE void saveData();
     Q_INVOKABLE void clearData2Send();
     Q_INVOKABLE void addData2Send(const QString &field, const QString &value);
+    Q_INVOKABLE void addSubData2Send(const QString &field, const QString &subField, const QString &value);
     Q_INVOKABLE void firstStartDone();
     Q_INVOKABLE void showMessage(const QString &mt);
     Q_INVOKABLE void scan();

@@ -468,6 +468,13 @@ void ESAAApp::addData2Send(const QString &field, const QString &value)
     jsonData2Send[field] = value;
 }
 
+void ESAAApp::addSubData2Send(const QString &field, const QString &subField, const QString &value)
+{
+//    setData2send(data2send() + field + ": " + value);
+//    setData2send(data2send() + "<br>");
+    jsonData2Send[field].toObject()[subField] = value;
+}
+
 void ESAAApp::firstStartDone()
 {
     setFirstStart(false);
@@ -492,7 +499,6 @@ void ESAAApp::sendContactData()
     setLastVisitCount(updateAndGetVisitCount(locationGUID(), visitBegin));
     visitEnd = QDateTime();
     sendMail();
-//    showLastTransmission();
 }
 
 void ESAAApp::ignoreQRCode()

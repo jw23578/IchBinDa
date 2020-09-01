@@ -321,6 +321,7 @@ ESAAPage
                     ESAA.showMessage("Diese Frage musst du noch mit \"Ja\" beantworten:<br><br>" + ESAA.getYesQuestion(i))
                     return;
                 }
+                ESAA.addSubData2Send("yesQuestion", "yq" + i, ESAA.getYesQuestion(i))
             }
 
             ESAA.sendContactData();            
