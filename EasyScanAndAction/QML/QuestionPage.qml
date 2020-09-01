@@ -12,6 +12,7 @@ ESAAPage
     {
         abort()
     }
+    property variant yesAnswers: []
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.textColor // ESAA.fontColor2
     Flickable
@@ -143,6 +144,34 @@ ESAAPage
                 inputMethodHints: Qt.ImhEmailCharactersOnly
                 color: textColor
             }
+            Repeater
+            {
+                model: ESAA.yesQuestionCount
+                Column
+                {
+                    width: parent.width - 2 * ESAA.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    ESAAText
+                    {
+                        width: parent.width
+                        id: textId
+                        color: createqrcodepage.textColor
+                        text: ESAA.getYesQuestion(index)
+                        wrapMode: Text.WordWrap
+                    }
+                    ESAASwitch
+                    {
+                        id: mobileSwitch
+                        width: parent.width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTr("Ja")
+                        fontColor: createqrcodepage.textColor
+                        onCheckedChanged: yesAnswers[index] = checked
+                    }
+
+                }
+            }
+
             Item
             {
                 width: parent.width
@@ -184,7 +213,7 @@ ESAAPage
             ESAA.lastVisitEmailAdress = ""
             ESAA.lastVisitMobile = ""
 
-            ESAA.lastVisitFacilityName = ESAA.facilityName
+            LastVisit.facilityName = ESAA.facilityName
             ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
             ESAA.lastVisitLogoUrl = ESAA.logoUrl
             ESAA.lastVisitColor = ESAA.color
@@ -285,6 +314,15 @@ ESAAPage
                 ESAA.mobile = mobile.text
                 ESAA.lastVisitMobile = mobile.text
             }
+            for (var i = 0; i < ESAA.yesQuestionCount; ++i)
+            {
+                if (!yesAnswers[i])
+                {
+                    ESAA.showMessage("Diese Frage musst du noch mit \"Ja\" beantworten:<br><br>" + ESAA.getYesQuestion(i))
+                    return;
+                }
+            }
+
             ESAA.sendContactData();            
             close()
         }

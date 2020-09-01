@@ -9,6 +9,7 @@ Item
     property alias inputMethodHints: input.inputMethodHints
     property alias readOnly: input.readOnly
     height: caption.length ? captionText.height + input.height : input.height
+    property alias inputHeight: input.height
 
     ESAAText
     {

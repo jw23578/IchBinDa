@@ -179,7 +179,7 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
     visitObject["ibdToken"] = ibdToken;
-    visitObject["facilityName"] = lastVisitFacilityName();
+    visitObject["facilityName"] = lastVisit.facilityName();
     visitObject["fstname"] = lastVisitFstname();
     visitObject["surname"] = lastVisitSurname();
     visitObject["street"] = lastVisitStreet();
@@ -261,7 +261,7 @@ void ESAAApp::saveData()
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
     data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
-    data["lastVisitFacilityName"] = lastVisitFacilityName();
+    data["lastVisitFacilityName"] = lastVisit.facilityName();
     data["lastVisitFstname"] = lastVisitFstname();
     data["lastVisitSurname"] = lastVisitSurname();
     data["lastVisitStreet"] = lastVisitStreet();
@@ -297,7 +297,7 @@ void ESAAApp::loadData()
     setLastVisitLogoUrl(data["lastVisitLogoUrl"].toString());
     setLastVisitColor(data["lastVisitColor"].toString());
 
-    setLastVisitFacilityName(data["lastVisitFacilityName"].toString());
+    lastVisit.setFacilityName(data["lastVisitFacilityName"].toString());
     setLastVisitFstname(data["lastVisitFstname"].toString());
     setLastVisitSurname(data["lastVisitSurname"].toString());
     setLastVisitStreet(data["lastVisitStreet"].toString());
@@ -402,6 +402,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKey = Botan::X509::load_key(datasource);
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
+    e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));
     QDir dir;
     QString path(getWriteablePath());
     if (!dir.exists(path))
@@ -437,6 +438,21 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         file.readLine(buf, 1000);
         ibdTokenStoreURL = QString(buf).trimmed();
     }
+}
+
+void ESAAApp::clearYesQuestions()
+{
+    yesQuestions.clear();
+}
+
+void ESAAApp::addYesQuestions(const QString &yq)
+{
+    yesQuestions.push_back(yq);
+}
+
+QString ESAAApp::getYesQuestion(int index)
+{
+    return yesQuestions[index];
 }
 
 void ESAAApp::clearData2Send()
@@ -572,7 +588,19 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setAnonymContactMailAdress(anonymEMail);
         setLastVisitCountX(data["x"].toInt());
         setLastVisitCountXColor(data["colorx"].toString());
-        emit validQRCodeDetected();
+        clearYesQuestions();
+        for (int i(0); i < 20; ++i)
+        {
+            QString question("yq");
+            question += QString::number(i);
+            QString yq(data[question].toString());
+            if (yq.length())
+            {
+                addYesQuestions(yq);
+            }
+        }
+        setYesQuestionCount(yesQuestions.size());
+        emit validQRCodeDetected();        
         return;
     }
     emit invalidQRCodeDetected();
@@ -621,6 +649,10 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
     qr["logo"] = li.logoUrl;
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
+    for (size_t i(0); i < yesQuestions.size(); ++i)
+    {
+        qr[QString("yq") + QString::number(i)] = yesQuestions[i];
+    }
     return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
 }
 
@@ -692,7 +724,7 @@ void ESAAApp::recommend()
     QString content("Ich benutze die ");
     content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen: (PlayStore) ";
     content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de oder (AppStore) https://apps.apple.com/us/app/id1528926162";
-    mobileExtension.shareText("Ich bin da!", "Ich bin da! Kontaktdatenaustausch per QR-Code", content);
+    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
 std::set<std::string> ESAAApp::invalidEMailDomains;

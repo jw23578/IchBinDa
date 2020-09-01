@@ -16,8 +16,18 @@ ESAAPage
     property alias theFacilityName: facilityName.displayText
     property alias theContactReceiveEMail: contactReceiveEMail.displayText
     property color textColor: ESAA.textColor
+    property variant yesQuestionVector: []
     function generate()
     {
+        ESAA.clearYesQuestions()
+        for (var i = 0; i < yesQuestionRepeater.count; ++i)
+        {
+            if (yesQuestionVector[i] != "")
+            {
+                ESAA.addYesQuestions(yesQuestionVector[i])
+            }
+        }
+
         qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
                                              contactReceiveEMail.displayText,
                                              logoUrl.displayText,
@@ -153,6 +163,7 @@ ESAAPage
                 id: textId
                 color: createqrcodepage.textColor
                 text: "Welche Daten sollen erfasst werden?"
+                wrapMode: Text.WordWrap
             }
 
             ESAASwitch
@@ -179,6 +190,74 @@ ESAAPage
                 text: qsTr("Handynummer")
                 fontColor: createqrcodepage.textColor
             }
+            ESAAText
+            {
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: createqrcodepage.textColor
+                text: "Folgende Fragen müssen jedesmal mit \"Ja\" beantwortet werden:"
+                wrapMode: Text.WordWrap
+            }
+            Repeater
+            {
+                id: yesQuestionRepeater
+                model: 1
+                Row
+                {
+                    width: parent.width - 2 * ESAA.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    ESAALineInputWithCaption
+                    {
+                        color: createqrcodepage.textColor
+                        width: parent.width - height
+                        caption: (index + 1) + ". Frage"
+                        id: yesQuestion
+                        Component.onCompleted: text = yesQuestionVector[index]
+                        onDisplayTextChanged: yesQuestionVector[index] = displayText
+                    }
+                    Item
+                    {
+                        width: ESAA.spacing / 2
+                    }
+
+                    ESAAIconButton
+                    {
+                        source: "qrc:/images/eraseIcon.svg"
+                        width: yesQuestion.inputHeight
+                        height: width
+                        anchors.bottom: parent.bottom
+                        Component.onCompleted:
+                        {
+                            if (index == yesQuestionRepeater.count - 1)
+                            {
+                                rotate(100)
+                            }
+                        }
+                        onClicked:
+                        {
+                            if (yesQuestionRepeater.count <= 1)
+                            {
+                                return
+                            }
+
+                            for (var i = index; i < yesQuestionRepeater.count; ++i)
+                            {
+                                yesQuestionVector[i] = yesQuestionVector[i + 1]
+                            }
+                            yesQuestionVector[yesQuestionRepeater.count - 1] = ""
+                            yesQuestionRepeater.model = yesQuestionRepeater.count - 1
+                        }
+                    }
+                }
+            }
+            ESAAButton
+            {
+                width: parent.width
+                text: "weitere Frage"
+                onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
             Item
             {
                 width: parent.width

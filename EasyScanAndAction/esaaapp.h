@@ -19,6 +19,7 @@
 #include "botan_all_x64.h"
 #endif
 #include <QJsonObject>
+#include "visit.h"
 
 class ESAAApp: public QObject
 {
@@ -26,6 +27,7 @@ class ESAAApp: public QObject
     QString getWriteablePath();
     jw::mobileext mobileExtension;
     QNetworkAccessManager networkAccessManager;
+    Visit lastVisit;
     // Einstellungen
     JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
@@ -48,7 +50,8 @@ class ESAAApp: public QObject
     JWPROPERTY(int, spacing, Spacing, 20);
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
-    JWPROPERTY(QString, appName, AppName, "Ich bin da!");
+    JWPROPERTY(QString, appName, AppName, "IchBinDa!");
+    JWPROPERTY(int, yesQuestionCount, YesQuestionCount, 0);
     std::set<QString> qrCodes;
     static std::set<std::string> invalidEMailDomains;
 
@@ -81,7 +84,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, lastVisitLogoUrl, LastVisitLogoUrl, "");
     JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
-    JWPROPERTY(QString, lastVisitFacilityName, LastVisitFacilityName, "");
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
     JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
@@ -135,9 +137,14 @@ class ESAAApp: public QObject
     QString lastActionJSON;
     QDateTime lastActionDateTime;
     QJsonObject jsonData2Send;
+
+    std::vector<QString> yesQuestions;
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE void clearYesQuestions();
+    Q_INVOKABLE void addYesQuestions(const QString &yq);
+    Q_INVOKABLE QString getYesQuestion(int index);
     Q_INVOKABLE void saveData();
     Q_INVOKABLE void clearData2Send();
     Q_INVOKABLE void addData2Send(const QString &field, const QString &value);

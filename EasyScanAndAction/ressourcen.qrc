@@ -19,9 +19,8 @@
         <file>roboto/RobotoCondensed-Light.ttf</file>
         <file>roboto/RobotoCondensed-LightItalic.ttf</file>
         <file>roboto/RobotoCondensed-Regular.ttf</file>
-        <file>images/background.jpg</file>
         <file>images/burgermenue.svg</file>
-        <file>images/inputBackground.jpg</file>
         <file>images/share-icon-40146.png</file>
+        <file>images/eraseIcon.svg</file>
     </qresource>
 </RCC>

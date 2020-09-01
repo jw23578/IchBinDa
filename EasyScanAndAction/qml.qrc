@@ -17,12 +17,12 @@
         <file>QML/AgreePage.qml</file>
         <file>QML/ESAAHeader.qml</file>
         <file>QML/ShowQRCode.qml</file>
-        <file>QML/ESAATextBackground.qml</file>
         <file>EMailConfig.txt</file>
         <file>QML/ESAASendedDataPage.qml</file>
         <file>QML/BadMessage.qml</file>
         <file>QML/VisitEndQuestion.qml</file>
         <file>QML/ContentBackground.qml</file>
         <file>QML/MovingRectangle.qml</file>
+        <file>QML/ESAAIconButton.qml</file>
     </qresource>
 </RCC>

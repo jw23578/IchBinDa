@@ -20,6 +20,7 @@ DEFINES += NO_PNG
 SOURCES += \
     esaaapp.cpp \
     src/jwmobileext.cpp \
+    visit.cpp \
 zint-master/backend/2of5.c \
 zint-master/backend/auspost.c \
 zint-master/backend/aztec.c \
@@ -58,6 +59,7 @@ HEADERS += \
     ios/ios_functions.h \
     qt_extension_macros.h \
     src/jwmobileext.h \
+    visit.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
 zint-master/backend/code49.h \

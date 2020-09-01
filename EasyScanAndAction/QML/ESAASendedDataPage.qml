@@ -32,7 +32,7 @@ ESAAPage
         {
             width: parent.width - 2 * ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
-            text: ESAA.lastVisitFacilityName
+            text: LastVisit.facilityName
             color: textColor
             font.pixelSize: ESAA.fontTextPixelsize * 1.5
             font.bold: true
