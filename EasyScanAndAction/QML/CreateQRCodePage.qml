@@ -190,6 +190,7 @@ ESAAPage
                 text: qsTr("Handynummer")
                 fontColor: createqrcodepage.textColor
             }
+            /*
             ESAAText
             {
                 width: parent.width - 2 * ESAA.spacing
@@ -248,15 +249,15 @@ ESAAPage
                             yesQuestionRepeater.model = yesQuestionRepeater.count - 1
                         }
                     }
-                }
-            }
+        }
+    }
             ESAAButton
             {
                 width: parent.width
                 text: "weitere Frage"
                 onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
                 anchors.horizontalCenter: parent.horizontalCenter
-            }
+            }*/
 
             Item
             {
