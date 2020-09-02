@@ -189,6 +189,8 @@ DISTFILES += \
     ios/Images.xcassets/AppIcon.appiconset/87.png \
     ios/Images.xcassets/AppIcon.appiconset/Contents.json \
     ios/Images.xcassets/Contents.json \
+    ios/Images.xcassets/appstore.png \
+    ios/Images.xcassets/playstore.png \
     ios/ios_functions.mm \
     src/ichbinda/jw78/de/JWAppActivity.java \
     src/ichbinda/jw78/de/JWAppService.java \
