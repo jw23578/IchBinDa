@@ -6,91 +6,68 @@ ESAAPage
     id: splashscreen
     opacity: 1
     y: 0
-    Column
+    Rectangle
     {
         anchors.fill: parent
-        Item
+        gradient: Gradient
         {
-            height: parent.height / 3
-            width: parent.width
-            Text
-            {
-                id: t1
-                anchors.horizontalCenterOffset: parent.width
-                anchors.centerIn: parent
-                text: "Ich"
-                font.pixelSize: parent.height * 3 / 5
-                color: ESAA.textColor
-            }
-        }
-        Item
-        {
-            height: parent.height / 3
-            width: parent.width
-            Text
-            {
-                id: t2
-                anchors.horizontalCenterOffset: -parent.width
-                anchors.centerIn: parent
-                text: "bin"
-                font.pixelSize: parent.height * 3 / 5
-                color: ESAA.textColor
-            }
-        }
-        Item
-        {
-            height: parent.height / 3
-            width: parent.width
-            Text
-            {
-                id: t3
-                anchors.horizontalCenterOffset: parent.width
-                anchors.centerIn: parent
-                text: "da!"
-                font.pixelSize: parent.height * 3 / 5
-                color: ESAA.textColor
-            }
+            orientation: Gradient.Horizontal
+            GradientStop {position: 0.0; color: "#4581B3"}
+            GradientStop {position: 1.0; color: "#364995"}
         }
     }
-    ParallelAnimation
+
+    property int qrCodeOffset: 0
+    Behavior on qrCodeOffset {
+        NumberAnimation
+        {
+            id: moveQRCode
+        }
+    }
+    Image
     {
-        id: animation
-        NumberAnimation
-        {
-            target: t1
-            property: "anchors.horizontalCenterOffset"
-            to: 0
-            duration: 300
-        }
-        NumberAnimation
-        {
-            target: t2
-            property: "anchors.horizontalCenterOffset"
-            to: 0
-            duration: 300
-        }
-        NumberAnimation
-        {
-            target: t3
-            property: "anchors.horizontalCenterOffset"
-            to: 0
-            duration: 300
+        id: qrCodeImage
+        width: parent.width / 2
+        opacity: 0.6
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: qrCodeOffset
+        source: "qrc:/images/logoQR_1024x1024.png"
+        mipmap: true
+        fillMode: Image.PreserveAspectFit
+    }
+    Image
+    {
+        id: claimImage
+        width: qrCodeImage.width / 580.0 * 364.0
+        source: "qrc:/images/logoClaim_1024x1024.png"
+        mipmap: true
+        fillMode: Image.PreserveAspectFit
+        x: -width
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -height / 4
+        Behavior on x {
+            NumberAnimation {
+                duration: 400
+            }
         }
     }
+
     PauseAnimation {
         id: hidePause
-        duration: 800
+        duration: 1000
         onFinished: splashDone()
     }
 
     PauseAnimation
     {
         id: pause
-        duration: 200
+        duration: 20
         onFinished:
         {
             hidePause.start()
-            animation.start()
+            qrCodeOffset = splashscreen.width / 8
+            claimImage.x = parent.width / 8
+            //            animation.start()
         }
     }
     function start()

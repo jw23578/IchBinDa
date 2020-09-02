@@ -22,5 +22,7 @@
         <file>images/burgermenue.svg</file>
         <file>images/share-icon-40146.png</file>
         <file>images/eraseIcon.svg</file>
+        <file>images/logoClaim_1024x1024.png</file>
+        <file>images/logoQR_1024x1024.png</file>
     </qresource>
 </RCC>

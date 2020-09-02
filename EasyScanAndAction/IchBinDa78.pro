@@ -161,6 +161,7 @@ else
 
 DISTFILES += \
     ../README.md \
+    ../copyAndroidIcons.sh \
     .gitignore \
     android/AndroidManifest.xml \
     android/build.gradle \
