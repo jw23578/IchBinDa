@@ -12,18 +12,13 @@ ApplicationWindow {
     property var activePage: null
     function showNewPage(currentPage, nextPage)
     {
-        currentPage.z = 0
-        nextPage.z = 1
-        if (currentPage === splashscreen)
+        if (currentPage != null)
         {
-            headerItem.initialAnimation()
-        }
-        else
-        {
-            headerItem.animate()
+            currentPage.z = 0
+            currentPage.hide(direction)
         }
         var direction = true
-        currentPage.hide(direction)
+        nextPage.z = 1
         nextPage.show(direction)
         if (nextPage === scannerpage)
         {
@@ -52,16 +47,16 @@ ApplicationWindow {
             }
         }
     }
-    ESAAHeader
+    Item
     {
-        id: headerItem
+        id: header
         width: parent.width
         height: parent.height / 20
-        // visible: !agreepage.visible && !splashscreen.visible
     }
+
     ContentBackground
     {
-        anchors.top: headerItem.bottom
+        anchors.top: header.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -69,7 +64,7 @@ ApplicationWindow {
 
     Item
     {
-        y: headerItem.height
+        anchors.top: header.bottom
         id: contentItem
         width: parent.width
         height: parent.height - y
@@ -232,7 +227,7 @@ ApplicationWindow {
     {
         id: agreepage
         anchors.left: parent.left
-        anchors.top: headerItem.bottom
+        anchors.top: header.bottom
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         onAgreed:
@@ -241,21 +236,36 @@ ApplicationWindow {
         }
     }
 
-    SplashScreen
+    //    SplashScreen
+    //    {
+    //        id: splashscreen
+    //        onSplashDone:
+    //        {
+    //            if (!ESAA.aggrementChecked)
+    //            {
+    //                showNewPage(splashscreen, agreepage)
+    //            }
+    //            else
+    //            {
+    //                showNewPage(splashscreen, scannerpage)
+    //            }
+    //        }
+    //    }
+    SplashHeader
     {
-        id: splashscreen
         onSplashDone:
         {
             if (!ESAA.aggrementChecked)
             {
-                showNewPage(splashscreen, agreepage)
+                showNewPage(null, agreepage)
             }
             else
             {
-                showNewPage(splashscreen, scannerpage)
+                showNewPage(null, scannerpage)
             }
         }
     }
+
     Connections
     {
         target: ESAA
@@ -274,7 +284,6 @@ ApplicationWindow {
         console.log("Spacing: " + ESAA.spacing)
 
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
-        splashscreen.start()
     }
     onClosing: {
         close.accepted = false
