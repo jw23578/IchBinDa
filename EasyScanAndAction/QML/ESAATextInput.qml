@@ -13,10 +13,10 @@ FocusScope
     {
         id: rectangle
         anchors.fill: parent
-        border.color: "#E9F0F8"
+        border.color: ESAA.lineInputBorderColor
         border.width: input.readOnly ? 0 : 1
         radius: ESAA.radius
-        color: input.readOnly ? "white" : input.activeFocus ? "white" : "#E9F0F8"
+        color: input.readOnly ? "white" : input.activeFocus ? "white" : border.color
         TextInput
         {
             id: input

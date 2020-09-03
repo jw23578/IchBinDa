@@ -12,7 +12,7 @@ Rectangle
     property alias headerText: headerCaption.text
     property color gradientFromColor: ESAA.buttonColor
     property color gradientToColor: "#364995"
-    property int shrinkDuration: 200
+    property int shrinkDuration: 400
     Behavior on gradientToColor {
         ColorAnimation {
             duration: shrinkDuration
@@ -30,6 +30,7 @@ Rectangle
         anchors.centerIn: parent
         id: headerCaption
         color: ESAA.textColor
+        font.pixelSize: ESAA.fontTextPixelsize * 0.8
     }
 
     Logo
@@ -79,6 +80,7 @@ Rectangle
         onFinished:
         {
             hidePause.start()
+            logo.qrCodeOpacity = 0.6
             logo.qrCodeOffset = splashscreen.width / 8
             logo.claimImageX = parent.width / 8
         }

@@ -768,10 +768,10 @@ void ESAAApp::calculateRatios()
     qreal m_ratioFont = qMin(height*refDpi/(dpi*refHeight), width*refDpi/(dpi*refWidth));
     qDebug() << "m_ratio: " << m_ratio;
     qDebug() << "m_ratioFont: " << m_ratioFont;
-    double baseFontSize(24);
+    double baseFontSize(20);
     double baseSpacing(45);
 #ifdef DMOBILEDEVICE
-    baseFontSize = 22;
+    baseFontSize = 18;
     baseSpacing = 40;
 #endif
     setFontButtonPixelsize(m_ratioFont * baseFontSize);

@@ -26,5 +26,6 @@ Item
         visible: input.displayText == ""
         color:  input.activeFocus ? "#aaaaaa" : "#555555"
         verticalAlignment: Text.AlignVCenter
+        font.pixelSize: ESAA.fontTextPixelsize / 1.5
     }
 }

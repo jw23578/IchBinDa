@@ -4,6 +4,7 @@ Item
 {
     property alias claimImageX: claimImage.x
     property int qrCodeOffset: 0
+    property alias qrCodeOpacity: qrCodeImage.opacity
     property int animationDuration: 200
     Behavior on qrCodeOffset {
         NumberAnimation
@@ -15,7 +16,14 @@ Item
     {
         id: qrCodeImage
         width: parent.width / 2
-        opacity: 0.6
+        opacity: 0
+        Behavior on opacity {
+            NumberAnimation
+            {
+                duration: animationDuration
+            }
+        }
+
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: qrCodeOffset
         anchors.verticalCenterOffset: parent.height / 12

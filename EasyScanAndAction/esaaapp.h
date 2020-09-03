@@ -31,6 +31,9 @@ class ESAAApp: public QObject
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
     JWPROPERTY(int, screenHeight, ScreenHeight, 0);
+    JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
+
+
     JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");

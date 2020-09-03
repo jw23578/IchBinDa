@@ -12,8 +12,18 @@ Button
     property alias source: img.source
     property color buttonColor: ESAA.buttonColor
 
+    contentItem: Text {
+        text: control.text
+        font: control.font
+        opacity: enabled ? 1.0 : 0.3
+        color: control.down ? ESAA.buttonColor : "white"
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+    }
+
     background: Rectangle {
-        color: control.down ? ESAA.buttonDownColor : control.buttonColor
+        color: control.down ? "white" : control.buttonColor
         opacity: enabled ? 0.8 : 0.3
         border.color: ESAA.buttonColor
         border.width: 1

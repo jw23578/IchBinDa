@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.0
 
 ESAAPage
 {
+    caption: "QR-Code erstellen"
     id: createqrcodepage
     signal close
     signal showCode
@@ -272,14 +273,13 @@ ESAAPage
             }
         }
     }
-    ESAAButton
+    CircleButton
     {
         id: showCodeButton
         anchors.margins: ESAA.spacing
         anchors.bottom: quitButton.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: theColumn.width
-        text: "QR-Code erzeugen"
+        text: "QR-Code<br>erzeugen"
         onClicked: {
             if (facilityName.displayText == "")
             {
