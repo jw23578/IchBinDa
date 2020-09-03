@@ -144,6 +144,14 @@ ApplicationWindow {
                 showNewPage(menuepage, firststart)
             }
         }
+        AgreePage
+        {
+            id: agreepage
+            onAgreed:
+            {
+                showNewPage(agreepage, firststart)
+            }
+        }
     }
 
     NumberAnimation {
@@ -213,19 +221,6 @@ ApplicationWindow {
         onClose:
         {
             showNewPage(visitEndPage, scannerpage)
-        }
-    }
-
-    AgreePage
-    {
-        id: agreepage
-        anchors.left: parent.left
-        anchors.top: header.bottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        onAgreed:
-        {
-            showNewPage(agreepage, firststart)
         }
     }
     SplashHeader
