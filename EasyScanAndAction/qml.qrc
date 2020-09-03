@@ -24,5 +24,6 @@
         <file>QML/ESAAIconButton.qml</file>
         <file>QML/Logo.qml</file>
         <file>QML/SplashHeader.qml</file>
+        <file>QML/CircleButton.qml</file>
     </qresource>
 </RCC>

@@ -20,6 +20,7 @@ ApplicationWindow {
         var direction = true
         nextPage.z = 1
         nextPage.show(direction)
+        splashheader.headerText = nextPage.caption
         if (nextPage === scannerpage)
         {
             showCallMenueButton.start()
@@ -163,8 +164,8 @@ ApplicationWindow {
     }
     Rectangle
     {
-        color: ESAA.menueButtonColor
-        border.color: ESAA.lineColor
+        color: ESAA.buttonColor
+        border.color: ESAA.buttonColor
         border.width: 1
         id: callMenueButton
         width: parent.width / 4
@@ -196,14 +197,6 @@ ApplicationWindow {
     }
 
 
-    Message
-    {
-        id: message
-    }
-    BadMessage
-    {
-        id: badMessage
-    }
     ESAASendedDataPage
     {
         id: sendedDataPage
@@ -235,24 +228,9 @@ ApplicationWindow {
             showNewPage(agreepage, firststart)
         }
     }
-
-    //    SplashScreen
-    //    {
-    //        id: splashscreen
-    //        onSplashDone:
-    //        {
-    //            if (!ESAA.aggrementChecked)
-    //            {
-    //                showNewPage(splashscreen, agreepage)
-    //            }
-    //            else
-    //            {
-    //                showNewPage(splashscreen, scannerpage)
-    //            }
-    //        }
-    //    }
     SplashHeader
     {
+        id: splashheader
         onSplashDone:
         {
             if (!ESAA.aggrementChecked)
@@ -265,6 +243,15 @@ ApplicationWindow {
             }
         }
     }
+    Message
+    {
+        id: message
+    }
+    BadMessage
+    {
+        id: badMessage
+    }
+
 
     Connections
     {
@@ -280,9 +267,10 @@ ApplicationWindow {
     }
     Component.onCompleted:
     {
+        ESAA.screenHeight = height
+        ESAA.screenWidth = width
         ESAA.calculateRatios()
         console.log("Spacing: " + ESAA.spacing)
-
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
     }
     onClosing: {

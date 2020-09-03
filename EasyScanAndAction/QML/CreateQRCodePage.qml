@@ -12,10 +12,16 @@ ESAAPage
         console.log("create qr code")
         close()
     }
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
     property string qrCodeFileName: ""
     property alias theFacilityName: facilityName.displayText
     property alias theContactReceiveEMail: contactReceiveEMail.displayText
-    property color textColor: ESAA.textColor
+    property color textColor: "#4581B3"
     property variant yesQuestionVector: []
     function generate()
     {

@@ -6,7 +6,15 @@ import QtGraphicalEffects 1.0
 
 ESAAPage
 {
+    caption: "QR-Code einlesen"
     property int changeCounter: 0
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
+
     Timer
     {
         interval: 10000
@@ -99,21 +107,9 @@ ESAAPage
         onCameraStatusChanged: if (cameraStatus == Camera.ActiveStatus) waitForSearchAndLock.start()
     }
 
-
-    ESAAText
-    {
-        id: headertext
-        anchors.top: parent.top
-        anchors.topMargin: ESAA.spacing
-        anchors.bottomMargin: ESAA.spacing
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: "QR-Code einlesen"
-        color: "white"
-        //        horizontalAlignment: Text.horizontalCenter
-    }
     Item
     {
-        anchors.top: headertext.bottom
+        anchors.top: parent.top
         id: scanneritem
         width: parent.width
         height: width
@@ -246,13 +242,21 @@ ESAAPage
         anchors.bottom: parent.bottom
         anchors.top: scanneritem.bottom
         anchors.right: parent.right
-        ESAAButton
+        ESAAText
+        {
+            text: qsTr("Weiterempfehlen")
+            anchors.bottom: shareButton.top
+            anchors.bottomMargin: contentHeight / 2
+            color: "black"
+            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        CircleButton
         {
             id: shareButton
-            width: parent.width * 0.8
             anchors.centerIn: parent
             anchors.verticalCenterOffset: lastTransmissionbutton.visible ? -lastTransmissionbutton.height : 0
-            text: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
             source: "qrc:/images/share-icon-40146.png"
         }

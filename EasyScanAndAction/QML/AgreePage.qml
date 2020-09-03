@@ -4,6 +4,14 @@ import QtQuick.Controls 2.13
 ESAAPage
 {
     signal agreed
+    caption: "Zustimmung"
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
+
     Flickable
     {
         id: view
@@ -19,7 +27,7 @@ ESAAPage
         TextArea
         {
             id: theText
-            height: contentHeight
+            height: contentHeight * 1.1
             width: parent.width
             readOnly: true
             textFormat: TextEdit.RichText
@@ -36,7 +44,7 @@ ESAAPage
                   "<br><br>Pro Besuch wird ein zufälliges Token erzeugt das mit Datum/Uhrzeit und einem Locationtoken auf einem Server gespeichert wird. Über diese Token können keine persönlichen Daten in Erfahrung gebracht werden." +
                   "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                   "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."
-            color: ESAA.textColor
+            color: ESAA.buttonColor
 
         }
     }

@@ -783,6 +783,7 @@ void ESAAApp::calculateRatios()
 void ESAAApp::reset()
 {
     QFile(dataFileName).remove();
+    showMessage("Alle Einstellungen wurden zurückgesetzt");
 }
 
 void ESAAApp::showLastTransmission()

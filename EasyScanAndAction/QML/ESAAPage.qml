@@ -6,6 +6,7 @@ Item
     signal hiding;
     signal backPressed
     focus: true
+    property string caption: ""
     Keys.onReleased:
     {
         console.log("ESAAPage Key pressed: "+event.key)

@@ -9,7 +9,8 @@ Rectangle
     x: 0
     width: parent.width
     height: parent.height
-    property color gradientFromColor: "#4581B3"
+    property alias headerText: headerCaption.text
+    property color gradientFromColor: ESAA.buttonColor
     property color gradientToColor: "#364995"
     property int shrinkDuration: 200
     Behavior on gradientToColor {
@@ -23,6 +24,12 @@ Rectangle
         orientation: Gradient.Horizontal
         GradientStop {position: 0.0; color: gradientFromColor}
         GradientStop {position: 1.0; color: gradientToColor}
+    }
+    ESAAText
+    {
+        anchors.centerIn: parent
+        id: headerCaption
+        color: ESAA.textColor
     }
 
     Logo
@@ -39,10 +46,18 @@ Rectangle
             easing.type: Easing.OutCubic
         }
     }
+    MouseArea
+    {
+        anchors.fill: parent
+        pressAndHoldInterval: 5000
+        onPressAndHold: {
+            ESAA.reset()
+        }
+    }
 
     function minimize()
     {
-        height = parent.height / 14
+        height = parent.height / 20
         gradientToColor = gradientFromColor
         logo.qrCodeOffset = parent.height / 10 / 8
         logo.claimImageX = parent.height / 10 / 8

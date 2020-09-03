@@ -14,7 +14,13 @@ ESAAPage
     }
     property variant yesAnswers: []
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
-    property color textColor: ESAA.textColor // ESAA.fontColor2
+    property color textColor: ESAA.buttonColor // ESAA.fontColor2
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
     Flickable
     {
         id: theFlick

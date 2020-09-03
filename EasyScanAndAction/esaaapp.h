@@ -29,6 +29,8 @@ class ESAAApp: public QObject
     QNetworkAccessManager networkAccessManager;
     Visit lastVisit;
     // Einstellungen
+    JWPROPERTY(int, screenWidth, ScreenWidth, 0);
+    JWPROPERTY(int, screenHeight, ScreenHeight, 0);
     JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
@@ -38,7 +40,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, fontColor2, FontColor2, "#938274")
     JWPROPERTY(QColor, lineColor, LineColor, "#191919")
     JWPROPERTY(QColor, menueButtonColor, MenueButtonColor, "#0E79B2")
-    JWPROPERTY(QColor, buttonColor, ButtonColor, "#191928");
+    JWPROPERTY(QColor, buttonColor, ButtonColor, "#4581B3");
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
     JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
     JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);

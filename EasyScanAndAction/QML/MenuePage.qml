@@ -7,6 +7,14 @@ ESAAPage
     signal close
     signal editQRCode
     signal help
+    caption: "Menü"
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
+
     onShowing:
     {
         shareButton.blink(400)

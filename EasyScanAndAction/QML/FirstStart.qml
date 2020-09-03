@@ -4,6 +4,7 @@ import QtQuick.Controls 2.13
 ESAAPage
 {
     signal startNow
+    caption: "Hilfe"
     function goStartNow()
     {
         betreiberinfo.visible = false
@@ -13,6 +14,12 @@ ESAAPage
     onBackPressed:
     {
         goStartNow()
+    }
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
     }
 
     signal editContactData
@@ -92,7 +99,7 @@ ESAAPage
                       "Die Kontaktdaten der Kunden/Besucher werden verschlüsselt in der Mail übertragen und können nicht von dir ausgelesen werden.<br>" +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.textColor
+                color: ESAA.buttonColor
 
             }
         }
@@ -142,7 +149,7 @@ ESAAPage
                       "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.textColor
+                color: ESAA.buttonColor
 
             }
         }
