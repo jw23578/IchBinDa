@@ -22,53 +22,61 @@ ESAAPage
         spendenButton.blink(500)
     }
 
-    Column
+    Grid
     {
-        anchors.fill: parent
-        anchors.margins: ESAA.spacing
-        topPadding: spacing / 2
-        spacing: (height - 6 * qrcodebutton.height) / 6
-        ESAAButton
+        id: theGrid
+        property int buttonSize: ESAA.screenWidth / 3
+        property int buttonFontPixelSize: ESAA.fontButtonPixelsize
+        columns: 2
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: buttonSize * 2.5
+        topPadding: spacing / 4
+        spacing: width - 2 * buttonSize
+        rowSpacing: spacing / 2
+        CircleButton
         {
             id: qrcodebutton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
             text: "QR-Code\nanlegen"
             onClicked: editQRCode()
+            width: parent.buttonSize
+            font.pixelSize: theGrid.buttonFontPixelSize
         }
-        ESAAButton
+        CircleButton
         {
             id: editButton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Meine Kontaktdaten\nbearbeiten")
+            font.pixelSize: theGrid.buttonFontPixelSize
+            text: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
             onClicked: editContactData()
+            width: parent.buttonSize
         }
-        ESAAButton
+        CircleButton
         {
             id: helpButton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Hilfe"
+            font.pixelSize: theGrid.buttonFontPixelSize * 1.3
+            text: qsTr("Hilfe")
             onClicked: help()
+            width: parent.buttonSize
         }
-        ESAAButton
-        {
-            id: shareButton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Weiterempfehlen")
-            onClicked: ESAA.recommend()
-            source: "qrc:/images/share-icon-40146.png"
-        }
-        ESAAButton
+        CircleButton
         {
             id: spendenButton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Spenden")
+            font.pixelSize: theGrid.buttonFontPixelSize * 1.3
             onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
+            width: parent.buttonSize
         }
+    }
+    CircleButton
+    {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: theGrid.bottom
+        id: shareButton
+        belowCaption: qsTr("Weiterempfehlen")
+        onClicked: ESAA.recommend()
+        width: theGrid.buttonSize
+        source: "qrc:/images/share_weiss.svg"
+        downSource: "qrc:/images/share_blau.svg"
     }
 
 

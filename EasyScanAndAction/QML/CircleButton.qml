@@ -15,7 +15,8 @@ Button
     property color buttonColor: ESAA.buttonColor
     property int verticalImageOffset: 0
     property double imageSizeFactor: 1
-
+    property alias belowCaption: belowCaptionText.text
+    property alias aboveCaption: aboveCaptionText.text
     contentItem: ESAAText
     {
         text: control.text
@@ -25,6 +26,30 @@ Button
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
+    }
+    ESAAText
+    {
+        visible: text != ""
+        id: belowCaptionText
+        color: ESAA.buttonColor
+        font.pixelSize: control.font.pixelSize * 1.5
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.bottom
+    }
+    ESAAText
+    {
+        visible: text != ""
+        id: aboveCaptionText
+        color: ESAA.buttonColor
+        font.pixelSize: control.font.pixelSize * 1.5
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.top
     }
 
     background: Rectangle {

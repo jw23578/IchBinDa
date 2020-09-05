@@ -26,7 +26,7 @@ Button
         color: control.down ? ESAA.buttonDownColor : control.buttonColor
         implicitWidth: 100
         implicitHeight: 40
-        opacity: enabled ? 0.8 : 0.3
+        opacity: enabled ? 1 : 0.3
         border.color: ESAA.buttonBorderColor
         border.width: 1
         radius: ESAA.radius

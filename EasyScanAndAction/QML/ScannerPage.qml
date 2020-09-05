@@ -249,19 +249,10 @@ ESAAPage
         anchors.bottom: parent.bottom
         anchors.top: scanneritem.bottom
         anchors.right: parent.right
-        ESAAText
-        {
-            text: qsTr("Weiterempfehlen")
-            anchors.bottom: shareButton.top
-            anchors.bottomMargin: contentHeight / 8
-            color: "black"
-            font.pixelSize: ESAA.fontTextPixelsize * 1.5
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
         CircleButton
         {
             id: shareButton
+            aboveCaption: qsTr("Weiterempfehlen")
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -height / 5
             onClicked: ESAA.recommend()

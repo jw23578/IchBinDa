@@ -127,8 +127,7 @@ ESAAPage
                 color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                caption: "Farbcode für xten Besuch (Format: #ffffff)"
-                text: "#ffffff"
+                caption: "Farbcode für xten Besuch<br>(Format: #ffffff)"
                 colorEdit: true
                 id: colorInputVisitCount
             }
