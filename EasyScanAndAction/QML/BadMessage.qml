@@ -29,7 +29,7 @@ Item
             font.pixelSize: ESAA.fontMessageTextPixelsize
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
-            color: ESAA.textColor
+            color: ESAA.buttonColor
         }
     }
 
