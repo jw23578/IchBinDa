@@ -32,41 +32,58 @@ ESAAPage
 
     Column
     {
-        anchors.fill: parent
-        anchors.margins: ESAA.spacing
+        visible: !betreiberinfo.visible && !kundeinfo.visible
+        id: theGrid
+        property int buttonSize: ESAA.screenWidth / 3
+        property int buttonFontPixelSize: ESAA.fontButtonPixelsize
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: buttonSize * 2.5
         topPadding: spacing / 2
-        spacing: (height - 4 * b1.height) / 4
-
-        ESAAButton
+        spacing: buttonSize / 3
+        Row
         {
-            visible: !betreiberinfo.visible && !kundeinfo.visible
-            id: b1
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Ich bin\nBetreiber"
-            onClicked: betreiberinfo.visible = true
+            spacing: theGrid.width - 2 * theGrid.buttonSize
+            CircleButton
+            {
+                id: b1
+                text: "Ich bin\nBetreiber"
+                onClicked: betreiberinfo.visible = true
+                width: theGrid.buttonSize
+                font.pixelSize: theGrid.buttonFontPixelSize
+            }
+            CircleButton
+            {
+                text: "Ich bin Kunde\n/Besucher"
+                onClicked: kundeinfo.visible = true
+                width: theGrid.buttonSize
+                font.pixelSize: theGrid.buttonFontPixelSize
+            }
         }
-        ESAAButton
+        CircleButton
         {
-            visible: !betreiberinfo.visible && !kundeinfo.visible
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Ich bin\nKunde/Besucher"
-            onClicked: kundeinfo.visible = true
-        }
-        ESAAButton
-        {
-            visible: !betreiberinfo.visible && !kundeinfo.visible
             id: shareButton
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Weiterempfehlen")
+            belowCaption: qsTr("Weiterempfehlen")
             onClicked: ESAA.recommend()
-            source: "qrc:/images/share-icon-40146.png"
+            source: "qrc:/images/share_weiss.svg"
+            downSource: "qrc:/images/share_blau.svg"
+            width: theGrid.buttonSize
+            font.pixelSize: theGrid.buttonFontPixelSize
         }
-        ESAAButton
+        Item
         {
-            visible: !betreiberinfo.visible && !kundeinfo.visible
-            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: 1
+        }
+
+        CircleButton
+        {
             text: "Ich möchte\ndirekt loslegen"
+            anchors.horizontalCenter: parent.horizontalCenter
             onClicked: goStartNow()
+            width: theGrid.buttonSize
+            font.pixelSize: theGrid.buttonFontPixelSize
         }
     }
     Item
