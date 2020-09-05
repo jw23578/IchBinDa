@@ -27,7 +27,7 @@ ESAAPage
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         horizontalAlignment: Text.horizontalCenter
         text: "Soll der Besuch beendet werden?"
-        color: ESAA.textColor
+        color: ESAA.buttonColor
     }
 
     ESAAButton
@@ -45,7 +45,7 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.width / 10
-        text: "Abbrechen"
+        text: "Nein"
         onClicked: close()
     }
 }
