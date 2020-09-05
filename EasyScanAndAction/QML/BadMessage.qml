@@ -9,7 +9,7 @@ Item
     Rectangle
     {
         anchors.fill: parent
-        color: "steelblue"
+        color: "white"
     }
     Flickable
     {

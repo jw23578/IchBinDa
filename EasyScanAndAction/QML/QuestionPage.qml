@@ -202,7 +202,7 @@ ESAAPage
         anchors.bottom: parent.bottom
         anchors.bottomMargin: height / 2
         anchors.horizontalCenter: parent.horizontalCenter
-        text: meineDaten ? "Meine Daten<br>speichern" : "Daten<br>senden"
+        text: meineDaten ? "speichern" : "Daten<br>senden"
         onClicked:
         {
             ESAA.clearData2Send()
@@ -352,6 +352,7 @@ ESAAPage
         color: ESAA.buttonColor
         font.pixelSize: ESAA.fontTextPixelsize
         anchors.horizontalCenter: parent.horizontalCenter
+        visible: !meineDaten
     }
     BackButton
     {

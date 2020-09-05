@@ -8,14 +8,16 @@ Button
     width: ESAA.screenWidth / 4
     height: width
     id: control
-    font.pixelSize: ESAA.fontButtonPixelsize
+    font.family: "Roboto-Regular"
+    font.pixelSize: ESAA.fontButtonPixelsize * 0.8
     property alias source: img.source
     property alias downSource: downImg.source
     property color buttonColor: ESAA.buttonColor
     property int verticalImageOffset: 0
     property double imageSizeFactor: 1
 
-    contentItem: Text {
+    contentItem: ESAAText
+    {
         text: control.text
         font: control.font
         opacity: enabled ? 1.0 : 0.3

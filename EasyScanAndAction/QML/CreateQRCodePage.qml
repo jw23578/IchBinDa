@@ -27,13 +27,13 @@ ESAAPage
     function generate()
     {
         ESAA.clearYesQuestions()
-        for (var i = 0; i < yesQuestionRepeater.count; ++i)
-        {
-            if (yesQuestionVector[i] != "")
-            {
-                ESAA.addYesQuestions(yesQuestionVector[i])
-            }
-        }
+//        for (var i = 0; i < yesQuestionRepeater.count; ++i)
+//        {
+//            if (yesQuestionVector[i] != "")
+//            {
+//                ESAA.addYesQuestions(yesQuestionVector[i])
+//            }
+//        }
 
         qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
                                              contactReceiveEMail.displayText,
@@ -86,7 +86,7 @@ ESAAPage
                 color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                caption: "Farbcode (#ffffff)"
+                caption: "Farbcode (Format: #ffffff)"
                 colorEdit: true
                 onDisplayTextChanged:
                 {
@@ -98,7 +98,7 @@ ESAAPage
             {
                 color: createqrcodepage.textColor
                 id: contactReceiveEMail
-                caption: "E-Mail-Adresse an die die Kontaktdaten gesendet werden sollen"
+                caption: "Kontaktdaten senden an (E-Mail-Adresse)"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 inputMethodHints: Qt.ImhEmailCharactersOnly
@@ -107,7 +107,7 @@ ESAAPage
             {
                 color: createqrcodepage.textColor
                 id: anonymReceiveEMail
-                caption: "Besuch anonym senden an"
+                caption: "Anonym senden an (E-Mail-Adresse)"
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 inputMethodHints: Qt.ImhEmailCharactersOnly
@@ -127,7 +127,7 @@ ESAAPage
                 color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                caption: "Farbcode für xten Besuch (#ffffff)"
+                caption: "Farbcode für xten Besuch (Format: #ffffff)"
                 text: "#ffffff"
                 colorEdit: true
                 id: colorInputVisitCount

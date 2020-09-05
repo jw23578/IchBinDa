@@ -13,8 +13,14 @@ ESAAPage
     {
         close()
     }
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
 
-    property color textColor: ESAA.textColor
+    property color textColor: ESAA.buttonColor
     Column
     {
         id: theColumn1
@@ -51,20 +57,31 @@ ESAAPage
             }
             Rectangle
             {
+                id: colorRect
                 x: parent.height
-                width: parent.width - parent.height
+                width: parent.height
                 height: parent.height
                 color: ESAA.lastVisitColor
+                radius: ESAA.radius
             }
             Rectangle
             {
-                x: parent.width - parent.height
+                radius: ESAA.radius
+                anchors.left: colorRect.right
                 width: parent.height
                 height: parent.height
-                color: ESAA.lastVisitCountX > 0
-                       && ESAA.lastVisitCount > 0
-                       && ESAA.lastVisitCount % ESAA.lastVisitCountX ?
-                           ESAA.lastVisitCountXColor : "transparent"
+                visible: (ESAA.lastVisitCountX > 0
+                          && ESAA.lastVisitCount > 0
+                          && ESAA.lastVisitCount % ESAA.lastVisitCountX)
+                color: ESAA.lastVisitCountXColor
+                Component.onCompleted:
+                {
+                    console.log("ESAA.lastVisitCountX: " + ESAA.lastVisitCountX)
+                    console.log("ESAA.lastVisitCount: " + ESAA.lastVisitCount)
+                    console.log((ESAA.lastVisitCountX > 0
+                                 && ESAA.lastVisitCount > 0
+                                 && ESAA.lastVisitCount % ESAA.lastVisitCountX))
+                }
             }
         }
 
@@ -73,7 +90,7 @@ ESAAPage
             id: messageText
             width: parent.width
 //            font.pixelSize: ESAA.fontMessageTextPixelsize
-            color: ESAA.textColor
+            color: textColor
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
             text: "Folgende Daten wurden verschlüsselt an " + ESAA.lastVisitLocationContactMailAdress + " übertragen"
@@ -81,7 +98,7 @@ ESAAPage
 
     }
 
-    Flickable
+    ESAAFlickable
     {
         id: theFlick
         anchors.bottom: closeButton.top
@@ -89,10 +106,9 @@ ESAAPage
         anchors.right: parent.right
         anchors.top: theColumn1.bottom
         contentHeight: theColumn.height * 1.1
-        clip: true
-
         Column
         {
+            parent: theFlick.contentItem
             id: theColumn
             y: ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter

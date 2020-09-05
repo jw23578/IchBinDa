@@ -219,20 +219,27 @@ ESAAPage
                     anchors.fill: parent
                     onClicked: camera.searchAndLock()
                 }
-                ESAAButton
+                CircleButton
                 {
                     id: finishVisit
-                    width: parent.width * 0.8
                     anchors.centerIn: parent
-                    text: qsTr("Besuch beenden")
+                    anchors.horizontalCenterOffset: -width / 1.5
+                    text: qsTr("Besuch<br>beenden")
                     onClicked:
                     {
                         questionVisitEnd();
                     }
-                    anchors.horizontalCenter: parent.horizontalCenter
                     visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter);
                 }
-
+                CircleButton
+                {
+                    id: lastTransmissionbutton
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: width / 1.5
+                    text: qsTr("Letzte<br>Übertragung")
+                    onClicked: ESAA.showLastTransmission()
+                    visible: finishVisit.visible
+                }
             }
         }
     }
@@ -260,17 +267,6 @@ ESAAPage
             onClicked: ESAA.recommend()
             source: "qrc:/images/share_weiss.svg"
             downSource: "qrc:/images/share_blau.svg"
-        }
-        ESAAButton
-        {
-            id: lastTransmissionbutton
-            width: parent.width * 0.8
-            anchors.top: shareButton.bottom
-            anchors.topMargin: ESAA.spacing
-            text: qsTr("Letzte Übertragung anzeigen")
-            onClicked: ESAA.showLastTransmission()
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: finishVisit.visible
         }
     }
     Component.onCompleted: camera.stop()

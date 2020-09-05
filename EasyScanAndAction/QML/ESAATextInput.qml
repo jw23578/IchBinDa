@@ -15,7 +15,7 @@ FocusScope
         id: rectangle
         anchors.fill: parent
         border.color: ESAA.lineInputBorderColor
-        border.width: input.readOnly ? 0 : 1
+        border.width: 1
         radius: ESAA.radius
         color: input.readOnly ? "white" : input.activeFocus ? "white" : border.color
         TextInput
@@ -38,6 +38,7 @@ FocusScope
         }
         Rectangle
         {
+            color: "black"
             id: colorRect
             height: parent.height
             radius: ESAA.radius

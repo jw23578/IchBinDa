@@ -13,8 +13,9 @@ ESAAPage
 
     Rectangle
     {
+        id: removeMeLater
         anchors.fill: parent
-        color: "steelblue"
+        color: "white"
     }
 
     ESAAText
