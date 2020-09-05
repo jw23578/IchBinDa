@@ -9,7 +9,7 @@ FocusScope
     property alias readOnly: input.readOnly
     property alias color: input.color
 //    property alias contentHeight: input.contentHeight
-    height: input.contentHeight + 10
+    height: input.contentHeight + ESAA.spacing
     property bool colorEdit: false
     Rectangle
     {
@@ -30,6 +30,7 @@ FocusScope
             anchors.rightMargin: parent.border.width + 4 - colorEdit ? colorRect.width : 0
             verticalAlignment: Text.AlignVCenter
             font.family: "Roboto-Regular"
+            font.pixelSize: ESAA.fontInputPixelsize
             color: ESAA.buttonColor
             clip: true
             onDisplayTextChanged:

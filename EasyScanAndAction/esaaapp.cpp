@@ -728,8 +728,8 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
 void ESAAApp::recommend()
 {
     QString content("Ich benutze die ");
-    content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen: (PlayStore) ";
-    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de oder (AppStore) https://apps.apple.com/us/app/id1528926162";
+    content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen:\n\n(PlayStore) ";
+    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162";
     mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
@@ -775,6 +775,7 @@ void ESAAApp::calculateRatios()
     baseFontSize = 18;
     baseSpacing = 40;
 #endif
+    setFontInputPixelsize(m_ratioFont * baseFontSize * 1.5);
     setFontButtonPixelsize(m_ratioFont * baseFontSize);
     setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.5);
     setSpacing(baseSpacing * m_ratio);
