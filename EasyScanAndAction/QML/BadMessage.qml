@@ -38,7 +38,7 @@ Item
         messageText.text = mt
         visible = true
     }
-    ESAAButton
+    CircleButton
     {
         id: sendButton
         anchors.horizontalCenter: parent.horizontalCenter

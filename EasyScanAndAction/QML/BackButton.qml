@@ -3,7 +3,7 @@ import QtQuick 2.0
 CircleButton
 {
     source: "qrc:/images/back_weiss.svg"
-    downSource: "qrc:/images/back_weiss.svg"
+    downSource: "qrc:/images/back_blau.svg"
     width: ESAA.screenWidth / 6
     anchors.left: parent.left
     anchors.bottom: parent.bottom

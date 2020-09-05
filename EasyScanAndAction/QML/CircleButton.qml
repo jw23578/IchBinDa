@@ -28,8 +28,9 @@ Button
     }
 
     background: Rectangle {
+        id: background
         color: control.down ? "white" : control.buttonColor
-        opacity: enabled ? 0.8 : 0.3
+        opacity: enabled ? 1 : 0.3
         border.color: ESAA.buttonColor
         border.width: 1
         radius: width / 2
@@ -104,5 +105,13 @@ Button
         pauseDurationRotation = pause
         img.rotation = -720
         pauseAniRotation.start()
+    }
+    Glow {
+        visible: control.down
+        anchors.fill: background
+        radius: 8
+        samples: 17
+        color: ESAA.lineInputBorderColor
+        source: background
     }
 }

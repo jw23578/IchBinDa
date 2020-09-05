@@ -1,4 +1,5 @@
-import QtQuick 2.0
+import QtQuick 2.15
+import QtGraphicalEffects 1.15
 
 FocusScope
 {
@@ -49,6 +50,14 @@ FocusScope
             border.color: ESAA.lineInputBorderColor
             border.width: 1
         }
+    }
+    Glow {
+        visible: input.activeFocus
+        anchors.fill: rectangle
+        radius: 8
+        samples: 17
+        color: ESAA.lineInputBorderColor
+        source: rectangle
     }
 }
 
