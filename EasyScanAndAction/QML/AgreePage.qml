@@ -12,7 +12,7 @@ ESAAPage
         color: "white"
     }
 
-    Flickable
+    ESAAFlickable
     {
         id: view
         anchors.margins: ESAA.spacing
@@ -21,11 +21,9 @@ ESAAPage
         anchors.top: parent.top
         anchors.bottom: button.top
         contentHeight: theText.height
-        flickableDirection: Flickable.VerticalFlick
-        clip: true
-
         TextArea
         {
+            parent: view.contentItem
             id: theText
             height: contentHeight * 1.1
             width: parent.width

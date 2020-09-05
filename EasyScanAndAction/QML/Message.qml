@@ -9,7 +9,7 @@ Item
     Rectangle
     {
         anchors.fill: parent
-        color: "steelblue"
+        color: "white"
     }
     Flickable
     {
@@ -29,7 +29,7 @@ Item
             font.pixelSize: ESAA.fontMessageTextPixelsize
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
-            color: ESAA.textColor
+            color: ESAA.buttonColor
         }
     }
 

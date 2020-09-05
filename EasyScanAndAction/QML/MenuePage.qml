@@ -69,15 +69,12 @@ ESAAPage
             text: qsTr("Spenden")
             onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
         }
+    }
 
-        ESAAButton
-        {
-            id: closeButton
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Schließen"
-            onClicked: close()
-        }
+
+    BackButton
+    {
+        onClicked: close()
     }
     onBackPressed:
     {

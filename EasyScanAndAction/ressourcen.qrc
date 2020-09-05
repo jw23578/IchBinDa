@@ -24,5 +24,12 @@
         <file>images/eraseIcon.svg</file>
         <file>images/logoClaim_1024x1024.png</file>
         <file>images/logoQR_1024x1024.png</file>
+        <file>images/back_blau.svg</file>
+        <file>images/back_weiss.svg</file>
+        <file>images/menue_blau.svg</file>
+        <file>images/menue_weiss.svg</file>
+        <file>images/share_blau.svg</file>
+        <file>images/share_weiss.svg</file>
+        <file>images/pfeil_blau.svg</file>
     </qresource>
 </RCC>

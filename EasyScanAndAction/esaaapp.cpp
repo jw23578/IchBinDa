@@ -750,6 +750,7 @@ bool ESAAApp::isEmailValid(const QString &email)
 
 void ESAAApp::calculateRatios()
 {
+    setLineInputBorderColor(lineInputBorderColor().darker(110));
     qreal refDpi = 216.;
     qreal refHeight = 1776.;
     qreal refWidth = 1080.;

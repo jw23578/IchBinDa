@@ -10,7 +10,10 @@ Button
     id: control
     font.pixelSize: ESAA.fontButtonPixelsize
     property alias source: img.source
+    property alias downSource: downImg.source
     property color buttonColor: ESAA.buttonColor
+    property int verticalImageOffset: 0
+    property double imageSizeFactor: 1
 
     contentItem: Text {
         text: control.text
@@ -32,10 +35,22 @@ Button
         {
             id: img
             anchors.centerIn: parent
-            height: parent.height * 0.5
+            anchors.verticalCenterOffset: verticalImageOffset
+            height: parent.height * imageSizeFactor
             width: height
             fillMode: Image.PreserveAspectFit
-            visible: source != ""
+            mipmap: true
+            visible: source != "" && (!control.down || downImg.source != "")
+        }
+        Image
+        {
+            id: downImg
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: verticalImageOffset
+            height: parent.height * imageSizeFactor
+            width: height
+            fillMode: Image.PreserveAspectFit
+            visible: source != "" && control.down
             mipmap: true
         }
     }

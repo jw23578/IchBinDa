@@ -74,7 +74,7 @@ ESAAPage
         id: betreiberinfo
         visible: false
         anchors.fill: parent
-        Flickable
+        ESAAFlickable
         {
             id: view
             anchors.margins: ESAA.spacing
@@ -82,11 +82,10 @@ ESAAPage
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: betreiberFinishedButton.top
-            contentHeight: theText.height
-            flickableDirection: Flickable.VerticalFlick
-            clip: true
+            contentHeight: theText.height + 2 * ESAA.spacing
             TextArea
             {
+                parent: view.contentItem
                 id: theText
                 height: contentHeight
                 width: parent.width
@@ -118,7 +117,7 @@ ESAAPage
         id: kundeinfo
         visible: false
         anchors.fill: parent
-        Flickable
+        ESAAFlickable
         {
             id: view2
             anchors.margins: ESAA.spacing
@@ -127,32 +126,32 @@ ESAAPage
             anchors.top: parent.top
             anchors.bottom: editButton.top
             contentHeight: theText2.height + 2 * ESAA.spacing
-            flickableDirection: Flickable.VerticalFlick
-            clip: true
-
             TextArea
             {
+                parent: view2.contentItem
                 id: theText2
                 height: contentHeight
                 width: parent.width
                 readOnly: true
                 textFormat: TextEdit.RichText
                 wrapMode: Text.WordWrap
-                text: "Als Kunde/Besucher kannst du mit dieser App die IchBinDa-QR-Codes scannen " +
-                      "und deine Kontaktdaten komfortabel an den Betreiber übermitteln. Du musst deine " +
-                      "Daten nur einmal eingeben, für den nächsten Besuch sind die schon gespeichert und werden vorbelegt. " +
-                      "Deine Kontaktdaten werden nur in der App gespeichert und per verschlüsselter E-Mail an den Betreiber übermittelt. Es gibt keinen zentralen Server auf dem " +
-                      "deine persönlichen Daten gespeichert würden.<br>" +
-                      "Der Betreiber/Anbieter ist nicht in der Lage auf deine Kontaktdaten zuzugreifen, dass ist nur entsprechenden Einrichtungen möglich, die den private Key zum Entschlüsseln bekommen. " +
-                      "Au0erdem muss diesen Einrichtungen vom Betreiber/Anbieter die E-Mail weitergeleitet werden.<br>" +
-                      "Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. Dieses Token kann nur deine App erkennen. Der Standort und Datum/Uhrzeit sind in dem Token aber immer gleich, " +
+                text: "Als Kunde/Besucher kannst du mit dieser App die <b>" + ESAA.appName + "</b>-QR-Codes scannen " +
+                      "und deine Kontaktdaten komfortabel an den Betreiber übermitteln." +
+                      "<br><br>Du musst deine " +
+                      "Daten nur <b>einmal</b> eingeben, für den nächsten Besuch sind die schon gespeichert und werden vorbelegt. " +
+                      "<br><br>Deine Kontaktdaten werden <b>ausschließlich</b> in der App gespeichert und per <b>verschlüsselter</b> E-Mail an den Betreiber übermittelt. " +
+                      "<br>Es gibt keinen zentralen Server auf dem " +
+                      "deine persönlichen Daten gespeichert würden." +
+                      "<br><br>Der Betreiber/Anbieter ist <b>nicht</b> in der Lage auf deine Kontaktdaten zuzugreifen, dass ist nur entsprechenden Einrichtungen möglich, die den \"private Key\" zum Entschlüsseln bekommen. " +
+                      "Außerdem muss diesen Einrichtungen vom Betreiber/Anbieter die verschlüsselte E-Mail weitergeleitet werden." +
+                      "<br><br>Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. <b>Ausschließlich</b> deine App kann dieses Token dir zuordnen. Lediglich Besuchsort Standort und Datum/Uhrzeit lesbar, " +
                       "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
                 color: ESAA.buttonColor
-
             }
         }
+
         ESAAButton
         {
             id: editButton

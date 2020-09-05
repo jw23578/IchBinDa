@@ -160,7 +160,7 @@ ApplicationWindow {
         duration: 1000
         easing.type: Easing.InOutQuint
         id: showCallMenueButton
-        to: callMenueButton.width / 6
+        to: 0 // callMenueButton.width / 6
     }
     NumberAnimation {
         target: callMenueButton
@@ -170,40 +170,20 @@ ApplicationWindow {
         id: hideCallMenueButton
         to: width
     }
-    Rectangle
+    CircleButton
     {
-        color: ESAA.buttonColor
-        border.color: ESAA.buttonColor
-        border.width: 1
         id: callMenueButton
-        width: parent.width / 4
-        radius: width /2
-        height: width
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenterOffset: width
         anchors.verticalCenter: parent.bottom
-
-        Image
+        verticalImageOffset: -height / 4
+        imageSizeFactor: 0.7
+        source: "qrc:/images/menue_weiss.svg"
+        downSource: "qrc:/images/menue_blau.svg"
+        onClicked:
         {
-            source: "qrc:/images/burgermenue.svg"
-            width: parent.width / 4
-            height: width
-            sourceSize.width: width
-            sourceSize.height: height
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.height / 3.3
-        }
-
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked:
-            {
-                showNewPage(scannerpage, menuepage)
-            }
+            showNewPage(scannerpage, menuepage)
         }
     }
-
 
     ESAASendedDataPage
     {

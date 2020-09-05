@@ -10,6 +10,7 @@ Item
     property alias readOnly: input.readOnly
     height: input.height
     property alias inputHeight: input.height
+    property alias colorEdit: input.colorEdit
 
     ESAATextInput
     {
@@ -26,6 +27,6 @@ Item
         visible: input.displayText == ""
         color:  input.activeFocus ? "#aaaaaa" : "#555555"
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: ESAA.fontTextPixelsize / 1.5
+        font.pixelSize: ESAA.fontTextPixelsize / 1.2
     }
 }

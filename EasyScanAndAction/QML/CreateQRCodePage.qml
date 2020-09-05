@@ -47,31 +47,22 @@ ESAAPage
                                              colorInputVisitCount.displayText);
     }
 
-
-    ColorDialog
+    ESAAFlickable
     {
-        id: colorDialog
-        title: "Please choose a color"
-        onAccepted: {
-            colorRectangle.color = colorDialog.color
-        }
-    }
-    Flickable
-    {
+        id: theFlick
         anchors.margins: ESAA.spacing
         anchors.bottom: showCodeButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
         contentHeight: theColumn.height * 1.3
-        clip: true
         Column
         {
+            parent: theFlick.contentItem
             y: ESAA.spacing
             spacing: ESAA.spacing
             id: theColumn
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width - parent.width / 10
+            width: parent.width
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
@@ -95,23 +86,14 @@ ESAAPage
                 color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                caption: "Farbcode"
-                text: "#ffffff"
+                caption: "Farbcode (#ffffff)"
+                colorEdit: true
                 onDisplayTextChanged:
                 {
                     colorRectangle.color = displayText
                 }
                 id: colorInput
             }
-            Rectangle
-            {
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: "white"
-                height: colorInput.height
-                id: colorRectangle
-            }
-
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
@@ -145,24 +127,11 @@ ESAAPage
                 color: createqrcodepage.textColor
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                caption: "Farbcode für xten Besuch"
+                caption: "Farbcode für xten Besuch (#ffffff)"
                 text: "#ffffff"
-                onDisplayTextChanged:
-                {
-                    colorRectangleVisitCount.color = displayText
-                }
+                colorEdit: true
                 id: colorInputVisitCount
             }
-            Rectangle
-            {
-                visible: parseInt(visitCounts.text) > 0
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: "white"
-                height: colorInputVisitCount.height
-                id: colorRectangleVisitCount
-            }
-
             ESAAText
             {
                 width: parent.width - 2 * ESAA.spacing
@@ -277,7 +246,8 @@ ESAAPage
     {
         id: showCodeButton
         anchors.margins: ESAA.spacing
-        anchors.bottom: quitButton.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: height / 2
         anchors.horizontalCenter: parent.horizontalCenter
         text: "QR-Code<br>erzeugen"
         onClicked: {
@@ -309,15 +279,8 @@ ESAAPage
             showCode()
         }
     }
-
-    ESAAButton
+    BackButton
     {
-        id: quitButton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: theColumn.width
-        text: "Abbrechen"
         onClicked: close()
     }
 }

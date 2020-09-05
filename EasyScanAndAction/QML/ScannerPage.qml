@@ -246,7 +246,7 @@ ESAAPage
         {
             text: qsTr("Weiterempfehlen")
             anchors.bottom: shareButton.top
-            anchors.bottomMargin: contentHeight / 2
+            anchors.bottomMargin: contentHeight / 8
             color: "black"
             font.pixelSize: ESAA.fontTextPixelsize * 1.5
             anchors.horizontalCenter: parent.horizontalCenter
@@ -256,9 +256,10 @@ ESAAPage
         {
             id: shareButton
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: lastTransmissionbutton.visible ? -lastTransmissionbutton.height : 0
+            anchors.verticalCenterOffset: -height / 5
             onClicked: ESAA.recommend()
-            source: "qrc:/images/share-icon-40146.png"
+            source: "qrc:/images/share_weiss.svg"
+            downSource: "qrc:/images/share_blau.svg"
         }
         ESAAButton
         {

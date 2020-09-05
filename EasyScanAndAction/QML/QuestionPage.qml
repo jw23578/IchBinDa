@@ -15,13 +15,14 @@ ESAAPage
     property variant yesAnswers: []
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.buttonColor // ESAA.fontColor2
+    caption: ESAA.facilityName
     Rectangle
     {
         id: removeMeLater
         anchors.fill: parent
         color: "white"
     }
-    Flickable
+    ESAAFlickable
     {
         id: theFlick
         anchors.margins: ESAA.spacing
@@ -30,33 +31,41 @@ ESAAPage
         anchors.right: parent.right
         anchors.top: parent.top
         contentHeight: theColumn.height * 1.3
-        clip: true
         Column
         {
+            parent: theFlick.contentItem
             id: theColumn
             y: ESAA.spacing
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width - parent.width / 10
+            width: parent.width
             spacing: ESAA.spacing / 2
 //            topPadding: spacing
-            Rectangle
+            Row
             {
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                height: parent.height / 20
-                color: ESAA.color
                 visible: !meineDaten
+                property int w: parent.width * 6 / 10
+                spacing: w / 10
+                width: w + spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: w / 2
+                Image
+                {
+                    width: parent.height
+                    height: width
+                    source: ESAA.logoUrl
+                    fillMode: Image.PreserveAspectFit
+                }
+                Rectangle
+                {
+                    width: parent.height
+                    height: width
+                    color: ESAA.color
+                    border.width: ESAA.color == "#ffffff" ? 1 : 0
+                    border.color: ESAA.buttonBorderColor
+                    radius: ESAA.radius
+                }
             }
 
-            Image
-            {
-                width: parent.width - 4 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-//                height: width
-                source: ESAA.logoUrl
-                fillMode: Image.PreserveAspectFit
-                visible: !meineDaten
-            }
+
             ESAAText
             {
                 width: parent.width - 2 * ESAA.spacing
@@ -65,6 +74,7 @@ ESAAPage
                 color: textColor
                 font.pixelSize: ESAA.fontTextPixelsize * 1.5
                 font.bold: true
+                visible: !meineDaten
             }
             ESAALineInputWithCaption
             {
@@ -185,14 +195,14 @@ ESAAPage
             }
         }
     }
-    ESAAButton
+    CircleButton
     {
         id: sendButton
         anchors.margins: ESAA.spacing
-        anchors.bottom: abortButton.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: height / 2
         anchors.horizontalCenter: parent.horizontalCenter
-        width: theColumn.width - ESAA.spacing
-        text: meineDaten ? "Meine Daten speichern" : "Kontaktdaten senden an\n" + ESAA.locationContactMailAdress
+        text: meineDaten ? "Meine Daten<br>speichern" : "Daten<br>senden"
         onClicked:
         {
             ESAA.clearData2Send()
@@ -334,16 +344,18 @@ ESAAPage
             close()
         }
     }
-    ESAAButton
+    ESAAText
     {
-        id: abortButton
-        anchors.margins: ESAA.spacing
+        text: "an: " + ESAA.locationContactMailAdress
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: ESAA.spacing / 2
+        color: ESAA.buttonColor
+        font.pixelSize: ESAA.fontTextPixelsize
         anchors.horizontalCenter: parent.horizontalCenter
-        width: theColumn.width - ESAA.spacing
-        text: "Abbrechen"
-        onClicked:
-        {
+    }
+    BackButton
+    {
+        onClicked: {
             ESAA.ignoreQRCode()
             abort()
         }
