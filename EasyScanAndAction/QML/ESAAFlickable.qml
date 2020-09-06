@@ -1,4 +1,4 @@
-import QtQuick 2.13
+import QtQuick 2.15
 
 Item
 {
@@ -24,6 +24,11 @@ Item
         }
         rotation: 90
         z: 1
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: theFlickable.flick(0, ESAA.screenHeight)
+        }
     }
 
     Image
@@ -44,6 +49,11 @@ Item
             }
         }
         rotation: 270
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: theFlickable.flick(0, -ESAA.screenHeight)
+        }
     }
     Flickable
     {

@@ -9,4 +9,5 @@ CircleButton
     anchors.bottom: parent.bottom
     anchors.leftMargin: width / 2
     anchors.bottomMargin: anchors.leftMargin
+    imageSizeFactor: 0.5
 }
