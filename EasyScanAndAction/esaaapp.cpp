@@ -662,21 +662,13 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
 
 void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName)
 {
-    SimpleMail::Server smtpServer;
-    smtpServer.setHost(emailSender.smtpHost);
-    smtpServer.setPort(emailSender.smtpPort);
-    smtpServer.setConnectionType(SimpleMail::Server::SslConnection);
-
-    smtpServer.setUsername(emailSender.smtpUser);
-    smtpServer.setPassword(emailSender.smtpPassword);
-
-    SimpleMail::MimeMessage message;
-    message.setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-    message.addTo(SimpleMail::EmailAddress(qrCodeReceiver));
+    SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
+    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
+    message->addTo(SimpleMail::EmailAddress(qrCodeReceiver));
 
     QString subject("QR-Code ");
     subject += facilityName;
-    message.setSubject(subject);
+    message->setSubject(subject);
 
     // Now add some text to the email.
     SimpleMail::MimeHtml *html = new SimpleMail::MimeHtml;
@@ -687,7 +679,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
                                 "<img src=\"cid:") + jpgGuid + "\" />");
 
     // Now add it to the mail
-    message.addPart(html);
+    message->addPart(html);
 
     // Create a MimeInlineFile object for each image
     std::set<QString>::iterator it(qrCodes.begin());
@@ -712,16 +704,10 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
             image1->setContentType(QByteArrayLiteral("image/svg+xml"));
         }
 
-        message.addPart(image1);
+        message->addPart(image1);
         ++it;
     }
-
-    SimpleMail::ServerReply *reply = smtpServer.sendMail(message);
-    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
-        qDebug() << "QR-Code ServerReply finished" << reply->error() << reply->responseText();
-        reply->deleteLater();// Don't forget to delete it
-    });
-
+    emailSender.addMailToSend(message);
 }
 
 void ESAAApp::recommend()
