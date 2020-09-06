@@ -70,6 +70,12 @@ ESAAPage
             enabledDecoders: QZXing.DecoderFormat_QR_CODE
             tryHarder: true
             onTagFound: {
+                if (internetError.visible)
+                {
+                    console.log("due to internetconnectError QR-Code is not handled")
+                    return
+                }
+
                 console.log(tag)
                 if (tag.length)
                 {
@@ -239,6 +245,24 @@ ESAAPage
                     text: qsTr("Letzte<br>Übertragung")
                     onClicked: ESAA.showLastTransmission()
                     visible: finishVisit.visible
+                }
+                Rectangle
+                {
+                    id: internetError
+                    anchors.fill: parent
+                    color: "red"
+                    opacity: 0.3
+                    visible: !InternetTester.internetConnected && camera.cameraStatus == Camera.ActiveStatus
+                }
+                ESAAText
+                {
+                    visible: internetError.visible
+                    anchors.centerIn: parent
+                    width: parent.width * 2 / 3
+                    wrapMode: Text.WordWrap
+                    text: "Bitte kontrolliere und aktiviere die Internetverbindung"
+                    color: "white"
+                    font.pixelSize: ESAA.fontMessageTextPixelsize
                 }
             }
         }

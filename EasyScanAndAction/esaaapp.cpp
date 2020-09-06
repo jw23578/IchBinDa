@@ -393,7 +393,8 @@ std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
-    networkAccessManager(this)
+    networkAccessManager(this),
+    internetTester(this)
 {
     QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
     publicKeyFile.open(QIODevice::ReadOnly);
@@ -403,6 +404,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));
+    e.rootContext()->setContextProperty("InternetTester", QVariant::fromValue(&internetTester));
     QDir dir;
     QString path(getWriteablePath());
     if (!dir.exists(path))

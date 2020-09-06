@@ -9,6 +9,7 @@
 #include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
+#include "internettester.h"
 #ifdef DMOBILEDEVICE
 #ifdef DMOBILEIOS
 #include "botan_all_iosarmv7.h"
@@ -27,6 +28,7 @@ class ESAAApp: public QObject
     QString getWriteablePath();
     jw::mobileext mobileExtension;
     QNetworkAccessManager networkAccessManager;
+    InternetTester internetTester;
     Visit lastVisit;
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);

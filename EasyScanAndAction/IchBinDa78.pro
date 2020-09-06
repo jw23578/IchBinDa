@@ -19,6 +19,7 @@ DEFINES += NO_PNG
 
 SOURCES += \
     esaaapp.cpp \
+    internettester.cpp \
     src/jwmobileext.cpp \
     visit.cpp \
 zint-master/backend/2of5.c \
@@ -56,6 +57,7 @@ main.cpp
 
 HEADERS += \
     esaaapp.h \
+    internettester.h \
     ios/ios_functions.h \
     qt_extension_macros.h \
     src/jwmobileext.h \
