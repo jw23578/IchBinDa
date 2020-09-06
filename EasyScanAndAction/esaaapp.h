@@ -6,6 +6,7 @@
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
+#include "emailsender.h"
 #include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
@@ -28,6 +29,7 @@ class ESAAApp: public QObject
     QString getWriteablePath();
     jw::mobileext mobileExtension;
     QNetworkAccessManager networkAccessManager;
+    EMailSender emailSender;
     InternetTester internetTester;
     Visit lastVisit;
     // Einstellungen
@@ -110,11 +112,6 @@ class ESAAApp: public QObject
     Botan::Public_Key *publicKey = nullptr;
     std::string publicKeyEncrypt(const std::string &plainText);
     SimpleMail::Server smtpServer;
-    QString smtpHost;
-    int smtpPort;
-    QString smtpUser;
-    QString smtpPassword;
-    QString smtpSender;
 
     QString ibdTokenStoreURL;
 

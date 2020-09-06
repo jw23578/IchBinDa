@@ -25,16 +25,9 @@ QString ESAAApp::getWriteablePath()
 
 void ESAAApp::sendMail()
 {
-    smtpServer.setHost(smtpHost);
-    smtpServer.setPort(smtpPort);
-    smtpServer.setConnectionType(SimpleMail::Server::SslConnection);
-
-    smtpServer.setUsername(smtpUser);
-    smtpServer.setPassword(smtpPassword);
-
-    SimpleMail::MimeMessage message;
-    message.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
-    message.addTo(SimpleMail::EmailAddress(locationContactMailAdress()));
+    SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
+    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
+    message->addTo(SimpleMail::EmailAddress(lastVisitLocationContactMailAdress()));
 
     QString subject("Kontaktdaten ");
     if (visitEnd.isValid())
@@ -46,7 +39,7 @@ void ESAAApp::sendMail()
         subject += "Besuchsbeginn ";
     }
     subject += facilityName();
-    message.setSubject(subject);
+    message->setSubject(subject);
 
     auto text = new SimpleMail::MimeText;
 
@@ -75,34 +68,25 @@ void ESAAApp::sendMail()
     text->setText(work);
 
     // Now add it to the mail
-    message.addPart(text);
-
-    SimpleMail::ServerReply *reply = smtpServer.sendMail(message);
-    QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
-        qDebug() << "Message ServerReply finished" << reply->error() << reply->responseText();
-        reply->deleteLater();// Don't forget to delete it
-    });
+    message->addPart(text);
+    emailSender.addMailToSend(message);
 
     if (anonymContactMailAdress().size())
     {
 
-        SimpleMail::MimeMessage visitMessage;
-        visitMessage.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
-        visitMessage.addTo(SimpleMail::EmailAddress(anonymContactMailAdress()));
+        SimpleMail::MimeMessage *visitMessage(new SimpleMail::MimeMessage);
+        visitMessage->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
+        visitMessage->addTo(SimpleMail::EmailAddress(anonymContactMailAdress()));
 
         subject = "Besuchmeldung " + facilityName();
-        visitMessage.setSubject(subject);
+        visitMessage->setSubject(subject);
         work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
         work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
         auto visitText = new SimpleMail::MimeText;
         visitText->setText(work);
-        visitMessage.addPart(visitText);
+        visitMessage->addPart(visitText);
 
-        reply = smtpServer.sendMail(visitMessage);
-        QObject::connect(reply, &SimpleMail::ServerReply::finished, [reply] {
-            qDebug() << "VisitMessage ServerReply finished" << reply->error() << reply->responseText();
-            reply->deleteLater();// Don't forget to delete it
-        });
+        emailSender.addMailToSend(visitMessage);
     }
     if (visitEnd.isNull())
     {
@@ -394,6 +378,7 @@ std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
     networkAccessManager(this),
+    emailSender(this),
     internetTester(this)
 {
     QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
@@ -428,15 +413,26 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     {
         char buf[1000];
         file.readLine(buf, 1000);
-        smtpHost = QString(buf).trimmed();
+        emailSender.smtpHost = QString(buf).trimmed();
         file.readLine(buf, 1000);
-        smtpPort = QString(buf).trimmed().toInt();
+        emailSender.smtpPort = QString(buf).trimmed().toInt();
         file.readLine(buf, 1000);
-        smtpUser = QString(buf).trimmed();
+        emailSender.smtpUser = QString(buf).trimmed();
+        emailSender.fstSmtpUser = QString(buf).trimmed();
         file.readLine(buf, 1000);
-        smtpPassword = QString(buf).trimmed();
+        emailSender.smtpPassword = QString(buf).trimmed();
+        emailSender.fstSmtpPassword = QString(buf).trimmed();
         file.readLine(buf, 1000);
-        smtpSender = QString(buf).trimmed();
+        emailSender.smtpSender = QString(buf).trimmed();
+        emailSender.fstSmtpSender = QString(buf).trimmed();
+
+        file.readLine(buf, 1000);
+        emailSender.scdSmtpUser = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        emailSender.scdSmtpPassword = QString(buf).trimmed();
+        file.readLine(buf, 1000);
+        emailSender.scdSmtpSender = QString(buf).trimmed();
+
         file.readLine(buf, 1000);
         ibdTokenStoreURL = QString(buf).trimmed();
     }
@@ -666,15 +662,16 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
 
 void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName)
 {
-    smtpServer.setHost(smtpHost);
-    smtpServer.setPort(smtpPort);
+    SimpleMail::Server smtpServer;
+    smtpServer.setHost(emailSender.smtpHost);
+    smtpServer.setPort(emailSender.smtpPort);
     smtpServer.setConnectionType(SimpleMail::Server::SslConnection);
 
-    smtpServer.setUsername(smtpUser);
-    smtpServer.setPassword(smtpPassword);
+    smtpServer.setUsername(emailSender.smtpUser);
+    smtpServer.setPassword(emailSender.smtpPassword);
 
     SimpleMail::MimeMessage message;
-    message.setSender(SimpleMail::EmailAddress(smtpSender, appName()));
+    message.setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
     message.addTo(SimpleMail::EmailAddress(qrCodeReceiver));
 
     QString subject("QR-Code ");
