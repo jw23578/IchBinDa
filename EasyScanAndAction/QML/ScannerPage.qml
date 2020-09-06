@@ -267,22 +267,15 @@ ESAAPage
             }
         }
     }
-    Item
+    CircleButton
     {
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.top: scanneritem.bottom
-        anchors.right: parent.right
-        CircleButton
-        {
-            id: shareButton
-            aboveCaption: qsTr("Weiterempfehlen")
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -height / 5
-            onClicked: ESAA.recommend()
-            source: "qrc:/images/share_weiss.svg"
-            downSource: "qrc:/images/share_blau.svg"
-        }
+        id: shareButton
+        x: ESAA.screenWidth / 300 * 150 - width / 2
+        y: ESAA.screenHeight / 480 * 360 - height / 2
+        aboveCaption: qsTr("Weiterempfehlen")
+        onClicked: ESAA.recommend()
+        source: "qrc:/images/share_weiss.svg"
+        downSource: "qrc:/images/share_blau.svg"
     }
     Component.onCompleted: camera.stop()
 }

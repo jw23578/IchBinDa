@@ -43,8 +43,8 @@ Item
         id: sendButton
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.width / 10
-        text: "schließen"
+        anchors.bottomMargin: ESAA.spacing
+        text: "Schließen"
         onClicked: message.visible = false
     }
 }

@@ -27,5 +27,6 @@
         <file>QML/CircleButton.qml</file>
         <file>QML/BackButton.qml</file>
         <file>QML/ESAAFlickable.qml</file>
+        <file>QML/TwoCircleButtons.qml</file>
     </qresource>
 </RCC>

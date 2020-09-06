@@ -112,7 +112,7 @@ ESAAPage
             id: theColumn
             y: ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width - parent.width / 10
+            width: parent.width
             spacing: ESAA.spacing / 2
             topPadding: spacing
 
@@ -216,13 +216,12 @@ ESAAPage
             }
         }
     }
-    ESAAButton
+    CircleButton
     {
         id: closeButton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        width: theColumn.width - ESAA.spacing
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: ESAA.spacing
         text: "Schließen"
         onClicked: close()
     }

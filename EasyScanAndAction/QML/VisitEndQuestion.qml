@@ -29,23 +29,13 @@ ESAAPage
         text: "Soll der Besuch beendet werden?"
         color: ESAA.buttonColor
     }
-
-    ESAAButton
+    TwoCircleButtons
     {
-        id: endVisitButton
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: closeButton.top
-        anchors.bottomMargin: parent.width / 10
-        text: "Ja"
-        onClicked: endVisit()
-    }
-    ESAAButton
-    {
-        id: closeButton
-        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.width / 10
-        text: "Nein"
-        onClicked: close()
+        anchors.bottomMargin: ESAA.spacing
+        leftText: "Ja"
+        onLeftClicked: endVisit()
+        rightText: "Nein"
+        onRightClicked: close()
     }
 }

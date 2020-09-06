@@ -69,12 +69,11 @@ ESAAPage
     }
     CircleButton
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: theGrid.bottom
         id: shareButton
-        belowCaption: qsTr("Weiterempfehlen")
+        x: ESAA.screenWidth / 300 * 150 - width / 2
+        y: ESAA.screenHeight / 480 * 360 - height / 2
+        aboveCaption: qsTr("Weiterempfehlen")
         onClicked: ESAA.recommend()
-        width: theGrid.buttonSize
         source: "qrc:/images/share_weiss.svg"
         downSource: "qrc:/images/share_blau.svg"
     }

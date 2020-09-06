@@ -19,7 +19,7 @@ ESAAPage
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: button.top
+        anchors.bottom: buttons.top
         contentHeight: theText.height
         TextArea
         {
@@ -48,30 +48,19 @@ ESAAPage
         }
     }
 
-    ESAAButton
+    TwoCircleButtons
     {
-        id: button
-        anchors.bottom: deniebutton.top
-        anchors.margins: ESAA.spacing
-        text: qsTr("Ich habe verstanden")
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked:
+        id: buttons
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: ESAA.spacing
+        leftText: "verstanden"
+        onLeftClicked:
         {
             ESAA.aggrementChecked = true
             ESAA.saveData()
             agreed()
         }
-    }
-    ESAAButton
-    {
-        id: deniebutton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: parent.bottom
-        text: qsTr("Dann möchte ich die\nApp nicht benutzen")
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked:
-        {
-            Qt.quit()
-        }
+        rightText: "beenden"
+        onRightClicked: Qt.quit()
     }
 }

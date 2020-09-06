@@ -9,7 +9,6 @@ Item
     property string caption: ""
     Keys.onReleased:
     {
-        console.log("ESAAPage Key pressed: "+event.key)
         if (event.key == Qt.Key_Back)
         {
             console.log("Back button pressed.")

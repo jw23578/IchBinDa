@@ -73,13 +73,13 @@ ESAAPage
         }
     }
 
-    ESAAButton
+    CircleButton
     {
         id: sendButton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: quitButton.top
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: ESAA.spacing
         anchors.horizontalCenter: parent.horizontalCenter
-        text: "QR-Code senden"
+        text: "QR-Code<br>senden"
         onClicked:
         {
             if (!ESAA.isEmailValid(qrCodeEMailAdresse.displayText))
@@ -92,14 +92,9 @@ ESAAPage
             back()
         }
     }
-
-    ESAAButton
+    BackButton
     {
         id: quitButton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: "Abbrechen"
         onClicked: back()
     }
 }

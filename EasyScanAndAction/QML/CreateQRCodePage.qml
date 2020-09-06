@@ -226,7 +226,7 @@ ESAAPage
                     }
         }
     }
-            ESAAButton
+            CircleButton
             {
                 width: parent.width
                 text: "weitere Frage"
@@ -244,9 +244,8 @@ ESAAPage
     CircleButton
     {
         id: showCodeButton
-        anchors.margins: ESAA.spacing
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: height / 2
+        anchors.bottomMargin: ESAA.spacing
         anchors.horizontalCenter: parent.horizontalCenter
         text: "QR-Code<br>erzeugen"
         onClicked: {
