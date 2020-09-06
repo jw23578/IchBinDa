@@ -7,6 +7,12 @@ ESAAPage
     {
         back()
     }
+    Rectangle
+    {
+        id: removeMeLater
+        anchors.fill: parent
+        color: "white"
+    }
     property string qrCodeFileName: ""
     property alias sendEMailTo: qrCodeEMailAdresse.text
     property string facilityName: ""
@@ -82,8 +88,8 @@ ESAAPage
                 qrCodeEMailAdresse.forceActiveFocus();
                 return
             }
-
             ESAA.sendQRCode(qrCodeEMailAdresse.displayText, facilityName)
+            back()
         }
     }
 

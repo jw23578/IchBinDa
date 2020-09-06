@@ -708,6 +708,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         ++it;
     }
     emailSender.addMailToSend(message);
+    showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
 }
 
 void ESAAApp::recommend()
@@ -760,7 +761,7 @@ void ESAAApp::calculateRatios()
     baseFontSize = 18;
     baseSpacing = 40;
 #endif
-    setFontInputPixelsize(m_ratioFont * baseFontSize * 1.5);
+    setFontInputPixelsize(m_ratioFont * baseFontSize * 0.9);
     setFontButtonPixelsize(m_ratioFont * baseFontSize);
     setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.5);
     setSpacing(baseSpacing * m_ratio);
