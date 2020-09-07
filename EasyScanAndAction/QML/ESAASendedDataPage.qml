@@ -13,12 +13,6 @@ ESAAPage
     {
         close()
     }
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
 
     property color textColor: ESAA.buttonColor
     Column

@@ -16,12 +16,6 @@ ESAAPage
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.buttonColor // ESAA.fontColor2
     caption: ESAA.facilityName
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
     ESAAFlickable
     {
         id: theFlick

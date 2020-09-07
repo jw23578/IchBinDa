@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.15
 
-Item
+Rectangle
 {
     signal showing;
     signal hiding;
@@ -18,14 +18,8 @@ Item
         }
         event.accepted = false
     }
-    Rectangle
-    {
-        visible: false
-        anchors.fill: parent
-        opacity: 0.8
-        color: ESAA.backgroundTopColor
-    }
     id: thePage
+    color: "white"
     property int targetOutX: -width
     width: parent.width
     height: parent.height
@@ -87,13 +81,23 @@ Item
         hiding()
         moveOutAnimation.start()
     }
-
-
-//    gradient: theGradient
-//    property var theGradient: Gradient
-//    {
-//        GradientStop { position: 0.0; color: ESAA.backgroundTopColor }
-//        GradientStop { position: 1.0; color: ESAA.backgroundBottomColor }
-//    }
-
+    Image
+    {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: bgImage1.top
+        mipmap: true
+        source: "qrc:/images/background.png"
+        fillMode: Image.PreserveAspectFit
+    }
+    Image
+    {
+        id: bgImage1
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        mipmap: true
+        source: "qrc:/images/background.png"
+        fillMode: Image.PreserveAspectFit
+    }
 }

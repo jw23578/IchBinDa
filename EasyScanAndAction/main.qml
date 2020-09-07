@@ -9,9 +9,10 @@ ApplicationWindow {
     width: 300
     height: 480
     title: qsTr("Ich bin da!")
-    property var activePage: null
+    property var previousPage: null
     function showNewPage(currentPage, nextPage)
     {
+        previousPage = currentPage
         if (currentPage != null)
         {
             currentPage.z = 0
@@ -76,10 +77,19 @@ ApplicationWindow {
             onClose:
             {
                 showNewPage(questionpage, sendedDataPage)
-
             }
             onAbort:
             {
+                if (previousPage == menuepage)
+                {
+                    showNewPage(questionpage, previousPage)
+                    return
+                }
+                if (previousPage == firststart)
+                {
+                    showNewPage(questionpage, previousPage)
+                    return;
+                }
                 showNewPage(questionpage, scannerpage)
             }
         }
@@ -108,7 +118,7 @@ ApplicationWindow {
         CreateQRCodePage
         {
             id: createqrcodepage
-            onClose: showNewPage(createqrcodepage, scannerpage)
+            onClose: showNewPage(createqrcodepage, menuepage)
             onShowCode:
             {
                 showqrcodepage.facilityName = createqrcodepage.theFacilityName

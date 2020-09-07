@@ -15,12 +15,6 @@ ESAAPage
     {
         goStartNow()
     }
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
 
     signal editContactData
     function goEditContactData()
@@ -119,7 +113,7 @@ ESAAPage
 
             }
         }
-        ESAAButton
+        CircleButton
         {
             id: betreiberFinishedButton
             anchors.bottom: parent.bottom
@@ -169,23 +163,15 @@ ESAAPage
             }
         }
 
-        ESAAButton
+        TwoCircleButtons
         {
             id: editButton
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: kundenInfoFinishedButton.top
-            anchors.margins: ESAA.spacing
-            text: qsTr("Meine Kontaktdaten\nbearbeiten")
-            onClicked: goEditContactData()
-        }
-        ESAAButton
-        {
-            id: kundenInfoFinishedButton
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Los geht's"
-            onClicked: goStartNow()
             anchors.margins: ESAA.spacing
+            leftText: qsTr("Meine<br>Kontaktdaten<br>nbearbeiten")
+            onLeftClicked: goEditContactData()
+            rightText: "Los geht's"
+            onRightClicked: goStartNow()
         }
     }
 }

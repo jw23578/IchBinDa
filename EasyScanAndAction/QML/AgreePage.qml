@@ -5,12 +5,6 @@ ESAAPage
 {
     signal agreed
     caption: "Zustimmung"
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
 
     ESAAFlickable
     {

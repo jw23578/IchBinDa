@@ -8,12 +8,6 @@ ESAAPage
     signal editQRCode
     signal help
     caption: "Menü"
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
 
     onShowing:
     {

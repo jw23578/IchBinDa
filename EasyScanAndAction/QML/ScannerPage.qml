@@ -8,12 +8,6 @@ ESAAPage
 {
     caption: "QR-Code einlesen"
     property int changeCounter: 0
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
 
     Timer
     {

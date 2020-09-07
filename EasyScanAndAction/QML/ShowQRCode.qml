@@ -7,12 +7,6 @@ ESAAPage
     {
         back()
     }
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
     property string qrCodeFileName: ""
     property alias sendEMailTo: qrCodeEMailAdresse.text
     property string facilityName: ""

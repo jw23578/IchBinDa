@@ -11,13 +11,6 @@ ESAAPage
         close()
     }
 
-    Rectangle
-    {
-        id: removeMeLater
-        anchors.fill: parent
-        color: "white"
-    }
-
     ESAAText
     {
         id: messageText
