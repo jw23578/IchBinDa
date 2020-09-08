@@ -17,6 +17,7 @@
 #include <QScreen>
 #include <QNetworkReply>
 #include <QPainter>
+#include <QUrlQuery>
 
 QString ESAAApp::getWriteablePath()
 {
@@ -660,6 +661,29 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
     return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
 }
 
+void ESAAApp::postQRCodeData(QByteArray const &data)
+{
+    QString url("https://www.jw78.de:23578/fileStore?sec_token=JensWienoebst!");
+    QJsonObject json;
+    json["name"] = "idbQRCodeData";
+    json["filename"] = "testDatei2";
+    json["filedata"] = data.toBase64().toStdString().c_str();
+    QJsonObject jsonData;
+    jsonData["data"] = json;
+
+    QByteArray ba(QJsonDocument(jsonData).toJson(QJsonDocument::Compact));
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QUrlQuery postdata;
+    postdata.addQueryItem("json", QUrl::toPercentEncoding(ba));
+    QNetworkReply *networkReply(networkAccessManager.post(request, postdata.toString(QUrl::FullyEncoded).toUtf8()));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
+        qDebug() << "postQRCode finished" << networkReply->error() << networkReply->readAll();
+        networkReply->deleteLater();// Don't forget to delete it
+    });
+
+}
+
 void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName)
 {
     SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
@@ -708,6 +732,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         ++it;
     }
     emailSender.addMailToSend(message);
+    postQRCodeData("testData");
     showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
 }
 

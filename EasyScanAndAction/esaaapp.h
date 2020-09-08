@@ -144,6 +144,7 @@ class ESAAApp: public QObject
     QJsonObject jsonData2Send;
 
     std::vector<QString> yesQuestions;
+    void postQRCodeData(QByteArray const &data);
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
