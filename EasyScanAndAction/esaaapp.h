@@ -77,6 +77,13 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, adressWanted, AdressWanted, false);
     JWPROPERTY(bool, emailWanted, EMailWanted, false);
     JWPROPERTY(bool, mobileWanted, MobileWanted, false);
+    // gewünschte Besuchdaten
+    JWPROPERTY(bool, tableNumberWanted, TableNumberWanted, false);
+    JWPROPERTY(bool, whoIsVisitedWanted, WhoIsVisitedWanted, false);
+    JWPROPERTY(bool, stationWanted, StationWanted, false);
+    JWPROPERTY(bool, roomWanted, RoomWanted, false);
+    JWPROPERTY(bool, blockWanted, BlockWanted, false);
+    JWPROPERTY(bool, seatNumberWanted, SeatNumberWanted, false);
 
     // eingegebene Kontaktdaten
     JWPROPERTY(QString, fstname, Fstname, "")
@@ -144,7 +151,11 @@ class ESAAApp: public QObject
     QJsonObject jsonData2Send;
 
     std::vector<QString> yesQuestions;
-    void postQRCodeData(QByteArray const &data);
+    QByteArray qrCodeDataToPost;
+    QString facilityIdToPost;
+    void postQRCodeData(const QString &filename, QByteArray const &data);
+    void interpretExtendedQRCodeData(const QString &qrCodeJSON);
+    void fetchExtendedQRCodeData(const QString &facilityId);
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
@@ -170,7 +181,13 @@ public:
                                        bool widthMobile,
                                        const QString &anonymReceiveEMail,
                                        int visitCountX,
-                                       const QString &visitCountXColor);
+                                       const QString &visitCountXColor,
+                                       bool tableNumber,
+                                       bool whoIsVisited,
+                                       bool station,
+                                       bool room,
+                                       bool block,
+                                       bool seatNumber);
     Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName);
 
     Q_INVOKABLE void recommend();

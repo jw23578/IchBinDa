@@ -471,7 +471,11 @@ void ESAAApp::addSubData2Send(const QString &field, const QString &subField, con
 {
 //    setData2send(data2send() + field + ": " + value);
 //    setData2send(data2send() + "<br>");
-    jsonData2Send[field].toObject()[subField] = value;
+    QJsonArray array(jsonData2Send[field].toArray());
+    QJsonObject yq;
+    yq[subField] = value;
+    array.append(yq);
+    jsonData2Send[field] = array;
 }
 
 void ESAAApp::firstStartDone()
@@ -547,6 +551,44 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     return filename;
 }
 
+void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
+{
+    QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
+    QJsonObject data(qrJSON.object());
+    setTableNumberWanted(data["tableNumber"].toBool());
+    setWhoIsVisitedWanted(data["whoIsVisited"].toBool());
+    setStationWanted(data["station"].toBool());
+    setRoomWanted(data["room"].toBool());
+    setBlockWanted(data["block"].toBool());
+    setSeatNumberWanted(data["seatNumber"].toBool());
+    clearYesQuestions();
+    for (int i(0); i < 20; ++i)
+    {
+        QString question("yesQuestion");
+        question += QString::number(i);
+        QString yq(data[question].toString());
+        if (yq.length())
+        {
+            addYesQuestions(yq);
+        }
+    }
+    setYesQuestionCount(yesQuestions.size());
+    emit validQRCodeDetected();
+}
+
+void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
+{
+    QString url("https://www.jw78.de/ibd/qrCodeFiles/" + facilityId + ".ibd");
+    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        QByteArray data(networkReply->readAll());
+        interpretExtendedQRCodeData(data);
+        qDebug() << "Extended Code Data fetched finished" << networkReply->error() << data;
+        networkReply->deleteLater();// Don't forget to delete it
+    });
+
+}
+
 void ESAAApp::action(const QString &qrCodeJSON)
 {
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
@@ -567,6 +609,13 @@ void ESAAApp::action(const QString &qrCodeJSON)
     }
     if (actionID == actionIDCoronaKontaktdatenerfassung)
     {
+        clearYesQuestions();
+        setTableNumberWanted(false);
+        setWhoIsVisitedWanted(false);
+        setStationWanted(false);
+        setRoomWanted(false);
+        setBlockWanted(false);
+        setSeatNumberWanted(false);
         qDebug() << "actionIDCoronaKontaktdatenerfassung";
         QString email(data["e"].toString());
         QString wantedData(data["d"].toString());
@@ -582,6 +631,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
+        fetchExtendedQRCodeData(locationId);
         setLocationGUID(locationId);
         setAdressWanted(wantedData.contains("adress"));
         setEMailWanted(wantedData.contains("email"));
@@ -593,18 +643,6 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setAnonymContactMailAdress(anonymEMail);
         setLastVisitCountX(data["x"].toInt());
         setLastVisitCountXColor(data["colorx"].toString());
-        clearYesQuestions();
-        for (int i(0); i < 20; ++i)
-        {
-            QString question("yq");
-            question += QString::number(i);
-            QString yq(data[question].toString());
-            if (yq.length())
-            {
-                addYesQuestions(yq);
-            }
-        }
-        setYesQuestionCount(yesQuestions.size());
         emit validQRCodeDetected();        
         return;
     }
@@ -621,7 +659,13 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
                                 bool withMobile,
                                 const QString &anonymReceiveEMail,
                                 int visitCountX,
-                                const QString &visitCountXColor)
+                                const QString &visitCountXColor,
+                                bool tableNumber,
+                                bool whoIsVisited,
+                                bool station,
+                                bool room,
+                                bool block,
+                                bool seatNumber)
 {
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
@@ -654,19 +698,28 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
     qr["logo"] = li.logoUrl;
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
+    QByteArray shortQRCode(QJsonDocument(qr).toJson(QJsonDocument::Compact));
     for (size_t i(0); i < yesQuestions.size(); ++i)
     {
-        qr[QString("yq") + QString::number(i)] = yesQuestions[i];
+        qr[QString("yesQuestion") + QString::number(i)] = yesQuestions[i];
     }
-    return generateQRcodeIntern(QJsonDocument(qr).toJson(QJsonDocument::Compact));
+    qr["tableNumber"] = tableNumber;
+    qr["whoIsVisited"] = whoIsVisited;
+    qr["station"] = station;
+    qr["room"] = room;
+    qr["block"] = block;
+    qr["seatNumber"] = seatNumber;
+    facilityIdToPost = li.locationId;
+    qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
+    return generateQRcodeIntern(shortQRCode);
 }
 
-void ESAAApp::postQRCodeData(QByteArray const &data)
+void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 {
     QString url("https://www.jw78.de:23578/fileStore?sec_token=JensWienoebst!");
     QJsonObject json;
     json["name"] = "idbQRCodeData";
-    json["filename"] = "testDatei2";
+    json["filename"] = filename;
     json["filedata"] = data.toBase64().toStdString().c_str();
     QJsonObject jsonData;
     jsonData["data"] = json;
@@ -732,7 +785,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         ++it;
     }
     emailSender.addMailToSend(message);
-    postQRCodeData("testData");
+    postQRCodeData(facilityIdToPost, qrCodeDataToPost);
     showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
 }
 

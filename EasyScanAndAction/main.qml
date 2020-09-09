@@ -10,8 +10,10 @@ ApplicationWindow {
     height: 480
     title: qsTr("Ich bin da!")
     property var previousPage: null
+    property var theCurrentPage: null
     function showNewPage(currentPage, nextPage)
     {
+        theCurrentPage = nextPage;
         previousPage = currentPage
         if (currentPage != null)
         {
@@ -247,6 +249,11 @@ ApplicationWindow {
         onScanSignal: scannerpage.show()
         onValidQRCodeDetected:
         {
+            if (theCurrentPage == questionpage)
+            {
+                return;
+            }
+
             showNewPage(scannerpage, questionpage)
         }
     }

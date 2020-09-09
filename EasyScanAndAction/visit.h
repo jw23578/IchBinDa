@@ -29,6 +29,12 @@ class Visit: public QObject
     JWPROPERTY(QString, mobile, Mobile, "");
     JWPROPERTY(QColor, countXColor, CountXColor, "");
     JWPROPERTY(int, countX, CountX, 0);
+    JWPROPERTY(QString, tableNumber, TableNumber, "");
+    JWPROPERTY(QString, whoIsVisited, WhoIsVisited, "");
+    JWPROPERTY(QString, station, Station, "");
+    JWPROPERTY(QString, room, Room, "");
+    JWPROPERTY(QString, block, Block, "");
+    JWPROPERTY(QString, seatNumber, SeatNumber, "");
     QDateTime visitBegin;
     QDateTime visitEnd;
 public:

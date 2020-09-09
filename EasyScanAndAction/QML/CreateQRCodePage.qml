@@ -21,13 +21,13 @@ ESAAPage
     function generate()
     {
         ESAA.clearYesQuestions()
-//        for (var i = 0; i < yesQuestionRepeater.count; ++i)
-//        {
-//            if (yesQuestionVector[i] != "")
-//            {
-//                ESAA.addYesQuestions(yesQuestionVector[i])
-//            }
-//        }
+        for (var i = 0; i < yesQuestionRepeater.count; ++i)
+        {
+            if (yesQuestionVector[i] != "")
+            {
+                ESAA.addYesQuestions(yesQuestionVector[i])
+            }
+        }
 
         qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
                                              contactReceiveEMail.displayText,
@@ -38,7 +38,13 @@ ESAAPage
                                              mobileSwitch.position > 0.9,
                                              anonymReceiveEMail.displayText,
                                              parseInt(visitCounts.displayText),
-                                             colorInputVisitCount.displayText);
+                                             colorInputVisitCount.displayText,
+                                             tableNumber.position > 0.9,
+                                             whoIsVisited.position > 0.9,
+                                             station.position > 0.9,
+                                             room.position > 0.9,
+                                             block.position > 0.9,
+                                             seatNumber.position > 0.9);
     }
 
     ESAAFlickable
@@ -56,13 +62,13 @@ ESAAPage
             y: ESAA.spacing
             spacing: ESAA.spacing
             id: theColumn
-            width: parent.width
+            width: parent.width - 2 * ESAA.spacing
+            anchors.horizontalCenter: parent.horizontalCenter
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
                 id: facilityName
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 caption: qsTr("Name des Geschäfts")
             }
             ESAALineInputWithCaption
@@ -70,16 +76,13 @@ ESAAPage
                 color: createqrcodepage.textColor
                 id: logoUrl
                 caption: "Logo-Url"
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
-
             }
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 caption: "Farbcode (Format: #ffffff)"
                 colorEdit: true
                 onDisplayTextChanged:
@@ -93,8 +96,7 @@ ESAAPage
                 color: createqrcodepage.textColor
                 id: contactReceiveEMail
                 caption: "Kontaktdaten senden an (E-Mail-Adresse)"
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 inputMethodHints: Qt.ImhEmailCharactersOnly
             }
             ESAALineInputWithCaption
@@ -102,8 +104,7 @@ ESAAPage
                 color: createqrcodepage.textColor
                 id: anonymReceiveEMail
                 caption: "Anonym senden an (E-Mail-Adresse)"
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 inputMethodHints: Qt.ImhEmailCharactersOnly
             }
             ESAALineInputWithCaption
@@ -111,24 +112,21 @@ ESAAPage
                 color: createqrcodepage.textColor
                 id: visitCounts
                 caption: "Jeden xten Besuch anzeigen"
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 inputMethodHints: Qt.ImhDigitsOnly
             }
             ESAALineInputWithCaption
             {
                 visible: parseInt(visitCounts.displayText) > 0
                 color: createqrcodepage.textColor
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 caption: "Farbcode für xten Besuch<br>(Format: #ffffff)"
                 colorEdit: true
                 id: colorInputVisitCount
             }
             ESAAText
             {
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 id: textId
                 color: createqrcodepage.textColor
                 text: "Welche Daten sollen erfasst werden?"
@@ -138,32 +136,76 @@ ESAAPage
             ESAASwitch
             {
                 id: adressSwitch
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 text: qsTr("Adressdaten")
                 fontColor: createqrcodepage.textColor
             }
             ESAASwitch
             {
                 id: emailSwitch
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 text: qsTr("E-Mail-Adresse")
                 fontColor: createqrcodepage.textColor
             }
             ESAASwitch
             {
                 id: mobileSwitch
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
                 text: qsTr("Handynummer")
                 fontColor: createqrcodepage.textColor
             }
-            /*
             ESAAText
             {
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
+                color: createqrcodepage.textColor
+                text: "Die Folgenden Angaben müssen jedesmal neu ausgefüllt werden:"
+                wrapMode: Text.WordWrap
+            }
+            ESAASwitch
+            {
+                id: tableNumber
+                width: parent.width
+                text: qsTr("Die Tischnummer")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAASwitch
+            {
+                id: whoIsVisited
+                width: parent.width
+                text: qsTr("Wer besucht wird")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAASwitch
+            {
+                id: station
+                width: parent.width
+                text: qsTr("Die Station")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAASwitch
+            {
+                id: room
+                width: parent.width
+                text: qsTr("Die Raumnummer")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAASwitch
+            {
+                id: block
+                width: parent.width
+                text: qsTr("Die Blocknummer")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAASwitch
+            {
+                id: seatNumber
+                width: parent.width
+                text: qsTr("Die Sitznummer")
+                fontColor: createqrcodepage.textColor
+            }
+            ESAAText
+            {
+                width: parent.width
                 color: createqrcodepage.textColor
                 text: "Folgende Fragen müssen jedesmal mit \"Ja\" beantwortet werden:"
                 wrapMode: Text.WordWrap
@@ -174,8 +216,7 @@ ESAAPage
                 model: 1
                 Row
                 {
-                    width: parent.width - 2 * ESAA.spacing
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
                     ESAALineInputWithCaption
                     {
                         color: createqrcodepage.textColor
@@ -218,15 +259,14 @@ ESAAPage
                             yesQuestionRepeater.model = yesQuestionRepeater.count - 1
                         }
                     }
-        }
-    }
+                }
+            }
             CircleButton
             {
-                width: parent.width
-                text: "weitere Frage"
-                onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
                 anchors.horizontalCenter: parent.horizontalCenter
-            }*/
+                text: "weitere<br>Frage"
+                onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
+            }
 
             Item
             {

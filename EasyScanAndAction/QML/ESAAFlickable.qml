@@ -2,6 +2,17 @@ import QtQuick 2.15
 
 Item
 {
+    function ensureVisible(item) {
+        var ypos = item.mapToItem(contentItem, 0, 0).y
+        var ext = item.height + ypos
+        if ( ypos < contentY // begins before
+                || ypos > contentY + height // begins after
+                || ext < contentY // ends before
+                || ext > contentY + height) { // ends after
+            // don't exceed bounds
+            contentY = Math.max(0, Math.min(ypos - height + item.height, contentHeight - height))
+        }
+    }
     property alias contentHeight: theFlickable.contentHeight
     property alias contentItem: theFlickable.contentItem
     property alias contentY: theFlickable.contentY
