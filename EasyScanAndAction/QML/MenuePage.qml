@@ -40,6 +40,8 @@ ESAAPage
         {
             id: editButton
             font.pixelSize: theGrid.buttonFontPixelSize
+            alertAniRunning: ESAA.fstname == "" || ESAA.surname == ""
+            repeatAlertAni: ESAA.fstname == "" || ESAA.surname == ""
             text: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
             onClicked: editContactData()
             width: parent.buttonSize

@@ -598,9 +598,12 @@ void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
     }
     QString url("https://www.jw78.de/ibd/qrCodeFiles/" + facilityId + ".ibd");
     QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
-    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this, qrCode] {
         QByteArray data(networkReply->readAll());
-        interpretExtendedQRCodeData(data);
+        if (data != qrCode)
+        {
+            interpretExtendedQRCodeData(data);
+        }
         qDebug() << "Extended Code Data fetched finished" << networkReply->error() << data;
         networkReply->deleteLater();// Don't forget to delete it
     });

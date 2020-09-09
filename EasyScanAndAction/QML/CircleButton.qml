@@ -10,6 +10,9 @@ Button
     id: control
     font.family: "Roboto-Regular"
     font.pixelSize: ESAA.fontButtonPixelsize * 0.8
+    property alias alertAniRunning: alertAni.running
+    property bool repeatAlertAni: false;
+    property int markGlowRadius: 0
     property alias source: img.source
     property alias downSource: downImg.source
     property color buttonColor: ESAA.buttonColor
@@ -131,12 +134,46 @@ Button
         img.rotation = -720
         pauseAniRotation.start()
     }
+    SequentialAnimation
+    {
+        id: alertAni
+        running: false
+        NumberAnimation
+        {
+            target: control
+            property: "markGlowRadius"
+            to: 21
+            duration: 800
+        }
+        NumberAnimation
+        {
+            target: control
+            property: "markGlowRadius"
+            to: 0
+            duration: 800
+        }
+        onStopped:
+        {
+            if (repeatAlertAni)
+            {
+                alertAni.start()
+            }
+        }
+    }
     Glow {
         visible: control.down
         anchors.fill: background
         radius: 8
         samples: 17
         color: ESAA.lineInputBorderColor
+        source: background
+    }
+    Glow {
+        visible: parent.markGlowRadius > 0
+        anchors.fill: background
+        radius: parent.markGlowRadius
+        samples: 17
+        color: "orange" // ESAA.lineInputBorderColor
         source: background
     }
 }

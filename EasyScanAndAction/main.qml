@@ -1,6 +1,7 @@
 import QtQuick 2.13
 import QtQuick.Window 2.13
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.13
 import "QML"
 
 ApplicationWindow {
@@ -182,9 +183,12 @@ ApplicationWindow {
         id: hideCallMenueButton
         to: width
     }
+
     CircleButton
     {
         id: callMenueButton
+        alertAniRunning: ESAA.fstname == "" || ESAA.surname == ""
+        repeatAlertAni: ESAA.fstname == "" || ESAA.surname == ""
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.bottom
         verticalImageOffset: -height / 4
@@ -273,6 +277,7 @@ ApplicationWindow {
         ESAA.calculateRatios()
         console.log("Spacing: " + ESAA.spacing)
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
+        console.log("vorname: " + ESAA.vorname)
     }
     onClosing: {
         close.accepted = false
