@@ -70,7 +70,7 @@ void ESAAApp::sendMail()
 
     // Now add it to the mail
     message->addPart(text);
-    emailSender.addMailToSend(message);
+    emailSender.addMailToSend(message, true);
 
     if (anonymContactMailAdress().size())
     {
@@ -87,7 +87,7 @@ void ESAAApp::sendMail()
         visitText->setText(work);
         visitMessage->addPart(visitText);
 
-        emailSender.addMailToSend(visitMessage);
+        emailSender.addMailToSend(visitMessage, false);
     }
     if (visitEnd.isNull())
     {
@@ -380,7 +380,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
     networkAccessManager(this),
     emailSender(this),
-    internetTester(this)
+    internetTester(this),
+    qrCodeStore(getWriteablePath() + "/knownQRCodes.json")
 {
     QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
     publicKeyFile.open(QIODevice::ReadOnly);
@@ -489,6 +490,16 @@ void ESAAApp::showMessage(const QString &mt)
     emit showMessageSignal(mt);
 }
 
+void ESAAApp::showWaitMessage(const QString &mt)
+{
+    emit showWaitMessageSignal(mt);
+}
+
+void ESAAApp::hideWaitMessage()
+{
+    emit hideWaitMessageSignal();
+}
+
 void ESAAApp::scan()
 {
     emit scanSignal();
@@ -555,6 +566,7 @@ void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
 {
     QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
     QJsonObject data(qrJSON.object());
+    QString facilityId(data["id"].toString());
     setTableNumberWanted(data["tableNumber"].toBool());
     setWhoIsVisitedWanted(data["whoIsVisited"].toBool());
     setStationWanted(data["station"].toBool());
@@ -574,10 +586,16 @@ void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
     }
     setYesQuestionCount(yesQuestions.size());
     emit validQRCodeDetected();
+    qrCodeStore.add(facilityId, qrCodeJSON);
 }
 
 void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
 {
+    QString qrCode(qrCodeStore.get(facilityId));
+    if (qrCode.size())
+    {
+        interpretExtendedQRCodeData(qrCode);
+    }
     QString url("https://www.jw78.de/ibd/qrCodeFiles/" + facilityId + ".ibd");
     QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
@@ -621,18 +639,18 @@ void ESAAApp::action(const QString &qrCodeJSON)
         QString wantedData(data["d"].toString());
         QString logo(data["logo"].toString());
         QString backgroundColor(data["color"].toString());
-        QString locationId(data["id"].toString());
+        QString facilityId(data["id"].toString());
         QString theFacilityName(data["ln"].toString());
         QString anonymEMail(data["ae"].toString());
         qDebug() << "facilityName: " << theFacilityName;
-        qDebug() << "locationId: " << locationId;
+        qDebug() << "facilityId: " << facilityId;
         qDebug() << "anonymEMail: " << anonymEMail;
         qDebug() << "email: " << email;
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
-        fetchExtendedQRCodeData(locationId);
-        setLocationGUID(locationId);
+        fetchExtendedQRCodeData(facilityId);
+        setLocationGUID(facilityId);
         setAdressWanted(wantedData.contains("adress"));
         setEMailWanted(wantedData.contains("email"));
         setMobileWanted(wantedData.contains("mobile"));
@@ -784,7 +802,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         message->addPart(image1);
         ++it;
     }
-    emailSender.addMailToSend(message);
+    emailSender.addMailToSend(message, true);
     postQRCodeData(facilityIdToPost, qrCodeDataToPost);
     showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
 }

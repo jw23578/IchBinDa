@@ -7,12 +7,16 @@
 #include <set>
 #include <QTimer>
 
+class ESAAApp;
+
 class EMailSender: public QObject
 {
     Q_OBJECT
+    ESAAApp *theApp;
     bool sending;
     SimpleMail::Server smtpServer;
     void sendAMail(SimpleMail::MimeMessage *message);
+    std::set<SimpleMail::MimeMessage*> messagesWithHideSignal;
     std::set<SimpleMail::MimeMessage*> messagesToSend;
     std::map<SimpleMail::ServerReply*, SimpleMail::MimeMessage*> reply2message;
     QTimer timer;
@@ -20,13 +24,13 @@ class EMailSender: public QObject
 private slots:
     void onTimeout();
 public:
-    EMailSender(QObject *parent);
+    EMailSender(ESAAApp *app);
     QString smtpHost;
     int smtpPort;
     QString smtpUser;
     QString smtpPassword;
     QString smtpSender;
-    void addMailToSend(SimpleMail::MimeMessage *message);
+    void addMailToSend(SimpleMail::MimeMessage *message, bool hideWaitMessage);
 
     QString fstSmtpUser;
     QString fstSmtpPassword;

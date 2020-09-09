@@ -11,6 +11,7 @@
 #include <set>
 #include <QNetworkAccessManager>
 #include "internettester.h"
+#include "qrcodestore.h"
 #ifdef DMOBILEDEVICE
 #ifdef DMOBILEIOS
 #include "botan_all_iosarmv7.h"
@@ -31,6 +32,7 @@ class ESAAApp: public QObject
     QNetworkAccessManager networkAccessManager;
     EMailSender emailSender;
     InternetTester internetTester;
+    QRCodeStore qrCodeStore;
     Visit lastVisit;
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
@@ -168,6 +170,8 @@ public:
     Q_INVOKABLE void addSubData2Send(const QString &field, const QString &subField, const QString &value);
     Q_INVOKABLE void firstStartDone();
     Q_INVOKABLE void showMessage(const QString &mt);
+    Q_INVOKABLE void showWaitMessage(const QString &mt);
+    Q_INVOKABLE void hideWaitMessage();
     Q_INVOKABLE void scan();
     Q_INVOKABLE void sendContactData();
     Q_INVOKABLE void ignoreQRCode();
@@ -203,6 +207,8 @@ public:
     Q_INVOKABLE bool isActiveVisit(QDateTime const &visitDateTime, int changeCounter);
 
 signals:
+    void showWaitMessageSignal(const QString &mt);
+    void hideWaitMessageSignal();
     void showMessageSignal(const QString &mt);
     void showBadMessageSignal(const QString &mt);
     void scanSignal();

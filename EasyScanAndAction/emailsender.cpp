@@ -1,4 +1,5 @@
 #include "emailsender.h"
+#include "esaaapp.h"
 
 void EMailSender::sendAMail(SimpleMail::MimeMessage *message)
 {
@@ -32,6 +33,11 @@ void EMailSender::sendAMail(SimpleMail::MimeMessage *message)
         else
         {
             SimpleMail::MimeMessage *message(reply2message[reply]);
+            if (messagesWithHideSignal.find(message) != messagesWithHideSignal.end())
+            {
+                theApp->hideWaitMessage();
+                messagesWithHideSignal.erase(message);
+            }
             reply2message.erase(reply);
             messagesToSend.erase(message);
             delete message;
@@ -66,7 +72,7 @@ void EMailSender::onTimeout()
     sendAMail(*messagesToSend.begin());
 }
 
-EMailSender::EMailSender(QObject *parent):QObject(parent), sending(false)
+EMailSender::EMailSender(ESAAApp *app):QObject(app), theApp(app), sending(false)
 {
     timer.setInterval(1000);
     timer.setSingleShot(false);
@@ -74,7 +80,11 @@ EMailSender::EMailSender(QObject *parent):QObject(parent), sending(false)
     timer.start();
 }
 
-void EMailSender::addMailToSend(SimpleMail::MimeMessage *message)
+void EMailSender::addMailToSend(SimpleMail::MimeMessage *message, bool hideWaitMessage)
 {
+    if (hideWaitMessage)
+    {
+        messagesWithHideSignal.insert(message);
+    }
     messagesToSend.insert(message);
 }

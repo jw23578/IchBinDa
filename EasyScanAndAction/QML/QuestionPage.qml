@@ -161,7 +161,7 @@ ESAAPage
                 id: emailAdress
                 text: ESAA.emailAdress
                 visible: meineDaten || ESAA.emailWanted
-                inputMethodHints: Qt.ImhEmailCharactersOnly
+                inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
                 color: textColor
             }
             ESAALineInputWithCaption
@@ -469,7 +469,7 @@ ESAAPage
                 }
                 ESAA.addSubData2Send("yesQuestion", "yq" + i, ESAA.getYesQuestion(i))
             }
-
+            ESAA.showWaitMessage("Bitte einen Moment Geduld")
             ESAA.sendContactData();            
             close()
         }

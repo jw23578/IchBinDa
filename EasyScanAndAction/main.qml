@@ -233,10 +233,17 @@ ApplicationWindow {
     Message
     {
         id: message
+        z: 2
     }
     BadMessage
     {
         id: badMessage
+        z: 2
+    }
+    WaitMessage
+    {
+        id: waitMessage
+        z: 2
     }
 
 
@@ -244,6 +251,8 @@ ApplicationWindow {
     {
         target: ESAA
         onShowSendedData: showNewPage(scannerpage, sendedDataPage)
+        onShowWaitMessageSignal: waitMessage.show(mt)
+        onHideWaitMessageSignal: waitMessage.hide()
         onShowMessageSignal: message.show(mt)
         onShowBadMessageSignal: badMessage.show(mt)
         onScanSignal: scannerpage.show()

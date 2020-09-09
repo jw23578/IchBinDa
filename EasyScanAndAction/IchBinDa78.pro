@@ -21,6 +21,7 @@ SOURCES += \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
+    qrcodestore.cpp \
     src/jwmobileext.cpp \
     visit.cpp \
 zint-master/backend/2of5.c \
@@ -61,6 +62,7 @@ HEADERS += \
     esaaapp.h \
     internettester.h \
     ios/ios_functions.h \
+    qrcodestore.h \
     qt_extension_macros.h \
     src/jwmobileext.h \
     visit.h \

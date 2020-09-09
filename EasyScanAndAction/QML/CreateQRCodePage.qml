@@ -97,7 +97,7 @@ ESAAPage
                 id: contactReceiveEMail
                 caption: "Kontaktdaten senden an (E-Mail-Adresse)"
                 width: parent.width
-                inputMethodHints: Qt.ImhEmailCharactersOnly
+                inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
             }
             ESAALineInputWithCaption
             {
@@ -105,7 +105,7 @@ ESAAPage
                 id: anonymReceiveEMail
                 caption: "Anonym senden an (E-Mail-Adresse)"
                 width: parent.width
-                inputMethodHints: Qt.ImhEmailCharactersOnly
+                inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
             }
             ESAALineInputWithCaption
             {
