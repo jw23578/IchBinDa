@@ -92,6 +92,8 @@ ESAAPage
                     colorRectangle.color = displayText
                 }
                 id: colorInput
+                helpText: "Diese Farbe wird angezeigt, wenn ein Besucher seine Daten gesendet hat, so kann - zusammen mit dem Logo - schnell erkannt werden, dass der richtige Besuch angezeigt wird."
+                onHelpClicked: ESAA.showMessage(ht)
             }
             ESAALineInputWithCaption
             {
@@ -100,6 +102,8 @@ ESAAPage
                 caption: "Kontaktdaten senden an (E-Mail-Adresse)"
                 width: parent.width
                 inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
+                helpText: "An diese E-Mail-Adresse werden die verschlüsselten Kontaktdaten des Besuchers gesendet."
+                onHelpClicked: ESAA.showMessage(ht)
             }
             ESAALineInputWithCaption
             {
@@ -108,6 +112,8 @@ ESAAPage
                 caption: "Anonym senden an (E-Mail-Adresse)"
                 width: parent.width
                 inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
+                helpText: "An diese E-Mail-Adresse wird ausschließlich eine Besuchsinfo gesendet, ohne Kontaktdaten des Besuchers."
+                onHelpClicked: ESAA.showMessage(ht)
             }
             ESAALineInputWithCaption
             {
@@ -160,7 +166,7 @@ ESAAPage
             {
                 width: parent.width
                 color: createqrcodepage.textColor
-                text: "Die Folgenden Angaben müssen jedesmal neu ausgefüllt werden:"
+                text: "Folgende Informationen müssen bei jedem Besuch neu angegeben werden:"
                 wrapMode: Text.WordWrap
             }
             ESAASwitch
@@ -209,7 +215,7 @@ ESAAPage
             {
                 width: parent.width
                 color: createqrcodepage.textColor
-                text: "Folgende Fragen müssen jedesmal mit \"Ja\" beantwortet werden:"
+                text: "Folgende Fragen müssen bei jedem Besuch mit \"Ja\" beantwortet werden:"
                 wrapMode: Text.WordWrap
             }
             Repeater

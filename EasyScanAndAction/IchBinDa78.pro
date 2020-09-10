@@ -21,6 +21,7 @@ SOURCES += \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
+    persistentmap.cpp \
     qrcodestore.cpp \
     src/jwmobileext.cpp \
     visit.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     esaaapp.h \
     internettester.h \
     ios/ios_functions.h \
+    persistentmap.h \
     qrcodestore.h \
     qt_extension_macros.h \
     src/jwmobileext.h \
@@ -114,7 +116,7 @@ ANDROID_VERSION_NAME = "Version 1"
 ANDROID_VERSION_CODE = "11"
 ANDROID_TARGET_SDK_VERSION = "29"
 
-VERSION = 1.5.4
+VERSION = 1.5.5
 ios{
     Q_ENABLE_BITCODE.name = ENABLE_BITCODE
     Q_ENABLE_BITCODE.value = NO
