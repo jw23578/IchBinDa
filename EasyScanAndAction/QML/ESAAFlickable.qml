@@ -21,6 +21,7 @@ Item
         width: ESAA.screenWidth / 10
         height: width
         opacity: 0
+        visible: opacity > 0
         id: upButton
         fillMode: Image.PreserveAspectFit
         anchors.top: parent.top
@@ -39,6 +40,7 @@ Item
         {
             anchors.fill: parent
             onClicked: theFlickable.flick(0, ESAA.screenHeight)
+            enabled: parent.visible
         }
     }
 
@@ -46,6 +48,7 @@ Item
     {
         z: 1
         id: downButton
+        visible: opacity > 0
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         fillMode: Image.PreserveAspectFit
@@ -64,6 +67,7 @@ Item
         {
             anchors.fill: parent
             onClicked: theFlickable.flick(0, -ESAA.screenHeight)
+            enabled: parent.visible
         }
     }
     Flickable

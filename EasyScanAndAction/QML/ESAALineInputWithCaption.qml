@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Item
 {
+    id: theItem
     property alias color: input.color
     property alias caption: captionText.text
     property alias text: input.text
@@ -11,11 +12,14 @@ Item
     height: input.height
     property alias inputHeight: input.height
     property alias colorEdit: input.colorEdit
+    property alias helpText: input.helpText
+    signal helpClicked(string ht)
 
     ESAATextInput
     {
         id: input
         width: parent.width
+        onHelpClicked: theItem.helpClicked(ht)
     }
     ESAAText
     {

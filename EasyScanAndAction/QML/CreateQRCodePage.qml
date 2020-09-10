@@ -70,6 +70,8 @@ ESAAPage
                 id: facilityName
                 width: parent.width
                 caption: qsTr("Name des Geschäfts")
+                helpText: "Dieser Name wird dem Besucher angezeigt, wenn er den QR-Code eingescannt hat."
+                onHelpClicked: ESAA.showMessage(ht)
             }
             ESAALineInputWithCaption
             {

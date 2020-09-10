@@ -3,6 +3,7 @@ import QtGraphicalEffects 1.15
 
 FocusScope
 {
+    signal helpClicked(string ht)
     property alias text: input.text
     property alias displayText: input.displayText
     property alias inputMethodHints: input.inputMethodHints
@@ -11,6 +12,7 @@ FocusScope
 //    property alias contentHeight: input.contentHeight
     height: input.contentHeight + ESAA.spacing
     property bool colorEdit: false
+    property string helpText: ""
     Rectangle
     {
         id: rectangle
@@ -45,11 +47,38 @@ FocusScope
             height: parent.height
             radius: ESAA.radius
             width: height
-            anchors.right: parent.right
+            anchors.right: helpButton.left
             anchors.verticalCenter: parent.verticalCenter
             visible: colorEdit
             border.color: ESAA.lineInputBorderColor
             border.width: 1
+        }
+        Rectangle
+        {
+            color: ESAA.buttonColor
+            id: helpButton
+            height: parent.height
+            radius: ESAA.radius
+            width: input.activeFocus && helpText.length ? height : 0
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            Image {
+                id: name
+                source: "qrc:/images/help.svg"
+                anchors.centerIn: parent
+                width: parent.width * 8 / 10
+                height: width
+            }
+            Behavior on width {
+                NumberAnimation {
+                    duration: 200
+                }
+            }
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: helpClicked(helpText)
+            }
         }
     }
     Glow {
