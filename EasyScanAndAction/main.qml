@@ -14,6 +14,11 @@ ApplicationWindow {
     property var theCurrentPage: null
     function showNewPage(currentPage, nextPage)
     {
+        if (currentPage == nextPage)
+        {
+            return;
+        }
+
         theCurrentPage = nextPage;
         previousPage = currentPage
         if (currentPage != null)
