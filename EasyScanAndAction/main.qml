@@ -58,15 +58,6 @@ ApplicationWindow {
         width: parent.width
         height: parent.height / 20
     }
-
-    ContentBackground
-    {
-        anchors.top: header.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-    }
-
     Item
     {
         anchors.top: header.bottom
@@ -233,6 +224,7 @@ ApplicationWindow {
                 showNewPage(null, scannerpage)
             }
         }
+        onHelpClicked: showNewPage(theCurrentPage, firststart)
     }
     Message
     {

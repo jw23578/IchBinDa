@@ -1,16 +1,11 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.13
 
-Item
+Background
 {
     id: message
     anchors.fill: parent
     visible: false
-    Rectangle
-    {
-        anchors.fill: parent
-        color: "white"
-    }
     Flickable
     {
         id: theFlick

@@ -31,6 +31,7 @@ ESAAPage
         CircleButton
         {
             id: qrcodebutton
+            smallTopText: "Als Betreiber"
             text: "QR-Code\nanlegen"
             onClicked: editQRCode()
             width: parent.buttonSize
@@ -42,7 +43,8 @@ ESAAPage
             font.pixelSize: theGrid.buttonFontPixelSize
             alertAniRunning: ESAA.fstname == "" || ESAA.surname == ""
             repeatAlertAni: ESAA.fstname == "" || ESAA.surname == ""
-            text: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
+            smallTopText: "Als Besucher"
+            text: qsTr("Kontaktdaten<br>bearbeiten")
             onClicked: editContactData()
             width: parent.buttonSize
         }

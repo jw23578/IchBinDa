@@ -3,6 +3,7 @@ import QtQuick 2.13
 Rectangle
 {
     signal splashDone
+    signal helpClicked
     id: splashscreen
     opacity: 1
     y: 0
@@ -55,13 +56,45 @@ Rectangle
             ESAA.reset()
         }
     }
+    Image
+    {
+        id: helpImage
+        anchors.right: parent.right
+        anchors.rightMargin: (parent.parent.height / 16 - parent.parent.height / 20) / 2
+        anchors.topMargin: (parent.parent.height / 16 - parent.parent.height / 20) / 2
+        anchors.top: parent.top
+        width: parent.parent.height / 20
+        height: width
+        source: "qrc:/images/help.svg"
+        opacity: 0
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+        Behavior on opacity {
+            NumberAnimation
+            {
+                duration: 400
+            }
+        }
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: helpClicked()
+        }
+    }
+
+    PauseAnimation {
+        duration: 3000
+        id: longWait
+        onStopped: helpImage.opacity = 1
+    }
 
     function minimize()
     {
-        height = parent.height / 20
+        height = parent.height / 16
         gradientToColor = gradientFromColor
         logo.qrCodeOffset = parent.height / 10 / 8
         logo.claimImageX = parent.height / 10 / 8
+        longWait.start()
     }
 
     PauseAnimation {

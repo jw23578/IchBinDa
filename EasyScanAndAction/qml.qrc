@@ -19,7 +19,7 @@
         <file>QML/ESAASendedDataPage.qml</file>
         <file>QML/BadMessage.qml</file>
         <file>QML/VisitEndQuestion.qml</file>
-        <file>QML/ContentBackground.qml</file>
+        <file>QML/Background.qml</file>
         <file>QML/MovingRectangle.qml</file>
         <file>QML/ESAAIconButton.qml</file>
         <file>QML/Logo.qml</file>

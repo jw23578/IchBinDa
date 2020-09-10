@@ -10,6 +10,7 @@ Button
     id: control
     font.family: "Roboto-Regular"
     font.pixelSize: ESAA.fontButtonPixelsize * 0.8
+    property string smallTopText: ""
     property alias alertAniRunning: alertAni.running
     property bool repeatAlertAni: false;
     property int markGlowRadius: 0
@@ -20,15 +21,33 @@ Button
     property double imageSizeFactor: 1
     property alias belowCaption: belowCaptionText.text
     property alias aboveCaption: aboveCaptionText.text
-    contentItem: ESAAText
-    {
-        text: control.text
-        font: control.font
-        opacity: enabled ? 1.0 : 0.3
-        color: control.down ? ESAA.buttonColor : "white"
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
+    contentItem: Item {
+        ESAAText
+        {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: control.height / 8
+            text: control.smallTopText
+            opacity: enabled ? 1.0 : 0.3
+            color: control.down ? ESAA.buttonColor : "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+            font.pixelSize: ESAA.fontTextPixelsize / 1.3
+            font.family: "Roboto-Thin"
+
+        }
+        ESAAText
+        {
+            anchors.centerIn: parent
+            text: control.text
+            font: control.font
+            opacity: enabled ? 1.0 : 0.3
+            color: control.down ? ESAA.buttonColor : "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
     }
     ESAAText
     {

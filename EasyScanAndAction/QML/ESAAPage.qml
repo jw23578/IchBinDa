@@ -1,6 +1,6 @@
 import QtQuick 2.15
 
-Rectangle
+Background
 {
     signal showing;
     signal hiding;
@@ -80,24 +80,5 @@ Rectangle
         targetOutX = moveLeft ? -width: width
         hiding()
         moveOutAnimation.start()
-    }
-    Image
-    {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: bgImage1.top
-        mipmap: true
-        source: "qrc:/images/background.png"
-        fillMode: Image.PreserveAspectFit
-    }
-    Image
-    {
-        id: bgImage1
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        mipmap: true
-        source: "qrc:/images/background.png"
-        fillMode: Image.PreserveAspectFit
     }
 }

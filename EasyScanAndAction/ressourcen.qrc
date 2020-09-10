@@ -32,5 +32,6 @@
         <file>images/share_weiss.svg</file>
         <file>images/pfeil_blau.svg</file>
         <file>images/background.png</file>
+        <file>images/help.svg</file>
     </qresource>
 </RCC>

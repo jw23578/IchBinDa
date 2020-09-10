@@ -30,7 +30,7 @@ ESAAPage
     {
         id: theFlick
         anchors.margins: ESAA.spacing
-        anchors.bottom: sendButton.top
+        anchors.bottom: sendenAn.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -253,12 +253,23 @@ ESAAPage
             }
         }
     }
+    ESAAText
+    {
+        id: sendenAn
+        text: "an: " + ESAA.locationContactMailAdress
+        anchors.bottom: sendButton.top
+        anchors.bottomMargin: ESAA.spacing / 2
+        color: ESAA.buttonColor
+        font.pixelSize: ESAA.fontTextPixelsize
+        anchors.horizontalCenter: parent.horizontalCenter
+        visible: !meineDaten
+    }
     CircleButton
     {
         id: sendButton
         anchors.margins: ESAA.spacing
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: height / 2
+        anchors.bottomMargin: ESAA.spacing
         anchors.horizontalCenter: parent.horizontalCenter
         text: meineDaten ? "speichern" : "Daten<br>senden"
         onClicked:
@@ -473,16 +484,6 @@ ESAAPage
             ESAA.sendContactData();            
             close()
         }
-    }
-    ESAAText
-    {
-        text: "an: " + ESAA.locationContactMailAdress
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing / 2
-        color: ESAA.buttonColor
-        font.pixelSize: ESAA.fontTextPixelsize
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: !meineDaten
     }
     BackButton
     {

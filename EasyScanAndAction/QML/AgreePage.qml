@@ -25,7 +25,7 @@ ESAAPage
             textFormat: TextEdit.RichText
             wrapMode: Text.WordWrap
             text: "<h3>Zustimmung</h3><h4>Für Betreiber:</h4>" +
-                  "Du bekommst die Daten verschlüsselt per E-Mail an eine beliebige Deiner E-Mail-Adressen gesendet." +
+                  "Du bekommst die Daten verschlüsselt an eine Deiner E-Mail-Adressen gesendet." +
                   "Durch die Verschlüsselung ist es nicht zwingend nötig die Daten nach bestimmten Fristen zu löschen." +
                   "<br>Ausschließlich entsprechenden Einrichtungen wie dem Gesundheitsamt werden die Daten entschlüsselt.<br>" +
                   "<h4>Für Kunden und Besucher:</h4>" +
