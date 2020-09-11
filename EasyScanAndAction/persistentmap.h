@@ -16,6 +16,10 @@ public:
     PersistentMap(QString const &filename,
                   QString const &firstName,
                   QString const &secondName);
+    bool contains(const QString &index);
+    QString get(const QString &index);
+    void set(const QString &index, const QString &value);
+    void setFiledata(const QString &index, const QString &filename);
 };
 
 #endif // PERSISTENTMAP_H

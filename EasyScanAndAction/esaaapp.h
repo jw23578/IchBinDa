@@ -12,6 +12,7 @@
 #include <QNetworkAccessManager>
 #include "internettester.h"
 #include "qrcodestore.h"
+#include "persistentmap.h"
 #ifdef DMOBILEDEVICE
 #ifdef DMOBILEIOS
 #include "botan_all_iosarmv7.h"
@@ -33,6 +34,7 @@ class ESAAApp: public QObject
     EMailSender emailSender;
     InternetTester internetTester;
     QRCodeStore qrCodeStore;
+    PersistentMap publicKeyMap;
     Visit lastVisit;
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
@@ -158,9 +160,11 @@ class ESAAApp: public QObject
     void postQRCodeData(const QString &filename, QByteArray const &data);
     void interpretExtendedQRCodeData(const QString &qrCodeJSON);
     void fetchExtendedQRCodeData(const QString &facilityId);
+    void setPublicKey(int qrCodeNumber);
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE bool keyNumberOK(int number);
     Q_INVOKABLE void clearYesQuestions();
     Q_INVOKABLE void addYesQuestions(const QString &yq);
     Q_INVOKABLE QString getYesQuestion(int index);
@@ -176,7 +180,8 @@ public:
     Q_INVOKABLE void sendContactData();
     Q_INVOKABLE void ignoreQRCode();
     Q_INVOKABLE void action(const QString &qrCodeJSON);
-    Q_INVOKABLE QString generateQRCode(const QString &facilityName,
+    Q_INVOKABLE QString generateQRCode(const int qrCodeNumer,
+                                       const QString &facilityName,
                                        const QString &contactReceiveEMail,
                                        const QString &theLogoUrl,
                                        const QColor color,

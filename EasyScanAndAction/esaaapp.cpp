@@ -375,19 +375,47 @@ std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
     return message;
 }
 
+void ESAAApp::setPublicKey(int qrCodeNumber)
+{
+    if (qrCodeNumber == 0 || qrCodeNumber == 9999)
+    {
+/*        QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
+        publicKeyFile.open(QIODevice::ReadOnly);
+        QByteArray publicKeyData(publicKeyFile.readAll());
+        Botan::DataSource_Memory datasource(publicKeyData.toStdString());
+        publicKey = Botan::X509::load_key(datasource);*/
+        qrCodeNumber = 0;
+    }
+    if (!publicKeyMap.contains(QString::number(qrCodeNumber)))
+    {
+        qrCodeNumber = 0;
+    }
+    Botan::DataSource_Memory datasource(publicKeyMap.get(QString::number(qrCodeNumber)).toStdString());
+    publicKey = Botan::X509::load_key(datasource);
+}
+
+
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
     networkAccessManager(this),
     emailSender(this),
     internetTester(this),
-    qrCodeStore(getWriteablePath() + "/knownQRCodes.json")
+    qrCodeStore(getWriteablePath() + "/knownQRCodes.json"),
+    publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey")
 {
-    QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
-    publicKeyFile.open(QIODevice::ReadOnly);
-    QByteArray publicKeyData(publicKeyFile.readAll());
-    Botan::DataSource_Memory datasource(publicKeyData.toStdString());
-    publicKey = Botan::X509::load_key(datasource);
+    publicKeyMap.setFiledata("0", ":/keys/publickey2020-07-26.txt");
+    publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
+    publicKeyMap.setFiledata("274412", ":/keys/publicKey274412.txt");
+    publicKeyMap.setFiledata("406176", ":/keys/publicKey406176.txt");
+    publicKeyMap.setFiledata("465958", ":/keys/publicKey465958.txt");
+    publicKeyMap.setFiledata("620974", ":/keys/publicKey620974.txt");
+    publicKeyMap.setFiledata("647954", ":/keys/publicKey647954.txt");
+    publicKeyMap.setFiledata("698005", ":/keys/publicKey698005.txt");
+    publicKeyMap.setFiledata("774513", ":/keys/publicKey774513.txt");
+    publicKeyMap.setFiledata("823902", ":/keys/publicKey823902.txt");
+    publicKeyMap.setFiledata("873700", ":/keys/publicKey873700.txt");
+    setPublicKey(0);
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));
@@ -440,6 +468,15 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     }
 }
 
+bool ESAAApp::keyNumberOK(int number)
+{
+    if (number == 9999)
+    {
+        return true;
+    }
+    return publicKeyMap.contains(QString::number(number));
+}
+
 void ESAAApp::clearYesQuestions()
 {
     yesQuestions.clear();
@@ -470,8 +507,8 @@ void ESAAApp::addData2Send(const QString &field, const QString &value)
 
 void ESAAApp::addSubData2Send(const QString &field, const QString &subField, const QString &value)
 {
-//    setData2send(data2send() + field + ": " + value);
-//    setData2send(data2send() + "<br>");
+    //    setData2send(data2send() + field + ": " + value);
+    //    setData2send(data2send() + "<br>");
     QJsonArray array(jsonData2Send[field].toArray());
     QJsonObject yq;
     yq[subField] = value;
@@ -638,6 +675,8 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setBlockWanted(false);
         setSeatNumberWanted(false);
         qDebug() << "actionIDCoronaKontaktdatenerfassung";
+        int qrCodeNumber(data["qn"].toInt());
+        setPublicKey(qrCodeNumber);
         QString email(data["e"].toString());
         QString wantedData(data["d"].toString());
         QString logo(data["logo"].toString());
@@ -664,14 +703,15 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setAnonymContactMailAdress(anonymEMail);
         setLastVisitCountX(data["x"].toInt());
         setLastVisitCountXColor(data["colorx"].toString());
-        emit validQRCodeDetected();        
+        emit validQRCodeDetected();
         return;
     }
     emit invalidQRCodeDetected();
 
 }
 
-QString ESAAApp::generateQRCode(const QString &facilityName,
+QString ESAAApp::generateQRCode(const int qrCodeNumer,
+                                const QString &facilityName,
                                 const QString &contactReceiveEMail,
                                 const QString &theLogoUrl,
                                 const QColor color,
@@ -701,6 +741,7 @@ QString ESAAApp::generateQRCode(const QString &facilityName,
 
     saveData();
     QJsonObject qr;
+    qr["qn"] = qrCodeNumer;
     qr["ai"] = 1;
     qr["ln"] = li.facilityName;
     qr["id"] = li.locationId;
@@ -876,7 +917,7 @@ void ESAAApp::reset()
 void ESAAApp::showLastTransmission()
 {
     emit showSendedData();
-//    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + facilityName() + "</b><br><br>übertragen:<br><br>" + data2send());
+    //    showMessage("Folgende Daten wurden verschlüsselt an<br><br><b>" + facilityName() + "</b><br><br>übertragen:<br><br>" + data2send());
 }
 
 void ESAAApp::finishVisit()

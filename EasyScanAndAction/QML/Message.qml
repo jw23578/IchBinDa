@@ -13,7 +13,7 @@ Background
         }
     }
 
-    Flickable
+    ESAAFlickable
     {
         id: theFlick
         anchors.bottom: sendButton.top
@@ -25,6 +25,7 @@ Background
         clip: true
         ESAAText
         {
+            parent: theFlick.contentItem
             id: messageText
             anchors.centerIn: parent
             width: parent.width

@@ -29,7 +29,8 @@ ESAAPage
             }
         }
 
-        qrCodeFileName = ESAA.generateQRCode(facilityName.displayText,
+        qrCodeFileName = ESAA.generateQRCode(parseInt(qrCodeNumber.displayText),
+                                             facilityName.displayText,
                                              contactReceiveEMail.displayText,
                                              logoUrl.displayText,
                                              colorInput.displayText,
@@ -64,6 +65,19 @@ ESAAPage
             id: theColumn
             width: parent.width - 2 * ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                inputMethodHints: Qt.ImhDigitsOnly
+                id: qrCodeNumber
+                width: parent.width
+                caption: qsTr("Betreiber Code")
+                helpText: "Mit einem bestimmten Betreiber Code können die Kontaktdaten mit einem bestimmten Satz von Schlüsseln kodiert und dekodiert werden." +
+                          "<br><br>Mit einem individuellen Schlüsselsatz haben Betreiber die Möglichkeit die Daten selbst zu entschlüsseln." +
+                          "<br><br>Kontaktieren sie mich unter ichbinda@jw78.de für weitere Informationen." +
+                          "<br><br>Der Standardcode der ausschließlich vom Gesundheitsamt dekodiert werden kann ist <b>9999</b>"
+                onHelpClicked: ESAA.showMessage(ht)
+            }
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
@@ -291,6 +305,19 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         text: "QR-Code<br>erzeugen"
         onClicked: {
+            if (qrCodeNumber.displayText == "")
+            {
+                qrCodeNumber.forceActiveFocus()
+                ESAA.showMessage("Bitte gib einen Betreiber Code ein.<br><br>9999 ist der standard Code.")
+                return
+            }
+            if (!ESAA.keyNumberOK(parseInt(qrCodeNumber.displayText)))
+            {
+                qrCodeNumber.forceActiveFocus()
+                ESAA.showMessage("Bitte gib einen <b>gültigen</b> Betreiber Code ein.<br><br>9999 ist der standard Code.")
+                return
+            }
+
             if (facilityName.displayText == "")
             {
                 facilityName.forceActiveFocus()

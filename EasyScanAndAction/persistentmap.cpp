@@ -13,6 +13,38 @@ PersistentMap::PersistentMap(const QString &filename,
     load();
 }
 
+bool PersistentMap::contains(const QString &index)
+{
+    return dataMap.find(index) != dataMap.end();
+}
+
+QString PersistentMap::get(const QString &index)
+{
+    if (!contains(index))
+    {
+        return "";
+    }
+    return dataMap[index];
+}
+
+void PersistentMap::set(const QString &index, const QString &value)
+{
+    if (dataMap[index] == value)
+    {
+        return;
+    }
+    dataMap[index] = value;
+    save();
+}
+
+void PersistentMap::setFiledata(const QString &index, const QString &filename)
+{
+    QFile dataFile(filename);
+    dataFile.open(QIODevice::ReadOnly);
+    QByteArray data(dataFile.readAll());
+    set(index, data);
+}
+
 void PersistentMap::load()
 {
     QFile dataFile(filename);
