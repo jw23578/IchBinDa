@@ -22,6 +22,12 @@ ESAAPage
         abort()
     }
 
+    PauseAnimation {
+        duration: 300
+        id: waitAndAbort
+        onStopped: abort()
+    }
+
     property variant yesAnswers: []
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.buttonColor // ESAA.fontColor2
@@ -287,6 +293,7 @@ ESAAPage
                 ESAA.mobile = mobile.text
                 ESAA.saveData();
                 ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
+                waitAndAbort.start()
                 return
             }
             ESAA.lastVisitFstname = ""

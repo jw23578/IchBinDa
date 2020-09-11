@@ -5,7 +5,14 @@ Background
 {
     id: message
     anchors.fill: parent
-    visible: false
+    visible: opacity > 0
+    opacity: 0
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
     Flickable
     {
         id: theFlick
@@ -31,7 +38,9 @@ Background
     function show(mt)
     {
         messageText.text = mt
-        visible = true
+        message.opacity = 1
+        message.forceActiveFocus()
+        Qt.inputMethod.hide();
     }
     CircleButton
     {
@@ -40,6 +49,6 @@ Background
         anchors.bottom: parent.bottom
         anchors.bottomMargin: ESAA.spacing
         text: "Schließen"
-        onClicked: message.visible = false
+        onClicked: message.opacity = 0
     }
 }
