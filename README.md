@@ -68,7 +68,7 @@ Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
 ## Download
 
 Prototyp: \
-Upload: 23.8.2020 17:00 \
+Upload: 12.9.2020 14:00 \
 https://www.jw78.de/download/ibd.apk \
 (Hängt den Änderungen immer etwas hinterher)
 
