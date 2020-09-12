@@ -103,7 +103,6 @@ class ESAAApp: public QObject
 
     QString ibdToken;
     JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
-    JWPROPERTY(QString, lastVisitLogoUrl, LastVisitLogoUrl, "");
     JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);

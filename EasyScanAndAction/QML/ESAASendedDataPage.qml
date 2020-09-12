@@ -45,7 +45,7 @@ ESAAPage
             {
                 height: parent.height
                 width: height
-                source: ESAA.lastVisitLogoUrl
+                source: LastVisit.logoUrl
                 fillMode: Image.PreserveAspectFit
                 visible: true
             }

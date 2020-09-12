@@ -306,6 +306,7 @@ ESAAPage
             ESAA.lastVisitMobile = ""
 
             LastVisit.facilityName = ESAA.facilityName
+            LastVisit.logoUrl = CurrentQRCodeData.logoUrl
             LastVisit.websiteURL = CurrentQRCodeData.websiteURL
             LastVisit.foodMenueURL = CurrentQRCodeData.foodMenueURL
             LastVisit.drinksMenueURL = CurrentQRCodeData.drinksMenueURL
@@ -314,7 +315,6 @@ ESAAPage
             LastVisit.lunchMenueURL = CurrentQRCodeData.lunchMenueURL
 
             ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
-            ESAA.lastVisitLogoUrl = ESAA.logoUrl
             ESAA.lastVisitColor = ESAA.color
 
             if (fstname.visible)

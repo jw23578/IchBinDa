@@ -159,7 +159,7 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     }
     QJsonObject visitObject;
     visitObject["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
-    visitObject["lastVisitLogoUrl"] = lastVisitLogoUrl();
+    visitObject["lastVisitLogoUrl"] = lastVisit.logoUrl();
     visitObject["lastVisitColor"] = lastVisitColor().name();
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
@@ -245,7 +245,7 @@ void ESAAApp::saveData()
 
     QJsonObject data;
     data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
-    data["lastVisitLogoUrl"] = lastVisitLogoUrl();
+    data["lastVisitLogoUrl"] = lastVisit.logoUrl();
     data["lastVisitColor"] = lastVisitColor().name();
     data["contactData"] = contactData;
     data["locationInfos"] = locationInfos;
@@ -291,9 +291,9 @@ void ESAAApp::loadData()
     setLastVisitDateTime(help);
 
     setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
-    setLastVisitLogoUrl(data["lastVisitLogoUrl"].toString());
     setLastVisitColor(data["lastVisitColor"].toString());
 
+    lastVisit.setLogoUrl(data["lastVisitLogoUrl"].toString());
     lastVisit.setFacilityName(data["lastVisitFacilityName"].toString());
     lastVisit.setWebsiteURL(data["websiteURL"].toString());
     lastVisit.setFoodMenueURL(data["foodMenueURL"].toString());
@@ -717,6 +717,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         qDebug() << "wantedData: " << wantedData;
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
+        currentQRCodeData.setLogoUrl(logo);
         fetchExtendedQRCodeData(facilityId);
         setLocationGUID(facilityId);
         setAdressWanted(wantedData.contains("adress"));

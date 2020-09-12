@@ -67,6 +67,7 @@ ESAAPage
     }
     ShareButton
     {
+        id: shareButton
     }
     BackButton
     {
