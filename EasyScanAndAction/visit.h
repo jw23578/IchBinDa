@@ -35,6 +35,14 @@ class Visit: public QObject
     JWPROPERTY(QString, room, Room, "");
     JWPROPERTY(QString, block, Block, "");
     JWPROPERTY(QString, seatNumber, SeatNumber, "");
+
+    JWPROPERTY(QString, websiteURL, WebsiteURL, "");
+    JWPROPERTY(QString, foodMenueURL, FoodMenueURL, "");
+    JWPROPERTY(QString, drinksMenueURL, DrinksMenueURL, "");
+    JWPROPERTY(QString, individualURL1, IndividualURL1, "");
+    JWPROPERTY(QString, individualURL1Caption, IndividualURL1Caption, "");
+    JWPROPERTY(QString, lunchMenueURL, LunchMenueURL, "");
+
     QDateTime visitBegin;
     QDateTime visitEnd;
 public:

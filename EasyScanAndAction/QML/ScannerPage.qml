@@ -7,15 +7,6 @@ import QtGraphicalEffects 1.0
 ESAAPage
 {
     caption: "QR-Code einlesen"
-    property int changeCounter: 0
-
-    Timer
-    {
-        interval: 10000
-        repeat: true
-        running: true
-        onTriggered: changeCounter += 1
-    }
 
     id: scannerpage
     onShowing:
@@ -43,7 +34,6 @@ ESAAPage
 
     signal playBackClicked;
     signal basketClicked;
-    signal questionVisitEnd;
 
     function decode(preview) {
         photoPreview.source = preview
@@ -196,49 +186,18 @@ ESAAPage
                     color: "black"
                     opacity: 0.5
                     id: textRectangle
-                    visible: !finishVisit.visible
                 }
                 ESAAText
                 {
                     anchors.centerIn: textRectangle
                     id: fokusText
-                    text: "Zum fokussieren tippen"
+                    text: "Zum Fokussieren tippen"
                     color: ESAA.textColor
-                    visible: !finishVisit.visible
-                }
-
-                Rectangle
-                {
-                    anchors.fill: parent
-                    color: "black"
-                    opacity: 0.8
-                    visible: finishVisit.visible
                 }
                 MouseArea
                 {
                     anchors.fill: parent
                     onClicked: camera.searchAndLock()
-                }
-                CircleButton
-                {
-                    id: finishVisit
-                    anchors.centerIn: parent
-                    anchors.horizontalCenterOffset: -width / 1.5
-                    text: qsTr("Besuch<br>beenden")
-                    onClicked:
-                    {
-                        questionVisitEnd();
-                    }
-                    visible: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter);
-                }
-                CircleButton
-                {
-                    id: lastTransmissionbutton
-                    anchors.centerIn: parent
-                    anchors.horizontalCenterOffset: width / 1.5
-                    text: qsTr("Letzte<br>Übertragung")
-                    onClicked: ESAA.showLastTransmission()
-                    visible: finishVisit.visible
                 }
                 Rectangle
                 {
@@ -261,15 +220,9 @@ ESAAPage
             }
         }
     }
-    CircleButton
+    ShareButton
     {
         id: shareButton
-        x: ESAA.screenWidth / 300 * 150 - width / 2
-        y: ESAA.screenHeight / 480 * 360 - height / 2
-        aboveCaption: qsTr("Weiterempfehlen")
-        onClicked: ESAA.recommend()
-        source: "qrc:/images/share_weiss.svg"
-        downSource: "qrc:/images/share_blau.svg"
     }
     Component.onCompleted: camera.stop()
 }

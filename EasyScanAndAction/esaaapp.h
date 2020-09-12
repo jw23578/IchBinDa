@@ -35,6 +35,7 @@ class ESAAApp: public QObject
     InternetTester internetTester;
     QRCodeStore qrCodeStore;
     PersistentMap publicKeyMap;
+    Visit currentQRCodeData;
     Visit lastVisit;
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
@@ -196,7 +197,13 @@ public:
                                        bool station,
                                        bool room,
                                        bool block,
-                                       bool seatNumber);
+                                       bool seatNumber,
+                                       const QString &websiteURL,
+                                       const QString &foodMenueURL,
+                                       const QString &drinksMenueURL,
+                                       const QString &individualURL1,
+                                       const QString &individualURL1Caption,
+                                       const QString &lunchMenueURL);
     Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName);
 
     Q_INVOKABLE void recommend();

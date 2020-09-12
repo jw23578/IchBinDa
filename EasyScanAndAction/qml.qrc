@@ -29,5 +29,7 @@
         <file>QML/ESAAFlickable.qml</file>
         <file>QML/TwoCircleButtons.qml</file>
         <file>QML/WaitMessage.qml</file>
+        <file>QML/CurrentVisitPage.qml</file>
+        <file>QML/ShareButton.qml</file>
     </qresource>
 </RCC>

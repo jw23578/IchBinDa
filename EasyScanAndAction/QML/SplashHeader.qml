@@ -58,6 +58,14 @@ Rectangle
     }
     Image
     {
+        property int changeCounter: 0
+        Timer
+        {
+            interval: 10000
+            repeat: true
+            running: true
+            onTriggered: helpImage.changeCounter += 1
+        }
         id: helpImage
         anchors.right: parent.right
         anchors.rightMargin: (parent.parent.height / 16 - parent.parent.height / 20) / 2
@@ -67,6 +75,7 @@ Rectangle
         height: width
         source: "qrc:/images/help.svg"
         opacity: 0
+        visible: !ESAA.isActiveVisit(ESAA.lastVisitDateTime, helpImage.changeCounter)
         fillMode: Image.PreserveAspectFit
         mipmap: true
         Behavior on opacity {
@@ -77,6 +86,7 @@ Rectangle
         }
         MouseArea
         {
+            enabled: !ESAA.isActiveVisit(ESAA.lastVisitDateTime, helpImage.changeCounter)
             anchors.fill: parent
             onClicked: helpClicked()
         }

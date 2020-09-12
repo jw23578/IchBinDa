@@ -35,6 +35,7 @@ FocusScope
             font.pixelSize: ESAA.fontInputPixelsize
             color: ESAA.buttonColor
             clip: true
+            selectByMouse: true
             onDisplayTextChanged:
             {
                 colorRect.color = displayText

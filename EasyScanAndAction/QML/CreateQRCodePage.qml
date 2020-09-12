@@ -45,7 +45,13 @@ ESAAPage
                                              station.position > 0.9,
                                              room.position > 0.9,
                                              block.position > 0.9,
-                                             seatNumber.position > 0.9);
+                                             seatNumber.position > 0.9,
+                                             websiteURL.displayText,
+                                             foodMenue.displayText,
+                                             drinksMenue.displayText,
+                                             individualURL1.displayText,
+                                             individualURL1Caption.displayText,
+                                             lunchMenue.displayText);
     }
 
     ESAAFlickable
@@ -289,6 +295,61 @@ ESAAPage
                 text: "weitere<br>Frage"
                 onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
             }
+            ESAAText
+            {
+                width: parent.width
+                color: createqrcodepage.textColor
+                text: "Informationen für den Kunden/Besucher:"
+                wrapMode: Text.WordWrap
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: websiteURL
+                caption: "Url zur Webseite"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: foodMenue
+                caption: "Url zur Speisekarte (Webseite oder PDF)"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: drinksMenue
+                caption: "Url zur Getränkekarte (Webseite oder PDF)"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: lunchMenue
+                caption: "Url zur Mittagskarte (Webseite oder PDF)"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: individualURL1
+                caption: "Url zur individuellen Nutzung (Webseite oder PDF)"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
+            ESAALineInputWithCaption
+            {
+                color: createqrcodepage.textColor
+                id: individualURL1Caption
+                caption: "Buttontext der Individuellen Url"
+                width: parent.width
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+            }
 
             Item
             {
@@ -342,6 +403,13 @@ ESAAPage
                 ESAA.showMessage("Die E-Mail-Adresse, an die die Besuche anonym gesendet werden sollen ist ungültig.<br>Bitte korrigieren.")
                 return
             }
+            if (individualURL1.displayText != "" && individualURL1Caption.displayText == "")
+            {
+                individualURL1Caption.forceActiveFocus()
+                ESAA.showMessage("Bitte gib noch einen Buttontext für die individuelle URL ein, damit der Kunde/Besucher weiß was mit dem Button geöffnet werden kann.")
+                return
+            }
+
             generate()
             showCode()
         }

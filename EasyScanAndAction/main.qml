@@ -95,11 +95,6 @@ ApplicationWindow {
         ScannerPage
         {
             id: scannerpage
-            onQuestionVisitEnd:
-            {
-                console.log("123")
-                showNewPage(scannerpage, visitEndPage)
-            }
         }
         FirstStart
         {
@@ -161,6 +156,34 @@ ApplicationWindow {
                 showNewPage(agreepage, firststart)
             }
         }
+        CurrentVisitPage
+        {
+            id: currentVisitPage
+    //        y: 0
+    //        x: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter) ? 0 : -width
+    //        Behavior on x {
+    //            NumberAnimation {
+    //                duration: 300
+    //            }
+    //        }
+    //        width: parent.width
+    //        height: parent.height
+    //        z: 0
+    //        visible: true
+    //        opacity: 1
+    //        property int changeCounter: 0
+    //        Timer
+    //        {
+    //            interval: 10000
+    //            repeat: true
+    //            running: true
+    //            onTriggered: currentVisitPage.changeCounter += 1
+    //        }
+            onQuestionVisitEnd:
+            {
+                showNewPage(currentVisitPage, visitEndPage)
+            }
+        }
     }
 
     NumberAnimation {
@@ -197,10 +220,12 @@ ApplicationWindow {
         }
     }
 
+
+
     ESAASendedDataPage
     {
         id: sendedDataPage
-        onClose: showNewPage(sendedDataPage, scannerpage)
+        onClose: showNewPage(sendedDataPage, currentVisitPage)
     }
     VisitEndQuestion
     {
@@ -212,7 +237,7 @@ ApplicationWindow {
         }
         onClose:
         {
-            showNewPage(visitEndPage, scannerpage)
+            showNewPage(visitEndPage, currentVisitPage)
         }
     }
     SplashHeader
@@ -275,6 +300,10 @@ ApplicationWindow {
         console.log("Spacing: " + ESAA.spacing)
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
         console.log("vorname: " + ESAA.vorname)
+        if (ESAA.isActiveVisit(ESAA.lastVisitDateTime, 0))
+        {
+            showNewPage(null, currentVisitPage)
+        }
     }
     onClosing: {
         close.accepted = false

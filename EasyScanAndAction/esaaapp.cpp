@@ -165,6 +165,12 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
     visitObject["ibdToken"] = ibdToken;
     visitObject["facilityName"] = lastVisit.facilityName();
+    visitObject["websiteURL"] = lastVisit.websiteURL();
+    visitObject["foodMenueURL"] = lastVisit.foodMenueURL();
+    visitObject["drinksMenueURL"] = lastVisit.drinksMenueURL();
+    visitObject["individualURL1"] = lastVisit.individualURL1();
+    visitObject["individualURL1Caption"] = lastVisit.individualURL1Caption();
+    visitObject["lunchMenueURL"] = lastVisit.lunchMenueURL();
     visitObject["fstname"] = lastVisitFstname();
     visitObject["surname"] = lastVisitSurname();
     visitObject["street"] = lastVisitStreet();
@@ -247,6 +253,12 @@ void ESAAApp::saveData()
     data["aggrementChecked"] = aggrementChecked();
     data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
     data["lastVisitFacilityName"] = lastVisit.facilityName();
+    data["websiteURL"] = lastVisit.websiteURL();
+    data["foodMenueURL"] = lastVisit.foodMenueURL();
+    data["drinksMenueURL"] = lastVisit.drinksMenueURL();
+    data["individualURL1"] = lastVisit.individualURL1();
+    data["individualURL1Caption"] = lastVisit.individualURL1Caption();
+    data["lunchMenueURL"] = lastVisit.lunchMenueURL();
     data["lastVisitFstname"] = lastVisitFstname();
     data["lastVisitSurname"] = lastVisitSurname();
     data["lastVisitStreet"] = lastVisitStreet();
@@ -283,6 +295,13 @@ void ESAAApp::loadData()
     setLastVisitColor(data["lastVisitColor"].toString());
 
     lastVisit.setFacilityName(data["lastVisitFacilityName"].toString());
+    lastVisit.setWebsiteURL(data["websiteURL"].toString());
+    lastVisit.setFoodMenueURL(data["foodMenueURL"].toString());
+    lastVisit.setDrinksMenueURL(data["drinksMenueURL"].toString());
+    lastVisit.setIndividualURL1(data["individualURL1"].toString());
+    lastVisit.setIndividualURL1Caption(data["individualURL1Caption"].toString());
+    lastVisit.setLunchMenueURL(data["lunchMenueURL"].toString());
+
     setLastVisitFstname(data["lastVisitFstname"].toString());
     setLastVisitSurname(data["lastVisitSurname"].toString());
     setLastVisitStreet(data["lastVisitStreet"].toString());
@@ -418,6 +437,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     setPublicKey(0);
 
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
+    e.rootContext()->setContextProperty("CurrentQRCodeData", QVariant::fromValue(&currentQRCodeData));
     e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));
     e.rootContext()->setContextProperty("InternetTester", QVariant::fromValue(&internetTester));
     QDir dir;
@@ -622,6 +642,12 @@ void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
         }
     }
     setYesQuestionCount(yesQuestions.size());
+    currentQRCodeData.setWebsiteURL(data["websiteURL"].toString());
+    currentQRCodeData.setFoodMenueURL(data["foodMenueURL"].toString());
+    currentQRCodeData.setDrinksMenueURL(data["drinksMenueURL"].toString());
+    currentQRCodeData.setIndividualURL1(data["individualURL1"].toString());
+    currentQRCodeData.setIndividualURL1Caption(data["individualURL1Caption"].toString());
+    currentQRCodeData.setLunchMenueURL(data["lunchMenueURL"].toString());
     emit validQRCodeDetected();
     qrCodeStore.add(facilityId, qrCodeJSON);
 }
@@ -726,7 +752,13 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
                                 bool station,
                                 bool room,
                                 bool block,
-                                bool seatNumber)
+                                bool seatNumber,
+                                const QString &websiteURL,
+                                const QString &foodMenueURL,
+                                const QString &drinksMenueURL,
+                                const QString &individualURL1,
+                                const QString &individualURL1Caption,
+                                const QString &lunchMenueURL)
 {
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
@@ -771,6 +803,12 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["room"] = room;
     qr["block"] = block;
     qr["seatNumber"] = seatNumber;
+    qr["websiteURL"] = websiteURL;
+    qr["foodMenueURL"] = foodMenueURL;
+    qr["drinksMenueURL"] = drinksMenueURL;
+    qr["individualURL1"] = individualURL1;
+    qr["individualURL1Caption"] = individualURL1Caption;
+    qr["lunchMenueURL"] = lunchMenueURL;
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
     return generateQRcodeIntern(shortQRCode);
