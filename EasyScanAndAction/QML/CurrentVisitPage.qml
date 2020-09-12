@@ -10,13 +10,24 @@ ESAAPage
         height: parent.height * 1.5 / 10
         Image
         {
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: logoImage
             height: parent.height
             width: height
             source: LastVisit.logoUrl
             fillMode: Image.PreserveAspectFit
             visible: true
         }
+        ESAAText
+        {
+            anchors.left: logoImage.right
+            anchors.right: logoImage.right
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            font.bold: true
+            wrapMode: Text.WordWrap
+            text: LastVisit.facilityName
+        }
+
         id: headItem
     }
     Grid
@@ -28,7 +39,7 @@ ESAAPage
                           + (LastVisit.lunchMenueURL != "" ? 1 : 0)
                           + (LastVisit.individualURL1 != "" ? 1 : 0)
         columns: anz > 4 ? 3 : 2
-        property int buttonSize: ESAA.screenWidth / (columns + 1)
+        property int buttonSize: ESAA.screenWidth / (columns + 1 + (anz > 3 ? 0 : 0.2))
         property int buttonFontPixelSize: ESAA.fontButtonPixelsize * 0.8
         anchors.top: headItem.bottom
         anchors.horizontalCenter: parent.horizontalCenter

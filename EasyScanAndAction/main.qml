@@ -251,7 +251,14 @@ ApplicationWindow {
             }
             else
             {
-                showNewPage(null, scannerpage)
+                if (ESAA.isActiveVisit(ESAA.lastVisitDateTime, 0))
+                {
+                    showNewPage(null, currentVisitPage)
+                }
+                else
+                {
+                    showNewPage(null, scannerpage)
+                }
             }
         }
         onHelpClicked: showNewPage(theCurrentPage, firststart)
@@ -300,10 +307,6 @@ ApplicationWindow {
         console.log("Spacing: " + ESAA.spacing)
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
         console.log("vorname: " + ESAA.vorname)
-        if (ESAA.isActiveVisit(ESAA.lastVisitDateTime, 0))
-        {
-            showNewPage(null, currentVisitPage)
-        }
     }
     onClosing: {
         close.accepted = false
