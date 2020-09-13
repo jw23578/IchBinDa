@@ -174,50 +174,6 @@ else
 DISTFILES += \
     ../README.md \
     ../copyAndroidIcons.sh \
-    ../html/img/portfolio/img2.jpg \
-    ../html/img/portfolio/img3.jpg \
-    ../html/img/portfolio/img4.jpg \
-    ../html/img/portfolio/img5.jpg \
-    ../html/img/portfolio/img6.jpg \
-    ../html/img/screens/img-1.jpg \
-    ../html/img/screens/img-2.jpg \
-    ../html/img/screens/img-3.jpg \
-    ../html/img/screenshot/img-1.png \
-    ../html/img/screenshot/img-2.png \
-    ../html/img/screenshot/img-3.png \
-    ../html/img/screenshot/img-4.png \
-    ../html/img/screenshot/img-5.png \
-    ../html/img/screenshot/img-6.png \
-    ../html/img/slider/bg-1.jpg \
-    ../html/img/slider/bg-2.jpg \
-    ../html/img/slider/bg-3.jpg \
-    ../html/img/slider/img-1.jpg \
-    ../html/img/slider/img-2.jpg \
-    ../html/img/slider/img-3.jpg \
-    ../html/img/team/team1.jpg \
-    ../html/img/team/team2.jpg \
-    ../html/img/team/team3.jpg \
-    ../html/img/team/team4.jpg \
-    ../html/img/testimonial/img1.png \
-    ../html/img/testimonial/img2.png \
-    ../html/img/testimonial/img3.png \
-    ../html/img/testimonial/img4.png \
-    ../html/img/testimonial/img5.png \
-    ../html/js/bootstrap.min.js \
-    ../html/js/jquery-min.js \
-    ../html/js/jquery.counterup.min.js \
-    ../html/js/jquery.easing.min.js \
-    ../html/js/jquery.magnific-popup.min.js \
-    ../html/js/jquery.mixitup.js \
-    ../html/js/jquery.nav.js \
-    ../html/js/jquery.vide.js \
-    ../html/js/main.js \
-    ../html/js/nivo-lightbox.js \
-    ../html/js/owl.carousel.js \
-    ../html/js/popper.min.js \
-    ../html/js/scrolling-nav.js \
-    ../html/js/waypoints.min.js \
-    ../html/js/wow.js \
     .gitignore \
     android/AndroidManifest.xml \
     android/build.gradle \
