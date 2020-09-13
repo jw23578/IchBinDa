@@ -174,45 +174,6 @@ else
 DISTFILES += \
     ../README.md \
     ../copyAndroidIcons.sh \
-    ../html/css/animate.css \
-    ../html/css/bootstrap.min.css \
-    ../html/css/line-icons.css \
-    ../html/css/magnific-popup.css \
-    ../html/css/main.css \
-    ../html/css/nivo-lightbox.css \
-    ../html/css/owl.carousel.css \
-    ../html/css/owl.theme.css \
-    ../html/css/responsive.css \
-    ../html/fonts/LineIcons.eot \
-    ../html/fonts/LineIcons.svg \
-    ../html/fonts/LineIcons.ttf \
-    ../html/fonts/LineIcons.woff \
-    ../html/img/40.png \
-    ../html/img/about/img1.jpg \
-    ../html/img/about/img2.jpg \
-    ../html/img/about/img3.jpg \
-    ../html/img/bg/bg-counter.png \
-    ../html/img/blog/author.png \
-    ../html/img/blog/img1.jpg \
-    ../html/img/blog/img2.jpg \
-    ../html/img/blog/img3.jpg \
-    ../html/img/clients/img1.png \
-    ../html/img/clients/img2.png \
-    ../html/img/clients/img3.png \
-    ../html/img/clients/img4.png \
-    ../html/img/clients/img5.png \
-    ../html/img/features/app.png \
-    ../html/img/features/img1.jpg \
-    ../html/img/features/img1.png \
-    ../html/img/features/img2.jpg \
-    ../html/img/features/img2.png \
-    ../html/img/intro-mobile.png \
-    ../html/img/intro.png \
-    ../html/img/logo.psd \
-    ../html/img/mac.png \
-    ../html/img/macbook.png \
-    ../html/img/playstore.png \
-    ../html/img/portfolio/img1.jpg \
     ../html/img/portfolio/img2.jpg \
     ../html/img/portfolio/img3.jpg \
     ../html/img/portfolio/img4.jpg \
@@ -242,7 +203,6 @@ DISTFILES += \
     ../html/img/testimonial/img3.png \
     ../html/img/testimonial/img4.png \
     ../html/img/testimonial/img5.png \
-    ../html/index.html \
     ../html/js/bootstrap.min.js \
     ../html/js/jquery-min.js \
     ../html/js/jquery.counterup.min.js \
@@ -258,7 +218,6 @@ DISTFILES += \
     ../html/js/scrolling-nav.js \
     ../html/js/waypoints.min.js \
     ../html/js/wow.js \
-    ../html/license.txt \
     .gitignore \
     android/AndroidManifest.xml \
     android/build.gradle \
