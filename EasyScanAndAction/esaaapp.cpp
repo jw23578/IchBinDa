@@ -31,7 +31,7 @@ void ESAAApp::sendMail()
     message->addTo(SimpleMail::EmailAddress(lastVisitLocationContactMailAdress()));
 
     QString subject("Kontaktdaten ");
-    if (visitEnd.isValid())
+    if (lastVisit.end().isValid())
     {
         subject += "Besuchsende ";
     }
@@ -46,17 +46,17 @@ void ESAAApp::sendMail()
 
     // Now add some text to the email.
     QString work;
-    work += tr("Datum: ") + visitBegin.date().toString() + "\n";
-    work += tr("Uhrzeit: ") + visitBegin.time().toString() + "\n";
+    work += tr("Datum: ") + lastVisit.begin().date().toString() + "\n";
+    work += tr("Uhrzeit: ") + lastVisit.begin().time().toString() + "\n";
     work += fstname() + " aus " + location();
 
 
-    jsonData2Send["DateVisitBegin"] = visitBegin.date().toString(Qt::ISODate);
-    jsonData2Send["TimeVisitBegin"] = visitBegin.time().toString(Qt::ISODate);
-    if (visitEnd.isValid())
+    jsonData2Send["DateVisitBegin"] = lastVisit.begin().date().toString(Qt::ISODate);
+    jsonData2Send["TimeVisitBegin"] = lastVisit.begin().time().toString(Qt::ISODate);
+    if (lastVisit.end().isValid())
     {
-        jsonData2Send["DateVisitEnd"] = visitEnd.date().toString(Qt::ISODate);
-        jsonData2Send["TimeVisitEnd"] = visitEnd.time().toString(Qt::ISODate);
+        jsonData2Send["DateVisitEnd"] = lastVisit.end().date().toString(Qt::ISODate);
+        jsonData2Send["TimeVisitEnd"] = lastVisit.end().time().toString(Qt::ISODate);
     }
     QString plainText(QJsonDocument(jsonData2Send).toJson());
     std::string encrypted(publicKeyEncrypt(plainText.toStdString()));
@@ -89,7 +89,7 @@ void ESAAApp::sendMail()
 
         emailSender.addMailToSend(visitMessage, false);
     }
-    if (visitEnd.isNull())
+    if (lastVisit.end().isNull())
     {
         ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
         ibdToken += QString(".") + locationGUID();
@@ -101,8 +101,8 @@ void ESAAApp::sendMail()
         qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
         networkReply->deleteLater();// Don't forget to delete it
     });
-    saveVisit(ibdToken, visitBegin, visitEnd);
-    if (visitEnd.isValid())
+    saveVisit(ibdToken, lastVisit.begin(), lastVisit.end());
+    if (lastVisit.end().isValid())
     {
         ibdToken = "";
     }
@@ -251,7 +251,8 @@ void ESAAApp::saveData()
     data["locationInfos"] = locationInfos;
     data["firstStart"] = firstStart();
     data["aggrementChecked"] = aggrementChecked();
-    data["lastVisitDateTime"] = lastVisitDateTime().toSecsSinceEpoch();
+    data["lastVisitBegin"] = lastVisit.begin().toSecsSinceEpoch();
+    data["lastVisitEnd"] = lastVisit.end().toSecsSinceEpoch();
     data["lastVisitFacilityName"] = lastVisit.facilityName();
     data["websiteURL"] = lastVisit.websiteURL();
     data["foodMenueURL"] = lastVisit.foodMenueURL();
@@ -287,8 +288,10 @@ void ESAAApp::loadData()
     QJsonObject data(loadDoc.object());
     setAggreementChecked(data["aggrementChecked"].toBool());
     QDateTime help;
-    help.setSecsSinceEpoch(data["lastVisitDateTime"].toInt());
-    setLastVisitDateTime(help);
+    help.setSecsSinceEpoch(data["lastVisitBegin"].toInt());
+    lastVisit.setBegin(help);
+    help.setSecsSinceEpoch(data["lastVisitEnd"].toInt());
+    lastVisit.setEnd(help);
 
     setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
     setLastVisitColor(data["lastVisitColor"].toString());
@@ -488,6 +491,11 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     }
 }
 
+QString ESAAApp::formatTime(const QDateTime &dt)
+{
+    return dt.time().toString();
+}
+
 bool ESAAApp::keyNumberOK(int number)
 {
     if (number == 9999)
@@ -564,11 +572,10 @@ void ESAAApp::scan()
 
 void ESAAApp::sendContactData()
 {
-    setLastVisitDateTime(QDateTime::currentDateTime());
+    lastVisit.setBegin(QDateTime::currentDateTime());
     saveData();
-    visitBegin = QDateTime::currentDateTime();
-    setLastVisitCount(updateAndGetVisitCount(locationGUID(), visitBegin));
-    visitEnd = QDateTime();
+    setLastVisitCount(updateAndGetVisitCount(locationGUID(), lastVisit.begin()));
+    lastVisit.setEnd(QDateTime());
     sendMail();
 }
 
@@ -961,14 +968,21 @@ void ESAAApp::showLastTransmission()
 
 void ESAAApp::finishVisit()
 {
-    setLastVisitDateTime(QDateTime::currentDateTime().addDays(-2));
+    lastVisit.setEnd(QDateTime::currentDateTime());
     saveData();
-    visitEnd = QDateTime::currentDateTime();
     sendMail();
 }
 
-bool ESAAApp::isActiveVisit(const QDateTime &visitDateTime, int changeCounter)
-{
+bool ESAAApp::isActiveVisit(int changeCounter)
+{    
     changeCounter += 10;
-    return QDateTime::currentDateTime() < visitDateTime.addSecs(60 * 60 * 12);
+    if (!lastVisit.begin().isValid())
+    {
+        return false;
+    }
+    if (lastVisit.end().isValid() && lastVisit.end().date().year() != 1970)
+    {
+        return false;
+    }
+    return QDateTime::currentDateTime() < lastVisit.begin().addSecs(60 * 60 * 12);
 }

@@ -12,7 +12,7 @@ ESAAPage
     onShowing:
     {
         console.log("show scanner")
-        if (!ESAA.isActiveVisit(ESAA.lastVisitDateTime, 1))
+        if (!ESAA.isActiveVisit(1))
         {
             camera.stop()
             camera.start()

@@ -160,7 +160,7 @@ ApplicationWindow {
         {
             id: currentVisitPage
     //        y: 0
-    //        x: ESAA.isActiveVisit(ESAA.lastVisitDateTime, changeCounter) ? 0 : -width
+    //        x: ESAA.isActiveVisit(changeCounter) ? 0 : -width
     //        Behavior on x {
     //            NumberAnimation {
     //                duration: 300
@@ -251,7 +251,7 @@ ApplicationWindow {
             }
             else
             {
-                if (ESAA.isActiveVisit(ESAA.lastVisitDateTime, 0))
+                if (ESAA.isActiveVisit(0))
                 {
                     showNewPage(null, currentVisitPage)
                 }

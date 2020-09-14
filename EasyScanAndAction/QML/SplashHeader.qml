@@ -75,7 +75,7 @@ Rectangle
         height: width
         source: "qrc:/images/help.svg"
         opacity: 0
-        visible: !ESAA.isActiveVisit(ESAA.lastVisitDateTime, helpImage.changeCounter)
+        visible: !ESAA.isActiveVisit(helpImage.changeCounter)
         fillMode: Image.PreserveAspectFit
         mipmap: true
         Behavior on opacity {
@@ -86,7 +86,7 @@ Rectangle
         }
         MouseArea
         {
-            enabled: !ESAA.isActiveVisit(ESAA.lastVisitDateTime, helpImage.changeCounter)
+            enabled: !ESAA.isActiveVisit(helpImage.changeCounter)
             anchors.fill: parent
             onClicked: helpClicked()
         }

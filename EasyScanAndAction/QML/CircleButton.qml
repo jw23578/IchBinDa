@@ -16,6 +16,7 @@ Button
     property int markGlowRadius: 0
     property alias source: img.source
     property alias downSource: downImg.source
+    property color buttonDownColor: ESAA.buttonDownColor
     property color buttonColor: ESAA.buttonColor
     property int verticalImageOffset: 0
     property double imageSizeFactor: 1
@@ -29,7 +30,7 @@ Button
             anchors.topMargin: control.height / 8
             text: control.smallTopText
             opacity: enabled ? 1.0 : 0.3
-            color: control.down ? ESAA.buttonColor : "white"
+            color: control.down ? control.buttonColor : "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -43,7 +44,7 @@ Button
             text: control.text
             font: control.font
             opacity: enabled ? 1.0 : 0.3
-            color: control.down ? ESAA.buttonColor : "white"
+            color: control.down ? control.buttonColor : "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -78,7 +79,7 @@ Button
         id: background
         color: control.down ? "white" : control.buttonColor
         opacity: enabled ? 1 : 0.3
-        border.color: ESAA.buttonColor
+        border.color:  control.buttonColor
         border.width: 1
         radius: width / 2
         Image
@@ -108,20 +109,22 @@ Button
     PauseAnimation {
         id: pauseAni
         duration: pauseDuration
-        onFinished: colorAni1.start()
+        onStopped: colorAni1.start()
     }
 
-    ColorAnimation on buttonColor {
+    ColorAnimation {
+        property: "buttonColor"
         id: colorAni1
-        from: ESAA.buttonColor
-        to: ESAA.buttonDownColor
+        from: control.buttonColor
+        to: control.buttonDownColor
         duration: 100
-        onFinished: colorAni2.start()
+        onStopped: colorAni2.start()
     }
-    ColorAnimation on buttonColor {
+    ColorAnimation {
+        property: "buttonColor"
         id: colorAni2
-        from: ESAA.buttonDownColor
-        to: ESAA.buttonColor
+        from: control.buttonDownColor
+        to: control.buttonColor
         duration: 100
     }
 

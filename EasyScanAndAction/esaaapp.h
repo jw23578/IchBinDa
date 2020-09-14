@@ -106,7 +106,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
-    JWPROPERTY(QDateTime, lastVisitDateTime, LastVisitDateTime, QDateTime());
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
     JWPROPERTY(QString, lastVisitSurname, LastVisitSurname, "");
     JWPROPERTY(QString, lastVisitStreet, LastVisitStreet, "");
@@ -117,8 +116,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, lastVisitMobile, LastVisitMobile, "");
     JWPROPERTY(QColor, lastVisitCountXColor, LastVisitCountXColor, "");
     JWPROPERTY(int, lastVisitCountX, LastVisitCountX, 0);
-    QDateTime visitBegin;
-    QDateTime visitEnd;
 
     Botan::Public_Key *publicKey = nullptr;
     std::string publicKeyEncrypt(const std::string &plainText);
@@ -164,6 +161,7 @@ class ESAAApp: public QObject
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE QString formatTime(QDateTime const &dt);
     Q_INVOKABLE bool keyNumberOK(int number);
     Q_INVOKABLE void clearYesQuestions();
     Q_INVOKABLE void addYesQuestions(const QString &yq);
@@ -215,7 +213,7 @@ public:
     Q_INVOKABLE void showLastTransmission();
 
     Q_INVOKABLE void finishVisit();
-    Q_INVOKABLE bool isActiveVisit(QDateTime const &visitDateTime, int changeCounter);
+    Q_INVOKABLE bool isActiveVisit(int changeCounter);
 
 signals:
     void showWaitMessageSignal(const QString &mt);
