@@ -10,7 +10,6 @@
 class Visit: public QObject
 {
     Q_OBJECT
-    QString ibdToken;
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
@@ -47,6 +46,7 @@ class Visit: public QObject
     QDateTime visitEnd;
 public:
     Visit();
+    QString ibdToken;
 };
 
 #endif // VISIT_H

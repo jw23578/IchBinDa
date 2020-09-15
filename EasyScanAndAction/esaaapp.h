@@ -101,7 +101,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, mobile, Mobile, "");
     JWPROPERTY(QString, data2send, Data2send, "");
 
-    QString ibdToken;
     JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
     JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
@@ -137,7 +136,7 @@ class ESAAApp: public QObject
     std::map<QString, SLocationInfo> email2locationInfo;
 
     int updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin);
-    void saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd);
+    void saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd);
 
     QString dataFileName;
     void loadData();

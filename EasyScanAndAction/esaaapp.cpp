@@ -92,21 +92,22 @@ void ESAAApp::sendMail()
     }
     if (lastVisit.end().isNull())
     {
-        ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
-        ibdToken += QString(".") + locationGUID();
-        ibdToken += QString(".") + genUUID();
-        QString url(ibdTokenStoreURL + ibdToken);
+        lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
+        lastVisit.ibdToken += QString(".") + locationGUID();
+        lastVisit.ibdToken += QString(".") + genUUID();
+        QString url(ibdTokenStoreURL + lastVisit.ibdToken);
         QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
         QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
             qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
             networkReply->deleteLater();// Don't forget to delete it
         });
     }
-    saveVisit(ibdToken, lastVisit.begin(), lastVisit.end());
+    saveVisit(lastVisit.begin(), lastVisit.end());
     if (lastVisit.end().isValid())
     {
-        ibdToken = "";
+        lastVisit.ibdToken = "";
     }
+    saveData();
 }
 
 int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin)
@@ -144,7 +145,7 @@ int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const
 }
 
 
-void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QDateTime const &visitEnd)
+void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
 {
     QString visitFileName(getWriteablePath() + "/visits-");
     visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
@@ -164,7 +165,7 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     visitObject["lastVisitColor"] = lastVisitColor().name();
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
-    visitObject["ibdToken"] = ibdToken;
+    visitObject["ibdToken"] = lastVisit.ibdToken;
     visitObject["facilityName"] = lastVisit.facilityName();
     visitObject["websiteURL"] = lastVisit.websiteURL();
     visitObject["foodMenueURL"] = lastVisit.foodMenueURL();
@@ -192,7 +193,7 @@ void ESAAApp::saveVisit(const QString &ibdToken, QDateTime const &visitBegin, QD
     for (int i(0); i < visits.size(); ++i)
     {
         QJsonObject visit(visits[i].toObject());
-        if (visit["ibdToken"] == ibdToken)
+        if (visit["ibdToken"] == lastVisit.ibdToken)
         {
             found = true;
             visits[i] = visitObject;
@@ -245,6 +246,7 @@ void ESAAApp::saveData()
     }
 
     QJsonObject data;
+    data["ibdToken"] = lastVisit.ibdToken;
     data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
     data["lastVisitLogoUrl"] = lastVisit.logoUrl();
     data["lastVisitColor"] = lastVisitColor().name();
@@ -297,6 +299,7 @@ void ESAAApp::loadData()
     setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
     setLastVisitColor(data["lastVisitColor"].toString());
 
+    lastVisit.ibdToken = data["ibdToken"].toString();
     lastVisit.setLogoUrl(data["lastVisitLogoUrl"].toString());
     lastVisit.setFacilityName(data["lastVisitFacilityName"].toString());
     lastVisit.setWebsiteURL(data["websiteURL"].toString());
