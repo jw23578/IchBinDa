@@ -18,6 +18,7 @@
 #include <QNetworkReply>
 #include <QPainter>
 #include <QUrlQuery>
+#include <QDesktopServices>
 
 QString ESAAApp::getWriteablePath()
 {
@@ -94,13 +95,13 @@ void ESAAApp::sendMail()
         ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
         ibdToken += QString(".") + locationGUID();
         ibdToken += QString(".") + genUUID();
+        QString url(ibdTokenStoreURL + ibdToken);
+        QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+        QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
+            qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
+            networkReply->deleteLater();// Don't forget to delete it
+        });
     }
-    QString url(ibdTokenStoreURL + ibdToken);
-    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
-    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
-        qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
-        networkReply->deleteLater();// Don't forget to delete it
-    });
     saveVisit(ibdToken, lastVisit.begin(), lastVisit.end());
     if (lastVisit.end().isValid())
     {
@@ -450,9 +451,9 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         qDebug() << "erzeuge: " << path;
         qDebug() << (dir.mkpath(path) ? "erfolgreich" : "nicht erfolgreich");
     }
-    if (!dir.exists(getWriteablePath() + "/temp"))
+    if (!dir.exists(getTempPath()))
     {
-        dir.mkdir(getWriteablePath() + "/temp");
+        dir.mkdir(getTempPath());
     }
     dataFileName = getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
@@ -744,6 +745,37 @@ void ESAAApp::action(const QString &qrCodeJSON)
 
 }
 
+void ESAAApp::openUrlORPdf(const QString &urlOrPdf)
+{
+    QDesktopServices::openUrl(QUrl(urlOrPdf));
+    return;
+    if (urlOrPdf.right(4).toLower() == ".pdf")
+    {
+        QString url(urlOrPdf);
+        QFileInfo fileInfo(urlOrPdf);
+        QString filename(getTempPath() + "/" + fileInfo.fileName());
+        if (QFile::exists(filename))
+        {
+            filename = "file:////" + filename;
+            QDesktopServices::openUrl(QUrl(filename));
+            return;
+        }
+        QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+        QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, filename] {
+            qDebug() << "PDF loaded finished" << networkReply->error();
+            QFile dataFile(filename);
+            dataFile.open(QIODevice::WriteOnly);
+            dataFile.write(networkReply->readAll());
+            dataFile.close();
+            QString f = "file:////" + filename;
+            QDesktopServices::openUrl(QUrl(f));
+            networkReply->deleteLater();// Don't forget to delete it
+        });
+        return;
+    }
+    QDesktopServices::openUrl(QUrl(urlOrPdf, QUrl::TolerantMode));
+}
+
 QString ESAAApp::generateQRCode(const int qrCodeNumer,
                                 const QString &facilityName,
                                 const QString &contactReceiveEMail,
@@ -980,7 +1012,7 @@ bool ESAAApp::isActiveVisit(int changeCounter)
     {
         return false;
     }
-    if (lastVisit.end().isValid() && lastVisit.end().date().year() != 1970)
+    if (lastVisit.end().isValid() && lastVisit.end().date().year() != 1970 && lastVisit.begin() < lastVisit.end())
     {
         return false;
     }

@@ -168,7 +168,7 @@ ESAAPage
             id: editButton
             anchors.bottom: parent.bottom
             anchors.margins: ESAA.spacing
-            leftText: qsTr("Meine<br>Kontaktdaten<br>nbearbeiten")
+            leftText: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
             onLeftClicked: goEditContactData()
             rightText: "Los geht's"
             onRightClicked: goStartNow()

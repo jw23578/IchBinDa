@@ -89,7 +89,7 @@ ESAAPage
             {
                 id: websiteButton
                 text: qsTr("Webseite<br>öffnen")
-                onClicked: Qt.openUrlExternally(LastVisit.websiteURL)
+                onClicked: ESAA.openUrlORPdf(LastVisit.websiteURL)
                 visible: LastVisit.websiteURL != ""
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
                 width: parent.buttonSize
@@ -98,7 +98,7 @@ ESAAPage
             {
                 text: qsTr("Speise-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
-                onClicked: Qt.openUrlExternally(LastVisit.foodMenueURL)
+                onClicked: ESAA.openUrlORPdf(LastVisit.foodMenueURL)
                 visible: LastVisit.foodMenueURL != ""
                 width: parent.buttonSize
             }
@@ -106,7 +106,7 @@ ESAAPage
             {
                 text: qsTr("Getränke-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
-                onClicked: Qt.openUrlExternally(LastVisit.drinksMenueURL)
+                onClicked: ESAA.openUrlORPdf(LastVisit.drinksMenueURL)
                 visible: LastVisit.drinksMenueURL != ""
                 width: parent.buttonSize
             }
@@ -114,7 +114,7 @@ ESAAPage
             {
                 text: qsTr("Mittags-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
-                onClicked: Qt.openUrlExternally(LastVisit.lunchMenueURL)
+                onClicked: ESAA.openUrlORPdf(LastVisit.lunchMenueURL)
                 visible: LastVisit.lunchMenueURL != ""
                 width: parent.buttonSize
             }
@@ -122,7 +122,7 @@ ESAAPage
             {
                 text: LastVisit.individualURL1Caption
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
-                onClicked: Qt.openUrlExternally(LastVisit.individualURL1)
+                onClicked: ESAA.openUrlORPdf(LastVisit.individualURL1)
                 visible: LastVisit.individualURL1 != ""
                 width: parent.buttonSize
             }
