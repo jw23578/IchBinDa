@@ -60,7 +60,7 @@ ESAAPage
             CircleButton
             {
                 id: websiteButton
-                font.pixelSize: theGrid.buttonFontPixelSize * 1.3
+                font.pixelSize: theGrid.buttonFontPixelSize * 1.1
                 text: qsTr("IchBinDa!<br>im Internet")
                 onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de")
                 width: parent.buttonSize
@@ -84,11 +84,12 @@ ESAAPage
             CircleButton
             {
                 id: inCaseButton
-                font.pixelSize: theGrid.buttonFontPixelSize * 1.3
+                font.pixelSize: theGrid.buttonFontPixelSize * 1.1
                 text: qsTr("Im Falle<br>des Falles")
                 onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de/index.html#for-operator-in-case")
                 width: parent.buttonSize
-            }        }
+            }
+        }
     }
     ShareButton
     {
