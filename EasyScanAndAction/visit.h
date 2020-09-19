@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QColor>
 #include <QDateTime>
-#include "qtcoremacros78.h"
+#include "jwProxyObject.h"
 
 
-class Visit: public QObject
+class Visit: public jw::ProxyObject
 {
     Q_OBJECT
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");

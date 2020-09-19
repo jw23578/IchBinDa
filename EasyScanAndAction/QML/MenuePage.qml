@@ -7,6 +7,7 @@ ESAAPage
     signal close
     signal editQRCode
     signal help
+    signal myVisitsClicked
     caption: "Menü"
 
     onShowing:
@@ -30,10 +31,10 @@ ESAAPage
             id: theGrid
             property int buttonSize: ESAA.screenWidth / 3
             property int buttonFontPixelSize: ESAA.fontButtonPixelsize
-            columns: 3
+            columns: 3 + (AllVisits.count > 0 ? 1 : 0)
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            width: buttonSize * 3 + 2 * spacing
+            width: (buttonSize + spacing) * columns - spacing
             spacing: ESAA.spacing * 2
             rowSpacing: ESAA.spacing * 2
             topPadding: ESAA.spacing * 3
@@ -65,6 +66,16 @@ ESAAPage
                 onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de")
                 width: parent.buttonSize
             }
+            CircleButton
+            {
+                id: myVisits
+                text: qsTr("Meine<br>Besuche<br>") + AllVisits.count
+                font.pixelSize: theGrid.buttonFontPixelSize * 1.3
+                width: parent.buttonSize
+                visible: AllVisits.count > 0
+                onClicked: myVisitsClicked()
+            }
+
             CircleButton
             {
                 id: helpButton

@@ -31,5 +31,6 @@
         <file>QML/WaitMessage.qml</file>
         <file>QML/CurrentVisitPage.qml</file>
         <file>QML/ShareButton.qml</file>
+        <file>QML/MyVisitsPage.qml</file>
     </qresource>
 </RCC>

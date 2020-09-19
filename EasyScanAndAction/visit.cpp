@@ -1,6 +1,6 @@
 #include "visit.h"
 
-Visit::Visit()
+Visit::Visit():jw::ProxyObject(nullptr)
 {
 
 }

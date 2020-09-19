@@ -12,7 +12,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
+//    QGuiApplication app(argc, argv);
     int id1(QFontDatabase::addApplicationFont("://roboto/RobotoCondensed-Regular.ttf"));
     int id2(QFontDatabase::addApplicationFont("://roboto/Roboto-Regular.ttf"));
     int id(QFontDatabase::addApplicationFont("://roboto/Roboto-Thin.ttf"));

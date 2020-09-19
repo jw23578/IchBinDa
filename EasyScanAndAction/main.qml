@@ -126,6 +126,11 @@ ApplicationWindow {
             qrCodeFileName: createqrcodepage.qrCodeFileName
             onBack: showNewPage(showqrcodepage, createqrcodepage)
         }
+        MyVisitsPage
+        {
+            id: myvisitspage
+            onClose: showNewPage(myvisitspage, menuepage)
+        }
 
         MenuePage
         {
@@ -147,6 +152,7 @@ ApplicationWindow {
             {
                 showNewPage(menuepage, firststart)
             }
+            onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
         }
         AgreePage
         {

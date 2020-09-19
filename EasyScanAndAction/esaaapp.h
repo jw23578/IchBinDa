@@ -24,6 +24,7 @@
 #endif
 #include <QJsonObject>
 #include "visit.h"
+#include "jwObjectListModel.h"
 
 class ESAAApp: public QObject
 {
@@ -37,6 +38,7 @@ class ESAAApp: public QObject
     PersistentMap publicKeyMap;
     Visit currentQRCodeData;
     Visit lastVisit;
+    jw::ObjectListModel allVisits;
     // Einstellungen
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
     JWPROPERTY(int, screenHeight, ScreenHeight, 0);
@@ -157,6 +159,7 @@ class ESAAApp: public QObject
     void interpretExtendedQRCodeData(const QString &qrCodeJSON);
     void fetchExtendedQRCodeData(const QString &facilityId);
     void setPublicKey(int qrCodeNumber);
+    void loadAllVisits();
 public:
     ESAAApp(QQmlApplicationEngine &e);
 

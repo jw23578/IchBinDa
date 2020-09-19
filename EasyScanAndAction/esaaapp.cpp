@@ -160,9 +160,6 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
         data = loadDoc.object();
     }
     QJsonObject visitObject;
-    visitObject["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
-    visitObject["lastVisitLogoUrl"] = lastVisit.logoUrl();
-    visitObject["lastVisitColor"] = lastVisitColor().name();
     visitObject["begin"] = visitBegin.toString((Qt::ISODate));
     visitObject["end"] = visitEnd.toString((Qt::ISODate));
     visitObject["ibdToken"] = lastVisit.ibdToken;
@@ -186,8 +183,8 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
     visitObject["color"] = color().name();
     visitObject["locationContactMailAdress"] = locationContactMailAdress();
     visitObject["visitCount"] = lastVisitCount();
-    visitObject["lastVisitCountXColor"] = lastVisitCountXColor().name();
-    visitObject["lastVisitCountX"] = lastVisitCountX();
+    visitObject["CountXColor"] = lastVisitCountXColor().name();
+    visitObject["CountX"] = lastVisitCountX();
     QJsonArray visits(data["visits"].toArray());
     bool found(false);
     for (int i(0); i < visits.size(); ++i)
@@ -428,7 +425,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     emailSender(this),
     internetTester(this),
     qrCodeStore(getWriteablePath() + "/knownQRCodes.json"),
-    publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey")
+    publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
+    allVisits(e, "AllVisits", "Visit")
 {
     publicKeyMap.setFiledata("0", ":/keys/publickey2020-07-26.txt");
     publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
@@ -461,6 +459,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     dataFileName = getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
+    loadAllVisits();
 
     QString data;
     QString EMailConfig(":/EMailConfig.txt");
@@ -1020,4 +1019,30 @@ bool ESAAApp::isActiveVisit(int changeCounter)
         return false;
     }
     return QDateTime::currentDateTime() < lastVisit.begin().addSecs(60 * 60 * 12);
+}
+
+void ESAAApp::loadAllVisits()
+{
+    QDir directory(getWriteablePath());
+    QStringList visitFiles(directory.entryList(QStringList() << "visits-*.json", QDir::Files));
+    for (int i(0); i < visitFiles.size(); ++i)
+    {
+        QString visitFileName(getWriteablePath() + "/" + visitFiles[i]);
+        QFile visitFile(visitFileName);
+        if (visitFile.open(QIODevice::ReadOnly))
+        {
+            QByteArray visitData = visitFile.readAll();
+            QJsonDocument loadDoc(QJsonDocument::fromJson(visitData));
+            QJsonObject data(loadDoc.object());
+            QJsonArray visitArray(data["visits"].toArray());
+            for (int v(0); v < visitArray.size(); ++v)
+            {
+                QJsonObject visitObject(visitArray[v].toObject());
+                Visit *aVisit(new Visit);
+                QString fn(visitObject["facilityName"].toString());
+                aVisit->setFacilityName(fn);
+                allVisits.add(aVisit);
+            }
+        }
+    }
 }
