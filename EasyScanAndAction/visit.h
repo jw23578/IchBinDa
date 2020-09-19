@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QColor>
 #include <QDateTime>
-#include "qt_extension_macros.h"
+#include "qtcoremacros78.h"
 
 
 class Visit: public QObject

@@ -21,6 +21,8 @@ SOURCES += \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
+    jwObjectListModel.cpp \
+    jwProxyObject.cpp \
     persistentmap.cpp \
     qrcodestore.cpp \
     src/jwmobileext.cpp \
@@ -63,9 +65,11 @@ HEADERS += \
     esaaapp.h \
     internettester.h \
     ios/ios_functions.h \
+    jwObjectListModel.h \
+    jwProxyObject.h \
     persistentmap.h \
     qrcodestore.h \
-    qt_extension_macros.h \
+    qtcoremacros78.h \
     src/jwmobileext.h \
     visit.h \
 zint-master/backend/aztec.h \
@@ -113,10 +117,10 @@ contains(QT_ARCH, "x86_64") {
 }
 
 ANDROID_VERSION_NAME = "Version 1.5"
-ANDROID_VERSION_CODE = "14"
+ANDROID_VERSION_CODE = "15"
 ANDROID_TARGET_SDK_VERSION = "29"
 
-VERSION = 1.7.1
+VERSION = 1.7.2
 ios{
     Q_ENABLE_BITCODE.name = ENABLE_BITCODE
     Q_ENABLE_BITCODE.value = NO

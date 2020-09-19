@@ -2,7 +2,7 @@
 #define ESAAAPP_H
 
 #include <QObject>
-#include "qt_extension_macros.h"
+#include "qtcoremacros78.h"
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>

@@ -1,6 +1,5 @@
-#ifndef QT_EXTENSION_MACROS_H
-#define QT_EXTENSION_MACROS_H
-
+#ifndef QTCOREMACROS78_H
+#define QTCOREMACROS78_H
 
 #define JWPROPERTY(type, name, uppercasename, defaultvalue) \
 private: \
@@ -29,4 +28,15 @@ Q_SIGNAL \
 void name##Changed(); \
 private:
 
-#endif // QT_EXTENSION_MACROS_H
+#define JWLOCALCONFIGPROPERTY(name, uppercasename, defaultvalue) \
+private: \
+jw::local_config m_##name = {defaultvalue}; \
+public: \
+Q_PROPERTY(QString name READ name WRITE set##uppercasename NOTIFY name##Changed) \
+QString name() {return m_##name.getConfigValue();} \
+void set##uppercasename(QString n){if (m_##name.getConfigValue() == n) return; m_##name.set_n_save(n); emit name##Changed();} \
+Q_SIGNAL \
+void name##Changed(); \
+private:
+
+#endif // QTCOREMACROS78_H

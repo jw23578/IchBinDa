@@ -317,6 +317,7 @@ ESAAPage
             ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
             ESAA.lastVisitColor = ESAA.color
 
+            ESAA.addData2Send(qsTr("FacilityName"), ESAA.facilityName)
             if (fstname.visible)
             {
                 if (fstname.text == "")
