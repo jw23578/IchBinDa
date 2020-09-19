@@ -363,7 +363,7 @@ ESAAPage
                 }
                 ESAA.housenumber = housenumber.text
                 ESAA.lastVisitHousenumber = housenumber.text
-                ESAA.addData2Send(qsTr("Hausnummer"), surname.text)
+                ESAA.addData2Send(qsTr("Hausnummer"), housenumber.text)
             }
             if (zip.visible)
             {
