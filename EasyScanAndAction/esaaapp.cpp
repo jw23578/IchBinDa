@@ -629,6 +629,26 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     return filename;
 }
 
+#include <QPdfWriter>
+
+QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &logoUrl, const QString qrCodeFilename)
+{
+    QString a6Flyer(getTempPath() + "/a6flyer.pdf");
+    QPdfWriter pdf(a6Flyer);
+    pdf.setPageOrientation(QPageLayout::Landscape);
+    QPageSize ps(QPageSize::A6);
+    pdf.setPageSize(ps);
+    QPainter painter(&pdf);
+    QRect r(painter.viewport());
+    int pdfPixelWidth(r.width());
+    int pdfPixelHeight(r.height());
+    painter.fillRect(r, QColor(0xff0000));
+    painter.drawText(0, 0, "Diesen QR-Code mit der IchBinDa!-App scannen");
+    painter.drawPixmap(25, 25, QIcon(qrCodeFilename).pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
+    painter.end();
+    return a6Flyer;
+}
+
 void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
 {
     QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
@@ -853,7 +873,9 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["lunchMenueURL"] = lunchMenueURL;
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
-    return generateQRcodeIntern(shortQRCode);
+    QString qrCodeFilename(generateQRcodeIntern(shortQRCode));
+    generateA6Flyer(li.facilityName, li.logoUrl, qrCodeFilename);
+    return qrCodeFilename;
 }
 
 void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)

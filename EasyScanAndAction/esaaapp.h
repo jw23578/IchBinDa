@@ -147,6 +147,10 @@ class ESAAApp: public QObject
     QString genTempFileName(const QString &extension);
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
+    QString generateA6Flyer(const QString &facilityName,
+                            const QString &logoUrl,
+                            const QString qrCodeFilename);
+
 
     QString lastActionJSON;
     QDateTime lastActionDateTime;

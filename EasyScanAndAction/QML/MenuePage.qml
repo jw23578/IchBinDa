@@ -31,7 +31,7 @@ ESAAPage
             id: theGrid
             property int buttonSize: ESAA.screenWidth / 3
             property int buttonFontPixelSize: ESAA.fontButtonPixelsize
-            columns: 3 + (AllVisits.count > 0 ? 1 : 0)
+            columns: 3 + (myVisits.visible ? 1 : 0)
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             width: (buttonSize + spacing) * columns - spacing
@@ -72,7 +72,7 @@ ESAAPage
                 text: qsTr("Meine<br>Besuche<br>") + AllVisits.count
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
                 width: parent.buttonSize
-                visible: AllVisits.count > 0
+                visible: false // AllVisits.count > 0
                 onClicked: myVisitsClicked()
             }
 

@@ -18,14 +18,6 @@ ESAAPage
         anchors.top: parent.top
         contentHeight: theColumn.height * 1.2
         clip: true
-        Rectangle
-        {
-            anchors.fill: theColumn
-            color: ESAA.textBackgroundColor
-            radius: 5
-            opacity: 0.8
-        }
-
         Column
         {
             y: ESAA.spacing
@@ -55,6 +47,13 @@ ESAAPage
                     sourceSize.width: width
                     source: qrCodeFileName ? "file://" + qrCodeFileName : ""
                 }
+            }
+            ESAAText
+            {
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                font.pixelSize: ESAA.fontTextPixelsize * 0.9
+                text: "QR-Code an folgende E-Mail-Adresse senden:"
             }
             ESAALineInputWithCaption
             {

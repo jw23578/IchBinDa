@@ -92,7 +92,7 @@ ESAAPage
     Camera
     {
         id: camera
-        focus.focusMode: Camera.FocusContinuous
+        focus.focusMode: Camera.FocusMacro //  Camera.FocusContinuous
         focus.focusPointMode:  Camera.FocusPointAuto
         onCameraStatusChanged: if (cameraStatus == Camera.ActiveStatus) waitForSearchAndLock.start()
     }
