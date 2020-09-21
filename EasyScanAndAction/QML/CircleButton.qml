@@ -77,10 +77,18 @@ Button
 
     background: Rectangle {
         id: background
+        gradient: control.down ? null : theGradient
+        Gradient {
+            id: theGradient
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: control.buttonColor }
+            GradientStop { position: 1.0; color: "#364995" }
+        }
+
         color: control.down ? "white" : control.buttonColor
         opacity: enabled ? 1 : 0.3
         border.color:  control.buttonColor
-        border.width: 1
+        border.width: control.down ? 1 : 0
         radius: width / 2
         Image
         {

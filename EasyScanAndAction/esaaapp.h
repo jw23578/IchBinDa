@@ -123,6 +123,7 @@ class ESAAApp: public QObject
     SimpleMail::Server smtpServer;
 
     QString ibdTokenStoreURL;
+    QString fileStoreURL;
 
     void sendMail();
 

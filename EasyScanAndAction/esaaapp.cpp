@@ -491,6 +491,9 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
         file.readLine(buf, 1000);
         ibdTokenStoreURL = QString(buf).trimmed();
+
+        file.readLine(buf, 1000);
+        fileStoreURL = QString(buf).trimmed();
     }
 }
 
@@ -660,6 +663,12 @@ void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
     setRoomWanted(data["room"].toBool());
     setBlockWanted(data["block"].toBool());
     setSeatNumberWanted(data["seatNumber"].toBool());
+    QString logo(data["logo"].toString());
+    if (logo.size())
+    {
+        setLogoUrl(logo);
+        currentQRCodeData.setLogoUrl(logo);
+    }
     clearYesQuestions();
     for (int i(0); i < 20; ++i)
     {
@@ -748,7 +757,6 @@ void ESAAApp::action(const QString &qrCodeJSON)
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
         currentQRCodeData.setLogoUrl(logo);
-        fetchExtendedQRCodeData(facilityId);
         setLocationGUID(facilityId);
         setAdressWanted(wantedData.contains("adress"));
         setEMailWanted(wantedData.contains("email"));
@@ -761,6 +769,7 @@ void ESAAApp::action(const QString &qrCodeJSON)
         setLastVisitCountX(data["x"].toInt());
         setLastVisitCountXColor(data["colorx"].toString());
         emit validQRCodeDetected();
+        fetchExtendedQRCodeData(facilityId);
         return;
     }
     emit invalidQRCodeDetected();
@@ -851,7 +860,6 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     }
     qr["d"] = d;
     qr["color"] = li.color.name();
-    qr["logo"] = li.logoUrl;
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
     QByteArray shortQRCode(QJsonDocument(qr).toJson(QJsonDocument::Compact));
@@ -859,6 +867,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     {
         qr[QString("yesQuestion") + QString::number(i)] = yesQuestions[i];
     }
+    qr["logo"] = li.logoUrl;
     qr["tableNumber"] = tableNumber;
     qr["whoIsVisited"] = whoIsVisited;
     qr["station"] = station;
@@ -880,7 +889,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
 
 void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 {
-    QString url("https://www.jw78.de:23578/fileStore?sec_token=JensWienoebst!");
+    QString url(fileStoreURL);
     QJsonObject json;
     json["name"] = "idbQRCodeData";
     json["filename"] = filename;

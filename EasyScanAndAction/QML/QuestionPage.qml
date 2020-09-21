@@ -63,6 +63,11 @@ ESAAPage
                     height: width
                     source: ESAA.logoUrl
                     fillMode: Image.PreserveAspectFit
+                    cache: false
+                    onSourceChanged:
+                    {
+                        console.log("Logosource: " + source)
+                    }
                 }
                 Rectangle
                 {
