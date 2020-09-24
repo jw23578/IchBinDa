@@ -142,5 +142,6 @@ ESAAPage
         anchors.leftMargin: ESAA.screenWidth / 12
         anchors.bottomMargin: anchors.leftMargin
         buttonColor: "orange"
+        buttonColor2: "orange"
     }
 }

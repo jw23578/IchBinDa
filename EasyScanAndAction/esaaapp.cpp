@@ -402,7 +402,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 {
     if (qrCodeNumber == 0 || qrCodeNumber == 9999)
     {
-/*        QFile publicKeyFile(":/keys/publickey2020-07-26.txt");
+/*        QFile publicKeyFile(":/keys/publicKey2020-07-26.txt");
         publicKeyFile.open(QIODevice::ReadOnly);
         QByteArray publicKeyData(publicKeyFile.readAll());
         Botan::DataSource_Memory datasource(publicKeyData.toStdString());
@@ -428,7 +428,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit")
 {
-    publicKeyMap.setFiledata("0", ":/keys/publickey2020-07-26.txt");
+    publicKeyMap.setFiledata("0", ":/keys/publicKey2020-07-26.txt");
     publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
     publicKeyMap.setFiledata("274412", ":/keys/publicKey274412.txt");
     publicKeyMap.setFiledata("406176", ":/keys/publicKey406176.txt");

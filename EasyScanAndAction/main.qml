@@ -75,6 +75,11 @@ ApplicationWindow {
             id: questionpage
             onClose:
             {
+                if (previousPage == firststart)
+                {
+                    showNewPage(questionpage, scannerpage)
+                    return;
+                }
                 showNewPage(questionpage, sendedDataPage)
             }
             onAbort:

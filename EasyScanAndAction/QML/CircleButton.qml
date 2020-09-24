@@ -18,6 +18,7 @@ Button
     property alias downSource: downImg.source
     property color buttonDownColor: ESAA.buttonDownColor
     property color buttonColor: ESAA.buttonColor
+    property color buttonColor2: "#364995"
     property int verticalImageOffset: 0
     property double imageSizeFactor: 1
     property alias belowCaption: belowCaptionText.text
@@ -82,7 +83,7 @@ Button
             id: theGradient
             orientation: Gradient.Horizontal
             GradientStop { position: 0.0; color: control.buttonColor }
-            GradientStop { position: 1.0; color: "#364995" }
+            GradientStop { position: 1.0; color: control.buttonColor2 }
         }
 
         color: control.down ? "white" : control.buttonColor

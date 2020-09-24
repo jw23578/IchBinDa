@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>keys/publickey2020-07-26.txt</file>
         <file>keys/publicKey120415.txt</file>
         <file>keys/publicKey274412.txt</file>
         <file>keys/publicKey406176.txt</file>
@@ -11,5 +10,6 @@
         <file>keys/publicKey774513.txt</file>
         <file>keys/publicKey823902.txt</file>
         <file>keys/publicKey873700.txt</file>
+        <file>keys/publicKey2020-07-26.txt</file>
     </qresource>
 </RCC>

@@ -21,6 +21,18 @@ FocusScope
         border.width: 1
         radius: ESAA.radius
         color: input.readOnly ? "white" : input.activeFocus ? "white" : border.color
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: {
+                if (input.readOnly)
+                {
+                    return
+                }
+                input.forceActiveFocus()
+            }
+        }
+
         TextInput
         {
             id: input

@@ -87,7 +87,7 @@ ESAAPage
             color: textColor
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
-            text: "Folgende Daten wurden verschlüsselt an " + ESAA.lastVisitLocationContactMailAdress + " übertragen"
+            text: "Folgende Daten wurden verschlüsselt an " + LastVisit.facilityName + " übertragen"
         }
 
     }
