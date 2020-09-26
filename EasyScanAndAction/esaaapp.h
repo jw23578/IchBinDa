@@ -186,7 +186,7 @@ public:
     Q_INVOKABLE void scan();
     Q_INVOKABLE void sendContactData();
     Q_INVOKABLE void ignoreQRCode();
-    Q_INVOKABLE void action(const QString &qrCodeJSON);
+    Q_INVOKABLE void action(QString qrCodeJSON);
     Q_INVOKABLE void openUrlORPdf(const QString &urlOrPdf);
     Q_INVOKABLE QString generateQRCode(const int qrCodeNumer,
                                        const QString &facilityName,

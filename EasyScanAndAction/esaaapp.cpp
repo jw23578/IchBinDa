@@ -732,8 +732,10 @@ void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
     });
 }
 
-void ESAAApp::action(const QString &qrCodeJSON)
+void ESAAApp::action(QString qrCodeJSON)
 {
+    qDebug() << "qrCodeJSON: " << qrCodeJSON;
+    qrCodeJSON.remove("http://onelink.to/ichbinda?a=", Qt::CaseInsensitive);
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
     if (lastActionDateTime.addSecs(60) > QDateTime::currentDateTime() && qrCodeJSON == lastActionJSON)
     {
