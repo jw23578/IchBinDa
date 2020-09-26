@@ -428,6 +428,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit")
 {
+    dummyGet();
     publicKeyMap.setFiledata("0", ":/keys/publicKey2020-07-26.txt");
     publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
     publicKeyMap.setFiledata("274412", ":/keys/publicKey274412.txt");
@@ -645,9 +646,11 @@ QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &log
     QRect r(painter.viewport());
     int pdfPixelWidth(r.width());
     int pdfPixelHeight(r.height());
+    QIcon logo("qrc:/images/logo.png");
     painter.fillRect(r, QColor(0xff0000));
     painter.drawText(0, 0, "Diesen QR-Code mit der IchBinDa!-App scannen");
-    painter.drawPixmap(25, 25, QIcon(qrCodeFilename).pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
+    painter.drawPixmap(25, 25, logo.pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
+//    painter.drawPixmap(25, 25, QIcon(qrCodeFilename).pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
     painter.end();
     return a6Flyer;
 }
@@ -709,7 +712,6 @@ void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
         qDebug() << "Extended Code Data fetched finished" << networkReply->error() << data;
         networkReply->deleteLater();// Don't forget to delete it
     });
-
 }
 
 void ESAAApp::action(const QString &qrCodeJSON)
@@ -1050,6 +1052,16 @@ bool ESAAApp::isActiveVisit(int changeCounter)
         return false;
     }
     return QDateTime::currentDateTime() < lastVisit.begin().addSecs(60 * 60 * 12);
+}
+
+void ESAAApp::dummyGet()
+{
+    QString url("https://www.jw78.de/ibd/qrCodeFiles/902f2e65-9d45-4194-b067-d9b495b5664b.ibd");
+    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        qDebug() << "Dummy get finished" << networkReply->error();
+        networkReply->deleteLater();// Don't forget to delete it
+    });
 }
 
 void ESAAApp::loadAllVisits()

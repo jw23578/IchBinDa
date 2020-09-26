@@ -148,9 +148,11 @@ class ESAAApp: public QObject
     QString genTempFileName(const QString &extension);
     QString genUUID();
     QString generateQRcodeIntern(const QString &code);
+public:
     QString generateA6Flyer(const QString &facilityName,
                             const QString &logoUrl,
                             const QString qrCodeFilename);
+private:
 
 
     QString lastActionJSON;
@@ -222,6 +224,8 @@ public:
 
     Q_INVOKABLE void finishVisit();
     Q_INVOKABLE bool isActiveVisit(int changeCounter);
+
+    Q_INVOKABLE void dummyGet();
 
 signals:
     void showWaitMessageSignal(const QString &mt);

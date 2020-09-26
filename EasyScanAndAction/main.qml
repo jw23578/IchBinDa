@@ -322,4 +322,14 @@ ApplicationWindow {
     onClosing: {
         close.accepted = false
     }
+    Connections {
+      target: Qt.application
+      onStateChanged:
+      {
+          if (Qt.application.state == Qt.ApplicationActive)
+          {
+              ESAA.dummyGet()
+          }
+      }
+    }
 }

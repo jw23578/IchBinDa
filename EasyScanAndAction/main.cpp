@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<QZXingFilter>("QZXing", 2, 3, "QZXingFilter");
     engine.addImageProvider(QLatin1String("QZXing"), new QZXingImageProvider());
     ESAAApp esaa(engine);
+//    esaa.generateA6Flyer("JensJensJens", "logourl", "/home/jw78/.local/share/IchBinDa78/temp/qr.png");
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

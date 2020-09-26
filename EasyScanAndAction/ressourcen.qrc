@@ -33,5 +33,6 @@
         <file>images/pfeil_blau.svg</file>
         <file>images/background.png</file>
         <file>images/help.svg</file>
+        <file>images/logo.png</file>
     </qresource>
 </RCC>
