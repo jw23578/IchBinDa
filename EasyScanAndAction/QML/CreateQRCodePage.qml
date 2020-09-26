@@ -367,12 +367,12 @@ ESAAPage
         anchors.horizontalCenter: parent.horizontalCenter
         text: "QR-Code<br>erzeugen"
         onClicked: {
-            if (qrCodeNumber.displayText == "")
-            {
-                qrCodeNumber.forceActiveFocus()
-                ESAA.showMessage("Bitte gib einen Betreiber Code ein.<br><br>9999 ist der standard Code.")
-                return
-            }
+//            if (qrCodeNumber.displayText == "")
+//            {
+//                qrCodeNumber.forceActiveFocus()
+//                ESAA.showMessage("Bitte gib einen Betreiber Code ein.<br><br>9999 ist der standard Code.")
+//                return
+//            }
             if (!ESAA.keyNumberOK(parseInt(qrCodeNumber.displayText)))
             {
                 qrCodeNumber.forceActiveFocus()
