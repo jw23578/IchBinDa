@@ -29,7 +29,7 @@ ESAAPage
             }
         }
 
-        qrCodeFileName = ESAA.generateQRCode(parseInt(qrCodeNumber.displayText),
+        qrCodeFileName = ESAA.generateQRCode(9999,
                                              facilityName.displayText,
                                              contactReceiveEMail.displayText,
                                              logoUrl.displayText,
@@ -80,9 +80,10 @@ ESAAPage
                 caption: qsTr("Betreiber Code")
                 helpText: "Mit einem bestimmten Betreiber Code können die Kontaktdaten mit einem bestimmten Satz von Schlüsseln kodiert und dekodiert werden." +
                           "<br><br>Mit einem individuellen Schlüsselsatz haben Betreiber die Möglichkeit die Daten selbst zu entschlüsseln." +
-                          "<br><br>Kontaktieren sie mich unter ichbinda@jw78.de für weitere Informationen." +
+                          "<br><br>Kontaktieren sie mich unter ichbinda@app-ichbinda.de für weitere Informationen." +
                           "<br><br>Der Standardcode der ausschließlich vom Gesundheitsamt dekodiert werden kann ist <b>9999</b>"
                 onHelpClicked: ESAA.showMessage(ht)
+                visible: false
             }
             ESAALineInputWithCaption
             {

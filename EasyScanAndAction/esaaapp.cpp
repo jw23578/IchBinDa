@@ -646,11 +646,29 @@ QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &log
     QRect r(painter.viewport());
     int pdfPixelWidth(r.width());
     int pdfPixelHeight(r.height());
-    QIcon logo("qrc:/images/logo.png");
-    painter.fillRect(r, QColor(0xff0000));
-    painter.drawText(0, 0, "Diesen QR-Code mit der IchBinDa!-App scannen");
-    painter.drawPixmap(25, 25, logo.pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
-//    painter.drawPixmap(25, 25, QIcon(qrCodeFilename).pixmap(pdfPixelWidth / 2, pdfPixelHeight / 2));
+    QImage logo(":/images/logo.png");
+    int logoHeight(pdfPixelWidth / 6);
+    QFont font = painter.font();
+    font.setPixelSize(logoHeight / 3);
+    painter.setFont(font);
+    QPen pen = painter.pen();
+    pen.setColor(buttonColor());
+    painter.setPen(pen);
+    QFontMetrics fontMetrics(painter.fontMetrics());
+    QRect nameRect(fontMetrics.boundingRect(facilityName));
+    painter.drawText((pdfPixelWidth - nameRect.width()) / 2, nameRect.height(), facilityName);
+    painter.drawImage(QRect(0, nameRect.height(), pdfPixelWidth / 6, logoHeight), logo);
+    font.setPixelSize(logoHeight / 2);
+    painter.setFont(font);
+    fontMetrics = painter.fontMetrics();
+    QRect textRect(fontMetrics.boundingRect("SCANNEN UND"));
+    painter.drawText((pdfPixelWidth - textRect.width()) / 2, nameRect.height() + logoHeight - painter.fontInfo().pixelSize(), "SCANNEN UND");
+    painter.drawText((pdfPixelWidth - textRect.width()) / 2, nameRect.height() + logoHeight, "EINCHECKEN");
+    QImage qrCode(qrCodeFilename);
+    int qrCodeWidth(pdfPixelWidth / 3);
+    int qrCodeHeight(pdfPixelWidth / 3);
+    painter.drawImage(QRect(pdfPixelWidth - qrCodeWidth, pdfPixelHeight - qrCodeHeight,
+                            qrCodeWidth, qrCodeHeight), qrCode);
     painter.end();
     return a6Flyer;
 }
@@ -968,7 +986,8 @@ void ESAAApp::recommend()
 {
     QString content("Ich benutze die ");
     content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen:\n\n(PlayStore) ";
-    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162";
+    content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162\n\n";
+    content += "Besuch uns auf www.app-ichbinda.de für mehr Informationen";
     mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
