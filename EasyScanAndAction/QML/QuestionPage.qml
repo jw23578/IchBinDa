@@ -41,7 +41,7 @@ ESAAPage
     {
         id: theFlick
         anchors.margins: ESAA.spacing
-        anchors.bottom: sendenAn.top
+        anchors.bottom: sendButton.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -53,39 +53,21 @@ ESAAPage
             y: ESAA.spacing
             width: parent.width
             spacing: ESAA.spacing / 2
-//            topPadding: spacing
-            Row
+            //            topPadding: spacing
+            Image
             {
                 visible: !meineDaten
-                property int w: parent.width * 6 / 10
-                spacing: w / 10
-                width: w + spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                height: w / 2
-                Image
+                width: parent.width * 3 / 10
+                height: width
+                source: ESAA.logoUrl
+                fillMode: Image.PreserveAspectFit
+                cache: false
+                onSourceChanged:
                 {
-                    width: parent.height
-                    height: width
-                    source: ESAA.logoUrl
-                    fillMode: Image.PreserveAspectFit
-                    cache: false
-                    onSourceChanged:
-                    {
-                        console.log("Logosource: " + source)
-                    }
-                }
-                Rectangle
-                {
-                    width: parent.height
-                    height: width
-                    color: ESAA.color
-                    border.width: ESAA.color == "#ffffff" ? 1 : 0
-                    border.color: ESAA.buttonBorderColor
-                    radius: ESAA.radius
+                    console.log("Logosource: " + source)
                 }
             }
-
-
             ESAAText
             {
                 width: parent.width - 2 * ESAA.spacing
@@ -273,8 +255,8 @@ ESAAPage
     {
         id: sendenAn
         text: "an: " + ESAA.facilityName
-        anchors.bottom: sendButton.top
-        anchors.bottomMargin: ESAA.spacing / 2
+        anchors.top: sendButton.bottom
+        anchors.topMargin: ESAA.spacing / 2
         color: ESAA.buttonColor
         font.pixelSize: ESAA.fontTextPixelsize
         anchors.horizontalCenter: parent.horizontalCenter
@@ -285,7 +267,7 @@ ESAAPage
         id: sendButton
         anchors.margins: ESAA.spacing
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing
+        anchors.bottomMargin: ESAA.spacing * 2
         anchors.horizontalCenter: parent.horizontalCenter
         text: meineDaten ? "speichern" : "Daten<br>senden"
         onClicked:
@@ -506,12 +488,13 @@ ESAAPage
                 ESAA.addSubData2Send("yesQuestion", "yq" + i, ESAA.getYesQuestion(i))
             }
             ESAA.showWaitMessage("Bitte einen Moment Geduld")
-            ESAA.sendContactData();            
+            ESAA.sendContactData();
             close()
         }
     }
     BackButton
     {
+        visible: !ESAA.firstStart
         onClicked: {
             ESAA.ignoreQRCode()
             abort()

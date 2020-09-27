@@ -108,6 +108,7 @@ ApplicationWindow {
             {
                 showNewPage(firststart, scannerpage)
             }
+            onBack: showNewPage(firststart, menuepage)
             onEditContactData:
             {
                 ESAA.facilityName = "MeineDaten"

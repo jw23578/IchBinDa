@@ -4,6 +4,7 @@ import QtQuick.Controls 2.13
 ESAAPage
 {
     signal startNow
+    signal back
     caption: "Hilfe"
     function goStartNow()
     {
@@ -11,9 +12,20 @@ ESAAPage
         kundeinfo.visible = false
         startNow()
     }
+    function backFunction()
+    {
+        if (betreiberinfo.visible || kundeinfo.visible)
+        {
+            betreiberinfo.visible = false
+            kundeinfo.visible = false
+            return
+        }
+        back()
+    }
+
     onBackPressed:
     {
-        goStartNow()
+        backFunction()
     }
 
     signal editContactData
@@ -32,61 +44,37 @@ ESAAPage
         property int buttonFontPixelSize: ESAA.fontButtonPixelsize
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: buttonSize * 2.5
-        topPadding: spacing / 2
-        spacing: buttonSize / 3
-        Row
-        {
-            spacing: theGrid.width - 2 * theGrid.buttonSize
-            CircleButton
-            {
-                id: b1
-                text: "Ich bin\nBetreiber"
-                onClicked:
-                {
-                    view.contentY = 0
-                    betreiberinfo.visible = true
-                }
-                width: theGrid.buttonSize
-                font.pixelSize: theGrid.buttonFontPixelSize
-            }
-            CircleButton
-            {
-                text: "Ich bin Kunde\n/Besucher"
-                onClicked:
-                {
-                    view2.contentY = 0
-                    kundeinfo.visible = true
-                }
-                width: theGrid.buttonSize
-                font.pixelSize: theGrid.buttonFontPixelSize
-            }
-        }
+        width: buttonSize
+        topPadding: spacing * 1.5
+        spacing: buttonSize / 2
         CircleButton
         {
-            id: shareButton
-            anchors.horizontalCenter: parent.horizontalCenter
-            belowCaption: qsTr("Weiterempfehlen")
-            onClicked: ESAA.recommend()
-            source: "qrc:/images/share_weiss.svg"
-            downSource: "qrc:/images/share_blau.svg"
+            id: b1
+            text: "Ich bin\nBetreiber"
+            onClicked:
+            {
+                view.contentY = 0
+                betreiberinfo.visible = true
+            }
             width: theGrid.buttonSize
             font.pixelSize: theGrid.buttonFontPixelSize
         }
-        Item
-        {
-            width: parent.width
-            height: 1
-        }
-
         CircleButton
         {
-            text: "Ich möchte\ndirekt loslegen"
-            anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: goStartNow()
+            text: "Ich bin Kunde\n/Besucher"
+            onClicked:
+            {
+                view2.contentY = 0
+                kundeinfo.visible = true
+            }
             width: theGrid.buttonSize
             font.pixelSize: theGrid.buttonFontPixelSize
         }
+    }
+    BackButton
+    {
+        visible: !ESAA.firstStart
+        onClicked: backFunction()
     }
     Item
     {
