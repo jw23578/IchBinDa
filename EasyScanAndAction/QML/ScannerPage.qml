@@ -223,6 +223,39 @@ ESAAPage
     ShareButton
     {
         id: shareButton
+        visible: !ESAA.firstStart
     }
+    Item
+    {
+        anchors.fill: parent
+        visible: ESAA.firstStart
+        Rectangle
+        {
+            anchors.fill: infotext
+            opacity: 0.8
+        }
+
+        ESAAText
+        {
+            id: infotext
+            width: parent.width - 2 * ESAA.spacing
+            anchors.centerIn: parent
+            wrapMode: Text.WordWrap
+            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            text: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
+                  "<br><br>Über den Button ganz unten kannst du das Menü aufrufen um die App zu erkunden."
+        }
+
+        CircleButton
+        {
+            id: editButton
+            anchors.bottom: parent.bottom
+            anchors.margins: ESAA.spacing
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Verstanden")
+            onClicked: ESAA.firstStartDone()
+        }
+    }
+
     Component.onCompleted: camera.stop()
 }

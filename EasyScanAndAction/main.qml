@@ -217,6 +217,7 @@ ApplicationWindow {
     CircleButton
     {
         id: callMenueButton
+        visible: !ESAA.firstStart
         alertAniRunning: ESAA.fstname == "" || ESAA.surname == ""
         repeatAlertAni: ESAA.fstname == "" || ESAA.surname == ""
         anchors.horizontalCenter: parent.horizontalCenter
