@@ -40,17 +40,18 @@ ESAAPage
     {
         visible: !betreiberinfo.visible && !kundeinfo.visible
         id: theGrid
-        property int buttonSize: ESAA.screenWidth / 3
-        property int buttonFontPixelSize: ESAA.fontButtonPixelsize
+        property int buttonSize: ESAA.screenWidth / 2
+        property int buttonFontPixelSize: ESAA.fontButtonPixelsize * 1.5
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         width: buttonSize
-        topPadding: spacing * 1.5
-        spacing: buttonSize / 2
+        topPadding: spacing
+        spacing: buttonSize / 4
         CircleButton
         {
             id: b1
-            text: "Ich bin\nBetreiber"
+            smallTopText: "Ich bin"
+            text: "Betreiber<br>oder<br>Veranstalter"
             onClicked:
             {
                 view.contentY = 0
@@ -61,7 +62,8 @@ ESAAPage
         }
         CircleButton
         {
-            text: "Ich bin Kunde\n/Besucher"
+            smallTopText: "Ich bin"
+            text: "Kunde<br>oder<br>Besucher"
             onClicked:
             {
                 view2.contentY = 0
