@@ -96,6 +96,13 @@ ESAAPage
         focus.focusPointMode:  Camera.FocusPointAuto
         onCameraStatusChanged: if (cameraStatus == Camera.ActiveStatus) waitForSearchAndLock.start()
     }
+    Timer
+    {
+        running: camera.cameraStatus == Camera.ActiveStatus
+        interval: 2000
+        repeat: true
+        onTriggered: camera.searchAndLock()
+    }
 
     Item
     {
@@ -241,7 +248,7 @@ ESAAPage
             width: parent.width - 2 * ESAA.spacing
             anchors.centerIn: parent
             wrapMode: Text.WordWrap
-            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            font.pixelSize: ESAA.fontTextPixelsize * 1.2
             text: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
                   "<br><br>Über den Button ganz unten kannst du das Menü aufrufen um die App zu erkunden."
         }
