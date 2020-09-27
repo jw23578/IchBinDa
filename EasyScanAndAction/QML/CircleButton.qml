@@ -56,7 +56,7 @@ Button
         visible: text != ""
         id: belowCaptionText
         color: ESAA.buttonColor
-        font.pixelSize: control.font.pixelSize * 1.5
+        font.pixelSize: control.font.pixelSize * 1.3
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -68,7 +68,7 @@ Button
         visible: text != ""
         id: aboveCaptionText
         color: ESAA.buttonColor
-        font.pixelSize: control.font.pixelSize * 1.5
+        font.pixelSize: control.font.pixelSize * 1.3
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight

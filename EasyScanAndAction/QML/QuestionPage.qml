@@ -251,25 +251,15 @@ ESAAPage
             }
         }
     }
-    ESAAText
-    {
-        id: sendenAn
-        text: "an: " + ESAA.facilityName
-        anchors.top: sendButton.bottom
-        anchors.topMargin: ESAA.spacing / 2
-        color: ESAA.buttonColor
-        font.pixelSize: ESAA.fontTextPixelsize
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: !meineDaten
-    }
     CircleButton
     {
         id: sendButton
         anchors.margins: ESAA.spacing
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing * 2
+        anchors.bottomMargin: ESAA.spacing * 2.5
         anchors.horizontalCenter: parent.horizontalCenter
         text: meineDaten ? "speichern" : "Daten<br>senden"
+        belowCaption: meineDaten ? "" : "an: " + ESAA.facilityName
         onClicked:
         {
             ESAA.clearData2Send()
