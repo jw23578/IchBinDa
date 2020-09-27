@@ -349,7 +349,6 @@ ESAAPage
                 id: individualURL1Caption
                 caption: "Buttontext der Individuellen Url"
                 width: parent.width
-                inputMethodHints: Qt.ImhUrlCharactersOnly
             }
 
             Item
