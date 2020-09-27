@@ -42,14 +42,22 @@ ESAAPage
             {
                 id: b1
                 text: "Ich bin\nBetreiber"
-                onClicked: betreiberinfo.visible = true
+                onClicked:
+                {
+                    view.contentY = 0
+                    betreiberinfo.visible = true
+                }
                 width: theGrid.buttonSize
                 font.pixelSize: theGrid.buttonFontPixelSize
             }
             CircleButton
             {
                 text: "Ich bin Kunde\n/Besucher"
-                onClicked: kundeinfo.visible = true
+                onClicked:
+                {
+                    view2.contentY = 0
+                    kundeinfo.visible = true
+                }
                 width: theGrid.buttonSize
                 font.pixelSize: theGrid.buttonFontPixelSize
             }
@@ -151,27 +159,35 @@ ESAAPage
                       "<br><br>Du musst deine " +
                       "Daten nur <b>einmal</b> eingeben, für den nächsten Besuch sind sie dann schon gespeichert und werden vorbelegt. " +
                       "<br><br>Deine Kontaktdaten werden <b>ausschließlich</b> in der App gespeichert und per <b>verschlüsselter</b> E-Mail an den Betreiber übermittelt. " +
-                      "<br>Es gibt keinen zentralen Server auf dem " +
-                      "deine persönlichen Daten gespeichert werden würden." +
-                      "<br><br>Der Betreiber/Anbieter ist <b>nicht</b> in der Lage auf deine Kontaktdaten zuzugreifen, dass ist nur entsprechenden Einrichtungen möglich, die den \"private Key\" zum Entschlüsseln bekommen. " +
-                      "Außerdem muss diesen Einrichtungen vom Betreiber/Anbieter die verschlüsselte E-Mail weitergeleitet werden." +
-                      "<br><br>Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. <b>Ausschließlich</b> deine App kann dieses Token dir zuordnen. Lediglich Besuchsort Standort und Datum/Uhrzeit lesbar, " +
-                      "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
+//                      "<br>Es gibt keinen zentralen Server auf dem " +
+//                      "deine persönlichen Daten gespeichert werden würden." +
+                      "<br><br>Der Betreiber/Anbieter ist <b>ausschließlich</b> in der Lage auf deine Kontaktdaten zuzugreifen, wenn er von entsprechenden Einrichtungen aufgefordert wird die Kontaktdaten auszuhändigen. " +
+//                      "<br><br>Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. <b>Ausschließlich</b> deine App kann dieses Token dir zuordnen. Lediglich Besuchsort Standort und Datum/Uhrzeit lesbar, " +
+//                      "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
                 color: ESAA.buttonColor
             }
         }
-
-        TwoCircleButtons
+        CircleButton
         {
             id: editButton
             anchors.bottom: parent.bottom
             anchors.margins: ESAA.spacing
-            leftText: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
-            onLeftClicked: goEditContactData()
-            rightText: "Los geht's"
-            onRightClicked: goStartNow()
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
+            onClicked: goEditContactData()
         }
+
+//        TwoCircleButtons
+//        {
+//            id: editButton
+//            anchors.bottom: parent.bottom
+//            anchors.margins: ESAA.spacing
+//            leftText: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
+//            onLeftClicked: goEditContactData()
+//            rightText: "Los geht's"
+//            onRightClicked: goStartNow()
+//        }
     }
 }
