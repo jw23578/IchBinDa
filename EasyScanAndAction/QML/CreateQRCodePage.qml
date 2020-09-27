@@ -245,6 +245,7 @@ ESAAPage
                 model: 1
                 Row
                 {
+                    property alias questionText: yesQuestion.text
                     width: parent.width
                     ESAALineInputWithCaption
                     {
@@ -277,6 +278,8 @@ ESAAPage
                         {
                             if (yesQuestionRepeater.count <= 1)
                             {
+                                yesQuestionRepeater.itemAt(0).questionText = ""
+                                yesQuestionVector[0] = ""
                                 return
                             }
 
