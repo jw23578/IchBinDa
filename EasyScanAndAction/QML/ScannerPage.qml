@@ -238,8 +238,13 @@ ESAAPage
         visible: ESAA.firstStart
         Rectangle
         {
-            anchors.fill: infotext
+            anchors.top: infotext.top
+            anchors.topMargin: -ESAA.spacing
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             opacity: 0.8
+            color: ESAA.buttonColor
         }
 
         ESAAText
@@ -248,12 +253,13 @@ ESAAPage
             width: parent.width - 2 * ESAA.spacing
             anchors.centerIn: parent
             wrapMode: Text.WordWrap
-            font.pixelSize: ESAA.fontTextPixelsize * 1.2
+            font.pixelSize: ESAA.fontMessageTextPixelsize
+            color: "white"
             text: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
                   "<br><br>Über den Button ganz unten kannst du das Menü aufrufen um die App zu erkunden."
         }
 
-        CircleButton
+        TransparentCircleButton
         {
             id: editButton
             anchors.bottom: parent.bottom
