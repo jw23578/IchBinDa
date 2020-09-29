@@ -1,8 +1,8 @@
-import QtQuick 2.12
+import QtQuick 2.15
 import QZXing 2.3
-import QtMultimedia 5.13
-import QtQuick.Controls 2.13
-import QtGraphicalEffects 1.0
+import QtMultimedia 5.15
+import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.15
 
 ESAAPage
 {
