@@ -35,5 +35,7 @@
         <file>images/help.svg</file>
         <file>images/logo.png</file>
         <file>images/logo.jpg</file>
+        <file>pdfs/InstallationA4.pdf</file>
+        <file>pdfs/InstallationA4Quer.pdf</file>
     </qresource>
 </RCC>

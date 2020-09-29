@@ -116,7 +116,7 @@ contains(QT_ARCH, "x86_64") {
     SOURCES += botan_all_x64.cpp
 }
 
-ANDROID_VERSION_NAME = "Version 1.6"
+ANDROID_VERSION_NAME = "Version 1.7"
 ANDROID_VERSION_CODE = "18"
 ANDROID_TARGET_SDK_VERSION = "29"
 

@@ -979,6 +979,14 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         message->addPart(image1);
         ++it;
     }
+    SimpleMail::MimeAttachment *attachmentInstallationA4PDF(new SimpleMail::MimeAttachment(new QFile(QLatin1String(":/pdfs/InstallationA4.pdf"))));
+    attachmentInstallationA4PDF->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentInstallationA4PDF);
+
+    SimpleMail::MimeAttachment *attachmentInstallationA4PDFQuer(new SimpleMail::MimeAttachment(new QFile(QLatin1String(":/pdfs/InstallationA4Quer.pdf"))));
+    attachmentInstallationA4PDFQuer->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentInstallationA4PDFQuer);
+
     emailSender.addMailToSend(message, true);
     postQRCodeData(facilityIdToPost, qrCodeDataToPost);
     showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
