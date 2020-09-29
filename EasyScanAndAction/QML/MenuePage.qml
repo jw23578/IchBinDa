@@ -31,7 +31,8 @@ ESAAPage
             id: theGrid
             property int buttonSize: ESAA.screenWidth / 3
             property int buttonFontPixelSize: ESAA.fontButtonPixelsize
-            columns: 3 + (myVisits.visible ? 1 : 0)
+            property int anzahl: 6 + (myVisits.visible ? 1 : 0) + (kontakttagebuch.visible ? 1 : 0)
+            columns: anzahl / 2 + anzahl % 2
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             width: (buttonSize + spacing) * columns - spacing
@@ -100,6 +101,16 @@ ESAAPage
                 onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de/index.html#for-operator-in-case")
                 width: parent.buttonSize
             }
+            CircleButton
+            {
+                id: kontakttagebuch
+                visible: ESAA.isDevelop
+                font.pixelSize: theGrid.buttonFontPixelSize * 1.1
+                text: qsTr("Kontakt<br>tagebuch<br>QR-Code")
+//                onClicked:
+                width: parent.buttonSize
+            }
+
         }
     }
     ShareButton

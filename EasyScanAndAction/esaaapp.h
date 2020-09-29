@@ -39,7 +39,8 @@ class ESAAApp: public QObject
     Visit currentQRCodeData;
     Visit lastVisit;
     jw::ObjectListModel allVisits;
-    // Einstellungen
+    JWPROPERTY(bool, isDevelop, IsDevelop, false);
+    // Einstellungen    
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
     JWPROPERTY(int, screenHeight, ScreenHeight, 0);
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
@@ -188,6 +189,7 @@ public:
     Q_INVOKABLE void ignoreQRCode();
     Q_INVOKABLE void action(QString qrCodeJSON);
     Q_INVOKABLE void openUrlORPdf(const QString &urlOrPdf);
+    Q_INVOKABLE QString generateKontaktTagebuchQRCode();
     Q_INVOKABLE QString generateQRCode(const int qrCodeNumer,
                                        const QString &facilityName,
                                        const QString &contactReceiveEMail,

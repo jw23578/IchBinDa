@@ -428,6 +428,10 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit")
 {
+    if (getWriteablePath().contains("/home/jw78"))
+    {
+        setIsDevelop(true);
+    }
     dummyGet();
     publicKeyMap.setFiledata("0", ":/keys/publicKey2020-07-26.txt");
     publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
@@ -827,6 +831,11 @@ void ESAAApp::openUrlORPdf(const QString &urlOrPdf)
         return;
     }
     QDesktopServices::openUrl(QUrl(urlOrPdf, QUrl::TolerantMode));
+}
+
+QString ESAAApp::generateKontaktTagebuchQRCode()
+{
+
 }
 
 QString ESAAApp::generateQRCode(const int qrCodeNumer,
