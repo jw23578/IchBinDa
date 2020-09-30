@@ -80,6 +80,11 @@ ApplicationWindow {
                     showNewPage(questionpage, scannerpage)
                     return;
                 }
+                if (previousPage == menuepage)
+                {
+                    showNewPage(questionpage, previousPage)
+                    return
+                }
                 showNewPage(questionpage, sendedDataPage)
             }
             onAbort:
@@ -159,6 +164,7 @@ ApplicationWindow {
                 showNewPage(menuepage, firststart)
             }
             onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
+            onShowKontaktTagebuchQRCode: ESAA.showMessage("haben wir noch nicht")
         }
         AgreePage
         {

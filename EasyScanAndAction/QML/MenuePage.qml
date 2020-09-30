@@ -8,6 +8,7 @@ ESAAPage
     signal editQRCode
     signal help
     signal myVisitsClicked
+    signal showKontaktTagebuchQRCode;
     caption: "Menü"
 
     onShowing:
@@ -107,7 +108,27 @@ ESAAPage
                 visible: ESAA.isDevelop
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.1
                 text: qsTr("Kontakt<br>tagebuch<br>QR-Code")
-//                onClicked:
+                onClicked:
+                {
+                    if (ESAA.fstname == "")
+                    {
+                        ESAA.showMessage("Bitte gib vorher noch deinen Vornamen in deinen Kontaktdaten ein.")
+                        return;
+                    }
+                    if (ESAA.surname == "")
+                    {
+                        ESAA.showMessage("Bitte gib vorher noch deinen Nachnamen in deinen Kontaktdaten ein.")
+                        return;
+                    }
+                    if (ESAA.emailAdress == "")
+                    {
+                        ESAA.showMessage("Bitte gib vorher noch deinen E-Mail-Adresse in deinen Kontaktdaten ein.")
+                        return;
+                    }
+                    ESAA.generateKontaktTagebuchQRCode()
+                    showKontaktTagebuchQRCode()
+                }
+
                 width: parent.buttonSize
             }
 
