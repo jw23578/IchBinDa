@@ -674,6 +674,16 @@ QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn)
     return filename;
 }
 
+void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
+{
+    QString url(logoUrl);
+    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QEventLoop loop;
+    connect(networkReply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+    target.loadFromData(networkReply->readAll());
+}
+
 QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &logoUrl, const QString qrCodeFilename)
 {
     QString a6Flyer(getTempPath() + "/a6flyer.pdf");
@@ -710,6 +720,54 @@ QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &log
                             qrCodeWidth, qrCodeHeight), qrCode);
     painter.end();
     return a6Flyer;
+}
+
+QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &logo, const QString qrCodeFilename)
+{
+    QString a4Flyer(getTempPath() + "/a4flyer1.pdf");
+    QPdfWriter pdf(a4Flyer);
+    QPageLayout layout(pdf.pageLayout());
+    layout.setOrientation(QPageLayout::Portrait);
+    layout.setMode(QPageLayout::FullPageMode);
+    QPageSize ps(QPageSize::A4);
+    layout.setPageSize(ps);
+    pdf.setPageLayout(layout);
+    QPainter painter(&pdf);
+    QRect r(painter.viewport());
+    int pdfPixelWidth(r.width());
+    int pdfPixelHeight(r.height());
+    QImage background(":/images/A4-So-funktioniert-es-1.png");
+    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
+
+    QRect logoRect(pdfPixelWidth * 156 / 2481,
+                   pdfPixelHeight * 100 / 3508,
+                   pdfPixelWidth * 420 / 2481,
+                   pdfPixelHeight * 420 / 3508);
+
+    QRect behindLogo(0,
+                     logoRect.top(),
+                     pdfPixelWidth - logoRect.right(),
+                     logoRect.height());
+    painter.fillRect(behindLogo, "white");
+
+    painter.drawImage(logoRect, logo);
+    QFont font = painter.font();
+    font.setPixelSize(logoRect.height() / 4);
+    painter.setFont(font);
+    QPen pen = painter.pen();
+    pen.setColor("black");
+    painter.setPen(pen);
+    QFontMetrics fontMetrics(painter.fontMetrics());
+    QRect nameRect(fontMetrics.boundingRect(facilityName));
+    painter.drawText(logoRect.right() + logoRect.width() / 6, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
+
+    QImage qr(qrCodeFilename);
+    painter.drawImage(QRect(pdfPixelWidth * 1107 / 2481,
+                            pdfPixelHeight * 924 / 3508,
+                            pdfPixelWidth * 1122 / 2481,
+                            pdfPixelHeight * 1122 / 3508), qr);
+    painter.end();
+    return a4Flyer;
 }
 
 void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
@@ -998,7 +1056,7 @@ void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 
 }
 
-void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName)
+void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName, const QString &logoUrl)
 {
     SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
     message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
@@ -1021,6 +1079,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
 
     // Create a MimeInlineFile object for each image
     std::set<QString>::iterator it(qrCodes.begin());
+    QString pngQRCodeFilename;
     while (it != qrCodes.end())
     {
         auto image1 = new SimpleMail::MimeInlineFile(new QFile(*it));
@@ -1035,6 +1094,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         {
             image1->setContentId(genUUID().toLatin1());
             image1->setContentType(QByteArrayLiteral("image/png"));
+            pngQRCodeFilename = *it;
         }
         if (it->right(3) == "svg")
         {
@@ -1052,6 +1112,12 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
     SimpleMail::MimeAttachment *attachmentInstallationA4PDFQuer(new SimpleMail::MimeAttachment(new QFile(QLatin1String(":/pdfs/InstallationA4Quer.pdf"))));
     attachmentInstallationA4PDFQuer->setContentType(QByteArrayLiteral("application/pdf"));
     message->addPart(attachmentInstallationA4PDFQuer);
+
+    QImage logo;
+    fetchLogo(logoUrl, logo);
+    SimpleMail::MimeAttachment *attachmentA4Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename))));
+    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentA4Flyer1);
 
     emailSender.addMailToSend(message, true);
     postQRCodeData(facilityIdToPost, qrCodeDataToPost);

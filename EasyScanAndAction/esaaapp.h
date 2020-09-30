@@ -154,9 +154,13 @@ class ESAAApp: public QObject
     QString genUUID();
     QString generateQRcodeIntern(const QString &code, const QString &fn);
 public:
+    void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,
                             const QString &logoUrl,
                             const QString qrCodeFilename);
+    QString generateA4Flyer1(const QString &facilityName,
+                             const QImage &logo,
+                             const QString qrCodeFilename);
 private:
 
 
@@ -217,7 +221,7 @@ public:
                                        const QString &individualURL1,
                                        const QString &individualURL1Caption,
                                        const QString &lunchMenueURL);
-    Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName);
+    Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName, const QString &logoUrl);
 
     Q_INVOKABLE void recommend();
     Q_INVOKABLE bool isEmailValid(const QString& email);

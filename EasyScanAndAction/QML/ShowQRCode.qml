@@ -8,6 +8,7 @@ ESAAPage
         back()
     }
     property string qrCodeFileName: ""
+    property string logoUrl: ""
     property alias sendEMailTo: qrCodeEMailAdresse.text
     property string facilityName: ""
     Flickable
@@ -81,7 +82,9 @@ ESAAPage
                 qrCodeEMailAdresse.forceActiveFocus();
                 return
             }
-            ESAA.sendQRCode(qrCodeEMailAdresse.displayText, facilityName)
+            ESAA.showWaitMessage("Bitte einen Moment Geduld. Es werden ein paar PDFs mit Logo und QR-Code erstellt, das dauert kurz.")
+            ESAA.sendQRCode(qrCodeEMailAdresse.displayText, facilityName, logoUrl)
+            ESAA.hideWaitMessage()
             back()
         }
     }

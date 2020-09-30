@@ -134,6 +134,7 @@ ApplicationWindow {
         ShowQRCode
         {
             id: showqrcodepage
+            logoUrl: createqrcodepage.theLogoUrl
             qrCodeFileName: createqrcodepage.qrCodeFileName
             onBack: showNewPage(showqrcodepage, createqrcodepage)
         }

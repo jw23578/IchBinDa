@@ -13,6 +13,7 @@ ESAAPage
         close()
     }
     property string qrCodeFileName: ""
+    property string theLogoUrl: ""
     property alias theFacilityName: facilityName.displayText
     property alias theContactReceiveEMail: contactReceiveEMail.displayText
     property color textColor: "#4581B3"
@@ -27,7 +28,7 @@ ESAAPage
                 ESAA.addYesQuestions(yesQuestionVector[i])
             }
         }
-
+        theLogoUrl = logoUrl.displayText
         qrCodeFileName = ESAA.generateQRCode(9999,
                                              facilityName.displayText,
                                              contactReceiveEMail.displayText,

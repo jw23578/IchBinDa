@@ -37,5 +37,6 @@
         <file>images/logo.jpg</file>
         <file>pdfs/InstallationA4.pdf</file>
         <file>pdfs/InstallationA4Quer.pdf</file>
+        <file>images/A4-So-funktioniert-es-1.png</file>
     </qresource>
 </RCC>

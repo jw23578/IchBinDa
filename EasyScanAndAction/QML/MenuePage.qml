@@ -105,7 +105,7 @@ ESAAPage
             CircleButton
             {
                 id: kontakttagebuch
-                visible: ESAA.isDevelop
+//                visible: ESAA.isDevelop
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.1
                 text: qsTr("Kontakt<br>tagebuch<br>QR-Code")
                 onClicked:
