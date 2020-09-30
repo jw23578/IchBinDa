@@ -19,10 +19,47 @@
 #include <QPainter>
 #include <QUrlQuery>
 #include <QDesktopServices>
+#include <QPdfWriter>
+
 
 QString ESAAApp::getWriteablePath()
 {
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+}
+
+void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,
+                                        const QString &otherSurname,
+                                        const QString &otherEMail)
+{
+    SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
+    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
+    message->addTo(SimpleMail::EmailAddress(otherEMail));
+    QString subject("IchBinDa! Kontakttagebuch");
+    message->setSubject(subject);
+    auto text = new SimpleMail::MimeText;
+    QString work;
+    work += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    work += "\n";
+    work += fstname() + " " + surname() + "\n";
+    work += emailAdress();
+    text->setText(work);
+    message->addPart(text);
+    emailSender.addMailToSend(message, false);
+
+    message = new SimpleMail::MimeMessage;
+    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
+    message->addTo(SimpleMail::EmailAddress(emailAdress()));
+    message->setSubject(subject);
+    text = new SimpleMail::MimeText;
+    work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
+    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
+    work += "\n";
+    work += otherFstname + " " + otherSurname + "\n";
+    work += otherEMail;
+    text->setText(work);
+    message->addPart(text);
+    emailSender.addMailToSend(message, true);
 }
 
 void ESAAApp::sendMail()
@@ -611,9 +648,9 @@ QString ESAAApp::genTempFileName(const QString &extension)
     return getTempPath() + "/" + genUUID() + extension;
 }
 
-QString ESAAApp::generateQRcodeIntern(const QString &code)
+QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn)
 {
-    QString filename(getTempPath()+ "/qr.svg");
+    QString filename(getTempPath() + "/" + fn + ".svg");
     qDebug() << filename;
     struct zint_symbol *my_symbol;
     my_symbol = ZBarcode_Create();
@@ -629,15 +666,13 @@ QString ESAAApp::generateQRcodeIntern(const QString &code)
     QPainter painter(&pix);
     painter.fillRect(pix.rect(), QColor(0xffffff));
     painter.drawPixmap(25, 25, QIcon(filename).pixmap(QSize(450, 450)));
-    pix.toImage().save(getTempPath()+ "/qr.png");
-    pix.toImage().save(getTempPath()+ "/qr.jpg");
+    pix.toImage().save(getTempPath() + "/" + fn + ".png");
+    pix.toImage().save(getTempPath() + "/" + fn + ".jpg");
     qrCodes.insert(filename);
-    qrCodes.insert(getTempPath()+ "/qr.png");
-    qrCodes.insert(getTempPath()+ "/qr.jpg");
+    qrCodes.insert(getTempPath() + "/" + fn + ".png");
+    qrCodes.insert(getTempPath() + "/" + fn + ".jpg");
     return filename;
 }
-
-#include <QPdfWriter>
 
 QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &logoUrl, const QString qrCodeFilename)
 {
@@ -741,9 +776,9 @@ void ESAAApp::action(QString qrCodeJSON)
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
     qrCodeJSON.remove("http://onelink.to/ichbinda?a=", Qt::CaseInsensitive);
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
-    if (lastActionDateTime.addSecs(60) > QDateTime::currentDateTime() && qrCodeJSON == lastActionJSON)
+    if (lastActionDateTime.addSecs(10) > QDateTime::currentDateTime() && qrCodeJSON == lastActionJSON)
     {
-        qDebug() << "der gleiche code wie vor max einer minute wird abgelehnt";
+        qDebug() << "der gleiche code wie vor max 10 Sekunden wird abgelehnt";
         return;
     }
     lastActionJSON = qrCodeJSON;
@@ -754,6 +789,21 @@ void ESAAApp::action(QString qrCodeJSON)
     if (actionID == 0)
     {
         emit showBadMessageSignal("Das ist leider kein \"IchBinDa!\"-QR-Code.");
+        return;
+    }
+    if (actionID == actionIDKontakttagebuch)
+    {
+        if (fstname() == "" || surname() == "" || emailAdress() == "")
+        {
+            showMessage("Bitte gib noch deine Kontaktdaten (Vorname, Name, E-Mail-Adresse) zum Austausch an. (Menü/Kontaktdaten bearbeiten)");
+            return;
+        }
+        QString otherEMail(data["ea"].toString());
+        QString otherFstname(data["fn"].toString());
+        QString otherSurname(data["sn"].toString());
+        showWaitMessage("Bitte einen Moment Geduld, die E-Mails werden versendet");
+        sendKontaktTagebuchEMails(otherFstname, otherSurname, otherEMail);
+        showMessage("Die Kontakttagebuch-E-Mails wurden versendet.");
         return;
     }
     if (actionID == actionIDCoronaKontaktdatenerfassung)
@@ -835,7 +885,14 @@ void ESAAApp::openUrlORPdf(const QString &urlOrPdf)
 
 QString ESAAApp::generateKontaktTagebuchQRCode()
 {
-
+    QJsonObject qr;
+    qr["ai"] = actionIDKontakttagebuch;
+    qr["fn"] = fstname();
+    qr["sn"] = surname();
+    qr["ea"] = emailAdress();
+    QByteArray qrCodeData(QJsonDocument(qr).toJson(QJsonDocument::Compact));
+    QString qrCodeFilename(generateQRcodeIntern(qrCodeData, "kontaktTagebuchQRCode"));
+    return qrCodeFilename;
 }
 
 QString ESAAApp::generateQRCode(const int qrCodeNumer,
@@ -876,7 +933,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     saveData();
     QJsonObject qr;
     qr["qn"] = qrCodeNumer;
-    qr["ai"] = 1;
+    qr["ai"] = actionIDCoronaKontaktdatenerfassung;
     qr["ln"] = li.facilityName;
     qr["id"] = li.locationId;
     qr["e"] = li.contactReceiveEmail;
@@ -913,7 +970,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["lunchMenueURL"] = lunchMenueURL;
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
-    QString qrCodeFilename(generateQRcodeIntern(shortQRCode));
+    QString qrCodeFilename(generateQRcodeIntern(shortQRCode, "qr"));
     generateA6Flyer(li.facilityName, li.logoUrl, qrCodeFilename);
     return qrCodeFilename;
 }

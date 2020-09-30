@@ -126,6 +126,9 @@ class ESAAApp: public QObject
     QString ibdTokenStoreURL;
     QString fileStoreURL;
 
+    void sendKontaktTagebuchEMails(const QString &otherFstname,
+                                   const QString &otherSurname,
+                                   const QString &otherEMail);
     void sendMail();
 
     struct SLocationInfo
@@ -145,10 +148,11 @@ class ESAAApp: public QObject
     QString dataFileName;
     void loadData();
     const int actionIDCoronaKontaktdatenerfassung = 1;
+    const int actionIDKontakttagebuch = 2;
     QString getTempPath();
     QString genTempFileName(const QString &extension);
     QString genUUID();
-    QString generateQRcodeIntern(const QString &code);
+    QString generateQRcodeIntern(const QString &code, const QString &fn);
 public:
     QString generateA6Flyer(const QString &facilityName,
                             const QString &logoUrl,

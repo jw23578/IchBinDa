@@ -225,6 +225,7 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
+include(src/androidExtensions/androidExtensions.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 

@@ -142,6 +142,11 @@ ApplicationWindow {
             id: myvisitspage
             onClose: showNewPage(myvisitspage, menuepage)
         }
+        ShowKontaktTagebuchQRCode
+        {
+            id: showKontaktTagebuchQRCode
+            onBack: showNewPage(showKontaktTagebuchQRCode, menuepage)
+        }
 
         MenuePage
         {
@@ -164,7 +169,11 @@ ApplicationWindow {
                 showNewPage(menuepage, firststart)
             }
             onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
-            onShowKontaktTagebuchQRCode: ESAA.showMessage("haben wir noch nicht")
+            onShowKontaktTagebuchQRCode:
+            {
+                showKontaktTagebuchQRCode.qrCodeFileName = qrKontaktTagebuchQRCodeFilename
+                showNewPage(menuepage, showKontaktTagebuchQRCode)
+            }
         }
         AgreePage
         {

@@ -32,5 +32,7 @@
         <file>QML/ShareButton.qml</file>
         <file>QML/MyVisitsPage.qml</file>
         <file>QML/TransparentCircleButton.qml</file>
+        <file>QML/ShowKontaktTagebuchQRCode.qml</file>
+        <file>QML/HelpOverlay.qml</file>
     </qresource>
 </RCC>
