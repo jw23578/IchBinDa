@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<QZXingFilter>("QZXing", 2, 3, "QZXingFilter");
     engine.addImageProvider(QLatin1String("QZXing"), new QZXingImageProvider());
     ESAAApp esaa(engine);
+    QImage logo;
+    esaa.fetchLogo("http://wienoebst.com/sprung.jpg", logo);
+    esaa.generateA4Flyer1("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png");
 //    esaa.generateA6Flyer("JensJensJens", "logourl", "/home/jw78/.local/share/IchBinDa78/temp/qr.png");
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

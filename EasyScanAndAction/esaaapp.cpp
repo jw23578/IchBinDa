@@ -743,12 +743,13 @@ QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &log
                    pdfPixelHeight * 100 / 3508,
                    pdfPixelWidth * 420 / 2481,
                    pdfPixelHeight * 420 / 3508);
+    painter.fillRect(logoRect, "white");
 
-    QRect behindLogo(0,
+    QRect behindCaption(logoRect.right(),
                      logoRect.top(),
                      pdfPixelWidth - logoRect.right(),
-                     logoRect.height());
-    painter.fillRect(behindLogo, "white");
+                     logoRect.height() / 4);
+    painter.fillRect(behindCaption, "white");
 
     painter.drawImage(logoRect, logo);
     QFont font = painter.font();
@@ -759,7 +760,7 @@ QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &log
     painter.setPen(pen);
     QFontMetrics fontMetrics(painter.fontMetrics());
     QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText(logoRect.right() + logoRect.width() / 6, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
+    painter.drawText(pdfPixelWidth * 634 / 2481, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
 
     QImage qr(qrCodeFilename);
     painter.drawImage(QRect(pdfPixelWidth * 1107 / 2481,
