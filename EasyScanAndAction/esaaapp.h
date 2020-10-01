@@ -156,11 +156,17 @@ class ESAAApp: public QObject
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,
-                            const QString &logoUrl,
-                            const QString qrCodeFilename);
+                            const QImage &logo,
+                            const QString qrCodeFilename,
+                            int number);
+    QString generateA5Flyer(const QString &facilityName,
+                            const QImage &logo,
+                            const QString qrCodeFilename,
+                            int number);
     QString generateA4Flyer1(const QString &facilityName,
                              const QImage &logo,
-                             const QString qrCodeFilename);
+                             const QString qrCodeFilename,
+                             int number);
 private:
 
 

@@ -684,65 +684,28 @@ void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
     target.loadFromData(networkReply->readAll());
 }
 
-QString ESAAApp::generateA6Flyer(const QString &facilityName, const QString &logoUrl, const QString qrCodeFilename)
+QString ESAAApp::generateA6Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
 {
-    QString a6Flyer(getTempPath() + "/a6flyer.pdf");
+    QString a6Flyer(getTempPath() + "/a6flyer " + QString::number(number) + ".pdf");
     QPdfWriter pdf(a6Flyer);
-    pdf.setPageOrientation(QPageLayout::Landscape);
-    QPageSize ps(QPageSize::A6);
-    pdf.setPageSize(ps);
-    QPainter painter(&pdf);
-    QRect r(painter.viewport());
-    int pdfPixelWidth(r.width());
-    int pdfPixelHeight(r.height());
-    QImage logo(":/images/logo.png");
-    int logoHeight(pdfPixelWidth / 6);
-    QFont font = painter.font();
-    font.setPixelSize(logoHeight / 3);
-    painter.setFont(font);
-    QPen pen = painter.pen();
-    pen.setColor(buttonColor());
-    painter.setPen(pen);
-    QFontMetrics fontMetrics(painter.fontMetrics());
-    QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText((pdfPixelWidth - nameRect.width()) / 2, nameRect.height(), facilityName);
-    painter.drawImage(QRect(0, nameRect.height(), pdfPixelWidth / 6, logoHeight), logo);
-    font.setPixelSize(logoHeight / 2);
-    painter.setFont(font);
-    fontMetrics = painter.fontMetrics();
-    QRect textRect(fontMetrics.boundingRect("SCANNEN UND"));
-    painter.drawText((pdfPixelWidth - textRect.width()) / 2, nameRect.height() + logoHeight - painter.fontInfo().pixelSize(), "SCANNEN UND");
-    painter.drawText((pdfPixelWidth - textRect.width()) / 2, nameRect.height() + logoHeight, "EINCHECKEN");
-    QImage qrCode(qrCodeFilename);
-    int qrCodeWidth(pdfPixelWidth / 3);
-    int qrCodeHeight(pdfPixelWidth / 3);
-    painter.drawImage(QRect(pdfPixelWidth - qrCodeWidth, pdfPixelHeight - qrCodeHeight,
-                            qrCodeWidth, qrCodeHeight), qrCode);
-    painter.end();
-    return a6Flyer;
-}
-
-QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &logo, const QString qrCodeFilename)
-{
-    QString a4Flyer(getTempPath() + "/a4flyer1.pdf");
-    QPdfWriter pdf(a4Flyer);
     QPageLayout layout(pdf.pageLayout());
-    layout.setOrientation(QPageLayout::Portrait);
+    layout.setOrientation(QPageLayout::Landscape);
     layout.setMode(QPageLayout::FullPageMode);
-    QPageSize ps(QPageSize::A4);
+    QPageSize ps(QPageSize::A6);
     layout.setPageSize(ps);
     pdf.setPageLayout(layout);
     QPainter painter(&pdf);
     QRect r(painter.viewport());
     int pdfPixelWidth(r.width());
     int pdfPixelHeight(r.height());
-    QImage background(":/images/A4-So-funktioniert-es-1.png");
+    QImage background(QString(":/images/A6-So-funktioniert-es-") + QString::number(number) + ".png");
     painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
-
-    QRect logoRect(pdfPixelWidth * 156 / 2481,
-                   pdfPixelHeight * 100 / 3508,
-                   pdfPixelWidth * 420 / 2481,
-                   pdfPixelHeight * 420 / 3508);
+    int pngPixelWidth(1653);
+    int pngPixelHeight(1181);
+    QRect logoRect(pdfPixelWidth * 67 / pngPixelWidth,
+                   pdfPixelHeight * 67 / pngPixelHeight,
+                   pdfPixelWidth * 290 / pngPixelWidth,
+                   pdfPixelHeight * 290 / pngPixelHeight);
     painter.fillRect(logoRect, "white");
 
     QRect behindCaption(logoRect.right(),
@@ -760,13 +723,128 @@ QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &log
     painter.setPen(pen);
     QFontMetrics fontMetrics(painter.fontMetrics());
     QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText(pdfPixelWidth * 634 / 2481, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
+    painter.drawText(pdfPixelWidth * 366 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
 
     QImage qr(qrCodeFilename);
-    painter.drawImage(QRect(pdfPixelWidth * 1107 / 2481,
-                            pdfPixelHeight * 924 / 3508,
-                            pdfPixelWidth * 1122 / 2481,
-                            pdfPixelHeight * 1122 / 3508), qr);
+    QRect qrCodeRect(pdfPixelWidth * 1026 / pngPixelWidth,
+                     pdfPixelHeight * 530 / pngPixelHeight,
+                     pdfPixelWidth * 540 / pngPixelWidth,
+                     pdfPixelHeight * 540 / pngPixelHeight);
+
+    painter.drawImage(qrCodeRect, qr);
+
+    painter.end();
+    return a6Flyer;
+}
+
+QString ESAAApp::generateA5Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
+{
+    QString a5Flyer(getTempPath() + "/a5flyer " + QString::number(number) + ".pdf");
+    QPdfWriter pdf(a5Flyer);
+    QPageLayout layout(pdf.pageLayout());
+    layout.setOrientation(QPageLayout::Landscape);
+    layout.setMode(QPageLayout::FullPageMode);
+    QPageSize ps(QPageSize::A5);
+    layout.setPageSize(ps);
+    pdf.setPageLayout(layout);
+    QPainter painter(&pdf);
+    QRect r(painter.viewport());
+    int pdfPixelWidth(r.width());
+    int pdfPixelHeight(r.height());
+    QImage background(QString(":/images/A5-So-funktioniert-es-") + QString::number(number) + ".png");
+    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
+    int pngPixelWidth(2480);
+    int pngPixelHeight(1653);
+    QRect logoRect(pdfPixelWidth * 105 / pngPixelWidth,
+                   pdfPixelHeight * 100 / pngPixelHeight,
+                   pdfPixelWidth * 420 / pngPixelWidth,
+                   pdfPixelHeight * 420 / pngPixelHeight);
+    painter.fillRect(logoRect, "white");
+
+    QRect behindCaption(logoRect.right(),
+                     logoRect.top(),
+                     pdfPixelWidth - logoRect.right(),
+                     logoRect.height() / 4);
+    painter.fillRect(behindCaption, "white");
+
+    painter.drawImage(logoRect, logo);
+    QFont font = painter.font();
+    font.setPixelSize(logoRect.height() / 4);
+    painter.setFont(font);
+    QPen pen = painter.pen();
+    pen.setColor("black");
+    painter.setPen(pen);
+    QFontMetrics fontMetrics(painter.fontMetrics());
+    QRect nameRect(fontMetrics.boundingRect(facilityName));
+    painter.drawText(pdfPixelWidth * 585 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
+
+    QImage qr(qrCodeFilename);
+    QRect qrCodeRect(pdfPixelWidth * 1475 / pngPixelWidth,
+                     pdfPixelHeight * 690 / pngPixelHeight,
+                     pdfPixelWidth * 845 / pngPixelWidth,
+                     pdfPixelHeight * 845 / pngPixelHeight);
+
+    painter.drawImage(qrCodeRect, qr);
+
+    painter.end();
+    return a5Flyer;
+}
+
+QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
+{
+    QString a4Flyer(getTempPath() + "/a4flyer" + QString::number(number) + ".pdf");
+    QPdfWriter pdf(a4Flyer);
+    QPageLayout layout(pdf.pageLayout());
+    layout.setOrientation(QPageLayout::Portrait);
+    layout.setMode(QPageLayout::FullPageMode);
+    QPageSize ps(QPageSize::A4);
+    layout.setPageSize(ps);
+    pdf.setPageLayout(layout);
+    QPainter painter(&pdf);
+    QRect r(painter.viewport());
+    int pdfPixelWidth(r.width());
+    int pdfPixelHeight(r.height());
+    QImage background(QString(":/images/A4-So-funktioniert-es-") + QString::number(number) + ".png");
+    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
+    int pngPixelWidth(2481);
+    int pngPixelHeight(3508);
+
+    QRect logoRect(pdfPixelWidth * 156 / pngPixelWidth,
+                   pdfPixelHeight * 100 / pngPixelHeight,
+                   pdfPixelWidth * 420 / pngPixelWidth,
+                   pdfPixelHeight * 420 / pngPixelHeight);
+    painter.fillRect(logoRect, "white");
+
+    QRect behindCaption(logoRect.right(),
+                     logoRect.top(),
+                     pdfPixelWidth - logoRect.right(),
+                     logoRect.height() / 4);
+    painter.fillRect(behindCaption, "white");
+
+    painter.drawImage(logoRect, logo);
+    QFont font = painter.font();
+    font.setPixelSize(logoRect.height() / 4);
+    painter.setFont(font);
+    QPen pen = painter.pen();
+    pen.setColor("black");
+    painter.setPen(pen);
+    QFontMetrics fontMetrics(painter.fontMetrics());
+    QRect nameRect(fontMetrics.boundingRect(facilityName));
+    painter.drawText(pdfPixelWidth * 634 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
+
+    QImage qr(qrCodeFilename);
+    QRect qrCodeRect(pdfPixelWidth * 1107 / pngPixelWidth,
+                     pdfPixelHeight * 924 / pngPixelHeight,
+                     pdfPixelWidth * 1122 / pngPixelWidth,
+                     pdfPixelHeight * 1122 / pngPixelHeight);
+    if (number == 3)
+    {
+        qrCodeRect = QRect(pdfPixelWidth * 684 / pngPixelWidth,
+                           pdfPixelHeight * 1008 / pngPixelHeight,
+                           pdfPixelWidth * 1122 / pngPixelWidth,
+                           pdfPixelHeight * 1122 / pngPixelHeight);
+    }
+    painter.drawImage(qrCodeRect, qr);
     painter.end();
     return a4Flyer;
 }
@@ -1030,7 +1108,6 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
     QString qrCodeFilename(generateQRcodeIntern(shortQRCode, "qr"));
-    generateA6Flyer(li.facilityName, li.logoUrl, qrCodeFilename);
     return qrCodeFilename;
 }
 
@@ -1116,9 +1193,25 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
 
     QImage logo;
     fetchLogo(logoUrl, logo);
-    SimpleMail::MimeAttachment *attachmentA4Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename))));
+    SimpleMail::MimeAttachment *attachmentA4Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 1))));
     attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
     message->addPart(attachmentA4Flyer1);
+
+    SimpleMail::MimeAttachment *attachmentA4Flyer2(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 2))));
+    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentA4Flyer2);
+
+    SimpleMail::MimeAttachment *attachmentA4Flyer3(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 3))));
+    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentA4Flyer3);
+
+    SimpleMail::MimeAttachment *attachmentA6Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA6Flyer(facilityName, logo, pngQRCodeFilename, 1))));
+    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentA6Flyer1);
+
+    SimpleMail::MimeAttachment *attachmentA5Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA5Flyer(facilityName, logo, pngQRCodeFilename, 1))));
+    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
+    message->addPart(attachmentA5Flyer1);
 
     emailSender.addMailToSend(message, true);
     postQRCodeData(facilityIdToPost, qrCodeDataToPost);

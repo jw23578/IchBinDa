@@ -23,10 +23,13 @@ int main(int argc, char *argv[])
     qmlRegisterType<QZXingFilter>("QZXing", 2, 3, "QZXingFilter");
     engine.addImageProvider(QLatin1String("QZXing"), new QZXingImageProvider());
     ESAAApp esaa(engine);
-    QImage logo;
-    esaa.fetchLogo("http://wienoebst.com/sprung.jpg", logo);
-    esaa.generateA4Flyer1("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png");
-//    esaa.generateA6Flyer("JensJensJens", "logourl", "/home/jw78/.local/share/IchBinDa78/temp/qr.png");
+//    QImage logo;
+//    esaa.fetchLogo("http://wienoebst.com/sprung.jpg", logo);
+//    esaa.generateA4Flyer1("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png", 1);
+//    esaa.generateA4Flyer1("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png", 2);
+//    esaa.generateA4Flyer1("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png", 3);
+//    esaa.generateA6Flyer("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png", 1);
+//    esaa.generateA5Flyer("JensJensJens", logo, "/home/jw78/.local/share/IchBinDa78/temp/qr.png", 1);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
