@@ -457,7 +457,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
-    mobileExtension(e, "ichbinda78.jw78.de/MyIntentCaller"),
+    MobileExtensions(e),
     networkAccessManager(this),
     emailSender(this),
     internetTester(this),
@@ -648,7 +648,7 @@ QString ESAAApp::genTempFileName(const QString &extension)
     return getTempPath() + "/" + genUUID() + extension;
 }
 
-QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn)
+QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList)
 {
     QString filename(getTempPath() + "/" + fn + ".svg");
     qDebug() << filename;
@@ -1028,7 +1028,7 @@ QString ESAAApp::generateKontaktTagebuchQRCode()
     qr["sn"] = surname();
     qr["ea"] = emailAdress();
     QByteArray qrCodeData(QJsonDocument(qr).toJson(QJsonDocument::Compact));
-    QString qrCodeFilename(generateQRcodeIntern(qrCodeData, "kontaktTagebuchQRCode"));
+    QString qrCodeFilename(generateQRcodeIntern(qrCodeData, "kontaktTagebuchQRCode", false));
     return qrCodeFilename;
 }
 
@@ -1107,7 +1107,8 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["lunchMenueURL"] = lunchMenueURL;
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
-    QString qrCodeFilename(generateQRcodeIntern(shortQRCode, "qr"));
+    qrCodes.clear();
+    QString qrCodeFilename(generateQRcodeIntern(shortQRCode, "qr", true));
     return qrCodeFilename;
 }
 
@@ -1224,7 +1225,8 @@ void ESAAApp::recommend()
     content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen:\n\n(PlayStore) ";
     content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162\n\n";
     content += "Besuch uns auf www.app-ichbinda.de für mehr Informationen";
-    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
+    MobileExtensions.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
+//    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
 std::set<std::string> ESAAApp::invalidEMailDomains;

@@ -7,7 +7,6 @@
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
 #include "emailsender.h"
-#include "src/jwmobileext.h"
 #include <set>
 #include <QNetworkAccessManager>
 #include "internettester.h"
@@ -25,12 +24,13 @@
 #include <QJsonObject>
 #include "visit.h"
 #include "jwObjectListModel.h"
+#include "JW78MobileExtensions/mobileextensions.h"
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
     QString getWriteablePath();
-    jw::mobileext mobileExtension;
+    MobileExtensions MobileExtensions;
     QNetworkAccessManager networkAccessManager;
     EMailSender emailSender;
     InternetTester internetTester;
@@ -152,7 +152,7 @@ class ESAAApp: public QObject
     QString getTempPath();
     QString genTempFileName(const QString &extension);
     QString genUUID();
-    QString generateQRcodeIntern(const QString &code, const QString &fn);
+    QString generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList);
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,

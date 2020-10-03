@@ -25,7 +25,6 @@ SOURCES += \
     jwProxyObject.cpp \
     persistentmap.cpp \
     qrcodestore.cpp \
-    src/jwmobileext.cpp \
     visit.cpp \
 zint-master/backend/2of5.c \
 zint-master/backend/auspost.c \
@@ -64,13 +63,11 @@ HEADERS += \
     emailsender.h \
     esaaapp.h \
     internettester.h \
-    ios/ios_functions.h \
     jwObjectListModel.h \
     jwProxyObject.h \
     persistentmap.h \
     qrcodestore.h \
     qtcoremacros78.h \
-    src/jwmobileext.h \
     visit.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
@@ -131,8 +128,6 @@ ios{
     DEFINES += BOTAN_TARGET_OS_IS_IOS
     CONFIG += device
     QMAKE_INFO_PLIST = ios/Info.plist
-    OBJECTIVE_SOURCES += ios/ios_functions.mm
-#    OBJECTIVE_SOURCES += ios/GymPoolAppDelegate.mm
     ios_icon.files = $$files(ios/icons/*.jpg)
     QMAKE_ASSET_CATALOGS += ios/Images.xcassets
     QMAKE_ASSET_CATALOGS_APP_ICON = AppIcon
@@ -207,25 +202,17 @@ DISTFILES += \
     ios/Images.xcassets/AppIcon.appiconset/Contents.json \
     ios/Images.xcassets/Contents.json \
     ios/Images.xcassets/appstore.png \
-    ios/Images.xcassets/playstore.png \
-    ios/ios_functions.mm \
-    src/ichbinda/jw78/de/JWAppActivity.java \
-    src/ichbinda/jw78/de/JWAppService.java \
-    src/ichbinda/jw78/de/JWJobService.java \
-    src/ichbinda/jw78/de/MyIntentCaller.java
+    ios/Images.xcassets/playstore.png
 
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-    ANDROID_JAVA_SOURCES.path = /src/ichbinda/jw78/de
-    ANDROID_JAVA_SOURCES.files = $$files($$PWD/src/ichbinda/jw78/de/*.java)
-    INSTALLS += ANDROID_JAVA_SOURCES
 }
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
-include(src/androidExtensions/androidExtensions.pri)
+include(JW78MobileExtensions/JW78MobileExtensions.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 
