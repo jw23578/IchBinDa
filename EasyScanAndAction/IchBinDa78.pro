@@ -21,8 +21,6 @@ SOURCES += \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
-    jwObjectListModel.cpp \
-    jwProxyObject.cpp \
     persistentmap.cpp \
     qrcodestore.cpp \
     visit.cpp \
@@ -63,11 +61,8 @@ HEADERS += \
     emailsender.h \
     esaaapp.h \
     internettester.h \
-    jwObjectListModel.h \
-    jwProxyObject.h \
     persistentmap.h \
     qrcodestore.h \
-    qtcoremacros78.h \
     visit.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
@@ -213,6 +208,7 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
 include(JW78MobileExtensions/JW78MobileExtensions.pri)
+include(JW78QTLib/JW78QTLib.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 

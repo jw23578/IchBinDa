@@ -138,6 +138,9 @@ void ESAAApp::sendMail()
             qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
             networkReply->deleteLater();// Don't forget to delete it
         });
+        Visit *newVisit(new Visit);
+        *newVisit = lastVisit;
+        allVisits.add(newVisit);
     }
     saveVisit(lastVisit.begin(), lastVisit.end());
     if (lastVisit.end().isValid())
@@ -457,7 +460,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
-    MobileExtensions(e),
+    mobileExtensions(e),
     networkAccessManager(this),
     emailSender(this),
     internetTester(this),
@@ -465,6 +468,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit")
 {
+    allVisits.reverse = true;
     if (getWriteablePath().contains("/home/jw78"))
     {
         setIsDevelop(true);
@@ -537,6 +541,11 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         file.readLine(buf, 1000);
         fileStoreURL = QString(buf).trimmed();
     }
+}
+
+QString ESAAApp::formatDate(const QDateTime &dt)
+{
+    return dt.date().toString();
 }
 
 QString ESAAApp::formatTime(const QDateTime &dt)
@@ -1225,7 +1234,7 @@ void ESAAApp::recommend()
     content += appName() + " App um meine Kontaktdaten im Restaurant, Frisör und Co abzugeben. Hier kannst du sie herunterladen:\n\n(PlayStore) ";
     content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162\n\n";
     content += "Besuch uns auf www.app-ichbinda.de für mehr Informationen";
-    MobileExtensions.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
+    mobileExtensions.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 //    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
@@ -1341,6 +1350,10 @@ void ESAAApp::loadAllVisits()
                 Visit *aVisit(new Visit);
                 QString fn(visitObject["facilityName"].toString());
                 aVisit->setFacilityName(fn);
+                aVisit->setLogoUrl(visitObject["logoUrl"].toString());
+                QString beginStr(visitObject["begin"].toString());
+                QDateTime begin(QDateTime::fromString(beginStr, Qt::ISODate));
+                aVisit->setBegin(begin);
                 allVisits.add(aVisit);
             }
         }

@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QColor>
 #include <QDateTime>
-#include "jwProxyObject.h"
+#include "JW78QTLib/jw78ProxyObject.h"
 
 
-class Visit: public jw::ProxyObject
+class Visit: public jw78::ProxyObject
 {
     Q_OBJECT
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
@@ -47,6 +47,7 @@ class Visit: public jw::ProxyObject
 public:
     Visit();
     QString ibdToken;
+    void operator=(const Visit &other);
 };
 
 #endif // VISIT_H

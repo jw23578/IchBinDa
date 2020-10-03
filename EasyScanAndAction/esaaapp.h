@@ -2,7 +2,7 @@
 #define ESAAAPP_H
 
 #include <QObject>
-#include "qtcoremacros78.h"
+#include "JW78QTLib/jw78qtmacros.h"
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
@@ -23,14 +23,14 @@
 #endif
 #include <QJsonObject>
 #include "visit.h"
-#include "jwObjectListModel.h"
+#include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
     QString getWriteablePath();
-    MobileExtensions MobileExtensions;
+    MobileExtensions mobileExtensions;
     QNetworkAccessManager networkAccessManager;
     EMailSender emailSender;
     InternetTester internetTester;
@@ -38,7 +38,7 @@ class ESAAApp: public QObject
     PersistentMap publicKeyMap;
     Visit currentQRCodeData;
     Visit lastVisit;
-    jw::ObjectListModel allVisits;
+    jw78::ObjectListModel allVisits;
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     // Einstellungen    
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
@@ -185,6 +185,7 @@ private:
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
+    Q_INVOKABLE QString formatDate(QDateTime const &dt);
     Q_INVOKABLE QString formatTime(QDateTime const &dt);
     Q_INVOKABLE bool keyNumberOK(int number);
     Q_INVOKABLE void clearYesQuestions();

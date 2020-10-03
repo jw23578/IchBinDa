@@ -1,7 +1,7 @@
 #ifndef INTERNETTESTER_H
 #define INTERNETTESTER_H
 
-#include "qtcoremacros78.h"
+#include "JW78QTLib/jw78qtmacros.h"
 #include <QTcpSocket>
 #include <QTimer>
 

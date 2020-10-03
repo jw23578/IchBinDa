@@ -74,7 +74,7 @@ ESAAPage
                 text: qsTr("Meine<br>Besuche<br>") + AllVisits.count
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
                 width: parent.buttonSize
-                visible: false // AllVisits.count > 0
+                visible: AllVisits.count > 0
                 onClicked: myVisitsClicked()
             }
 
