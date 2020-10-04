@@ -38,6 +38,7 @@ class ESAAApp: public QObject
     PersistentMap publicKeyMap;
     Visit currentQRCodeData;
     Visit lastVisit;
+    std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     // Einstellungen    

@@ -76,18 +76,18 @@ ESAAPage
             ESAAText
             {
                 anchors.top: parent.top
-                anchors.topMargin: ESAA.spacing / 2
                 anchors.left: logoItem.right
                 anchors.leftMargin: ESAA.spacing
-                text: Visit.facilityName
-                font.pixelSize: ESAA.fontTextPixelsize * 1.3
+                text: Visit.count + ". Besuch bei: " + Visit.facilityName
+                font.pixelSize: ESAA.fontTextPixelsize * 1.1
             }
             ESAAText
             {
                 anchors.left: logoItem.right
                 anchors.leftMargin: ESAA.spacing
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: ESAA.spacing / 2
+                anchors.bottomMargin: ESAA.spacing / 4
+                font.pixelSize: ESAA.fontTextPixelsize * 0.9
                 text: ESAA.formatDate(Visit.begin) + " " + ESAA.formatTime(Visit.begin)
             }
 

@@ -140,6 +140,8 @@ void ESAAApp::sendMail()
         });
         Visit *newVisit(new Visit);
         *newVisit = lastVisit;
+        facilityName2VisitCount[newVisit->facilityName()] += 1;
+        newVisit->setCount(facilityName2VisitCount[newVisit->facilityName()]);
         allVisits.add(newVisit);
     }
     saveVisit(lastVisit.begin(), lastVisit.end());
@@ -442,7 +444,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 {
     if (qrCodeNumber == 0 || qrCodeNumber == 9999)
     {
-/*        QFile publicKeyFile(":/keys/publicKey2020-07-26.txt");
+        /*        QFile publicKeyFile(":/keys/publicKey2020-07-26.txt");
         publicKeyFile.open(QIODevice::ReadOnly);
         QByteArray publicKeyData(publicKeyFile.readAll());
         Botan::DataSource_Memory datasource(publicKeyData.toStdString());
@@ -718,9 +720,9 @@ QString ESAAApp::generateA6Flyer(const QString &facilityName, const QImage &logo
     painter.fillRect(logoRect, "white");
 
     QRect behindCaption(logoRect.right(),
-                     logoRect.top(),
-                     pdfPixelWidth - logoRect.right(),
-                     logoRect.height() / 4);
+                        logoRect.top(),
+                        pdfPixelWidth - logoRect.right(),
+                        logoRect.height() / 4);
     painter.fillRect(behindCaption, "white");
 
     painter.drawImage(logoRect, logo);
@@ -771,9 +773,9 @@ QString ESAAApp::generateA5Flyer(const QString &facilityName, const QImage &logo
     painter.fillRect(logoRect, "white");
 
     QRect behindCaption(logoRect.right(),
-                     logoRect.top(),
-                     pdfPixelWidth - logoRect.right(),
-                     logoRect.height() / 4);
+                        logoRect.top(),
+                        pdfPixelWidth - logoRect.right(),
+                        logoRect.height() / 4);
     painter.fillRect(behindCaption, "white");
 
     painter.drawImage(logoRect, logo);
@@ -825,9 +827,9 @@ QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &log
     painter.fillRect(logoRect, "white");
 
     QRect behindCaption(logoRect.right(),
-                     logoRect.top(),
-                     pdfPixelWidth - logoRect.right(),
-                     logoRect.height() / 4);
+                        logoRect.top(),
+                        pdfPixelWidth - logoRect.right(),
+                        logoRect.height() / 4);
     painter.fillRect(behindCaption, "white");
 
     painter.drawImage(logoRect, logo);
@@ -1235,7 +1237,7 @@ void ESAAApp::recommend()
     content += "https://play.google.com/store/apps/details?id=ichbinda78.jw78.de\n\noder\n\n(AppStore) https://apps.apple.com/us/app/id1528926162\n\n";
     content += "Besuch uns auf www.app-ichbinda.de für mehr Informationen";
     mobileExtensions.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
-//    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
+    //    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
 std::set<std::string> ESAAApp::invalidEMailDomains;
@@ -1349,12 +1351,17 @@ void ESAAApp::loadAllVisits()
                 QJsonObject visitObject(visitArray[v].toObject());
                 Visit *aVisit(new Visit);
                 QString fn(visitObject["facilityName"].toString());
-                aVisit->setFacilityName(fn);
-                aVisit->setLogoUrl(visitObject["logoUrl"].toString());
                 QString beginStr(visitObject["begin"].toString());
                 QDateTime begin(QDateTime::fromString(beginStr, Qt::ISODate));
-                aVisit->setBegin(begin);
-                allVisits.add(aVisit);
+                if (fn.size() && begin.isValid())
+                {
+                    facilityName2VisitCount[fn] += 1;
+                    aVisit->setCount(facilityName2VisitCount[fn]);
+                    aVisit->setFacilityName(fn);
+                    aVisit->setLogoUrl(visitObject["logoUrl"].toString());
+                    aVisit->setBegin(begin);
+                    allVisits.add(aVisit);
+                }
             }
         }
     }
