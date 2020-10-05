@@ -1108,8 +1108,9 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
     QByteArray shortQRCode;
-    shortQRCode += superCodePrefix.toLatin1();
-    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact).toBase64();
+//    shortQRCode += superCodePrefix.toLatin1();
+//    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact).toBase64();
+    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact);
     for (size_t i(0); i < yesQuestions.size(); ++i)
     {
         qr[QString("yesQuestion") + QString::number(i)] = yesQuestions[i];
