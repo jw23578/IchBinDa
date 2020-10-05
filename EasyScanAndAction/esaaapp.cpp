@@ -140,9 +140,12 @@ void ESAAApp::sendMail()
         });
         Visit *newVisit(new Visit);
         *newVisit = lastVisit;
-        facilityName2VisitCount[newVisit->facilityName()] += 1;
-        newVisit->setCount(facilityName2VisitCount[newVisit->facilityName()]);
-        allVisits.add(newVisit);
+        if (!lastVisitOfFacility[newVisit->facilityName()].isValid() || lastVisitOfFacility[newVisit->facilityName()].addSecs(60 * 60 * 6) < newVisit->begin())
+        {
+            facilityName2VisitCount[newVisit->facilityName()] += 1;
+            newVisit->setCount(facilityName2VisitCount[newVisit->facilityName()]);
+            allVisits.add(newVisit);
+        }
     }
     saveVisit(lastVisit.begin(), lastVisit.end());
     if (lastVisit.end().isValid())
@@ -1365,8 +1368,9 @@ void ESAAApp::loadAllVisits()
                 QString fn(visitObject["facilityName"].toString());
                 QString beginStr(visitObject["begin"].toString());
                 QDateTime begin(QDateTime::fromString(beginStr, Qt::ISODate));
-                if (fn.size() && begin.isValid())
+                if (fn.size() && begin.isValid() && (!lastVisitOfFacility[fn].isValid() || lastVisitOfFacility[fn].addSecs(60 * 60 * 6) < begin))
                 {
+                    lastVisitOfFacility[fn] = begin;
                     facilityName2VisitCount[fn] += 1;
                     aVisit->setCount(facilityName2VisitCount[fn]);
                     aVisit->setFacilityName(fn);

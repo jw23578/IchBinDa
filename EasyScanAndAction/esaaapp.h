@@ -38,6 +38,7 @@ class ESAAApp: public QObject
     PersistentMap publicKeyMap;
     Visit currentQRCodeData;
     Visit lastVisit;
+    std::map<QString, QDateTime> lastVisitOfFacility;
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
