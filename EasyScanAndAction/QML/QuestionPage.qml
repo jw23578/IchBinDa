@@ -79,6 +79,60 @@ ESAAPage
             }
             ESAALineInputWithCaption
             {
+                caption: qsTr("Tischnummer")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: tableNumber
+                visible: !meineDaten && ESAA.tableNumberWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Wer wird besucht")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: whoIsVisited
+                visible: !meineDaten && ESAA.whoIsVisitedWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Station")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: station
+                visible: !meineDaten && ESAA.stationWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Raumnummer")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: room
+                visible: !meineDaten && ESAA.roomWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Block")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: block
+                visible: !meineDaten && ESAA.blockWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
+                caption: qsTr("Sitzplatz")
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: seatNumber
+                visible: !meineDaten && ESAA.seatNumberWanted
+                color: textColor
+            }
+            ESAALineInputWithCaption
+            {
                 caption: qsTr("Vorname")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -159,60 +213,6 @@ ESAAPage
                 text: ESAA.emailAdress
                 visible: meineDaten || ESAA.emailWanted
                 inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Tischnummer")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: tableNumber
-                visible: !meineDaten && ESAA.tableNumberWanted
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Wer wird besucht")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: whoIsVisited
-                visible: !meineDaten && ESAA.whoIsVisitedWanted
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Station")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: station
-                visible: !meineDaten && ESAA.stationWanted
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Raumnummer")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: room
-                visible: !meineDaten && ESAA.roomWanted
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Block")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: block
-                visible: !meineDaten && ESAA.blockWanted
-                color: textColor
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Sitzplatz")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: seatNumber
-                visible: !meineDaten && ESAA.seatNumberWanted
                 color: textColor
             }
             Repeater
