@@ -5,6 +5,7 @@ import QtQuick.Window 2.15
 
 Button
 {
+    focusPolicy: Qt.NoFocus
     width: ESAA.screenWidth / 4
     height: width
     id: control

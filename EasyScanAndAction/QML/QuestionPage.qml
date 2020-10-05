@@ -303,8 +303,9 @@ ESAAPage
             {
                 if (fstname.text == "")
                 {
-                    fstname.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deinen Vornamen ein"))
+                    theFlick.ensureVisible(fstname)
+                    fstname.forceActiveFocus()
                     return;
                 }
                 ESAA.fstname = fstname.text
@@ -315,8 +316,9 @@ ESAAPage
             {
                 if (surname.text == "")
                 {
-                    surname.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deinen Nachnamen ein"))
+                    theFlick.ensureVisible(surname)
+                    surname.forceActiveFocus()
                     return;
                 }
                 ESAA.surname = surname.text
@@ -327,8 +329,9 @@ ESAAPage
             {
                 if (street.text == "")
                 {
-                    street.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deine Straße ein"))
+                    theFlick.ensureVisible(street)
+                    street.forceActiveFocus()
                     return;
                 }
                 ESAA.street = street.text
@@ -339,8 +342,9 @@ ESAAPage
             {
                 if (housenumber.text == "")
                 {
-                    housenumber.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deine Hausnummer ein"))
+                    theFlick.ensureVisible(housenumber)
+                    housenumber.forceActiveFocus()
                     return;
                 }
                 ESAA.housenumber = housenumber.text
@@ -351,8 +355,9 @@ ESAAPage
             {
                 if (zip.text == "")
                 {
-                    zip.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deine Postleitzahl ein"))
+                    theFlick.ensureVisible(zip)
+                    zip.forceActiveFocus()
                     return;
                 }
                 ESAA.addData2Send(qsTr("Postleitzahl"), zip.text)
@@ -363,8 +368,9 @@ ESAAPage
             {
                 if (location.text == "")
                 {
-                    location.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deinen Ort ein"))
+                    theFlick.ensureVisible(location)
+                    location.forceActiveFocus()
                     return;
                 }
                 ESAA.addData2Send(qsTr("Ort"), location.text)
@@ -375,8 +381,9 @@ ESAAPage
             {
                 if (emailAdress.displayText == "")
                 {
-                    emailAdress.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deine E-Mail-Adresse ein"))
+                    theFlick.ensureVisible(emailAdress)
+                    emailAdress.forceActiveFocus()
                     return;
                 }
                 ESAA.emailAdress = emailAdress.displayText
@@ -387,8 +394,9 @@ ESAAPage
             {
                 if (mobile.displayText == "")
                 {
-                    mobile.forceActiveFocus()
                     ESAA.showMessage(qsTr("Bitte gib noch deine Handynummer ein"))
+                    theFlick.ensureVisible(mobile)
+                    mobile.forceActiveFocus()
                     return;
                 }
                 ESAA.addData2Send(qsTr("Handynummer"), mobile.displayText)
@@ -399,9 +407,9 @@ ESAAPage
             {
                 if (tableNumber.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch die Tischnummer ein"))
                     tableNumber.forceActiveFocus()
                     theFlick.ensureVisible(tableNumber)
-                    ESAA.showMessage(qsTr("Bitte gib noch die Tischnummer ein"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Tischnummer"), tableNumber.displayText)
@@ -411,9 +419,9 @@ ESAAPage
             {
                 if (whoIsVisited.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch ein wen du besuchst"))
                     whoIsVisited.forceActiveFocus()
                     theFlick.ensureVisible(whoIsVisited)
-                    ESAA.showMessage(qsTr("Bitte gib noch ein wen du besuchst"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Besucht wurde"), whoIsVisited.displayText)
@@ -423,9 +431,9 @@ ESAAPage
             {
                 if (station.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch die Station ein"))
                     station.forceActiveFocus()
                     theFlick.ensureVisible(station)
-                    ESAA.showMessage(qsTr("Bitte gib noch die Station ein"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Station"), station.displayText)
@@ -435,9 +443,9 @@ ESAAPage
             {
                 if (room.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch die Raumnummer ein"))
                     room.forceActiveFocus()
                     theFlick.ensureVisible(room)
-                    ESAA.showMessage(qsTr("Bitte gib noch die Raumnummer ein"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Raumnummer"), room.displayText)
@@ -447,9 +455,9 @@ ESAAPage
             {
                 if (block.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch die Blocknummer ein"))
                     block.forceActiveFocus()
                     theFlick.ensureVisible(block)
-                    ESAA.showMessage(qsTr("Bitte gib noch die Blocknummer ein"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Blocknummer"), block.displayText)
@@ -459,9 +467,9 @@ ESAAPage
             {
                 if (seatNumber.displayText == "")
                 {
+                    ESAA.showMessage(qsTr("Bitte gib noch die Sitznummer ein"))
                     seatNumber.forceActiveFocus()
                     theFlick.ensureVisible(seatNumber)
-                    ESAA.showMessage(qsTr("Bitte gib noch die Sitznummer ein"))
                     return;
                 }
                 ESAA.addData2Send(qsTr("Sitznummer"), seatNumber.displayText)

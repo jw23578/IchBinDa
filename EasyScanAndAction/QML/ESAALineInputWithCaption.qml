@@ -1,6 +1,6 @@
 import QtQuick 2.15
 
-Item
+FocusScope
 {
     id: theItem
     property alias color: input.color
@@ -14,10 +14,15 @@ Item
     property alias colorEdit: input.colorEdit
     property alias helpText: input.helpText
     signal helpClicked(string ht)
+    onActiveFocusChanged:
+    {
+        console.log("hello focus: " + activeFocus)
+    }
 
     ESAATextInput
     {
         id: input
+        focus: true
         width: parent.width
         onHelpClicked: theItem.helpClicked(ht)
     }
