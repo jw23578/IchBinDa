@@ -921,8 +921,12 @@ void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
 
 void ESAAApp::action(QString qrCodeJSON)
 {
+    if (!qrCodeJSON.size())
+    {
+        return;
+    }
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
-    qrCodeJSON.remove("http://onelink.to/ichbinda?a=", Qt::CaseInsensitive);
+    qrCodeJSON.remove(superCodePrefix, Qt::CaseInsensitive);
     qDebug() << "qrCodeJSON: " << qrCodeJSON;
     if (lastActionDateTime.addSecs(10) > QDateTime::currentDateTime() && qrCodeJSON == lastActionJSON)
     {
@@ -931,7 +935,12 @@ void ESAAApp::action(QString qrCodeJSON)
     }
     lastActionJSON = qrCodeJSON;
     lastActionDateTime = QDateTime::currentDateTime();
-    QJsonDocument qrJSON(QJsonDocument::fromJson(qrCodeJSON.toUtf8()));
+    QByteArray possibleBase64(qrCodeJSON.toUtf8());
+    if (qrCodeJSON[0] != '{')
+    {
+        possibleBase64 = QByteArray::fromBase64(possibleBase64);
+    }
+    QJsonDocument qrJSON(QJsonDocument::fromJson(possibleBase64));
     QJsonObject data(qrJSON.object());
     int actionID(data["ai"].toInt());
     if (actionID == 0)
@@ -1098,7 +1107,9 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["color"] = li.color.name();
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
-    QByteArray shortQRCode(QJsonDocument(qr).toJson(QJsonDocument::Compact));
+    QByteArray shortQRCode;
+    shortQRCode += superCodePrefix.toLatin1();
+    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact).toBase64();
     for (size_t i(0); i < yesQuestions.size(); ++i)
     {
         qr[QString("yesQuestion") + QString::number(i)] = yesQuestions[i];

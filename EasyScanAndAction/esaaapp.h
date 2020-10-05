@@ -40,6 +40,7 @@ class ESAAApp: public QObject
     Visit lastVisit;
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
+    const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     // Einstellungen    
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
