@@ -38,7 +38,7 @@ Background
         id: sendButton
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing
+        anchors.bottomMargin: ESAA.spacing * 2.5
         text: "Schließen"
         onClicked: message.visible = false
     }

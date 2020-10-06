@@ -7,6 +7,7 @@ Background
     anchors.fill: parent
     visible: opacity > 0
     opacity: 0
+    property var callbackFunction: null
     Behavior on opacity {
         NumberAnimation {
             duration: 300
@@ -36,8 +37,9 @@ Background
         }
     }
 
-    function show(mt)
+    function show(mt, callback)
     {
+        callbackFunction = callback
         messageText.text = mt
         message.opacity = 1
         message.forceActiveFocus()
@@ -48,8 +50,15 @@ Background
         id: sendButton
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing
+        anchors.bottomMargin: ESAA.spacing * 2.5
         text: "Schließen"
-        onClicked: message.opacity = 0
+        onClicked:
+        {
+            if (callbackFunction != null)
+            {
+                callbackFunction()
+            }
+            message.opacity = 0
+        }
     }
 }

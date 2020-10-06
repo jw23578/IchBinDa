@@ -200,6 +200,7 @@ public:
     Q_INVOKABLE void addSubData2Send(const QString &field, const QString &subField, const QString &value);
     Q_INVOKABLE void firstStartDone();
     Q_INVOKABLE void showMessage(const QString &mt);
+    Q_INVOKABLE void showMessageWithCallback(const QString &mt, QJSValue callback);
     Q_INVOKABLE void showWaitMessage(const QString &mt);
     Q_INVOKABLE void hideWaitMessage();
     Q_INVOKABLE void scan();
@@ -250,7 +251,7 @@ public:
 signals:
     void showWaitMessageSignal(const QString &mt);
     void hideWaitMessageSignal();
-    void showMessageSignal(const QString &mt);
+    void showMessageSignal(const QString &mt, QJSValue callback);
     void showBadMessageSignal(const QString &mt);
     void scanSignal();
     void validQRCodeDetected();

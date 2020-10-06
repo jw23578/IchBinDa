@@ -614,7 +614,12 @@ void ESAAApp::firstStartDone()
 
 void ESAAApp::showMessage(const QString &mt)
 {
-    emit showMessageSignal(mt);
+    emit showMessageSignal(mt, QJSValue::NullValue);
+}
+
+void ESAAApp::showMessageWithCallback(const QString &mt, QJSValue callback)
+{
+    emit showMessageSignal(mt, callback);
 }
 
 void ESAAApp::showWaitMessage(const QString &mt)

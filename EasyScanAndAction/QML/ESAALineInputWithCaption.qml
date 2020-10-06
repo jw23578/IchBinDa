@@ -14,10 +14,6 @@ FocusScope
     property alias colorEdit: input.colorEdit
     property alias helpText: input.helpText
     signal helpClicked(string ht)
-    onActiveFocusChanged:
-    {
-        console.log("hello focus: " + activeFocus)
-    }
 
     ESAATextInput
     {

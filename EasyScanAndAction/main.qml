@@ -315,7 +315,7 @@ ApplicationWindow {
         onShowSendedData: showNewPage(scannerpage, sendedDataPage)
         onShowWaitMessageSignal: waitMessage.show(mt)
         onHideWaitMessageSignal: waitMessage.hide()
-        onShowMessageSignal: message.show(mt)
+        onShowMessageSignal: message.show(mt, callback)
         onShowBadMessageSignal: badMessage.show(mt)
         onScanSignal: scannerpage.show()
         onValidQRCodeDetected:

@@ -25,7 +25,7 @@ ESAAPage
     TwoCircleButtons
     {
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing
+        anchors.bottomMargin: ESAA.spacing * 2.5
         leftText: "Ja"
         onLeftClicked: endVisit()
         rightText: "Nein"
