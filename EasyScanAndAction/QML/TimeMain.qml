@@ -2,7 +2,9 @@ import QtQuick 2.15
 
 ESAAPage
 {
+    id: timemainpage
     caption: "Zeiterfassung"
+
     Column
     {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -16,30 +18,38 @@ ESAAPage
             leftText: "Dienst<br>beginn"
             rightText: "Dienst<br>ende"
             buttonSize: parent.buttonWidth
-            leftEnabled: !TimeMaster.currentWorkStart
-            onLeftClicked: TimeMaster.currentWorkStart = Date.now()
-            rightEnabled: TimeMaster.currentWorkStart && !TimeMaster.currentPauseStart && !TimeMaster.currentWorkTravelStart
-            onRightClicked: TimeMaster.currentWorkStart = null
+            leftEnabled: TimeMaster.isNull(TimeMaster.currentWorkStart)
+            onLeftClicked: TimeMaster.currentWorkStart = TimeMaster.now()
+            rightEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
+                          && TimeMaster.isNull(TimeMaster.currentPauseStart)
+                          && TimeMaster.isNull(TimeMaster.currentWorkTravelStart)
+            onRightClicked: TimeMaster.currentWorkStart = TimeMaster.nullDate()
         }
         TwoCircleButtons
         {
             leftText: "Pause<br>beginn"
             rightText: "Pause<br>ende"
             buttonSize: parent.buttonWidth
-            leftEnabled: TimeMaster.currentWorkStart && !TimeMaster.currentPauseStart
-            onLeftClicked: TimeMaster.currentPauseStart = Date.now()
-            rightEnabled: TimeMaster.currentWorkStart && TimeMaster.currentPauseStart
-            onRightClicked: TimeMaster.currentPauseStart = null
+            leftEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
+                         && TimeMaster.isNull(TimeMaster.currentPauseStart)
+            onLeftClicked: TimeMaster.currentPauseStart = TimeMaster.now()
+            rightEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
+                          && TimeMaster.isValid(TimeMaster.currentPauseStart)
+            onRightClicked: TimeMaster.currentPauseStart = TimeMaster.nullDate()
         }
         TwoCircleButtons
         {
             leftText: "Dienstgang<br>beginn"
             rightText: "Dienstgang<br>ende"
             buttonSize: parent.buttonWidth
-            leftEnabled: TimeMaster.currentWorkStart && !TimeMaster.currentPauseStart && !TimeMaster.currentWorkTravelStart
-            onLeftClicked: TimeMaster.currentWorkTravelStart = Date.now()
-            rightEnabled: TimeMaster.currentWorkStart && !TimeMaster.currentPauseStart && TimeMaster.currentWorkTravelStart
-            onRightClicked: TimeMaster.currentWorkTravelStart = null
+            leftEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
+                         && TimeMaster.isNull(TimeMaster.currentPauseStart)
+                         && TimeMaster.isNull(TimeMaster.currentWorkTravelStart)
+            onLeftClicked: TimeMaster.currentWorkTravelStart = TimeMaster.now()
+            rightEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
+                          && TimeMaster.isNull(TimeMaster.currentPauseStart)
+                          && TimeMaster.isValid(TimeMaster.currentWorkTravelStart)
+            onRightClicked: TimeMaster.currentWorkTravelStart = TimeMaster.nullDate()
         }
     }
     BackButton

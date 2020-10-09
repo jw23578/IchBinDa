@@ -23,6 +23,7 @@ SOURCES += \
     internettester.cpp \
     persistentmap.cpp \
     qrcodestore.cpp \
+    timeevent.cpp \
     timemaster.cpp \
     visit.cpp \
 zint-master/backend/2of5.c \
@@ -64,6 +65,7 @@ HEADERS += \
     internettester.h \
     persistentmap.h \
     qrcodestore.h \
+    timeevent.h \
     timemaster.h \
     visit.h \
 zint-master/backend/aztec.h \
