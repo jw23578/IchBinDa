@@ -21,7 +21,6 @@
 #include <QDesktopServices>
 #include <QPdfWriter>
 
-
 QString ESAAApp::getWriteablePath()
 {
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -465,6 +464,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
+    timeMaster(e, *this),
     mobileExtensions(e),
     networkAccessManager(this),
     emailSender(this),

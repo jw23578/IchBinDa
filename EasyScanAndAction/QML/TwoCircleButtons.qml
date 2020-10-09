@@ -9,6 +9,9 @@ Row
     property int w: (parent.width - 2 * leftButton.width) / 3
     property alias leftText: leftButton.text
     property alias rightText: rightButton.text
+    property alias buttonSize: leftButton.width
+    property alias leftEnabled: leftButton.enabled
+    property alias rightEnabled: rightButton.enabled
     Item
     {
         width: parent.w
@@ -28,6 +31,7 @@ Row
     {
         id: rightButton
         onClicked: rightClicked()
+        width: leftButton.width
     }
     Item
     {

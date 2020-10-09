@@ -34,5 +34,7 @@
         <file>QML/TransparentCircleButton.qml</file>
         <file>QML/ShowKontaktTagebuchQRCode.qml</file>
         <file>QML/HelpOverlay.qml</file>
+        <file>QML/ArrowButton.qml</file>
+        <file>QML/TimeMain.qml</file>
     </qresource>
 </RCC>

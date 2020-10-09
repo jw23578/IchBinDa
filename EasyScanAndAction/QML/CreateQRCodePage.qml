@@ -29,6 +29,7 @@ ESAAPage
             }
         }
         theLogoUrl = logoUrl.displayText
+        qrCodeFileName = ""
         qrCodeFileName = ESAA.generateQRCode(9999,
                                              facilityName.displayText,
                                              contactReceiveEMail.displayText,

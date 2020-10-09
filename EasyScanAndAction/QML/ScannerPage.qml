@@ -34,6 +34,7 @@ ESAAPage
 
     signal playBackClicked;
     signal basketClicked;
+    signal goRightClicked;
 
     function decode(preview) {
         photoPreview.source = preview
@@ -232,6 +233,15 @@ ESAAPage
         id: shareButton
         visible: !ESAA.firstStart
     }
+    ArrowButton
+    {
+        anchors.right: parent.right
+        anchors.rightMargin: ESAA.spacing
+        anchors.verticalCenter: shareButton.verticalCenter
+        visible: ESAA.isDevelop
+        onClicked: goRightClicked()
+    }
+
     HelpOverlay
     {
         helpText1: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +

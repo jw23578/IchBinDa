@@ -12,6 +12,7 @@
 #include "internettester.h"
 #include "qrcodestore.h"
 #include "persistentmap.h"
+#include "timemaster.h"
 #ifdef DMOBILEDEVICE
 #ifdef DMOBILEIOS
 #include "botan_all_iosarmv7.h"
@@ -29,6 +30,7 @@
 class ESAAApp: public QObject
 {
     Q_OBJECT
+    TimeMaster timeMaster;
     QString getWriteablePath();
     MobileExtensions mobileExtensions;
     QNetworkAccessManager networkAccessManager;
@@ -74,7 +76,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, appName, AppName, "IchBinDa!");
     JWPROPERTY(int, yesQuestionCount, YesQuestionCount, 0);
     std::set<QString> qrCodes;
-    static std::set<std::string> invalidEMailDomains;
+    static std::set<std::string> invalidEMailDomains;      
 
     // Aktuelle Location
     JWPROPERTY(QString, anonymContactMailAdress, AnonymContactMailAdress, "");

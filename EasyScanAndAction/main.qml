@@ -102,9 +102,16 @@ ApplicationWindow {
                 showNewPage(questionpage, scannerpage)
             }
         }
+        TimeMain
+        {
+            id: timemainpage
+            onBackPressed: showNewPage(timemainpage, scannerpage)
+        }
+
         ScannerPage
         {
             id: scannerpage
+            onGoRightClicked: showNewPage(scannerpage, timemainpage)
         }
         FirstStart
         {
