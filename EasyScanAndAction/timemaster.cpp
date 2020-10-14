@@ -5,8 +5,10 @@
 
 void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
 {
-    TimeEvent *te(new TimeEvent);
-    te->setTimeStamp(value);
+    TimeEvent *te(new TimeEvent(true));
+    QDateTime dt(QDateTime::currentDateTime());
+    dt.setTime(QTime(dt.time().hour(), dt.time().minute()));
+    te->setTimeStamp(dt);
     allTimeEvents.add(te);
     qDebug() << allTimeEvents.count();
     if (name == m_currentWorkStartName)
@@ -21,7 +23,6 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(0);
         }
-        return;
     }
     if (name == m_currentPauseStartName)
     {
@@ -35,7 +36,6 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(2);
         }
-        return;
     }
     if (name == m_currentWorkTravelStartName)
     {
@@ -49,15 +49,41 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(4);
         }
-        return;
     }
+    pa.insert("TimeEvents", *te);
 }
 
-TimeMaster::TimeMaster(QQmlApplicationEngine &engine,  ESAAApp &app, QObject *parent) : QObject(parent),
+TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
+                       ESAAApp &app,
+                       jw78::PersistentAdapter &pa,
+                       QObject *parent) : QObject(parent),
     theApp(app),
-    allTimeEvents(engine, "AllTimeEvents", "event")
+    pa(pa),
+    allTimeEvents(engine, "AllTimeEvents", "event"),
+    workTimeSpans(engine, "WorkTimeSpans", "timeSpan")
 {
     engine.rootContext()->setContextProperty("TimeMaster", QVariant::fromValue(this));
+    std::unique_ptr<TimeEvent> te(new TimeEvent(false));
+    QVector<jw78::ReflectableObject*> temp;
+    pa.createTableCollectionOrFileIfNeeded("TimeEvents", *te);
+    pa.loadAll("TimeEvents", temp, *te);
+    WorkTimeSpan *currentWorkTimeSpan(nullptr);
+    for (auto t : temp)
+    {
+        TimeEvent *e(dynamic_cast<TimeEvent*>(t));
+        allTimeEvents.add(e);
+        if (e->eventType() == 0)
+        {
+            currentWorkTimeSpan = new WorkTimeSpan;
+            currentWorkTimeSpan->setWorkBegin(e->timeStamp());
+        }
+        if (e->eventType() == 1)
+        {
+            currentWorkTimeSpan->setWorkEnd(e->timeStamp());
+            workTimeSpans.add(currentWorkTimeSpan);
+            currentWorkTimeSpan = nullptr;
+        }
+    }
 }
 
 QDateTime TimeMaster::now()

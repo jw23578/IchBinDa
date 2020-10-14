@@ -26,6 +26,14 @@ QString ESAAApp::getWriteablePath()
     return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 }
 
+void ESAAApp::checkDevelopMobile()
+{
+    if (mobile() == "230578")
+    {
+        setIsDevelop(true);
+    }
+}
+
 void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,
                                         const QString &otherSurname,
                                         const QString &otherEMail)
@@ -464,7 +472,8 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
-    timeMaster(e, *this),
+    database(getWriteablePath() + "/ichbinda.db"),
+    timeMaster(e, *this, database),
     mobileExtensions(e),
     networkAccessManager(this),
     emailSender(this),
@@ -550,7 +559,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
 QString ESAAApp::formatDate(const QDateTime &dt)
 {
-    return dt.date().toString();
+    return QLocale::system().toString(dt.date(), QLocale::ShortFormat); //   dt.date().toString();
 }
 
 QString ESAAApp::formatTime(const QDateTime &dt)

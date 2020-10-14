@@ -18,14 +18,17 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../../JW78QTLib/jw78extqvector.cpp \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
+    pausetimespan.cpp \
     persistentmap.cpp \
     qrcodestore.cpp \
     timeevent.cpp \
     timemaster.cpp \
     visit.cpp \
+    worktimespan.cpp \
 zint-master/backend/2of5.c \
 zint-master/backend/auspost.c \
 zint-master/backend/aztec.c \
@@ -60,14 +63,17 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    ../../JW78QTLib/jw78extqvector.h \
     emailsender.h \
     esaaapp.h \
     internettester.h \
+    pausetimespan.h \
     persistentmap.h \
     qrcodestore.h \
     timeevent.h \
     timemaster.h \
     visit.h \
+    worktimespan.h \
 zint-master/backend/aztec.h \
 zint-master/backend/code1.h \
 zint-master/backend/code49.h \
@@ -216,4 +222,4 @@ include(JW78QTLib/JW78QTLib.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 
-ANDROID_ABIS = armeabi-v7a arm64-v8a
+ANDROID_ABIS = armeabi-v7a

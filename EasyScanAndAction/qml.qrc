@@ -36,5 +36,8 @@
         <file>QML/HelpOverlay.qml</file>
         <file>QML/ArrowButton.qml</file>
         <file>QML/TimeMain.qml</file>
+        <file>QML/TimeRecordingMenue.qml</file>
+        <file>QML/TimeRecordingEvents.qml</file>
+        <file>QML/WorkTimeSpansBrutto.qml</file>
     </qresource>
 </RCC>

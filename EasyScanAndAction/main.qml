@@ -30,9 +30,9 @@ ApplicationWindow {
         nextPage.z = 1
         nextPage.show(direction)
         splashheader.headerText = nextPage.caption
-        if (nextPage === scannerpage)
+        if (nextPage === scannerpage || nextPage == timemainpage)
         {
-            showCallMenueButton.start()
+            hideAndShowCallMenueButton.start()
         }
         else
         {
@@ -155,6 +155,24 @@ ApplicationWindow {
             id: showKontaktTagebuchQRCode
             onBack: showNewPage(showKontaktTagebuchQRCode, menuepage)
         }
+        TimeRecordingEvents
+        {
+            id: timerecordingevents
+            onBackPressed: showNewPage(timerecordingevents, timerecordmenuepage)
+        }
+        WorkTimeSpansBrutto
+        {
+            id: worktimespansbrutto
+            onBackPressed: showNewPage(worktimespansbrutto, timerecordmenuepage)
+        }
+
+        TimeRecordingMenue
+        {
+            id: timerecordmenuepage
+            onBackPressed: showNewPage(timerecordmenuepage, timemainpage)
+            onShowTimeEvents: showNewPage(timerecordmenuepage, timerecordingevents)
+            onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespansbrutto)
+        }
 
         MenuePage
         {
@@ -194,26 +212,26 @@ ApplicationWindow {
         CurrentVisitPage
         {
             id: currentVisitPage
-    //        y: 0
-    //        x: ESAA.isActiveVisit(changeCounter) ? 0 : -width
-    //        Behavior on x {
-    //            NumberAnimation {
-    //                duration: 300
-    //            }
-    //        }
-    //        width: parent.width
-    //        height: parent.height
-    //        z: 0
-    //        visible: true
-    //        opacity: 1
-    //        property int changeCounter: 0
-    //        Timer
-    //        {
-    //            interval: 10000
-    //            repeat: true
-    //            running: true
-    //            onTriggered: currentVisitPage.changeCounter += 1
-    //        }
+            //        y: 0
+            //        x: ESAA.isActiveVisit(changeCounter) ? 0 : -width
+            //        Behavior on x {
+            //            NumberAnimation {
+            //                duration: 300
+            //            }
+            //        }
+            //        width: parent.width
+            //        height: parent.height
+            //        z: 0
+            //        visible: true
+            //        opacity: 1
+            //        property int changeCounter: 0
+            //        Timer
+            //        {
+            //            interval: 10000
+            //            repeat: true
+            //            running: true
+            //            onTriggered: currentVisitPage.changeCounter += 1
+            //        }
             onQuestionVisitEnd:
             {
                 showNewPage(currentVisitPage, visitEndPage)
@@ -221,13 +239,23 @@ ApplicationWindow {
         }
     }
 
-    NumberAnimation {
-        target: callMenueButton
-        property: "anchors.verticalCenterOffset"
-        duration: 1000
-        easing.type: Easing.InOutQuint
-        id: showCallMenueButton
-        to: 0 // callMenueButton.width / 6
+    SequentialAnimation
+    {
+        id: hideAndShowCallMenueButton
+        NumberAnimation {
+            target: callMenueButton
+            property: "anchors.verticalCenterOffset"
+            duration: 500
+            easing.type: Easing.InOutQuint
+            to: width
+        }
+        NumberAnimation {
+            target: callMenueButton
+            property: "anchors.verticalCenterOffset"
+            duration: 500
+            easing.type: Easing.InOutQuint
+            to: 0 // callMenueButton.width / 6
+        }
     }
     NumberAnimation {
         target: callMenueButton
@@ -252,6 +280,12 @@ ApplicationWindow {
         downSource: "qrc:/images/menue_blau.svg"
         onClicked:
         {
+            if (theCurrentPage == timemainpage)
+            {
+                showNewPage(timemainpage, timerecordmenuepage)
+                return
+            }
+
             showNewPage(scannerpage, menuepage)
         }
     }
@@ -348,13 +382,13 @@ ApplicationWindow {
         close.accepted = false
     }
     Connections {
-      target: Qt.application
-      onStateChanged:
-      {
-          if (Qt.application.state == Qt.ApplicationActive)
-          {
-              ESAA.dummyGet()
-          }
-      }
+        target: Qt.application
+        onStateChanged:
+        {
+            if (Qt.application.state == Qt.ApplicationActive)
+            {
+                ESAA.dummyGet()
+            }
+        }
     }
 }

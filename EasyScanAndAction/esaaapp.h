@@ -26,10 +26,13 @@
 #include "visit.h"
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
+#include "JW78QTLib/jw78sqliteadapter.h"
+
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
+    jw78::SQLiteAdapter database;
     TimeMaster timeMaster;
     QString getWriteablePath();
     MobileExtensions mobileExtensions;
@@ -106,7 +109,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, zip, Zip, "");
     JWPROPERTY(QString, location, Location, "");
     JWPROPERTY(QString, emailAdress, EmailAdress, "");
-    JWPROPERTY(QString, mobile, Mobile, "");
+    void checkDevelopMobile();
+    JWPROPERTYAFTERSET(QString, mobile, Mobile, "", checkDevelopMobile);
     JWPROPERTY(QString, data2send, Data2send, "");
 
     JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
