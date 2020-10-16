@@ -23,6 +23,8 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(0);
         }
+        dbCurrentWorkStart.value = value;
+        pa.upsert("Config", dbCurrentWorkStart);
     }
     if (name == m_currentPauseStartName)
     {
@@ -36,6 +38,8 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(2);
         }
+        dbCurrentPauseStart.value = value;
+        pa.upsert("Config", dbCurrentPauseStart);
     }
     if (name == m_currentWorkTravelStartName)
     {
@@ -49,6 +53,8 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             // beginn
             te->setEventType(4);
         }
+        dbCurrentWorkTravelStart.value = value;
+        pa.upsert("Config", dbCurrentWorkTravelStart);
     }
     pa.insert("TimeEvents", *te);
 }
@@ -59,9 +65,22 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
                        QObject *parent) : QObject(parent),
     theApp(app),
     pa(pa),
+    dbCurrentWorkStart(true),
+    dbCurrentPauseStart(true),
+    dbCurrentWorkTravelStart(true),
     allTimeEvents(engine, "AllTimeEvents", "event"),
     workTimeSpans(engine, "WorkTimeSpans", "timeSpan")
 {
+    dbCurrentWorkStart.name = "currentWorkStart";
+    dbCurrentPauseStart.name = "currentPauseStart";
+    dbCurrentWorkTravelStart.name = "currentWorkTravelStart";
+    pa.createTableCollectionOrFileIfNeeded("Config", dbCurrentWorkStart);
+    pa.selectOne("Config", "name", dbCurrentWorkStart.name, dbCurrentWorkStart);
+    m_currentWorkStart = dbCurrentWorkStart.value;
+    pa.selectOne("Config", "name", dbCurrentPauseStart.name, dbCurrentPauseStart);
+    m_currentPauseStart = dbCurrentPauseStart.value;
+    pa.selectOne("Config", "name", dbCurrentWorkTravelStart.name, dbCurrentWorkTravelStart);
+    m_currentWorkTravelStart = dbCurrentWorkTravelStart.value;
     engine.rootContext()->setContextProperty("TimeMaster", QVariant::fromValue(this));
     std::unique_ptr<TimeEvent> te(new TimeEvent(false));
     QVector<jw78::ReflectableObject*> temp;

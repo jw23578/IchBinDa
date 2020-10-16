@@ -9,6 +9,7 @@
 #include <JW78QTLib/jw78ObjectListModel.h>
 #include <JW78QTLib/jw78persistentadapter.h>
 #include "worktimespan.h"
+#include "datetimereflectable.h"
 
 class ESAAApp;
 
@@ -17,6 +18,9 @@ class TimeMaster : public QObject
     Q_OBJECT
     ESAAApp &theApp;
     jw78::PersistentAdapter &pa;
+    DateTimeReflectable dbCurrentWorkStart;
+    DateTimeReflectable dbCurrentPauseStart;
+    DateTimeReflectable dbCurrentWorkTravelStart;
     void handleEvent(const QString &name, const QDateTime &value);
     JWPROPERTYAFTERSETNAMEVALUE(QDateTime, currentWorkStart, CurrentWorkStart, QDateTime(), handleEvent);
     JWPROPERTYAFTERSETNAMEVALUE(QDateTime, currentPauseStart, CurrentPauseStart, QDateTime(), handleEvent);

@@ -18,6 +18,7 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    datetimereflectable.cpp \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
@@ -62,6 +63,7 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    datetimereflectable.h \
     emailsender.h \
     esaaapp.h \
     internettester.h \
