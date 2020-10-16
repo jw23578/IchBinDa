@@ -27,11 +27,13 @@
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
 #include "JW78QTLib/jw78sqliteadapter.h"
+#include "JW78QTLib/jw78utils.h"
 
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
+    jw78::Utils jw78Utils;
     jw78::SQLiteAdapter database;
     TimeMaster timeMaster;
     QString getWriteablePath();
@@ -194,8 +196,6 @@ private:
 public:
     ESAAApp(QQmlApplicationEngine &e);
 
-    Q_INVOKABLE QString formatDate(QDateTime const &dt);
-    Q_INVOKABLE QString formatTime(QDateTime const &dt);
     Q_INVOKABLE bool keyNumberOK(int number);
     Q_INVOKABLE void clearYesQuestions();
     Q_INVOKABLE void addYesQuestions(const QString &yq);

@@ -26,12 +26,12 @@ ESAAPage
                 anchors.verticalCenter: parent.verticalCenter
                 ESAAText
                 {
-                    text: ESAA.formatDate(timeSpan.workBegin)
+                    text: "von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
                     id: datetext
                 }
                 ESAAText
                 {
-                    text: ESAA.formatTime(timeSpan.workBegin)
+                    text: "bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                     id: timetext
                 }
             }

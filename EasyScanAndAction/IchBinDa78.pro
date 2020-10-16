@@ -18,7 +18,6 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ../../JW78QTLib/jw78extqvector.cpp \
     emailsender.cpp \
     esaaapp.cpp \
     internettester.cpp \
@@ -63,7 +62,6 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
-    ../../JW78QTLib/jw78extqvector.h \
     emailsender.h \
     esaaapp.h \
     internettester.h \

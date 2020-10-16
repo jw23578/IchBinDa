@@ -26,12 +26,12 @@ ESAAPage
                 anchors.verticalCenter: parent.verticalCenter
                 ESAAText
                 {
-                    text: ESAA.formatDate(event.timeStamp)
+                    text: JW78Utils.formatDate(event.timeStamp)
                     id: datetext
                 }
                 ESAAText
                 {
-                    text: ESAA.formatTime(event.timeStamp)
+                    text: JW78Utils.formatTimeHHMM(event.timeStamp)
                     id: timetext
                 }
             }

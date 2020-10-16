@@ -88,7 +88,7 @@ ESAAPage
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: ESAA.spacing / 4
                 font.pixelSize: ESAA.fontTextPixelsize * 0.9
-                text: ESAA.formatDate(Visit.begin) + " " + ESAA.formatTime(Visit.begin)
+                text: JW78Utils.formatDate(Visit.begin) + " " + JW78Utils.formatTime(Visit.begin)
             }
 
             Rectangle

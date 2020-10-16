@@ -10,6 +10,7 @@ class TimeEvent: public jw78::ProxyObject, public jw78::ReflectableObject
     Q_OBJECT
     JWPROPERTY(qint64, eventType, EventType, 0)
     JWPROPERTY(QDateTime, timeStamp, TimeStamp, QDateTime())
+    qint64 transferedToServer;
 public:
     TimeEvent(bool setUuid);
 

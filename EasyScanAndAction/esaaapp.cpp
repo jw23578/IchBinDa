@@ -472,6 +472,7 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
+    jw78Utils(e),
     database(getWriteablePath() + "/ichbinda.db"),
     timeMaster(e, *this, database),
     mobileExtensions(e),
@@ -555,16 +556,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         file.readLine(buf, 1000);
         fileStoreURL = QString(buf).trimmed();
     }
-}
-
-QString ESAAApp::formatDate(const QDateTime &dt)
-{
-    return QLocale::system().toString(dt.date(), QLocale::ShortFormat); //   dt.date().toString();
-}
-
-QString ESAAApp::formatTime(const QDateTime &dt)
-{
-    return dt.time().toString();
 }
 
 bool ESAAApp::keyNumberOK(int number)

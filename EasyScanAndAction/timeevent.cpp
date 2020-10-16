@@ -4,6 +4,7 @@ TimeEvent::TimeEvent(bool setUuid):jw78::ProxyObject(0), jw78::ReflectableObject
 {
     ADD_VARIABLE(m_eventType)
             ADD_VARIABLE(m_timeStamp)
+            ADD_VARIABLE(transferedToServer)
 }
 
 jw78::ReflectableObject *TimeEvent::create(bool setUuid) const

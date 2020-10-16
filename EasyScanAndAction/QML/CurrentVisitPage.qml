@@ -33,7 +33,7 @@ ESAAPage
             font.pixelSize: ESAA.fontTextPixelsize * 1.5
             font.bold: true
             wrapMode: Text.WordWrap
-            text: ESAA.formatTime(LastVisit.begin)
+            text: JW78Utils.formatTime(LastVisit.begin)
         }
         ESAAText
         {
