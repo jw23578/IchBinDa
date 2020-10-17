@@ -56,4 +56,15 @@ void WorkTimeSpan::addPause(PauseTimeSpan *pts)
     pauseTimeSpans.append(pts);
     int minutes(jw78::Utils::minutesBetween(pts->pauseBegin(), pts->pauseEnd()));
     setPauseMinutesBrutto(pauseMinutesBrutto() + minutes);
+    setPauseCount(pauseTimeSpans.size());
+}
+
+jw78::ProxyObject *WorkTimeSpan::getPause(int index)
+{
+    if ((index < 0) || (index >= pauseTimeSpans.size()))
+    {
+        return nullptr;
+    }
+    QQmlEngine::setObjectOwnership(pauseTimeSpans[index], QQmlEngine::CppOwnership);
+    return pauseTimeSpans[index];
 }

@@ -58,7 +58,7 @@ ESAAPage
                 }
                 ESAAText
                 {
-                    text: "Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto);
+                    text: "Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto) + " Anzahl Pausen: " + timeSpan.pauseCount
                 }
                 ESAAText
                 {
@@ -71,6 +71,7 @@ ESAAPage
             }
             Column
             {
+                id: extData
                 visible: opacity > 0
                 opacity: 0
                 Behavior on opacity
@@ -80,7 +81,6 @@ ESAAPage
                         duration: 200
                     }
                 }
-                id: extData
                 anchors.left: parent.left
                 anchors.leftMargin: ESAA.spacing
                 anchors.verticalCenter: parent.verticalCenter
@@ -98,7 +98,84 @@ ESAAPage
                 }
                 ESAAText
                 {
-                    text: "Pause Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto)
+                    text: "Pause Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto) + " Anzahl Pausen: " + timeSpan.pauseCount
+                }
+                ESAAText
+                {
+                    text: "Pause Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto);
+                }
+                ESAAText
+                {
+                    text: "Hinzugefügte Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.addedPauseMinutes);
+                }
+                ESAAText
+                {
+                    text: "Dauer Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
+                }
+            }
+            Column
+            {
+                id: fullData
+                visible: opacity > 0
+                opacity: 0
+                Behavior on opacity
+                {
+                    NumberAnimation
+                    {
+                        duration: 200
+                    }
+                }
+                anchors.left: parent.left
+                anchors.leftMargin: ESAA.spacing
+                anchors.right: parent.right
+                anchors.rightMargin: ESAA.spacing
+                anchors.verticalCenter: parent.verticalCenter
+                ESAAText
+                {
+                    text: "Dienst von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
+                }
+                ESAAText
+                {
+                    text: "Dienst bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
+                }
+                ESAAText
+                {
+                    text: "Dauer Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesBrutto);
+                }
+                Repeater
+                {
+                    model: timeSpan.pauseCount
+                    Item
+                    {
+                        width: parent.width
+                        height: pauseColumn.height + ESAA.spacing
+                        Column
+                        {
+                            id: pauseColumn
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: ESAA.spacing
+                            property var pause: timeSpan.getPause(index)
+                            spacing: 0
+                            ESAAText
+                            {
+                                text: "Pause von " + JW78Utils.formatDate(parent.pause.pauseBegin) + " " + JW78Utils.formatTimeHHMM(parent.pause.pauseBegin)
+                            }
+                            ESAAText
+                            {
+                                text: "Pause bis " + JW78Utils.formatDate(parent.pause.pauseEnd) + " " + JW78Utils.formatTimeHHMM(parent.pause.pauseEnd)
+                            }
+                            ESAAText
+                            {
+                                text: "Dauer: " + JW78Utils.formatMinutesHHMM(parent.pause.minutes);
+                            }
+                        }
+                    }
+                }
+
+                ESAAText
+                {
+                    text: "Pause Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto) + " Anzahl Pausen: " + timeSpan.pauseCount
                 }
                 ESAAText
                 {
@@ -123,16 +200,33 @@ ESAAPage
                         theItem.height = extData.height + ESAA.spacing
                         extData.z = 0
                         smallData.z = 0
+                        fullData.z = 0
+                        fullData.opacity = 0
                         smallData.opacity = 0
                         extData.opacity = 1
                     }
                     else
                     {
-                        theItem.height = smallData.height + ESAA.spacing
-                        extData.z = 1
-                        smallData.z = 0
-                        smallData.opacity = 1
-                        extData.opacity = 0
+                        if (extData.visible)
+                        {
+                            theItem.height = fullData.height + ESAA.spacing
+                            extData.z = 0
+                            fullData.z = 1
+                            smallData.z = 0
+                            smallData.opacity = 0
+                            extData.opacity = 0
+                            fullData.opacity = 1
+                        }
+                        else
+                        {
+                            theItem.height = smallData.height + ESAA.spacing
+                            extData.z = 1
+                            fullData.z = 0
+                            smallData.z = 0
+                            smallData.opacity = 1
+                            extData.opacity = 0
+                            fullData.opacity = 0
+                        }
                     }
                 }
             }
