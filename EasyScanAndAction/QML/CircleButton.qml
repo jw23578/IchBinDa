@@ -56,7 +56,7 @@ Button
             anchors.centerIn: parent
             text: control.text
             font: control.font
-            opacity: enabled ? 1.0 : 0.3
+            opacity: enabled ? 1.0 : disabledTextItem.visible ? 0 : 0.3
             color: control.down ? control.buttonColor : "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

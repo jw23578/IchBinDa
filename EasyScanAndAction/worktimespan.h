@@ -8,8 +8,13 @@
 class WorkTimeSpan: public jw78::ProxyObject
 {
     Q_OBJECT
+    void calculate();
     JWPROPERTY(QDateTime, workBegin, WorkBegin, QDateTime())
-    JWPROPERTY(QDateTime, workEnd, WorkEnd, QDateTime())
+    JWPROPERTYAFTERSET(QDateTime, workEnd, WorkEnd, QDateTime(), calculate)
+    JWPROPERTY(int, workMinutesBrutto, WorkMinutesBrutto, 0);
+    JWPROPERTY(int, workMinutesNetto, WorkMinutesNetto, 0);
+    JWPROPERTY(int, pauseMinutesNetto, PauseMinutesNetto, 0);
+    JWPROPERTY(int, addedPauseMinutes, AddedPauseMinutes, 0);
 
     JWPROPERTY(int, pauseMinutesBrutto, PauseMinutesBrutto, 0);
     QVector<PauseTimeSpan*> pauseTimeSpans;
