@@ -10,9 +10,12 @@ class WorkTimeSpan: public jw78::ProxyObject
     Q_OBJECT
     JWPROPERTY(QDateTime, workBegin, WorkBegin, QDateTime())
     JWPROPERTY(QDateTime, workEnd, WorkEnd, QDateTime())
-    QVector<PauseTimeSpan> pauseTimeSpans;
+
+    JWPROPERTY(int, pauseMinutesBrutto, PauseMinutesBrutto, 0);
+    QVector<PauseTimeSpan*> pauseTimeSpans;
 public:
     WorkTimeSpan();
+    void addPause(PauseTimeSpan *pts);
 };
 
 #endif // WORKTIMESPAN_H

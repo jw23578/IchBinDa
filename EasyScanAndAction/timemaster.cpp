@@ -71,6 +71,8 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
     allTimeEvents(engine, "AllTimeEvents", "event"),
     workTimeSpans(engine, "WorkTimeSpans", "timeSpan")
 {
+    engine.rootContext()->setContextProperty("TimeMaster", QVariant::fromValue(this));
+
     dbCurrentWorkStart.name = "currentWorkStart";
     dbCurrentPauseStart.name = "currentPauseStart";
     dbCurrentWorkTravelStart.name = "currentWorkTravelStart";
@@ -81,12 +83,18 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
     m_currentPauseStart = dbCurrentPauseStart.value;
     pa.selectOne("Config", "name", dbCurrentWorkTravelStart.name, dbCurrentWorkTravelStart);
     m_currentWorkTravelStart = dbCurrentWorkTravelStart.value;
-    engine.rootContext()->setContextProperty("TimeMaster", QVariant::fromValue(this));
+
     std::unique_ptr<TimeEvent> te(new TimeEvent(false));
     QVector<jw78::ReflectableObject*> temp;
     pa.createTableCollectionOrFileIfNeeded("TimeEvents", *te);
-    pa.loadAll("TimeEvents", temp, *te);
+    QDate monthStart(QDate::currentDate().year(), QDate::currentDate().month(), 1);
+    QDate nextMonthStart(monthStart.addMonths(1));
+    pa.selectAllBetween("TimeEvents", "m_timeStamp",
+                        monthStart.toString(Qt::ISODate),
+                        nextMonthStart.toString(Qt::ISODate),
+                        temp, *te);
     WorkTimeSpan *currentWorkTimeSpan(nullptr);
+    PauseTimeSpan *currentPauseTimeSpan(nullptr);
     for (auto t : temp)
     {
         TimeEvent *e(dynamic_cast<TimeEvent*>(t));
@@ -101,6 +109,17 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
             currentWorkTimeSpan->setWorkEnd(e->timeStamp());
             workTimeSpans.add(currentWorkTimeSpan);
             currentWorkTimeSpan = nullptr;
+        }
+        if (e->eventType() == 2)
+        {
+            currentPauseTimeSpan = new PauseTimeSpan;
+            currentPauseTimeSpan->setPauseBegin(e->timeStamp());
+        }
+        if (e->eventType() == 3)
+        {
+            currentPauseTimeSpan->setPauseEnd(e->timeStamp());
+            currentWorkTimeSpan->addPause(currentPauseTimeSpan);
+            currentPauseTimeSpan = nullptr;
         }
     }
 }

@@ -16,6 +16,7 @@ ESAAPage
         TwoCircleButtons
         {
             leftText: "Dienst<br>beginn"
+            disabledLeftText: "Dienst seit:<br>" + JW78Utils.formatTimeHHMM(TimeMaster.currentWorkStart)
             rightText: "Dienst<br>ende"
             buttonSize: parent.buttonWidth
             leftEnabled: TimeMaster.isNull(TimeMaster.currentWorkStart)
@@ -28,6 +29,7 @@ ESAAPage
         TwoCircleButtons
         {
             leftText: "Pause<br>beginn"
+            disabledLeftText: "Pause seit:<br>" + JW78Utils.formatTimeHHMM(TimeMaster.currentPauseStart)
             rightText: "Pause<br>ende"
             buttonSize: parent.buttonWidth
             leftEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)
@@ -40,6 +42,7 @@ ESAAPage
         TwoCircleButtons
         {
             leftText: "Dienstgang<br>beginn"
+            disabledLeftText: JW78Utils.formatTimeHHMM(TimeMaster.currentWorkTravelStart) == "" ? "" : "Dienstgang seit:<br>" + JW78Utils.formatTimeHHMM(TimeMaster.currentWorkTravelStart)
             rightText: "Dienstgang<br>ende"
             buttonSize: parent.buttonWidth
             leftEnabled: TimeMaster.isValid(TimeMaster.currentWorkStart)

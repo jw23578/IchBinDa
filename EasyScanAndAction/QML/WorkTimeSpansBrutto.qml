@@ -35,6 +35,12 @@ ESAAPage
                     id: timetext
                 }
             }
+            ESAAText
+            {
+                text: "Brutto Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto)
+                anchors.right: parent.right
+                anchors.rightMargin: ESAA.spacing
+            }
 
             Rectangle
             {

@@ -12,6 +12,9 @@ Row
     property alias buttonSize: leftButton.width
     property alias leftEnabled: leftButton.enabled
     property alias rightEnabled: rightButton.enabled
+
+    property alias disabledLeftText: leftButton.disabledText
+    property alias disabledRightText: rightButton.disabledText
     Item
     {
         width: parent.w

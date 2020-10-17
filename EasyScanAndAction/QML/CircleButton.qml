@@ -24,7 +24,19 @@ Button
     property double imageSizeFactor: 1
     property alias belowCaption: belowCaptionText.text
     property alias aboveCaption: aboveCaptionText.text
+    property alias disabledText: disabledTextItem.text
     contentItem: Item {
+        ESAAText
+        {
+            id: disabledTextItem
+            anchors.centerIn: parent
+            font: control.font
+            visible: !enabled && text != ""
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
+
         ESAAText
         {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -38,7 +50,6 @@ Button
             elide: Text.ElideRight
             font.pixelSize: ESAA.fontTextPixelsize / 1.3
             font.family: "Roboto-Thin"
-
         }
         ESAAText
         {
