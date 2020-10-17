@@ -36,7 +36,6 @@ class ESAAApp: public QObject
     jw78::Utils jw78Utils;
     jw78::SQLiteAdapter database;
     TimeMaster timeMaster;
-    QString getWriteablePath();
     MobileExtensions mobileExtensions;
     QNetworkAccessManager networkAccessManager;
     EMailSender emailSender;
@@ -160,9 +159,6 @@ class ESAAApp: public QObject
     void loadData();
     const int actionIDCoronaKontaktdatenerfassung = 1;
     const int actionIDKontakttagebuch = 2;
-    QString getTempPath();
-    QString genTempFileName(const QString &extension);
-    QString genUUID();
     QString generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList);
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);

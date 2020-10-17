@@ -21,11 +21,6 @@
 #include <QDesktopServices>
 #include <QPdfWriter>
 
-QString ESAAApp::getWriteablePath()
-{
-    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-}
-
 void ESAAApp::checkDevelopMobile()
 {
     if (mobile() == "230578")
@@ -138,7 +133,7 @@ void ESAAApp::sendMail()
     {
         lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
         lastVisit.ibdToken += QString(".") + locationGUID();
-        lastVisit.ibdToken += QString(".") + genUUID();
+        lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
         QString url(ibdTokenStoreURL + lastVisit.ibdToken);
         QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
         QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
@@ -164,7 +159,7 @@ void ESAAApp::sendMail()
 
 int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin)
 {
-    QString visitCountFileName(getWriteablePath() + "/visitsCount-");
+    QString visitCountFileName(jw78::Utils::getWriteablePath() + "/visitsCount-");
     visitCountFileName += locationGUID;
     visitCountFileName += QString(".json");
     QFile visitCountFile(visitCountFileName);
@@ -199,7 +194,7 @@ int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const
 
 void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
 {
-    QString visitFileName(getWriteablePath() + "/visits-");
+    QString visitFileName(jw78::Utils::getWriteablePath() + "/visits-");
     visitFileName += QDateTime::currentDateTime().date().toString(Qt::ISODate);
     visitFileName += QString(".json");
     QFile visitFile(visitFileName);
@@ -473,18 +468,18 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     jw78Utils(e),
-    database(getWriteablePath() + "/ichbinda.db"),
+    database(jw78::Utils::getWriteablePath() + "/ichbinda.db"),
     timeMaster(e, *this, database),
     mobileExtensions(e),
     networkAccessManager(this),
     emailSender(this),
     internetTester(this),
-    qrCodeStore(getWriteablePath() + "/knownQRCodes.json"),
-    publicKeyMap(getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
+    qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
+    publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit")
 {
     allVisits.reverse = true;
-    if (getWriteablePath().contains("/home/jw78"))
+    if (jw78::Utils::getWriteablePath().contains("/home/jw78"))
     {
         setIsDevelop(true);
     }
@@ -507,17 +502,17 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));
     e.rootContext()->setContextProperty("InternetTester", QVariant::fromValue(&internetTester));
     QDir dir;
-    QString path(getWriteablePath());
+    QString path(jw78::Utils::getWriteablePath());
     if (!dir.exists(path))
     {
         qDebug() << "erzeuge: " << path;
         qDebug() << (dir.mkpath(path) ? "erfolgreich" : "nicht erfolgreich");
     }
-    if (!dir.exists(getTempPath()))
+    if (!dir.exists(jw78::Utils::getTempPath()))
     {
-        dir.mkdir(getTempPath());
+        dir.mkdir(jw78::Utils::getTempPath());
     }
-    dataFileName = getWriteablePath() + "/esaaData.json";
+    dataFileName = jw78::Utils::getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
     loadAllVisits();
@@ -651,25 +646,9 @@ void ESAAApp::ignoreQRCode()
     lastActionJSON = "";
 }
 
-QString ESAAApp::getTempPath()
-{
-    return getWriteablePath() + "/temp";
-}
-
-QString ESAAApp::genUUID()
-{
-    QString u(QUuid::createUuid().toString());
-    return u.mid(1, u.size() - 2);
-}
-
-QString ESAAApp::genTempFileName(const QString &extension)
-{
-    return getTempPath() + "/" + genUUID() + extension;
-}
-
 QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList)
 {
-    QString filename(getTempPath() + "/" + fn + ".svg");
+    QString filename(jw78::Utils::getTempPath() + "/" + fn + ".svg");
     qDebug() << filename;
     struct zint_symbol *my_symbol;
     my_symbol = ZBarcode_Create();
@@ -685,11 +664,11 @@ QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bo
     QPainter painter(&pix);
     painter.fillRect(pix.rect(), QColor(0xffffff));
     painter.drawPixmap(25, 25, QIcon(filename).pixmap(QSize(450, 450)));
-    pix.toImage().save(getTempPath() + "/" + fn + ".png");
-    pix.toImage().save(getTempPath() + "/" + fn + ".jpg");
+    pix.toImage().save(jw78::Utils::getTempPath() + "/" + fn + ".png");
+    pix.toImage().save(jw78::Utils::getTempPath() + "/" + fn + ".jpg");
     qrCodes.insert(filename);
-    qrCodes.insert(getTempPath() + "/" + fn + ".png");
-    qrCodes.insert(getTempPath() + "/" + fn + ".jpg");
+    qrCodes.insert(jw78::Utils::getTempPath() + "/" + fn + ".png");
+    qrCodes.insert(jw78::Utils::getTempPath() + "/" + fn + ".jpg");
     return filename;
 }
 
@@ -705,7 +684,7 @@ void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
 
 QString ESAAApp::generateA6Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
 {
-    QString a6Flyer(getTempPath() + "/a6flyer " + QString::number(number) + ".pdf");
+    QString a6Flyer(jw78::Utils::getTempPath() + "/a6flyer " + QString::number(number) + ".pdf");
     QPdfWriter pdf(a6Flyer);
     QPageLayout layout(pdf.pageLayout());
     layout.setOrientation(QPageLayout::Landscape);
@@ -758,7 +737,7 @@ QString ESAAApp::generateA6Flyer(const QString &facilityName, const QImage &logo
 
 QString ESAAApp::generateA5Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
 {
-    QString a5Flyer(getTempPath() + "/a5flyer " + QString::number(number) + ".pdf");
+    QString a5Flyer(jw78::Utils::getTempPath() + "/a5flyer " + QString::number(number) + ".pdf");
     QPdfWriter pdf(a5Flyer);
     QPageLayout layout(pdf.pageLayout());
     layout.setOrientation(QPageLayout::Landscape);
@@ -811,7 +790,7 @@ QString ESAAApp::generateA5Flyer(const QString &facilityName, const QImage &logo
 
 QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
 {
-    QString a4Flyer(getTempPath() + "/a4flyer" + QString::number(number) + ".pdf");
+    QString a4Flyer(jw78::Utils::getTempPath() + "/a4flyer" + QString::number(number) + ".pdf");
     QPdfWriter pdf(a4Flyer);
     QPageLayout layout(pdf.pageLayout());
     layout.setOrientation(QPageLayout::Portrait);
@@ -1025,7 +1004,7 @@ void ESAAApp::openUrlORPdf(const QString &urlOrPdf)
     {
         QString url(urlOrPdf);
         QFileInfo fileInfo(urlOrPdf);
-        QString filename(getTempPath() + "/" + fileInfo.fileName());
+        QString filename(jw78::Utils::getTempPath() + "/" + fileInfo.fileName());
         if (QFile::exists(filename))
         {
             filename = "file:////" + filename;
@@ -1087,7 +1066,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
     {
-        li.locationId = genUUID();
+        li.locationId = jw78::Utils::genUUID();
     }
     li.contactReceiveEmail = contactReceiveEMail;
     li.facilityName = facilityName;
@@ -1179,7 +1158,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
     // Now add some text to the email.
     SimpleMail::MimeHtml *html = new SimpleMail::MimeHtml;
 
-    QString jpgGuid(genUUID());
+    QString jpgGuid(jw78::Utils::genUUID());
 
     html->setHtml(QLatin1String("<h1> Hier folgt der QR-Code </h1>"
                                 "<img src=\"cid:") + jpgGuid + "\" />");
@@ -1202,13 +1181,13 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
         }
         if (it->right(3) == "png")
         {
-            image1->setContentId(genUUID().toLatin1());
+            image1->setContentId(jw78::Utils::genUUID().toLatin1());
             image1->setContentType(QByteArrayLiteral("image/png"));
             pngQRCodeFilename = *it;
         }
         if (it->right(3) == "svg")
         {
-            image1->setContentId(genUUID().toLatin1());
+            image1->setContentId(jw78::Utils::genUUID().toLatin1());
             image1->setContentType(QByteArrayLiteral("image/svg+xml"));
         }
 
@@ -1354,11 +1333,11 @@ void ESAAApp::dummyGet()
 
 void ESAAApp::loadAllVisits()
 {
-    QDir directory(getWriteablePath());
+    QDir directory(jw78::Utils::getWriteablePath());
     QStringList visitFiles(directory.entryList(QStringList() << "visits-*.json", QDir::Files));
     for (int i(0); i < visitFiles.size(); ++i)
     {
-        QString visitFileName(getWriteablePath() + "/" + visitFiles[i]);
+        QString visitFileName(jw78::Utils::getWriteablePath() + "/" + visitFiles[i]);
         QFile visitFile(visitFileName);
         if (visitFile.open(QIODevice::ReadOnly))
         {
