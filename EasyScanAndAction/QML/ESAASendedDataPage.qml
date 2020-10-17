@@ -52,7 +52,7 @@ ESAAPage
                 x: parent.height
                 width: parent.height
                 height: parent.height
-                color: ESAA.lastVisitColor
+                color: LastVisit.color
                 radius: ESAA.radius
             }
             Rectangle

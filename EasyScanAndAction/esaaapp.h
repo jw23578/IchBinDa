@@ -115,7 +115,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, data2send, Data2send, "");
 
     JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
-    JWPROPERTY(QColor, lastVisitColor, LastVisitColor, "#ffffff");
 
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")

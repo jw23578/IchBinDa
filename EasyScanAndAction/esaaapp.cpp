@@ -293,7 +293,7 @@ void ESAAApp::saveData()
     data["ibdToken"] = lastVisit.ibdToken;
     data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
     data["lastVisitLogoUrl"] = lastVisit.logoUrl();
-    data["lastVisitColor"] = lastVisitColor().name();
+    data["lastVisitColor"] = lastVisit.color().name();
     data["contactData"] = contactData;
     data["locationInfos"] = locationInfos;
     data["firstStart"] = firstStart();
@@ -341,7 +341,6 @@ void ESAAApp::loadData()
     lastVisit.setEnd(help);
 
     setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
-    setLastVisitColor(data["lastVisitColor"].toString());
 
     lastVisit.ibdToken = data["ibdToken"].toString();
     lastVisit.setLogoUrl(data["lastVisitLogoUrl"].toString());
@@ -352,6 +351,7 @@ void ESAAApp::loadData()
     lastVisit.setIndividualURL1(data["individualURL1"].toString());
     lastVisit.setIndividualURL1Caption(data["individualURL1Caption"].toString());
     lastVisit.setLunchMenueURL(data["lunchMenueURL"].toString());
+    lastVisit.setColor(data["lastVisitColor"].toString());
 
     setLastVisitFstname(data["lastVisitFstname"].toString());
     setLastVisitSurname(data["lastVisitSurname"].toString());
