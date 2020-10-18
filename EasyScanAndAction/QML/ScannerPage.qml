@@ -10,16 +10,17 @@ ESAAPage
     caption: "QR-Code einlesen"
 
     id: scannerpage
+
     onShowing:
     {
         console.log("show scanner")
+        shareButton.rotate(400)
         if (!ESAA.isActiveVisit(1))
         {
             camera.stop()
             camera.start()
             camera.searchAndLock()
         }
-        shareButton.rotate(400)
     }
 
     PauseAnimation {
@@ -31,6 +32,7 @@ ESAAPage
     onHiding:
     {
         camera.stop()
+        camera.cameraState = Camera.UnloadedState
     }
 
     signal playBackClicked
@@ -94,6 +96,8 @@ ESAAPage
     }
     Camera
     {
+        onErrorStringChanged: console.log("error: " + errorString)
+        cameraState: Camera.UnloadedState
         id: camera
         focus.focusMode: Camera.FocusMacro //  Camera.FocusContinuous
         focus.focusPointMode:  Camera.FocusPointAuto

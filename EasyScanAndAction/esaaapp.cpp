@@ -20,6 +20,7 @@
 #include <QUrlQuery>
 #include <QDesktopServices>
 #include <QPdfWriter>
+#include "customercard.h"
 
 void ESAAApp::checkDevelopMobile()
 {
@@ -476,8 +477,10 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     internetTester(this),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
     publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
-    allVisits(e, "AllVisits", "Visit")
+    allVisits(e, "AllVisits", "Visit"),
+    allCustomerCards(e, "AllCustomerCards", "Card")
 {
+    setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
     if (jw78::Utils::getWriteablePath().contains("/home/jw78"))
     {
@@ -516,6 +519,16 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     qDebug() << dataFileName;
     loadData();
     loadAllVisits();
+
+    std::unique_ptr<CustomerCard> te(new CustomerCard(false));
+    QVector<jw78::ReflectableObject*> temp;
+    database.createTableCollectionOrFileIfNeeded("CustomerCards", *te);
+    database.selectAll("CustomerCards", temp, *te);
+    for (auto e: temp)
+    {
+        CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
+        allCustomerCards.add(cc);
+    }
 
     QString data;
     QString EMailConfig(":/EMailConfig.txt");
@@ -1329,6 +1342,25 @@ void ESAAApp::dummyGet()
         qDebug() << "Dummy get finished" << networkReply->error();
         networkReply->deleteLater();// Don't forget to delete it
     });
+}
+
+void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
+{
+    QString customerCardsDir(jw78::Utils::getWriteablePath() + "/customerCards");
+    QDir dir;
+    if (!dir.exists(customerCardsDir))
+    {
+        dir.mkdir(customerCardsDir);
+    }
+    QString customerCardImageFilename(customerCardsDir + "/" + jw78::Utils::genUUID() + ".jpg");
+    QString work(filename);
+    work.replace("file:", "");
+    dir.rename(work, customerCardImageFilename);
+    CustomerCard *cc(new CustomerCard(true));
+    cc->setFilename(customerCardImageFilename);
+    cc->setName(name);
+    database.insert("CustomerCards", *cc);
+    allCustomerCards.add(cc);
 }
 
 void ESAAApp::loadAllVisits()

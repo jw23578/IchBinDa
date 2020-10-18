@@ -6,6 +6,7 @@ import "../Comp"
 ESAAPage {
     caption: "Kundenkarten"
     signal newCard;
+    signal showCustomerCard(string name, string filename)
     ESAAFlickable
     {
         id: theFlick
@@ -14,12 +15,58 @@ ESAAPage {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
+        contentHeight: theBigColumn.height
+        Column
+        {
+            id: theBigColumn
+            width: parent.width
+            spacing: ESAA.spacing
+            parent: theFlick.contentItem
+            Repeater
+            {
+                id: theRepeater
+                model: AllCustomerCards
+                Item
+                {
+                    Component.onCompleted:
+                    {
+                        console.log("created " + height)
+                    }
+                    height: theColumn.height
+                    width: parent.width
+                    Column
+                    {
+                        id: theColumn
+                        width: parent.width
+                        height: cardName.height
+                        ESAAText
+                        {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            id: cardName
+                            text: Card.name
+                        }
+                        Rectangle
+                        {
+                            height: 1
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            color: "black"
+                        }
+                    }
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: showCustomerCard(Card.name, Card.filename)
+                    }
+                }
+            }
+        }
+
     }
-    CircleButton
+    CentralActionButton
     {
         id: newCard
-        x: ESAA.screenWidth / 300 * 150 - width / 2
-        y: ESAA.screenHeight / 480 * 360 - height / 2
         text: "Neue<br>Karte"
         onClicked: parent.newCard()
     }

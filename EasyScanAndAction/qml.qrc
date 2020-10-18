@@ -42,5 +42,8 @@
         <file>QML/Comp/TransparentCircleButton.qml</file>
         <file>QML/BasePages/PageWithBackButton.qml</file>
         <file>QML/FinalPages/CustomerCardsList.qml</file>
+        <file>QML/Comp/CentralActionButton.qml</file>
+        <file>QML/FinalPages/SaveCustomerCard.qml</file>
+        <file>QML/FinalPages/ShowCustomerCard.qml</file>
     </qresource>
 </RCC>

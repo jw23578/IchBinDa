@@ -3,9 +3,11 @@ import QtMultimedia 5.15
 import "../Comp"
 
 PageWithBackButton {
+    id: thePage
+    property string targetFileName: ""
+    signal imageSaved(string filename);
     Camera {
         id: camera
-
         imageProcessing.whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
 
         exposure {
@@ -16,13 +18,15 @@ PageWithBackButton {
         flash.mode: Camera.FlashRedEyeReduction
 
         imageCapture {
-            onImageCaptured: {
-                photoPreview.source = preview  // Show the preview in an Image
+            onImageSaved: {
+                console.log("Saved");
+                thePage.imageSaved(thePage.targetFileName)
             }
         }
     }
-
+    property var camera: null
     VideoOutput {
+        autoOrientation: true
         source: camera
         anchors.left: parent.left
         anchors.right: parent.right
@@ -31,14 +35,17 @@ PageWithBackButton {
         anchors.margins: ESAA.spacing
         focus: visible // to receive focus and capture key events when visible
     }
-    CircleButton
+    CentralActionButton
     {
         id: takePictureButton
-        x: ESAA.screenWidth / 300 * 150 - width / 2
-        y: ESAA.screenHeight / 480 * 360 - height / 2
         text: "Foto<br>aufnehmen"
+        onClicked: camera.imageCapture.captureToLocation(targetFileName)
     }
     onShowing: camera.start()
-    onHiding: camera.stop()
+    onHiding:
+    {
+        camera.stop()
+        camera.cameraState = Camera.UnloadedState
+    }
     Component.onCompleted: camera.stop()
 }

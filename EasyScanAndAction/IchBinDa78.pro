@@ -18,6 +18,7 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    customercard.cpp \
     datetimereflectable.cpp \
     emailsender.cpp \
     esaaapp.cpp \
@@ -63,6 +64,7 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    customercard.h \
     datetimereflectable.h \
     emailsender.h \
     esaaapp.h \
@@ -122,7 +124,7 @@ ANDROID_VERSION_NAME = "Version 1.12"
 ANDROID_VERSION_CODE = "23"
 ANDROID_TARGET_SDK_VERSION = "29"
 
-VERSION = 1.11.6
+VERSION = 1.11.7
 ios{
     Q_ENABLE_BITCODE.name = ENABLE_BITCODE
     Q_ENABLE_BITCODE.value = NO

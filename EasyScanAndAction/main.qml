@@ -110,9 +110,17 @@ ApplicationWindow {
             id: timemainpage
             onBackPressed: showNewPage(timemainpage, scannerpage)
         }
-        TakePicturePage
+        SaveCustomerCard
         {
-            id: takepicturepage
+            id: savecustomercard
+            onBackPressed: showNewPage(theCurrentPage, takepicturepage)
+            onCardSaved: showNewPage(theCurrentPage, customercardslist)
+        }
+
+
+        ShowCustomerCard
+        {
+            id: showcustomercard
             onBackPressed: showNewPage(theCurrentPage, customercardslist)
         }
 
@@ -121,6 +129,11 @@ ApplicationWindow {
             id: customercardslist
             onBackPressed: showNewPage(theCurrentPage, scannerpage)
             onNewCard: showNewPage(theCurrentPage, takepicturepage)
+            onShowCustomerCard:
+            {
+                showcustomercard.imageFilename = "file:" + filename
+                showNewPage(theCurrentPage, showcustomercard)
+            }
         }
 
         ScannerPage
@@ -128,6 +141,18 @@ ApplicationWindow {
             id: scannerpage
             onGoRightClicked: showNewPage(scannerpage, timemainpage)
             onGoCustomerCards: showNewPage(scannerpage, customercardslist)
+        }
+        TakePicturePage
+        {
+            id: takepicturepage
+            caption: "Neue Kundenkarte"
+            targetFileName: ESAA.tempTakenPicture
+            onBackPressed: showNewPage(theCurrentPage, customercardslist)
+            onImageSaved:
+            {
+                savecustomercard.imageFilename = "file:" + filename
+                showNewPage(theCurrentPage, savecustomercard)
+            }
         }
         FirstStart
         {

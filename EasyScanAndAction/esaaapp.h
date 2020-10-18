@@ -47,8 +47,10 @@ class ESAAApp: public QObject
     std::map<QString, QDateTime> lastVisitOfFacility;
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
+    jw78::ObjectListModel allCustomerCards;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
+    JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    
     JWPROPERTY(int, screenWidth, ScreenWidth, 0);
     JWPROPERTY(int, screenHeight, ScreenHeight, 0);
@@ -248,6 +250,8 @@ public:
     Q_INVOKABLE bool isActiveVisit(int changeCounter);
 
     Q_INVOKABLE void dummyGet();
+
+    Q_INVOKABLE void saveCustomerCard(const QString &name, const QString &filename);
 
 signals:
     void showWaitMessageSignal(const QString &mt);
