@@ -3,6 +3,7 @@ import QZXing 2.3
 import QtMultimedia 5.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import "Comp"
 
 ESAAPage
 {
@@ -32,9 +33,10 @@ ESAAPage
         camera.stop()
     }
 
-    signal playBackClicked;
-    signal basketClicked;
-    signal goRightClicked;
+    signal playBackClicked
+    signal basketClicked
+    signal goRightClicked
+    signal goCustomerCards
 
     function decode(preview) {
         photoPreview.source = preview
@@ -233,6 +235,15 @@ ESAAPage
         id: shareButton
         visible: !ESAA.firstStart
     }
+    CircleButton
+    {
+        visible: ESAA.isDevelop
+        onClicked: goCustomerCards()
+        text: "Kunden<br>karten"
+        anchors.verticalCenter: shareButton.verticalCenter
+        x: (shareButton.x - width) / 2
+    }
+
     ArrowButton
     {
         anchors.right: parent.right

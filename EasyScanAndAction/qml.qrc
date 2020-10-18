@@ -2,15 +2,10 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>QML/QuestionPage.qml</file>
-        <file>QML/ESAATextInput.qml</file>
         <file>QML/Message.qml</file>
-        <file>QML/ESAAText.qml</file>
-        <file>QML/ESAALineInputWithCaption.qml</file>
         <file>QML/ScannerPage.qml</file>
         <file>QML/CreateQRCodePage.qml</file>
-        <file>QML/ESAASwitch.qml</file>
         <file>QML/FirstStart.qml</file>
-        <file>QML/ESAAButton.qml</file>
         <file>QML/MenuePage.qml</file>
         <file>QML/ESAAPage.qml</file>
         <file>QML/AgreePage.qml</file>
@@ -20,24 +15,32 @@
         <file>QML/BadMessage.qml</file>
         <file>QML/VisitEndQuestion.qml</file>
         <file>QML/Background.qml</file>
-        <file>QML/ESAAIconButton.qml</file>
         <file>QML/Logo.qml</file>
         <file>QML/SplashHeader.qml</file>
-        <file>QML/CircleButton.qml</file>
-        <file>QML/BackButton.qml</file>
-        <file>QML/ESAAFlickable.qml</file>
-        <file>QML/TwoCircleButtons.qml</file>
         <file>QML/WaitMessage.qml</file>
         <file>QML/CurrentVisitPage.qml</file>
-        <file>QML/ShareButton.qml</file>
         <file>QML/MyVisitsPage.qml</file>
-        <file>QML/TransparentCircleButton.qml</file>
         <file>QML/ShowKontaktTagebuchQRCode.qml</file>
         <file>QML/HelpOverlay.qml</file>
-        <file>QML/ArrowButton.qml</file>
         <file>QML/TimeMain.qml</file>
         <file>QML/TimeRecordingMenue.qml</file>
         <file>QML/TimeRecordingEvents.qml</file>
         <file>QML/WorkTimeSpansBrutto.qml</file>
+        <file>QML/BasePages/TakePicturePage.qml</file>
+        <file>QML/Comp/CircleButton.qml</file>
+        <file>QML/Comp/ESAAFlickable.qml</file>
+        <file>QML/Comp/TwoCircleButtons.qml</file>
+        <file>QML/Comp/ArrowButton.qml</file>
+        <file>QML/Comp/ESAALineInputWithCaption.qml</file>
+        <file>QML/Comp/ShareButton.qml</file>
+        <file>QML/Comp/ESAAText.qml</file>
+        <file>QML/Comp/ESAASwitch.qml</file>
+        <file>QML/Comp/ESAAIconButton.qml</file>
+        <file>QML/Comp/ESAAButton.qml</file>
+        <file>QML/Comp/ESAATextInput.qml</file>
+        <file>QML/Comp/BackButton.qml</file>
+        <file>QML/Comp/TransparentCircleButton.qml</file>
+        <file>QML/BasePages/PageWithBackButton.qml</file>
+        <file>QML/FinalPages/CustomerCardsList.qml</file>
     </qresource>
 </RCC>

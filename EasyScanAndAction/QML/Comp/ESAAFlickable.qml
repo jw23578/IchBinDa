@@ -84,7 +84,7 @@ Item
     }
     Component.onCompleted:
     {
-        upButton.opacity = (contentY > contentHeight / 10) ? 1 : 0
+        upButton.opacity = (contentY > 0) && (contentY > contentHeight / 10) ? 1 : 0
         downButton.opacity = (contentY + height > contentHeight / 10 * 9) ? 0 : 1
     }
 }

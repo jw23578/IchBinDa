@@ -3,6 +3,9 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import "QML"
+import "QML/Comp"
+import "QML/FinalPages"
+import "QML/BasePages"
 
 ApplicationWindow {
     id: mainWindow
@@ -107,11 +110,24 @@ ApplicationWindow {
             id: timemainpage
             onBackPressed: showNewPage(timemainpage, scannerpage)
         }
+        TakePicturePage
+        {
+            id: takepicturepage
+            onBackPressed: showNewPage(theCurrentPage, customercardslist)
+        }
+
+        CustomerCardsList
+        {
+            id: customercardslist
+            onBackPressed: showNewPage(theCurrentPage, scannerpage)
+            onNewCard: showNewPage(theCurrentPage, takepicturepage)
+        }
 
         ScannerPage
         {
             id: scannerpage
             onGoRightClicked: showNewPage(scannerpage, timemainpage)
+            onGoCustomerCards: showNewPage(scannerpage, customercardslist)
         }
         FirstStart
         {
