@@ -8,9 +8,15 @@ PageWithBackButton {
     caption: "Kundenkarte speichern"
     property string imageFilename: ""
     signal cardSaved;
-    onShowing: cardName.text = ""
+    onShowing:
+    {
+        cardName.text = ""
+    }
+    onHiding: imageFilename = ""
     Image
     {
+        id: theImage
+        cache: false
         source: parent.imageFilename
         anchors.top: parent.top
         anchors.left: parent.left

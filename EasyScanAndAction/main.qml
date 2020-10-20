@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import QtMultimedia 5.15
 import "QML"
 import "QML/Comp"
 import "QML/FinalPages"
@@ -135,21 +136,32 @@ ApplicationWindow {
                 showNewPage(theCurrentPage, showcustomercard)
             }
         }
+        CamVideoScan
+        {
+            z: 10
+            id: theCamera
+            onTagFound: scannerpage.tagFound(tag)
+            onImageSaved: takepicturepage.saveTheImage(filename)
+        }
 
         ScannerPage
         {
             id: scannerpage
+            camera: theCamera
             onGoRightClicked: showNewPage(scannerpage, timemainpage)
             onGoCustomerCards: showNewPage(scannerpage, customercardslist)
         }
         TakePicturePage
         {
             id: takepicturepage
-            caption: "Neue Kundenkarte"
             targetFileName: ESAA.tempTakenPicture
+            camera: theCamera
+            caption: "Neue Kundenkarte"
             onBackPressed: showNewPage(theCurrentPage, customercardslist)
-            onImageSaved:
+            function saveTheImage(filename)
             {
+                console.log("image saved: " + filename)
+                savecustomercard.imageFilename = ""
                 savecustomercard.imageFilename = "file:" + filename
                 showNewPage(theCurrentPage, savecustomercard)
             }
@@ -412,6 +424,7 @@ ApplicationWindow {
     }
     Component.onCompleted:
     {
+        theCamera.stop()
         ESAA.screenHeight = height
         ESAA.screenWidth = width
         ESAA.calculateRatios()

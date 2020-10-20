@@ -45,5 +45,6 @@
         <file>QML/Comp/CentralActionButton.qml</file>
         <file>QML/FinalPages/SaveCustomerCard.qml</file>
         <file>QML/FinalPages/ShowCustomerCard.qml</file>
+        <file>QML/Comp/CamVideoScan.qml</file>
     </qresource>
 </RCC>

@@ -29,7 +29,6 @@
 #include "JW78QTLib/jw78sqliteadapter.h"
 #include "JW78QTLib/jw78utils.h"
 
-
 class ESAAApp: public QObject
 {
     Q_OBJECT
