@@ -404,6 +404,12 @@ ApplicationWindow {
         }
         onHelpClicked: showNewPage(theCurrentPage, firststart)
     }
+    YesNoQuestionPage
+    {
+        id: yesnoquestion
+        z: 2
+    }
+
     Message
     {
         id: message
@@ -424,6 +430,7 @@ ApplicationWindow {
     Connections
     {
         target: ESAA
+        onYesNoQuestion: yesnoquestion.show(mt, yescallback, nocallback)
         onShowSendedData: showNewPage(scannerpage, sendedDataPage)
         onShowWaitMessageSignal: waitMessage.show(mt)
         onHideWaitMessageSignal: waitMessage.hide()

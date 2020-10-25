@@ -20,6 +20,17 @@ PageWithBackButton {
 
     }
 
+    function visitAccepted()
+    {
+        console.log("ja")
+        ESAA.showMessage("Der Besuch wurde gespeichert.")
+        backPressed()
+    }
+    function visitNotAccepted()
+    {
+        console.log("nein")
+    }
+
     ListView
     {
         id: view
@@ -59,6 +70,11 @@ PageWithBackButton {
                 width: parent.width
                 height: 1
                 color: "black"
+            }
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: ESAA.askYesNoQuestion("Soll ein Besuch bei " + place.name + " eingetragen werden?", visitAccepted, visitNotAccepted)
             }
         }
     }

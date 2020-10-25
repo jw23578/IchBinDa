@@ -203,6 +203,7 @@ public:
     Q_INVOKABLE void addData2Send(const QString &field, const QString &value);
     Q_INVOKABLE void addSubData2Send(const QString &field, const QString &subField, const QString &value);
     Q_INVOKABLE void firstStartDone();
+    Q_INVOKABLE void askYesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
     Q_INVOKABLE void showMessage(const QString &mt);
     Q_INVOKABLE void showMessageWithCallback(const QString &mt, QJSValue callback);
     Q_INVOKABLE void showWaitMessage(const QString &mt);
@@ -263,6 +264,7 @@ signals:
     void validQRCodeDetected();
     void invalidQRCodeDetected();
     void showSendedData();
+    void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
 
 
 };

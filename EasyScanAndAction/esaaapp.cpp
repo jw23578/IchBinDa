@@ -622,6 +622,11 @@ void ESAAApp::firstStartDone()
     saveData();
 }
 
+void ESAAApp::askYesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback)
+{
+    emit yesNoQuestion(mt, yescallback, nocallback);
+}
+
 void ESAAApp::showMessage(const QString &mt)
 {
     emit showMessageSignal(mt, QJSValue::NullValue);
