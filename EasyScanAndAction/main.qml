@@ -157,7 +157,7 @@ ApplicationWindow {
             z: 11
             id: theManualVisitButton
             visible: false
-            text: "Manueller<br>Besuch"
+            text: "Kontakt<br>situation<br>eintragen"
             onClicked: showNewPage(theCurrentPage, manualvisitpage)
         }
 

@@ -481,7 +481,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     allVisits(e, "AllVisits", "Visit"),
     allCustomerCards(e, "AllCustomerCards", "Card")
 {
-    placesManager.update();
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
     if (jw78::Utils::getWriteablePath().contains("/home/jw78"))

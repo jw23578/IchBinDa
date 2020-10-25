@@ -5,10 +5,23 @@ import "../BasePages"
 import "../Comp"
 import QtPositioning 5.11
 
-PageWithBackButton {
+PageWithBackButton
+{
+    caption: "Kontaktsituation eintragen"
+    CircleButton
+    {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        text: "oldenburg<br>simulieren"
+        visible: ESAA.isDevelop
+        onClicked: PlacesManager.simulate()
+        z: 2
+    }
+
     onShowing:
     {
         MobileExtensions.requestLocationPermission(permissionDenied, permissionGranted)
+        PlacesManager.update()
 //        positionsource.active = true
     }
     function permissionDenied()
@@ -77,6 +90,18 @@ PageWithBackButton {
                 onClicked: ESAA.askYesNoQuestion("Soll ein Besuch bei " + place.name + " eingetragen werden?", visitAccepted, visitNotAccepted)
             }
         }
+    }
+    Rectangle
+    {
+        anchors.fill: view
+        color: "red"
+        opacity: 0.5
+        ESAAText
+        {
+            anchors.centerIn: parent
+            text: "Umgebungsdaten werden abgerufen"
+        }
+        visible: PlacesManager.waitingForPlaces
     }
 
 //    onHiding: positionsource.active = false
