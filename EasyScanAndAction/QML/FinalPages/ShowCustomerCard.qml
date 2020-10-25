@@ -8,6 +8,7 @@ PageWithBackButton {
     property string imageFilename: ""
     Image
     {
+        autoTransform: true
         source: parent.imageFilename
         anchors.top: parent.top
         anchors.left: parent.left
