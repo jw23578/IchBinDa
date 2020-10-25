@@ -143,11 +143,29 @@ ApplicationWindow {
             onTagFound: scannerpage.tagFound(tag)
             onImageSaved: takepicturepage.saveTheImage(filename)
         }
+        ManualVisitPage
+        {
+            id: manualvisitpage
+            onBackPressed: showNewPage(theCurrentPage, scannerpage)
+        }
+
+        CircleButton
+        {
+            anchors.left: theCamera.left
+            anchors.bottom: theCamera.bottom
+            anchors.margins: width / 2
+            z: 11
+            id: theManualVisitButton
+            visible: false
+            text: "Manueller<br>Besuch"
+            onClicked: showNewPage(theCurrentPage, manualvisitpage)
+        }
 
         ScannerPage
         {
             id: scannerpage
             camera: theCamera
+            manualVisitButton: theManualVisitButton
             onGoRightClicked: showNewPage(scannerpage, timemainpage)
             onGoCustomerCards: showNewPage(scannerpage, customercardslist)
         }

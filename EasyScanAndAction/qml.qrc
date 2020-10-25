@@ -46,5 +46,6 @@
         <file>QML/FinalPages/SaveCustomerCard.qml</file>
         <file>QML/FinalPages/ShowCustomerCard.qml</file>
         <file>QML/Comp/CamVideoScan.qml</file>
+        <file>QML/FinalPages/ManualVisitPage.qml</file>
     </qresource>
 </RCC>

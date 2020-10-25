@@ -28,6 +28,7 @@
 #include "JW78MobileExtensions/mobileextensions.h"
 #include "JW78QTLib/jw78sqliteadapter.h"
 #include "JW78QTLib/jw78utils.h"
+#include "placesmanager.h"
 
 class ESAAApp: public QObject
 {
@@ -35,6 +36,7 @@ class ESAAApp: public QObject
     jw78::Utils jw78Utils;
     jw78::SQLiteAdapter database;
     TimeMaster timeMaster;
+    PlacesManager placesManager;
     MobileExtensions mobileExtensions;
     QNetworkAccessManager networkAccessManager;
     EMailSender emailSender;

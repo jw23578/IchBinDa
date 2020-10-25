@@ -9,6 +9,7 @@ ESAAPage
 {
     caption: "QR-Code einlesen"
     property var camera: null
+    property var manualVisitButton: null
 
     id: scannerpage
 
@@ -20,14 +21,13 @@ ESAAPage
             ESAA.action(tag)
         }
     }
-
-    onShowing:
+    function myShowFunction()
     {
+        manualVisitButton.visible = true
         camera.scan = true
         camera.anchors.top = parent.top
         camera.width = parent.width
         camera.height = camera.width
-        console.log("show scanner")
         shareButton.rotate(400)
         if (!ESAA.isActiveVisit(1))
         {
@@ -37,10 +37,21 @@ ESAAPage
         }
     }
 
+    onShowing:
+    {
+        console.log("show scanner")
+        if (ESAA.firstStart)
+        {
+            return
+        }
+        myShowFunction()
+    }
+
 
 
     onHiding:
     {
+        manualVisitButton.visible = false
         camera.stop()
     }
 
@@ -82,6 +93,9 @@ ESAAPage
         helpText1: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
                    "<br><br>Über den Button ganz unten kannst du das Menü aufrufen um die App zu erkunden."
         visible: ESAA.firstStart
-        onDoneClick: ESAA.firstStartDone()
+        onDoneClick: {
+            ESAA.firstStartDone()
+            myShowFunction()
+        }
     }
 }

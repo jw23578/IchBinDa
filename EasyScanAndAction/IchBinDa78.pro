@@ -1,4 +1,4 @@
-QT += quick multimedia svg xml qml
+QT += quick multimedia svg xml qml positioning
 
 CONFIG += c++11
 CONFIG += qzxing_qml
@@ -25,6 +25,8 @@ SOURCES += \
     internettester.cpp \
     pausetimespan.cpp \
     persistentmap.cpp \
+    place.cpp \
+    placesmanager.cpp \
     qrcodestore.cpp \
     timeevent.cpp \
     timemaster.cpp \
@@ -71,6 +73,8 @@ HEADERS += \
     internettester.h \
     pausetimespan.h \
     persistentmap.h \
+    place.h \
+    placesmanager.h \
     qrcodestore.h \
     timeevent.h \
     timemaster.h \
