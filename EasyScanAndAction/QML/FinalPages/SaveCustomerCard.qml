@@ -16,6 +16,7 @@ PageWithBackButton {
     Image
     {
         id: theImage
+        autoTransform: true
         cache: false
         source: parent.imageFilename
         anchors.top: parent.top
