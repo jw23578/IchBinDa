@@ -10,4 +10,5 @@ void Visit::operator=(const Visit &other)
     setBegin(other.begin());
     setLogoUrl(other.logoUrl());
     setFacilityName(other.facilityName());
+    setStreet(other.street());
 }

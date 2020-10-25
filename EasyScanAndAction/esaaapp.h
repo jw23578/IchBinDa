@@ -190,6 +190,7 @@ private:
     void interpretExtendedQRCodeData(const QString &qrCodeJSON);
     void fetchExtendedQRCodeData(const QString &facilityId);
     void setPublicKey(int qrCodeNumber);
+    bool appendAVisit(Visit *aVisit);
     void loadAllVisits();
 public:
     ESAAApp(QQmlApplicationEngine &e);
@@ -254,6 +255,7 @@ public:
     Q_INVOKABLE void dummyGet();
 
     Q_INVOKABLE void saveCustomerCard(const QString &name, const QString &filename);
+    Q_INVOKABLE void saveKontaktsituation(const QString &name, const QString &adress);
 
 signals:
     void showWaitMessageSignal(const QString &mt);

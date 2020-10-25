@@ -256,6 +256,12 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
         return;
     }
     visitFile.write(QJsonDocument(data).toJson());
+    Visit *aVisit(new Visit);
+    *aVisit = lastVisit;
+    if (!ESAAApp::appendAVisit(aVisit))
+    {
+        delete aVisit;
+    }
 }
 
 void ESAAApp::saveData()
@@ -1369,6 +1375,34 @@ void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
     allCustomerCards.add(cc);
 }
 
+void ESAAApp::saveKontaktsituation(const QString &name, const QString &adress)
+{
+    lastVisit = Visit();
+    lastVisit.setBegin(QDateTime::currentDateTime());
+    lastVisit.setEnd(lastVisit.begin().addSecs(60 * 30));
+    lastVisit.setFacilityName(name);
+    lastVisit.setStreet(adress);
+    lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
+    lastVisit.ibdToken += QString(".") + "Kontaktsitutation";
+    lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
+    saveVisit(lastVisit.begin(), lastVisit.end());
+}
+
+bool ESAAApp::appendAVisit(Visit *aVisit)
+{
+    QString fn(aVisit->facilityName());
+    QDateTime begin(aVisit->begin());
+    if (fn.size() && begin.isValid() && (!lastVisitOfFacility[fn].isValid() || lastVisitOfFacility[fn].addSecs(60 * 60 * 6) < begin))
+    {
+        lastVisitOfFacility[fn] = begin;
+        facilityName2VisitCount[fn] += 1;
+        aVisit->setCount(facilityName2VisitCount[fn]);
+        allVisits.add(aVisit);
+        return true;
+    }
+    return false;
+}
+
 void ESAAApp::loadAllVisits()
 {
     QDir directory(jw78::Utils::getWriteablePath());
@@ -1388,17 +1422,14 @@ void ESAAApp::loadAllVisits()
                 QJsonObject visitObject(visitArray[v].toObject());
                 Visit *aVisit(new Visit);
                 QString fn(visitObject["facilityName"].toString());
+                aVisit->setFacilityName(fn);
+                aVisit->setLogoUrl(visitObject["logoUrl"].toString());
                 QString beginStr(visitObject["begin"].toString());
                 QDateTime begin(QDateTime::fromString(beginStr, Qt::ISODate));
-                if (fn.size() && begin.isValid() && (!lastVisitOfFacility[fn].isValid() || lastVisitOfFacility[fn].addSecs(60 * 60 * 6) < begin))
+                aVisit->setBegin(begin);
+                if (!appendAVisit(aVisit))
                 {
-                    lastVisitOfFacility[fn] = begin;
-                    facilityName2VisitCount[fn] += 1;
-                    aVisit->setCount(facilityName2VisitCount[fn]);
-                    aVisit->setFacilityName(fn);
-                    aVisit->setLogoUrl(visitObject["logoUrl"].toString());
-                    aVisit->setBegin(begin);
-                    allVisits.add(aVisit);
+                    delete aVisit;
                 }
             }
         }

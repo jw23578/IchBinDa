@@ -7,6 +7,7 @@ import QtPositioning 5.11
 
 PageWithBackButton
 {
+    id: manualvisitpage
     caption: "Kontaktsituation eintragen"
     CircleButton
     {
@@ -32,11 +33,12 @@ PageWithBackButton
     {
 
     }
-
+    property string name: ""
+    property string adress: ""
     function visitAccepted()
     {
-        console.log("ja")
-        ESAA.showMessage("Der Besuch wurde gespeichert.")
+        ESAA.saveKontaktsituation(name, adress)
+        ESAA.showMessage("Die Kontaktsituation wurde gespeichert.")
         backPressed()
     }
     function visitNotAccepted()
@@ -87,7 +89,12 @@ PageWithBackButton
             MouseArea
             {
                 anchors.fill: parent
-                onClicked: ESAA.askYesNoQuestion("Soll ein Besuch bei " + place.name + " eingetragen werden?", visitAccepted, visitNotAccepted)
+                onClicked:
+                {
+                    manualvisitpage.name = place.name
+                    manualvisitpage.adress = place.adress
+                    ESAA.askYesNoQuestion("Soll ein Besuch bei <br><br><b>" + place.name + "</b><br><br> eingetragen werden?", visitAccepted, visitNotAccepted)
+                }
             }
         }
     }
