@@ -40,7 +40,7 @@ void PlacesManager::update()
 
 void PlacesManager::simulate()
 {
-    positionUpdated(QGeoPositionInfo(QGeoCoordinate(53.140920, 8.212130), QDateTime::currentDateTime()));
+    positionUpdated(QGeoPositionInfo(QGeoCoordinate(53.1435668, 8.2171558), QDateTime::currentDateTime()));
 }
 
 void PlacesManager::handleReplyFinished(QNetworkReply *reply)
@@ -102,7 +102,7 @@ void PlacesManager::positionUpdated(const QGeoPositionInfo &update)
         source->stopUpdates();
     }
     QByteArray xmlRequest("<osm-script output=\"json\">"
-            "<query type=\"nwr\">"
+            "<query type=\"nw\">"
               "<has-kv k=\"name\"/>"
               "<has-kv k=\"highway\" modv=\"not\" regv=\".\"/>"
             "<around lat=\"");
