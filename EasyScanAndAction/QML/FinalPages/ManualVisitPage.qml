@@ -109,6 +109,18 @@ PageWithBackButton
         }
         visible: PlacesManager.waitingForPlaces
     }
+    Rectangle
+    {
+        anchors.fill: view
+        color: "orange"
+        opacity: 0.5
+        ESAAText
+        {
+            anchors.centerIn: parent
+            text: "Die Standortdaten können nicht abgerufen werden, bitte aktivieren sie die Lokalisierung in den " + MobileExtensions.systemName + " Einstellungen."
+        }
+        visible: MobileExtensions.locationServicesDeniedByUser
+    }
 
 //    onHiding: positionsource.active = false
 //    PositionSource
