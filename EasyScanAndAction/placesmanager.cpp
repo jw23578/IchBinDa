@@ -18,6 +18,7 @@ PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
 
 void PlacesManager::update()
 {
+    qDebug() << __PRETTY_FUNCTION__;
     setWaitingForPlaces(true);
     places.clear();
     if (source == nullptr)

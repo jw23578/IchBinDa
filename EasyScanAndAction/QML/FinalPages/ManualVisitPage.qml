@@ -3,7 +3,6 @@ import QtQuick.Controls 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
-import QtPositioning 5.11
 
 PageWithBackButton
 {
@@ -22,7 +21,10 @@ PageWithBackButton
     onShowing:
     {
         MobileExtensions.requestLocationPermission(permissionDenied, permissionGranted)
-        PlacesManager.update()
+        if (!MobileExtensions.locationServicesDeniedByUser)
+        {
+            PlacesManager.update()
+        }
     }
     function permissionDenied()
     {
@@ -107,35 +109,31 @@ PageWithBackButton
             anchors.centerIn: parent
             text: "Umgebungsdaten werden abgerufen"
         }
-        visible: PlacesManager.waitingForPlaces
+        visible: PlacesManager.waitingForPlaces && !locationNotAvailable.visible
     }
     Rectangle
     {
+        id: locationNotAvailable
         anchors.fill: view
         color: "orange"
-        opacity: 0.5
+        opacity: 1
         ESAAText
         {
             anchors.centerIn: parent
+            width: parent.width * 8 / 10
+            wrapMode: Text.WordWrap
             text: "Die Standortdaten können nicht abgerufen werden, bitte aktivieren sie die Lokalisierung in den " + MobileExtensions.systemName + " Einstellungen."
         }
         visible: MobileExtensions.locationServicesDeniedByUser
+        onVisibleChanged: {
+            if (!visible && manualvisitpage.visible)
+            {
+                if (!MobileExtensions.locationServicesDeniedByUser)
+                {
+                    PlacesManager.update()
+                }
+            }
+        }
     }
 
-//    onHiding: positionsource.active = false
-//    PositionSource
-//    {
-//        active: false
-//        id: positionsource
-//        updateInterval: 1000
-//        onPositionChanged:
-//        {
-//            if (!position.longitudeValid)
-//            {
-//                return;
-//            }
-//            console.log("latitude: " + position.coordinate.latitude)
-//            console.log("longitude: " + position.coordinate.longitude)
-//        }
-//    }
 }
