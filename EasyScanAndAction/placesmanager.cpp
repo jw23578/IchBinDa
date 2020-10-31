@@ -19,19 +19,15 @@ PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
 void PlacesManager::update()
 {
     setWaitingForPlaces(true);
-    qDebug() << "clear places";
     places.clear();
     if (source == nullptr)
     {
-        qDebug() << "create a source";
         source = QGeoPositionInfoSource::createDefaultSource(0);
         if (source != nullptr)
         {
-            qDebug() << "created source";
             qDebug() << source->sourceName();
             QObject::connect(source, &QGeoPositionInfoSource::positionUpdated,
                              this, &PlacesManager::positionUpdated);
-            qDebug() << "set update intervall";
             source->setUpdateInterval(0);
         }
     }
@@ -53,9 +49,7 @@ void PlacesManager::handleReplyFinished(QNetworkReply *reply)
         update();
         return;
     }
-    qDebug() << "reply finished";
     QByteArray data(reply->readAll());
-    qDebug() << "reply finished: " << data;
     QJsonDocument json(QJsonDocument::fromJson(data));
     if (json.isNull())
     {
@@ -100,13 +94,10 @@ void PlacesManager::handleReplyFinished(QNetworkReply *reply)
 
 void PlacesManager::positionUpdated(const QGeoPositionInfo &update)
 {
-    qDebug() << "position updated 1";
     places.clear();
-    qDebug() << "position updated 2";
     setWaitingForPlaces(true);
     if (source != nullptr)
     {
-        qDebug() << "position updated 3";
         source->stopUpdates();
     }
     QByteArray xmlRequest("<osm-script output=\"json\">"
@@ -114,9 +105,7 @@ void PlacesManager::positionUpdated(const QGeoPositionInfo &update)
               "<has-kv k=\"name\"/>"
               "<has-kv k=\"highway\" modv=\"not\" regv=\".\"/>"
             "<around lat=\"");
-    qDebug() << "position updated 4";
     xmlRequest += QString::number(update.coordinate().latitude()).toUtf8();
-    qDebug() << "position updated 5";
     xmlRequest += QByteArray("\" lon=\"");
     xmlRequest += QString::number(update.coordinate().longitude()).toUtf8();
     xmlRequest += QByteArray("\" radius=\"50\"/>"
