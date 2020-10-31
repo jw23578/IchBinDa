@@ -23,7 +23,6 @@ PageWithBackButton
     {
         MobileExtensions.requestLocationPermission(permissionDenied, permissionGranted)
         PlacesManager.update()
-//        positionsource.active = true
     }
     function permissionDenied()
     {
