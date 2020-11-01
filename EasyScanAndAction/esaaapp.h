@@ -70,6 +70,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, buttonColor, ButtonColor, "#4581B3");
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
     JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
+
     JWPROPERTY(int, fontInputPixelsize, FontInputPixelsize, 10);
     JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);
     JWPROPERTY(int, fontTextPixelsize, FontTextPixelsize, 10);
@@ -256,6 +257,9 @@ public:
 
     Q_INVOKABLE void saveCustomerCard(const QString &name, const QString &filename);
     Q_INVOKABLE void saveKontaktsituation(const QString &name, const QString &adress);
+
+    Q_INVOKABLE void setIchBinDaScheme();
+    Q_INVOKABLE void setWorkTimeScheme();
 
 signals:
     void showWaitMessageSignal(const QString &mt);

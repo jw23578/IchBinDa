@@ -1388,6 +1388,16 @@ void ESAAApp::saveKontaktsituation(const QString &name, const QString &adress)
     saveVisit(lastVisit.begin(), lastVisit.end());
 }
 
+void ESAAApp::setIchBinDaScheme()
+{
+
+}
+
+void ESAAApp::setWorkTimeScheme()
+{
+
+}
+
 bool ESAAApp::appendAVisit(Visit *aVisit)
 {
     QString fn(aVisit->facilityName());

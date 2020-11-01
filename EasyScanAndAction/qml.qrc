@@ -36,7 +36,6 @@
         <file>QML/Comp/ESAAText.qml</file>
         <file>QML/Comp/ESAASwitch.qml</file>
         <file>QML/Comp/ESAAIconButton.qml</file>
-        <file>QML/Comp/ESAAButton.qml</file>
         <file>QML/Comp/ESAATextInput.qml</file>
         <file>QML/Comp/BackButton.qml</file>
         <file>QML/Comp/TransparentCircleButton.qml</file>
