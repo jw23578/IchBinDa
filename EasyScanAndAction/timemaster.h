@@ -32,10 +32,13 @@ class TimeMaster : public QObject
 public:
     explicit TimeMaster(QQmlApplicationEngine &engine, ESAAApp &app, jw78::PersistentAdapter &pa, QObject *parent = nullptr);
 
+    Q_INVOKABLE void developPrepare();
+
     Q_INVOKABLE QDateTime now();
     Q_INVOKABLE QDateTime nullDate();
     Q_INVOKABLE bool isNull(const QDateTime &dt);
     Q_INVOKABLE bool isValid(const QDateTime &dt);
+    Q_INVOKABLE void load(int year, int month);
 
 signals:
 

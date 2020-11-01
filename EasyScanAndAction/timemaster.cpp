@@ -85,14 +85,85 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
     m_currentWorkTravelStart = dbCurrentWorkTravelStart.value;
 
     std::unique_ptr<TimeEvent> te(new TimeEvent(false));
-    QVector<jw78::ReflectableObject*> temp;
     pa.createTableCollectionOrFileIfNeeded("TimeEvents", *te);
-    QDate monthStart(QDate::currentDate().year(), QDate::currentDate().month(), 1);
+    load(QDate::currentDate().year(),
+         QDate::currentDate().month() - 1);
+}
+
+void TimeMaster::developPrepare()
+{
+    pa.clear("TimeEvents");
+    QDate work(2020, 5, 1);
+    int counter(1);
+    while (work < QDate::currentDate())
+    {
+        counter += 1;
+        TimeEvent te(true);
+        te.setEventType(0);
+        te.setTimeStamp(QDateTime(work, QTime(8, 0, 0, 0)));
+        pa.insert("TimeEvents", te);
+        te.setEventType(1);
+        te.setTimeStamp(QDateTime(work, QTime(17, 0, 0, 0)));
+        pa.insert("TimeEvents", te);
+        if (counter % 3 == 1)
+        {
+            te.setEventType(2);
+            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0)));
+            pa.insert("TimeEvents", te);
+            te.setEventType(3);
+            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0)));
+            pa.insert("TimeEvents", te);
+        }
+        if (counter % 3 == 2)
+        {
+            te.setEventType(2);
+            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0)));
+            pa.insert("TimeEvents", te);
+            te.setEventType(3);
+            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0)));
+            pa.insert("TimeEvents", te);
+
+            te.setEventType(2);
+            te.setTimeStamp(QDateTime(work, QTime(12, 30, 0, 0)));
+            pa.insert("TimeEvents", te);
+            te.setEventType(3);
+            te.setTimeStamp(QDateTime(work, QTime(13, 15, 0, 0)));
+            pa.insert("TimeEvents", te);
+        }
+        work = work.addDays(1);
+    }
+}
+
+QDateTime TimeMaster::now()
+{
+    return QDateTime::currentDateTime();
+}
+
+QDateTime TimeMaster::nullDate()
+{
+    return QDateTime();
+}
+
+bool TimeMaster::isNull(const QDateTime &dt)
+{
+    return dt.isNull();
+}
+
+bool TimeMaster::isValid(const QDateTime &dt)
+{
+    return dt.isValid();
+}
+
+void TimeMaster::load(int year, int month)
+{
+    TimeEvent templateEvent(false);
+    QVector<jw78::ReflectableObject*> temp;
+    QDate monthStart(year, month, 1);
     QDate nextMonthStart(monthStart.addMonths(1));
     pa.selectAllBetween("TimeEvents", "m_timeStamp",
                         monthStart.toString(Qt::ISODate),
                         nextMonthStart.toString(Qt::ISODate),
-                        temp, *te);
+                        temp, templateEvent);
     WorkTimeSpan *currentWorkTimeSpan(nullptr);
     PauseTimeSpan *currentPauseTimeSpan(nullptr);
     for (auto t : temp)
@@ -122,24 +193,4 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
             currentPauseTimeSpan = nullptr;
         }
     }
-}
-
-QDateTime TimeMaster::now()
-{
-    return QDateTime::currentDateTime();
-}
-
-QDateTime TimeMaster::nullDate()
-{
-    return QDateTime();
-}
-
-bool TimeMaster::isNull(const QDateTime &dt)
-{
-    return dt.isNull();
-}
-
-bool TimeMaster::isValid(const QDateTime &dt)
-{
-    return dt.isValid();
 }

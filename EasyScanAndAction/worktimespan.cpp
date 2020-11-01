@@ -31,8 +31,8 @@ void WorkTimeSpan::calculate()
     {
         setPauseMinutesNetto(pauseMinutesNetto() + lastDauerMinutes);
     }
-    setWorkMinutesNetto(minutes - pauseMinutesNetto());
     setAddedPauseMinutes(0);
+    setWorkMinutesNetto(minutes - pauseMinutesNetto());
     if (workMinutesNetto() > 9 * 60 && pauseMinutesNetto() < 45)
     {
         setAddedPauseMinutes(45 - pauseMinutesNetto());
@@ -44,6 +44,7 @@ void WorkTimeSpan::calculate()
             setAddedPauseMinutes(30 - pauseMinutesNetto());
         }
     }
+    setWorkMinutesNetto(minutes - pauseMinutesNetto() - addedPauseMinutes());
 }
 
 WorkTimeSpan::WorkTimeSpan()

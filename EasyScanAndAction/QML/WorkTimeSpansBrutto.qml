@@ -4,23 +4,36 @@ import "Comp"
 
 ESAAPage
 {
-    caption: "Arbeitszeiten brutto"
+    caption: "Arbeitszeiten"
+    CircleButton
+    {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        text: "Develop<br>Daten<br>erzeugen"
+        visible: ESAA.isDevelop
+        onClicked:
+        {
+            TimeMaster.developPrepare()
+            TimeMaster.load(2020, 10)
+        }
+        z: 2
+    }
     ListView
     {
         id: view
         anchors.top: parent.top
-        anchors.topMargin: ESAA.spacing
+        anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: backbutton.top
-        anchors.bottomMargin: ESAA.spacing
         spacing: 1
         model: WorkTimeSpans
         clip: true
         delegate: Item {
+            clip: true
             id: theItem
             width: view.width
-            height: smallData.height + ESAA.spacing
+            height: (smallData.myVisible ? smallData.height : extData.myVisible ? extData.height : fullData.height) + ESAA.spacing
             Behavior on height
             {
                 NumberAnimation
@@ -32,6 +45,7 @@ ESAAPage
             Column
             {
                 id: smallData
+                property bool myVisible: true;
                 visible: opacity > 0
                 opacity: 1
                 anchors.left: parent.left
@@ -47,32 +61,34 @@ ESAAPage
 
                 ESAAText
                 {
+                    id: dienstBeginnEndeAmSelbenTag
+                    visible: JW78Utils.formatDate(timeSpan.workBegin) == JW78Utils.formatDate(timeSpan.workEnd)
+                    text: "Dienst " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin) + " - " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
+                }
+                ESAAText
+                {
+                    visible: !dienstBeginnEndeAmSelbenTag.visible
                     text: "Dienst von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
                 }
                 ESAAText
                 {
+                    visible: !dienstBeginnEndeAmSelbenTag.visible
                     text: "Dienst bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                 }
                 ESAAText
                 {
-                    text: "Dauer Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesBrutto);
+                    text: "Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto + timeSpan.addedPauseMinutes) + " (" + timeSpan.pauseCount + ")"
+                    visible: timeSpan.pauseCount > 0
                 }
                 ESAAText
                 {
-                    text: "Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto) + " Anzahl Pausen: " + timeSpan.pauseCount
-                }
-                ESAAText
-                {
-                    text: "Hinzugefügte Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.addedPauseMinutes);
-                }
-                ESAAText
-                {
-                    text: "Dauer Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
+                    text: "Dauer: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
                 }
             }
             Column
             {
                 id: extData
+                property bool myVisible: false
                 visible: opacity > 0
                 opacity: 0
                 Behavior on opacity
@@ -117,6 +133,7 @@ ESAAPage
             Column
             {
                 id: fullData
+                property bool myVisible: false
                 visible: opacity > 0
                 opacity: 0
                 Behavior on opacity
@@ -198,7 +215,9 @@ ESAAPage
                 {
                     if (smallData.visible)
                     {
-                        theItem.height = extData.height + ESAA.spacing
+                        smallData.myVisible = false
+                        extData.myVisible = true
+                        fullData.myVisible = false
                         extData.z = 0
                         smallData.z = 0
                         fullData.z = 0
@@ -208,9 +227,11 @@ ESAAPage
                     }
                     else
                     {
-                        if (extData.visible)
+                        if (extData.visible && timeSpan.pauseCount > 0)
                         {
-                            theItem.height = fullData.height + ESAA.spacing
+                            smallData.myVisible = false
+                            extData.myVisible = false
+                            fullData.myVisible = true
                             extData.z = 0
                             fullData.z = 1
                             smallData.z = 0
@@ -220,7 +241,9 @@ ESAAPage
                         }
                         else
                         {
-                            theItem.height = smallData.height + ESAA.spacing
+                            smallData.myVisible = true
+                            extData.myVisible = false
+                            fullData.myVisible = false
                             extData.z = 1
                             fullData.z = 0
                             smallData.z = 0
