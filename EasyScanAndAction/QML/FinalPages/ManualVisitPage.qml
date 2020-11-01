@@ -8,6 +8,13 @@ PageWithBackButton
 {
     id: manualvisitpage
     caption: "Kontaktsituation eintragen"
+    function saveVisit(name, adress)
+    {
+        manualvisitpage.name = name
+        manualvisitpage.adress = adress
+        ESAA.askYesNoQuestion("Soll ein Besuch bei <br><br><b>" + name + "</b><br><br> eingetragen werden?", visitAccepted, visitNotAccepted)
+    }
+
     CircleButton
     {
         anchors.right: parent.right
@@ -20,6 +27,7 @@ PageWithBackButton
 
     onShowing:
     {
+        manualName.text = ""
         MobileExtensions.requestLocationPermission(permissionDenied, permissionGranted)
         if (!MobileExtensions.locationServicesDeniedByUser)
         {
@@ -51,11 +59,10 @@ PageWithBackButton
     {
         id: view
         anchors.top: parent.top
-        anchors.topMargin: ESAA.spacing
+        anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: backButton.top
-        anchors.bottomMargin: ESAA.spacing
+        anchors.bottom: manuell.top
         spacing: 1
         model: Places
         clip: true
@@ -90,15 +97,25 @@ PageWithBackButton
             MouseArea
             {
                 anchors.fill: parent
-                onClicked:
-                {
-                    manualvisitpage.name = place.name
-                    manualvisitpage.adress = place.adress
-                    ESAA.askYesNoQuestion("Soll ein Besuch bei <br><br><b>" + place.name + "</b><br><br> eingetragen werden?", visitAccepted, visitNotAccepted)
-                }
+                onClicked: saveVisit(place.name, place.adress)
             }
         }
     }
+    Column
+    {
+        id: manuell
+        width: parent.width
+        anchors.bottom: saveButton.top
+        anchors.bottomMargin: ESAA.spacing
+        ESAALineInputWithCaption
+        {
+            width: parent.width - 2 * ESAA.spacing
+            caption: qsTr("Manuelle Eingabe")
+            anchors.horizontalCenter: parent.horizontalCenter
+            id: manualName
+        }
+    }
+
     Rectangle
     {
         anchors.fill: view
@@ -135,5 +152,18 @@ PageWithBackButton
             }
         }
     }
-
+    CentralActionButton
+    {
+        id: saveButton
+        text: "Speichern"
+        onClicked:
+        {
+            if (manualName.displayText == "")
+            {
+                ESAA.showMessage("Bitte geben Sie noch eine Bezeichnung für den manuelle Speicherung ein.");
+                return
+            }
+            saveVisit(manualName.displayText, "")
+        }
+    }
 }
