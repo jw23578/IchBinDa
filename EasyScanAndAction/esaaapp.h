@@ -69,7 +69,10 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, menueButtonColor, MenueButtonColor, "#0E79B2")
     JWPROPERTY(QColor, buttonColor, ButtonColor, "#4581B3");
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
-    JWPROPERTY(QColor, buttonBorderColor, ButtonBorderColor, "#0E79B2");
+
+    JWPROPERTY(QColor, buttonFromColor, ButtonFromColor, "#4581B3");
+    JWPROPERTY(QColor, buttonToColor, ButtonToColor, "#364995");
+
 
     JWPROPERTY(int, fontInputPixelsize, FontInputPixelsize, 10);
     JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);

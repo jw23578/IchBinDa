@@ -18,8 +18,8 @@ Button
     property alias source: img.source
     property alias downSource: downImg.source
     property color buttonDownColor: ESAA.buttonDownColor
-    property color buttonColor: ESAA.buttonColor
-    property color buttonColor2: "#364995"
+    property color buttonFromColor: ESAA.buttonFromColor
+    property color buttonToColor: ESAA.buttonToColor
     property int verticalImageOffset: 0
     property double imageSizeFactor: 1
     property alias belowCaption: belowCaptionText.text
@@ -44,7 +44,7 @@ Button
             anchors.topMargin: control.height / 8
             text: control.smallTopText
             opacity: enabled ? 1.0 : 0.3
-            color: control.down ? control.buttonColor : "white"
+            color:  control.down ? control.buttonFromColor : "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -57,7 +57,7 @@ Button
             text: control.text
             font: control.font
             opacity: enabled ? 1.0 : disabledTextItem.visible ? 0 : 0.3
-            color: control.down ? control.buttonColor : "white"
+            color: control.down ? control.buttonFromColor : "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -88,20 +88,32 @@ Button
         anchors.bottom: parent.top
     }
 
-    background: Rectangle {
+    background: Item {
+        id: backgroundItem
+        Glow {
+            visible: control.down
+            anchors.fill: parent
+            radius: 8
+            samples: 17
+            color: ESAA.lineInputBorderColor
+            source: background
+        }
+
+        Rectangle {
+            anchors.fill: parent
         id: background
         gradient: control.down ? null : theGradient
         Gradient {
             id: theGradient
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: control.buttonColor }
-            GradientStop { position: 1.0; color: control.buttonColor2 }
+            GradientStop { position: 0.0; color: control.buttonFromColor }
+            GradientStop { position: 1.0; color: control.buttonToColor }
         }
-
-        color: control.down ? "white" : control.buttonColor
-        opacity: enabled ? 1 : 0.3
-        border.color:  control.buttonColor
+        color: "white"
+        border.color:  control.buttonFromColor
         border.width: control.down ? 1 : 0
+
+        opacity: enabled ? 1 : 0.3
         radius: width / 2
         Image
         {
@@ -126,6 +138,7 @@ Button
             mipmap: true
         }
     }
+}
     property int pauseDuration: 0
     PauseAnimation {
         id: pauseAni
@@ -136,7 +149,7 @@ Button
     ColorAnimation {
         property: "buttonColor"
         id: colorAni1
-        from: control.buttonColor
+        from: control.buttonFromColor
         to: control.buttonDownColor
         duration: 100
         onStopped: colorAni2.start()
@@ -145,7 +158,7 @@ Button
         property: "buttonColor"
         id: colorAni2
         from: control.buttonDownColor
-        to: control.buttonColor
+        to: control.buttonFromColor
         duration: 100
     }
 
@@ -203,17 +216,10 @@ Button
             }
         }
     }
-    Glow {
-        visible: control.down
-        anchors.fill: background
-        radius: 8
-        samples: 17
-        color: ESAA.lineInputBorderColor
-        source: background
-    }
+
     Glow {
         visible: parent.markGlowRadius > 0
-        anchors.fill: background
+        anchors.fill: backgroundItem
         radius: parent.markGlowRadius
         samples: 17
         color: "orange" // ESAA.lineInputBorderColor

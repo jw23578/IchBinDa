@@ -8,13 +8,22 @@ Button
     id: control
     font.pixelSize: ESAA.fontButtonPixelsize
     property alias source: img.source
-    property color buttonColor: ESAA.buttonColor
+    property color buttonFromColor: ESAA.buttonFromColor
+    property color buttonToColor: ESAA.buttonToColor
 
     background: Rectangle {
-        color: control.down ? ESAA.buttonDownColor : control.buttonColor
+        gradient: control.down ? null : theGradient
+        Gradient {
+            id: theGradient
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: control.buttonFromColor }
+            GradientStop { position: 1.0; color: control.buttonToColor }
+        }
+        color: "white"
+        border.color: control.buttonFromColor
+        border.width: control.down ? 1 : 0
+
         opacity: enabled ? 0.8 : 0.3
-        border.color: ESAA.buttonBorderColor
-        border.width: 1
         radius: ESAA.radius
         Image
         {
@@ -34,14 +43,14 @@ Button
         onFinished: colorAni1.start()
     }
 
-    ColorAnimation on buttonColor {
+    ColorAnimation on buttonFromColor {
         id: colorAni1
         from: ESAA.buttonColor
         to: ESAA.buttonDownColor
         duration: 100
         onFinished: colorAni2.start()
     }
-    ColorAnimation on buttonColor {
+    ColorAnimation on buttonFromColor {
         id: colorAni2
         from: ESAA.buttonDownColor
         to: ESAA.buttonColor
