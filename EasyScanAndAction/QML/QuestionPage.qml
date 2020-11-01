@@ -51,7 +51,7 @@ ESAAPage
 
     property variant yesAnswers: []
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
-    property color textColor: ESAA.buttonColor // ESAA.fontColor2
+    property color textColor: ESAA.buttonColor
     caption: ESAA.facilityName
     ESAAFlickable
     {
