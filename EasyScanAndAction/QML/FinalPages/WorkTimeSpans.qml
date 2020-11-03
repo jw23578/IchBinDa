@@ -273,6 +273,7 @@ ESAAPage
         anchors.right: parent.right
         anchors.margins: ESAA.spacing
         height: toLeft.height
+
         ArrowButton
         {
             id: toLeft
