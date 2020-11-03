@@ -1390,12 +1390,16 @@ void ESAAApp::saveKontaktsituation(const QString &name, const QString &adress)
 
 void ESAAApp::setIchBinDaScheme()
 {
-
+    setButtonDownColor("white");
+    setButtonFromColor("#4581B3");
+    setButtonToColor("#364995");
 }
 
 void ESAAApp::setWorkTimeScheme()
 {
-
+    setButtonDownColor("white");
+    setButtonFromColor("orange");
+    setButtonToColor(buttonFromColor().darker(150));
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

@@ -25,6 +25,7 @@ Button
     property alias belowCaption: belowCaptionText.text
     property alias aboveCaption: aboveCaptionText.text
     property alias disabledText: disabledTextItem.text
+    property alias imageRotation: img.rotation
     contentItem: Item {
         ESAAText
         {
@@ -44,7 +45,7 @@ Button
             anchors.topMargin: control.height / 8
             text: control.smallTopText
             opacity: enabled ? 1.0 : 0.3
-            color:  control.down ? control.buttonFromColor : "white"
+            color:  control.down ? control.buttonFromColor : control.buttonDownColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -57,7 +58,7 @@ Button
             text: control.text
             font: control.font
             opacity: enabled ? 1.0 : disabledTextItem.visible ? 0 : 0.3
-            color: control.down ? control.buttonFromColor : "white"
+            color: control.down ? control.buttonFromColor : control.buttonDownColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -109,7 +110,7 @@ Button
             GradientStop { position: 0.0; color: control.buttonFromColor }
             GradientStop { position: 1.0; color: control.buttonToColor }
         }
-        color: "white"
+        color: control.buttonDownColor
         border.color:  control.buttonFromColor
         border.width: control.down ? 1 : 0
 
@@ -129,6 +130,7 @@ Button
         Image
         {
             id: downImg
+            rotation: img.rotation
             anchors.centerIn: parent
             anchors.verticalCenterOffset: verticalImageOffset
             height: parent.height * imageSizeFactor

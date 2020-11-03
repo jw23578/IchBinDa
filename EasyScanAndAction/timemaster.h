@@ -25,6 +25,7 @@ class TimeMaster : public QObject
     JWPROPERTYAFTERSETNAMEVALUE(QDateTime, currentWorkStart, CurrentWorkStart, QDateTime(), handleEvent);
     JWPROPERTYAFTERSETNAMEVALUE(QDateTime, currentPauseStart, CurrentPauseStart, QDateTime(), handleEvent);
     JWPROPERTYAFTERSETNAMEVALUE(QDateTime, currentWorkTravelStart, CurrentWorkTravelStart, QDateTime(), handleEvent);
+    JWPROPERTY(QDateTime, currentYearMonth, CurrentYearMonth, QDateTime::currentDateTime())
 
     jw78::ObjectListModel allTimeEvents;
     jw78::ObjectListModel workTimeSpans;

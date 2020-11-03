@@ -5,6 +5,7 @@ ESAAPage
 {
     id: timemainpage
     caption: "Zeiterfassung"
+    onShowing: ESAA.setWorkTimeScheme()
 
     Column
     {

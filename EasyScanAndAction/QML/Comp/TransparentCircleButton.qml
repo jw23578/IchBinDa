@@ -30,7 +30,7 @@ Button
             anchors.topMargin: control.height / 8
             text: control.smallTopText
             opacity: enabled ? 1.0 : 0.3
-            color: control.down ? control.buttonColor : "white"
+            color: control.down ? control.buttonColor : control.buttonDownColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -44,7 +44,7 @@ Button
             text: control.text
             font: control.font
             opacity: enabled ? 1.0 : 0.3
-            color: control.down ? ESAA.buttonColor : "white"
+            color: control.down ? ESAA.buttonColor : control.buttonDownColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -77,9 +77,9 @@ Button
 
     background: Rectangle {
         id: background
-        color: control.down ? "white" : ESAA.buttonColor
+        color: control.down ? control.buttonDownColor : ESAA.buttonColor
         opacity: enabled ? 1 : 0.3
-        border.color:  "white"
+        border.color:  control.buttonDownColor
         border.width: 1
         radius: width / 2
         Image

@@ -10,6 +10,7 @@ Button
     property alias source: img.source
     property color buttonFromColor: ESAA.buttonFromColor
     property color buttonToColor: ESAA.buttonToColor
+    property color buttonDownColor: ESAA.buttonDownColor
 
     background: Rectangle {
         gradient: control.down ? null : theGradient
@@ -19,7 +20,7 @@ Button
             GradientStop { position: 0.0; color: control.buttonFromColor }
             GradientStop { position: 1.0; color: control.buttonToColor }
         }
-        color: "white"
+        color: control.buttonDownColor
         border.color: control.buttonFromColor
         border.width: control.down ? 1 : 0
 

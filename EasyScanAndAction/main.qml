@@ -231,10 +231,10 @@ ApplicationWindow {
             id: timerecordingevents
             onBackPressed: showNewPage(timerecordingevents, timerecordmenuepage)
         }
-        WorkTimeSpansBrutto
+        WorkTimeSpans
         {
-            id: worktimespansbrutto
-            onBackPressed: showNewPage(worktimespansbrutto, timerecordmenuepage)
+            id: worktimespans
+            onBackPressed: showNewPage(worktimespans, timerecordmenuepage)
         }
 
         TimeRecordingMenue
@@ -242,7 +242,7 @@ ApplicationWindow {
             id: timerecordmenuepage
             onBackPressed: showNewPage(timerecordmenuepage, timemainpage)
             onShowTimeEvents: showNewPage(timerecordmenuepage, timerecordingevents)
-            onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespansbrutto)
+            onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespans)
         }
 
         MenuePage

@@ -39,6 +39,7 @@ ESAAPage
 
     onShowing:
     {
+        ESAA.setIchBinDaScheme()
         console.log("show scanner")
         if (ESAA.firstStart)
         {

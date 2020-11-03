@@ -64,8 +64,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
     JWPROPERTY(QColor, fontColor, FontColor, "#0E79B2")
     JWPROPERTY(QColor, buttonColor, ButtonColor, "#4581B3");
-    JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "#0E79B2");
 
+    JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "white");
     JWPROPERTY(QColor, buttonFromColor, ButtonFromColor, "#4581B3");
     JWPROPERTY(QColor, buttonToColor, ButtonToColor, "#364995");
 

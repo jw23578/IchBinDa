@@ -25,7 +25,6 @@
         <file>QML/TimeMain.qml</file>
         <file>QML/TimeRecordingMenue.qml</file>
         <file>QML/TimeRecordingEvents.qml</file>
-        <file>QML/WorkTimeSpansBrutto.qml</file>
         <file>QML/BasePages/TakePicturePage.qml</file>
         <file>QML/Comp/CircleButton.qml</file>
         <file>QML/Comp/ESAAFlickable.qml</file>
@@ -47,5 +46,6 @@
         <file>QML/Comp/CamVideoScan.qml</file>
         <file>QML/FinalPages/ManualVisitPage.qml</file>
         <file>QML/FinalPages/YesNoQuestionPage.qml</file>
+        <file>QML/FinalPages/WorkTimeSpans.qml</file>
     </qresource>
 </RCC>

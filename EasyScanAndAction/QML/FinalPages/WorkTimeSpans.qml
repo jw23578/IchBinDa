@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtCharts 2.15
-import "Comp"
+import ".."
+import "../BasePages"
+import "../Comp"
 
 ESAAPage
 {
@@ -25,9 +27,9 @@ ESAAPage
         anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: backbutton.top
+        anchors.bottom: navigateRow.top
         spacing: 1
-        model: WorkTimeSpans
+        model: WorkTimeSpansModel
         clip: true
         delegate: Item {
             clip: true
@@ -260,6 +262,39 @@ ESAAPage
                 width: parent.width
                 height: 1
                 color: "black"
+            }
+        }
+    }
+    Item
+    {
+        id: navigateRow
+        anchors.bottom: backbutton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: ESAA.spacing
+        height: toLeft.height
+        ArrowButton
+        {
+            id: toLeft
+            rightArrow: false
+            onClicked:
+            {
+                TimeMaster.currentYearMonth = JW78Utils.incMonths(TimeMaster.currentYearMonth, -1)
+                TimeMaster.load(JW78Utils.year(TimeMaster.currentYearMonth), JW78Utils.month(TimeMaster.currentYearMonth))
+            }
+        }
+        ESAAText
+        {
+            text: JW78Utils.formatDateMonthYear(TimeMaster.currentYearMonth)
+            anchors.centerIn: parent
+        }
+        ArrowButton
+        {
+            anchors.right: parent.right
+            onClicked:
+            {
+                TimeMaster.currentYearMonth = JW78Utils.incMonths(TimeMaster.currentYearMonth, 1)
+                TimeMaster.load(JW78Utils.year(TimeMaster.currentYearMonth), JW78Utils.month(TimeMaster.currentYearMonth))
             }
         }
     }

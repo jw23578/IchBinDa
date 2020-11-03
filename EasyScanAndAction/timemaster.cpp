@@ -69,7 +69,7 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
     dbCurrentPauseStart(true),
     dbCurrentWorkTravelStart(true),
     allTimeEvents(engine, "AllTimeEvents", "event"),
-    workTimeSpans(engine, "WorkTimeSpans", "timeSpan")
+    workTimeSpans(engine, "WorkTimeSpansModel", "timeSpan")
 {
     engine.rootContext()->setContextProperty("TimeMaster", QVariant::fromValue(this));
 
@@ -98,29 +98,35 @@ void TimeMaster::developPrepare()
     while (work < QDate::currentDate())
     {
         counter += 1;
+        int randMinutes(rand() % 20);
         TimeEvent te(true);
         te.setEventType(0);
-        te.setTimeStamp(QDateTime(work, QTime(8, 0, 0, 0)));
+        te.setTimeStamp(QDateTime(work, QTime(8, 0, 0, 0).addSecs(randMinutes * 60)));
         pa.insert("TimeEvents", te);
         te.setEventType(1);
-        te.setTimeStamp(QDateTime(work, QTime(17, 0, 0, 0)));
+        randMinutes = rand() % 20;
+        te.setTimeStamp(QDateTime(work, QTime(17, 0, 0, 0).addSecs(randMinutes * 60)));
         pa.insert("TimeEvents", te);
         if (counter % 3 == 1)
         {
+            randMinutes = rand() % 20;
             te.setEventType(2);
-            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0)));
+            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0).addSecs(randMinutes * 60)));
             pa.insert("TimeEvents", te);
             te.setEventType(3);
-            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0)));
+            randMinutes = rand() % 20;
+            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0).addSecs(randMinutes * 60)));
             pa.insert("TimeEvents", te);
         }
         if (counter % 3 == 2)
         {
+            randMinutes = rand() % 20;
             te.setEventType(2);
-            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0)));
+            te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0).addSecs(randMinutes * 60)));
             pa.insert("TimeEvents", te);
             te.setEventType(3);
-            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0)));
+            randMinutes = rand() % 20;
+            te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0).addSecs(randMinutes * 60)));
             pa.insert("TimeEvents", te);
 
             te.setEventType(2);
@@ -156,6 +162,8 @@ bool TimeMaster::isValid(const QDateTime &dt)
 
 void TimeMaster::load(int year, int month)
 {
+    allTimeEvents.clear();
+    workTimeSpans.clear();
     TimeEvent templateEvent(false);
     QVector<jw78::ReflectableObject*> temp;
     QDate monthStart(year, month, 1);
@@ -177,9 +185,12 @@ void TimeMaster::load(int year, int month)
         }
         if (e->eventType() == 1)
         {
-            currentWorkTimeSpan->setWorkEnd(e->timeStamp());
-            workTimeSpans.add(currentWorkTimeSpan);
-            currentWorkTimeSpan = nullptr;
+            if (currentWorkTimeSpan != nullptr)
+            {
+                currentWorkTimeSpan->setWorkEnd(e->timeStamp());
+                workTimeSpans.add(currentWorkTimeSpan);
+                currentWorkTimeSpan = nullptr;
+            }
         }
         if (e->eventType() == 2)
         {
@@ -188,9 +199,12 @@ void TimeMaster::load(int year, int month)
         }
         if (e->eventType() == 3)
         {
-            currentPauseTimeSpan->setPauseEnd(e->timeStamp());
-            currentWorkTimeSpan->addPause(currentPauseTimeSpan);
-            currentPauseTimeSpan = nullptr;
+            if (currentPauseTimeSpan != nullptr && currentWorkTimeSpan != nullptr)
+            {
+                currentPauseTimeSpan->setPauseEnd(e->timeStamp());
+                currentWorkTimeSpan->addPause(currentPauseTimeSpan);
+                currentPauseTimeSpan = nullptr;
+            }
         }
     }
 }
