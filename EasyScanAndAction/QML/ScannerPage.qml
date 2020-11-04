@@ -9,7 +9,7 @@ ESAAPage
 {
     caption: "QR-Code einlesen"
     property var camera: null
-    property var manualVisitButton: null
+    property var multiButton: null
 
     id: scannerpage
 
@@ -23,12 +23,11 @@ ESAAPage
     }
     function myShowFunction()
     {
-        manualVisitButton.visible = true
+        multiButton.opacity = 1
         camera.scan = true
         camera.anchors.top = parent.top
         camera.width = parent.width
         camera.height = camera.width
-        shareButton.rotate(400)
         if (!ESAA.isActiveVisit(1))
         {
             camera.stop()
@@ -52,39 +51,24 @@ ESAAPage
 
     onHiding:
     {
-        manualVisitButton.visible = false
+        multiButton.opacity = 0
         camera.stop()
     }
 
     signal playBackClicked
     signal basketClicked
     signal goRightClicked
-    signal goCustomerCards
 
     function decode(preview) {
         photoPreview.source = preview
         decoder.decodeImageQML(photoPreview);
     }
 
-    ShareButton
-    {
-        id: shareButton
-        visible: !ESAA.firstStart
-    }
-    CircleButton
-    {
-        visible: ESAA.isDevelop
-        onClicked: goCustomerCards()
-        text: "Kunden<br>karten"
-        anchors.verticalCenter: shareButton.verticalCenter
-        x: (shareButton.x - width) / 2
-    }
-
     ArrowButton
     {
         anchors.right: parent.right
         anchors.rightMargin: ESAA.spacing
-        anchors.verticalCenter: shareButton.verticalCenter
+        y: ESAA.screenHeight / 480 * 360 - height / 2
         visible: ESAA.isDevelop
         onClicked: goRightClicked()
     }

@@ -149,25 +149,29 @@ ApplicationWindow {
             onBackPressed: showNewPage(theCurrentPage, scannerpage)
         }
 
-        CircleButton
+        CircleMultiButton
         {
-            anchors.left: theCamera.left
-            anchors.bottom: theCamera.bottom
-            anchors.margins: width / 2
             z: 11
-            id: theManualVisitButton
-            visible: false
-            text: "Kontakt<br>situation<br>eintragen"
-            onClicked: showNewPage(theCurrentPage, manualvisitpage)
+            opacity: 0
+            id: theMultiButton
+            x: ESAA.screenWidth / 300 * 150 - width / 2
+            y: ESAA.screenHeight / 480 * 360 - height / 2
+            visible: !ESAA.firstStart && scannerpage.visible
+            button1.text: "Kunden<br>karten"
+            button1.onClicked: showNewPage(scannerpage, customercardslist)
+            button2.onClicked: ESAA.recommend()
+            button2.source: "qrc:/images/share_weiss.svg"
+            button2.downSource: "qrc:/images/share_blau.svg"
+            button3.text: "Kontakt<br>situation<br>eintragen"
+            button3.onClicked: showNewPage(theCurrentPage, manualvisitpage)
         }
 
         ScannerPage
         {
             id: scannerpage
             camera: theCamera
-            manualVisitButton: theManualVisitButton
+            multiButton: theMultiButton
             onGoRightClicked: showNewPage(scannerpage, timemainpage)
-            onGoCustomerCards: showNewPage(scannerpage, customercardslist)
         }
         TakePicturePage
         {

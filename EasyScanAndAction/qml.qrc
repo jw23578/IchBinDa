@@ -47,5 +47,6 @@
         <file>QML/FinalPages/ManualVisitPage.qml</file>
         <file>QML/FinalPages/YesNoQuestionPage.qml</file>
         <file>QML/FinalPages/WorkTimeSpans.qml</file>
+        <file>QML/Comp/CircleMultiButton.qml</file>
     </qresource>
 </RCC>
