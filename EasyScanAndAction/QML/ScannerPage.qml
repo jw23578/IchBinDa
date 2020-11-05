@@ -27,13 +27,13 @@ ESAAPage
         camera.scan = true
         camera.anchors.top = parent.top
         camera.width = parent.width
-        camera.height = camera.width
         if (!ESAA.isActiveVisit(1))
         {
             camera.stop()
             camera.start()
             camera.searchAndLock()
         }
+        camera.height = camera.width
     }
 
     onShowing:

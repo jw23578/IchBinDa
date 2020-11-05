@@ -48,6 +48,7 @@ PageWithBackButton {
         camera.targetFileName = ESAA.tempTakenPicture
         camera.scan = false
         camera.start()
+        camera.height = camera.width
     }
     onHiding:
     {

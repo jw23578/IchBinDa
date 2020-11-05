@@ -2,7 +2,8 @@ import QtQuick 2.15
 import QZXing 2.3
 import QtMultimedia 5.15
 
-Item {
+Item
+{
     id: cvs
     property bool scan: false
     property string targetFileName: ""
@@ -10,6 +11,7 @@ Item {
     {
         camera.stop()
         opacity = 0
+        height = 0
     }
     function start()
     {
@@ -28,6 +30,11 @@ Item {
     opacity: 0
     visible: opacity > 0
     Behavior on opacity {
+        NumberAnimation {
+            duration: 200
+        }
+    }
+    Behavior on height {
         NumberAnimation {
             duration: 200
         }
@@ -120,6 +127,7 @@ Item {
             width: parent.width * 9 / 10
             height: width
             id: the_rect
+            color: "grey"
             VideoOutput
             {
                 id: output

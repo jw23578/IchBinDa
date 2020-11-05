@@ -2,6 +2,8 @@ import QtQuick 2.0
 
 Item {
     id: circlemultibutton
+    signal openClicked
+    signal closeClicked
     property bool open: false
     property int smallWidth: ESAA.screenWidth / 6
     property int largeWidth: ESAA.screenWidth / 4
@@ -10,6 +12,7 @@ Item {
     property alias button1: option1
     property alias button2: option2
     property alias button3: option3
+
     visible: opacity > 0
     Behavior on opacity {
         NumberAnimation {
@@ -17,82 +20,86 @@ Item {
         }
     }
 
-    CircleButton
+    Item
     {
-        id: mainbutton
+        id: allButtons
         anchors.centerIn: parent
-        text: "+"
-        onClicked:
+        CircleButton
         {
-            if (circlemultibutton.open)
+            id: mainbutton
+            anchors.centerIn: parent
+            text: "+"
+            onClicked:
             {
-                open = false
-                text = "+"
-                closeani1.start()
+                if (circlemultibutton.open)
+                {
+                    open = false
+                    text = "+"
+                    closeani1.start()
+                    closeClicked()
+                }
+                else
+                {
+                    openani1.start()
+                    open = true
+                    text = "-"
+                    openClicked()
+                }
             }
-            else
+        }
+        Item
+        {
+            id: item1
+            anchors.centerIn: parent
+            width: 0
+            height: 0
+            CircleButton
             {
-                openani1.start()
-                open = true
-                text = "-"
+                id: option1
+                visible: opacity > 0
+                width: smallWidth
+                opacity: 0
+                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                rotation: -parent.rotation
+                onClicked: mainbutton.clicked()
             }
         }
-    }
-    Item
-    {
-        id: item1
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        width: 0
-        height: 0
-        CircleButton
+        Item
         {
-            id: option1
-            visible: opacity > 0
-            width: smallWidth
-            opacity: 0
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            rotation: -parent.rotation
-            onClicked: mainbutton.clicked()
+            id: item2
+            anchors.centerIn: parent
+            width: 0
+            height: 0
+            CircleButton
+            {
+                id: option2
+                visible: opacity > 0
+                width: smallWidth
+                opacity: 0
+                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                rotation: -parent.rotation
+                onClicked: mainbutton.clicked()
+            }
         }
-    }
-    Item
-    {
-        id: item2
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        width: 0
-        height: 0
-        CircleButton
+        Item
         {
-            id: option2
-            visible: opacity > 0
-            width: smallWidth
-            opacity: 0
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            rotation: -parent.rotation
-            onClicked: mainbutton.clicked()
-        }
-    }
-    Item
-    {
-        id: item3
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        width: 0
-        height: 0
-        CircleButton
-        {
-            id: option3
-            visible: opacity > 0
-            width: smallWidth
-            opacity: 0
-            anchors.horizontalCenter: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            rotation: -parent.rotation
-            onClicked: mainbutton.clicked()
+            id: item3
+            anchors.centerIn: parent
+            width: 0
+            height: 0
+            CircleButton
+            {
+                id: option3
+                visible: opacity > 0
+                width: smallWidth
+                opacity: 0
+                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                rotation: -parent.rotation
+                onClicked: mainbutton.clicked()
+            }
         }
     }
 
@@ -165,25 +172,16 @@ Item {
                 to: 1
             }
         }
-//        ParallelAnimation
-//        {
-//            NumberAnimation
-//            {
-//                target: item2
-//                property: "rotation"
-//                to: targetAngle
-//                duration: 200
-//            }
-//            NumberAnimation
-//            {
-//                target: item3
-//                property: "rotation"
-//                to: targetAngle * 2
-//                duration: 200
-//            }
-//        }
         ParallelAnimation
         {
+            NumberAnimation
+            {
+                target: allButtons
+                property: "anchors.verticalCenterOffset"
+                to: smallWidth
+                duration: 200
+            }
+
             NumberAnimation
             {
                 target: item1
@@ -212,6 +210,13 @@ Item {
         id: closeani1
         ParallelAnimation
         {
+            NumberAnimation
+            {
+                target: allButtons
+                property: "anchors.verticalCenterOffset"
+                to: 0
+                duration: 200
+            }
             NumberAnimation
             {
                 target: item1

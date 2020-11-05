@@ -154,7 +154,7 @@ ApplicationWindow {
             z: 11
             opacity: 0
             id: theMultiButton
-            x: ESAA.screenWidth / 300 * 150 - width / 2
+            x: scannerpage.x + ESAA.screenWidth / 300 * 150 - width / 2
             y: ESAA.screenHeight / 480 * 360 - height / 2
             visible: !ESAA.firstStart && scannerpage.visible
             button1.text: "Kunden<br>karten"
@@ -164,6 +164,8 @@ ApplicationWindow {
             button2.downSource: "qrc:/images/share_blau.svg"
             button3.text: "Kontakt<br>situation<br>eintragen"
             button3.onClicked: showNewPage(theCurrentPage, manualvisitpage)
+            onOpenClicked: hideCallMenueButton.start()
+            onCloseClicked: hideAndShowCallMenueButton.start()
         }
 
         ScannerPage
