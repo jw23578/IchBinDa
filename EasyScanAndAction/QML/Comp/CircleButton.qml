@@ -112,6 +112,15 @@ Button
             source: background
         }
 
+        Glow {
+            visible: radius > 0
+            anchors.fill: backgroundItem
+            radius: control.markGlowRadius
+            samples: 17
+            color: "orange" // ESAA.lineInputBorderColor
+            source: background
+        }
+
         Rectangle {
             anchors.fill: parent
         id: background
@@ -229,14 +238,5 @@ Button
                 alertAni.start()
             }
         }
-    }
-
-    Glow {
-        visible: parent.markGlowRadius > 0
-        anchors.fill: backgroundItem
-        radius: parent.markGlowRadius
-        samples: 17
-        color: "orange" // ESAA.lineInputBorderColor
-        source: background
     }
 }
