@@ -1311,6 +1311,8 @@ void ESAAApp::calculateRatios()
     setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.3);
     setSpacing(baseSpacing * m_ratio);
     setFontTextPixelsize(m_ratioFont * baseFontSize);
+    setHeaderFontPixelsize(m_ratioFont * baseFontSize * 1.5);
+    setContentFontPixelsize(m_ratioFont * baseFontSize * 1.2);
 }
 
 void ESAAApp::reset()

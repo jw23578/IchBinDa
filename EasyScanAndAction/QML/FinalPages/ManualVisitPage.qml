@@ -20,14 +20,21 @@ PageWithBackButton
         anchors.right: parent.right
         anchors.top: parent.top
         text: "oldenburg<br>simulieren"
-        visible: ESAA.isDevelop
+        visible: ESAA.isDevelop && opacity > 0
         onClicked: PlacesManager.simulate()
         z: 2
+        opacity: view.opacity
     }
 
     onShowing:
     {
         manualName.text = ""
+        if (JW78Utils.isPC)
+        {
+            PlacesManager.simulate()
+            return
+        }
+
         MobileExtensions.requestLocationPermission(permissionDenied, permissionGranted)
         if (!MobileExtensions.locationServicesDeniedByUser)
         {
@@ -61,6 +68,7 @@ PageWithBackButton
         opacity: backButton.opacity
         visible: opacity > 0
         anchors.top: parent.top
+        anchors.topMargin: ESAA.spacing * 3
         anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
@@ -68,33 +76,71 @@ PageWithBackButton
         spacing: 1
         model: Places
         clip: true
-        delegate: Item {
-            width: view.width
-            height: view.height / 8
-            ESAAText
+        delegate: Item
+        {
+            id: theItem
+            opacity: 0
+            visible: opacity > 0
+            SequentialAnimation
             {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.leftMargin: ESAA.spacing
-                text: place.name
-                font.pixelSize: ESAA.fontTextPixelsize * 1.1
-            }
-            ESAAText
-            {
-                anchors.left: parent.left
-                anchors.leftMargin: ESAA.spacing
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: ESAA.spacing / 4
-                font.pixelSize: ESAA.fontTextPixelsize * 0.9
-                text: place.adress
-            }
+                id: showani
 
-            Rectangle
-            {
-                anchors.bottom: parent.bottom
-                width: parent.width
-                height: 1
-                color: "black"
+                PauseAnimation {
+                    duration: index * 100
+                }
+                NumberAnimation
+                {
+                    target: theItem
+                    duration: JW78Utils.shortAniDuration
+                    property: "opacity"
+                    to: 1
+                }
+            }
+            Component.onCompleted: showani.start()
+
+            width: view.width
+            height: theColumn.height
+            Column {
+                id: theColumn
+
+                width: view.width
+                Item
+                {
+                    height: ESAA.spacing / 2
+                    width: parent.width
+                }
+
+                ESAAText
+                {
+                    text: place.name
+                    width: parent.width
+                    font.pixelSize: ESAA.headerFontPixelsize
+                }
+                Item
+                {
+                    height: ESAA.spacing / 4
+                    width: parent.width
+                }
+                ESAAText
+                {
+                    font.pixelSize: ESAA.contentFontPixelsize
+                    elide: Text.ElideRight
+                    width: parent.width
+                    text: place.adress
+                }
+                Item
+                {
+                    height: ESAA.spacing / 2
+                    width: parent.width
+                }
+
+                Rectangle
+                {
+                    visible: index < view.count - 1
+                    width: parent.width / 6
+                    height: 1
+                    color: "grey"
+                }
             }
             MouseArea
             {
