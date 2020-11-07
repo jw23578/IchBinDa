@@ -204,6 +204,7 @@ PageWithBackButton
         manuell.opacity = 1
         manuell.radius = 0
         backButton.opacity = 0
+        theRect.opacity = 0
     }
     function closeManual()
     {
@@ -214,10 +215,12 @@ PageWithBackButton
         manuell.opacity = 0
         manuell.radius = manualvisitpage.width / 2
         backButton.opacity = 1
+        theRect.opacity = 1
     }
 
     PageWithBackButton
     {
+        clip: true
         id: manuell
         x: manuelButton.x
         y: manuelButton.y
@@ -257,6 +260,20 @@ PageWithBackButton
             }
         }
         onBackPressed: closeManual()
+        Rectangle
+        {
+            id: theRect
+            radius: parent.radius
+            anchors.fill: parent
+            opacity: 1
+            visible: opacity > 0
+            color: "grey"
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: JW78Utils.longAniDuration * 2
+                }
+            }
+        }
 
         Column
         {
