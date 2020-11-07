@@ -53,13 +53,10 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    
-    JWPROPERTY(int, screenWidth, ScreenWidth, 0);
-    JWPROPERTY(int, screenHeight, ScreenHeight, 0);
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
 
 
     JWPROPERTY(QColor, textColor, TextColor, "white");
-    JWPROPERTY(QColor, headerColor, HeaderColor, "#191928");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
     JWPROPERTY(QColor, fontColor, FontColor, "#0E79B2")
@@ -71,7 +68,9 @@ class ESAAApp: public QObject
 
 
     JWPROPERTY(int, headerFontPixelsize, HeaderFontPixelsize, 10);
+    JWPROPERTY(QColor, headerFontColor, HeaderFontColor, "#0E79B2")
     JWPROPERTY(int, contentFontPixelsize, ContentFontPixelsize, 10);
+    JWPROPERTY(QColor, contentFontColor, ContentFontColor, "black")
 
     JWPROPERTY(int, fontInputPixelsize, FontInputPixelsize, 10);
     JWPROPERTY(int, fontButtonPixelsize, FontButtonPixelsize, 10);

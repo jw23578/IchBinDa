@@ -507,6 +507,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     publicKeyMap.setFiledata("873700", ":/keys/publicKey873700.txt");
     setPublicKey(0);
 
+    e.rootContext()->setContextProperty("JW78APP", QVariant::fromValue(this));
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
     e.rootContext()->setContextProperty("CurrentQRCodeData", QVariant::fromValue(&currentQRCodeData));
     e.rootContext()->setContextProperty("LastVisit", QVariant::fromValue(&lastVisit));

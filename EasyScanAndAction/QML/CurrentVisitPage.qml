@@ -70,7 +70,7 @@ ESAAPage
                               + (LastVisit.individualURL1 != "" ? 1 : 0)
             columns: anz > 4 ? 3 : 2
             rows: 2
-            property int buttonSize: ESAA.screenWidth / 3 // ESAA.screenWidth / (columns + 1 + (anz > 3 ? 0 : 0.2))
+            property int buttonSize: JW78Utils.screenWidth / 3
             property int buttonFontPixelSize: ESAA.fontButtonPixelsize
             height: parent.height
             width: buttonSize * columns + spacing * (columns - 1)
@@ -140,7 +140,7 @@ ESAAPage
         onClicked: questionVisitEnd()
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.leftMargin: ESAA.screenWidth / 12
+        anchors.leftMargin: JW78Utils.screenWidth / 12
         anchors.bottomMargin: anchors.leftMargin
         buttonFromColor: "orange"
         buttonToColor: "orange"

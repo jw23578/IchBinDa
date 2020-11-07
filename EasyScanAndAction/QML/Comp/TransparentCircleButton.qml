@@ -5,7 +5,7 @@ import QtQuick.Window 2.15
 
 Button
 {
-    width: ESAA.screenWidth / 4
+    width: JW78Utils.screenWidth / 4
     height: width
     id: control
     font.family: "Roboto-Regular"

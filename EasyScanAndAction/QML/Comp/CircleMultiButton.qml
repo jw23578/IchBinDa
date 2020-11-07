@@ -5,8 +5,8 @@ Item {
     signal openClicked
     signal closeClicked
     property bool open: false
-    property int smallWidth: ESAA.screenWidth / 6
-    property int largeWidth: ESAA.screenWidth / 4
+    property int smallWidth: JW78Utils.screenWidth / 6
+    property int largeWidth: JW78Utils.screenWidth / 4
     property int targetAngle: 70
     property alias text: mainbutton.text
     property alias button1: option1

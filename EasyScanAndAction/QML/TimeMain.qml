@@ -14,7 +14,7 @@ ESAAPage
         anchors.verticalCenterOffset: -ESAA.spacing * 3
         width: parent.width
         spacing: ESAA.spacing
-        property int buttonWidth: ESAA.screenWidth / 3.3
+        property int buttonWidth: JW78Utils.screenWidth / 3.3
         TwoCircleButtons
         {
             leftText: "Dienst<br>beginn"

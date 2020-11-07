@@ -68,7 +68,7 @@ ESAAPage
     {
         anchors.right: parent.right
         anchors.rightMargin: ESAA.spacing
-        y: ESAA.screenHeight / 480 * 360 - height / 2
+        y: JW78Utils.screenHeight / 480 * 360 - height / 2
         visible: ESAA.isDevelop
         onClicked: goRightClicked()
     }

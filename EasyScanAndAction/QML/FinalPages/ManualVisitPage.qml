@@ -106,7 +106,7 @@ PageWithBackButton
                 width: view.width
                 Item
                 {
-                    height: ESAA.spacing / 2
+                    height: ESAA.spacing
                     width: parent.width
                 }
 
@@ -115,6 +115,7 @@ PageWithBackButton
                     text: place.name
                     width: parent.width
                     font.pixelSize: ESAA.headerFontPixelsize
+                    color: JW78APP.headerFontColor
                 }
                 Item
                 {
@@ -124,13 +125,14 @@ PageWithBackButton
                 ESAAText
                 {
                     font.pixelSize: ESAA.contentFontPixelsize
+                    color: JW78APP.contentFontColor
                     elide: Text.ElideRight
                     width: parent.width
                     text: place.adress
                 }
                 Item
                 {
-                    height: ESAA.spacing / 2
+                    height: ESAA.spacing
                     width: parent.width
                 }
 
@@ -139,7 +141,7 @@ PageWithBackButton
                     visible: index < view.count - 1
                     width: parent.width / 6
                     height: 1
-                    color: "grey"
+                    color: "lightgrey"
                 }
             }
             MouseArea

@@ -11,16 +11,20 @@ Rectangle
     x: 0
     width: parent.width
     height: parent.height
+    property bool minimized: false
     property alias headerText: headerCaption.text
-    property color gradientFromColor: ESAA.buttonColor
-    property color gradientToColor: "#364995"
-    property int shrinkDuration: 400
+    property color gradientFromColor: ESAA.buttonFromColor
+    property color gradientToColor: minimized ? ESAA.buttonFromColor : ESAA.buttonToColor
     Behavior on gradientToColor {
         ColorAnimation {
-            duration: shrinkDuration
+            duration: JW78Utils.longAniDuration
         }
     }
-
+    Behavior on gradientFromColor {
+        ColorAnimation {
+            duration: JW78Utils.longAniDuration
+        }
+    }
     gradient: Gradient
     {
         orientation: Gradient.Horizontal
@@ -45,7 +49,7 @@ Rectangle
     Behavior on height {
         NumberAnimation
         {
-            duration: shrinkDuration
+            duration: JW78Utils.longAniDuration
             easing.type: Easing.OutCubic
         }
     }
@@ -82,7 +86,7 @@ Rectangle
         Behavior on opacity {
             NumberAnimation
             {
-                duration: 400
+                duration: JW78Utils.longAniDuration
             }
         }
         MouseArea
@@ -101,8 +105,8 @@ Rectangle
 
     function minimize()
     {
+        minimized = true
         height = parent.height / 16
-        gradientToColor = gradientFromColor
         logo.qrCodeOffset = parent.height / 10 / 8
         logo.claimImageX = parent.height / 10 / 8
         longWait.start()

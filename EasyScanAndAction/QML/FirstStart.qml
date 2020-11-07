@@ -41,7 +41,7 @@ ESAAPage
     {
         visible: !betreiberinfo.visible && !kundeinfo.visible
         id: theGrid
-        property int buttonSize: ESAA.screenWidth / 2
+        property int buttonSize: JW78Utils.screenWidth / 2
         property int buttonFontPixelSize: ESAA.fontButtonPixelsize * 1.5
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter

@@ -155,8 +155,8 @@ ApplicationWindow {
             z: 11
             opacity: 0
             id: theMultiButton
-            x: scannerpage.x + ESAA.screenWidth / 300 * 150 - width / 2
-            y: ESAA.screenHeight / 480 * 360 - height / 2
+            x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
+            y: JW78Utils.screenHeight / 480 * 360 - height / 2
             visible: !ESAA.firstStart && scannerpage.visible
             button1.text: "Kunden<br>karten"
             button1.onClicked: showNewPage(scannerpage, customercardslist)
@@ -457,8 +457,8 @@ ApplicationWindow {
     Component.onCompleted:
     {
         theCamera.stop()
-        ESAA.screenHeight = height
-        ESAA.screenWidth = width
+        JW78Utils.screenHeight = height
+        JW78Utils.screenWidth = width
         ESAA.calculateRatios()
         console.log("Spacing: " + ESAA.spacing)
         console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)

@@ -6,6 +6,6 @@ CircleButton
     imageRotation: rightArrow ? 180 : 0
     source: "qrc:/images/back_weiss.svg"
     downSource: "qrc:/images/back_blau.svg"
-    width: ESAA.screenWidth / 8
+    width: JW78Utils.screenWidth / 8
     imageSizeFactor: 0.5
 }

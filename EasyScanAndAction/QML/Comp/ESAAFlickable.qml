@@ -18,7 +18,7 @@ Item
     property alias contentY: theFlickable.contentY
     Image
     {
-        width: ESAA.screenWidth / 10
+        width: JW78Utils.screenWidth / 10
         height: width
         opacity: 0
         visible: opacity > 0
@@ -39,7 +39,7 @@ Item
         MouseArea
         {
             anchors.fill: parent
-            onClicked: theFlickable.flick(0, ESAA.screenHeight)
+            onClicked: theFlickable.flick(0, JW78Utils.screenHeight)
             enabled: parent.visible
         }
     }
@@ -52,7 +52,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         fillMode: Image.PreserveAspectFit
-        width: ESAA.screenWidth / 10
+        width: JW78Utils.screenWidth / 10
         height: width
         mipmap: true
         source: "qrc:/images/pfeil_blau.svg"
@@ -66,7 +66,7 @@ Item
         MouseArea
         {
             anchors.fill: parent
-            onClicked: theFlickable.flick(0, -ESAA.screenHeight)
+            onClicked: theFlickable.flick(0, -JW78Utils.screenHeight)
             enabled: parent.visible
         }
     }

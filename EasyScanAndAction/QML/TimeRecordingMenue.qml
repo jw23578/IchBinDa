@@ -19,7 +19,7 @@ ESAAPage
         Grid
         {
             id: theGrid
-            property int buttonSize: ESAA.screenWidth / 3
+            property int buttonSize: JW78Utils.screenWidth / 3
             property int buttonFontPixelSize: ESAA.fontButtonPixelsize
             property int anzahl: 6
             columns: anzahl / 2 + anzahl % 2
