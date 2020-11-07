@@ -40,6 +40,7 @@ ApplicationWindow {
         }
         else
         {
+            hideAndShowCallMenueButton.stop()
             hideCallMenueButton.start()
         }
         nextPage.forceActiveFocus()

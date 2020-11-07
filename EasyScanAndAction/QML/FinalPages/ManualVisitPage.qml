@@ -58,11 +58,13 @@ PageWithBackButton
     ListView
     {
         id: view
+        opacity: backButton.opacity
+        visible: opacity > 0
         anchors.top: parent.top
         anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: manuell.top
+        anchors.bottom: manuelButton.top
         spacing: 1
         model: Places
         clip: true
@@ -101,39 +103,25 @@ PageWithBackButton
             }
         }
     }
-    Column
-    {
-        id: manuell
-        width: parent.width
-        anchors.bottom: saveButton.top
-        anchors.bottomMargin: ESAA.spacing
-        ESAALineInputWithCaption
-        {
-            width: parent.width - 2 * ESAA.spacing
-            caption: qsTr("Manuelle Eingabe")
-            anchors.horizontalCenter: parent.horizontalCenter
-            id: manualName
-        }
-    }
-
     Rectangle
     {
+        opacity: backButton.opacity / 2
+        visible: opacity > 0 && PlacesManager.waitingForPlaces && !locationNotAvailable.visible
         anchors.fill: view
         color: "red"
-        opacity: 0.5
         ESAAText
         {
             anchors.centerIn: parent
             text: "Umgebungsdaten werden abgerufen"
         }
-        visible: PlacesManager.waitingForPlaces && !locationNotAvailable.visible
     }
     Rectangle
     {
         id: locationNotAvailable
         anchors.fill: view
         color: "orange"
-        opacity: 1
+        opacity: backButton.opacity
+        visible: opacity > 0 && MobileExtensions.locationServicesDeniedByUser
         ESAAText
         {
             anchors.centerIn: parent
@@ -141,7 +129,6 @@ PageWithBackButton
             wrapMode: Text.WordWrap
             text: "Die Standortdaten können nicht abgerufen werden, bitte aktivieren sie die Lokalisierung in den " + MobileExtensions.systemName + " Einstellungen."
         }
-        visible: MobileExtensions.locationServicesDeniedByUser
         onVisibleChanged: {
             if (!visible && manualvisitpage.visible)
             {
@@ -152,18 +139,106 @@ PageWithBackButton
             }
         }
     }
-    CentralActionButton
+    CircleButton
     {
-        id: saveButton
-        text: "Speichern"
-        onClicked:
-        {
-            if (manualName.displayText == "")
+        id: manuelButton
+        anchors.right: parent.right
+        anchors.verticalCenter: backButton.verticalCenter
+        anchors.rightMargin: ESAA.spacing
+        text: "+"
+        onClicked: openManual()
+        width: backButton.width * 1.5
+    }
+    function openManual()
+    {
+        manuell.x = 0
+        manuell.y = 0
+        manuell.width = manualvisitpage.width
+        manuell.height = manualvisitpage.height
+        manuell.opacity = 1
+        manuell.radius = 0
+        backButton.opacity = 0
+    }
+    function closeManual()
+    {
+        manuell.x = manuelButton.x
+        manuell.y = manuelButton.y
+        manuell.width = manuelButton.width
+        manuell.height = manuelButton.height
+        manuell.opacity = 0
+        manuell.radius = manualvisitpage.width / 2
+        backButton.opacity = 1
+    }
+
+    PageWithBackButton
+    {
+        id: manuell
+        x: manuelButton.x
+        y: manuelButton.y
+        width: manuelButton.width
+        height: manuelButton.width
+        radius: manualvisitpage.width /2
+        Behavior on radius {
+            NumberAnimation
             {
-                ESAA.showMessage("Bitte geben Sie noch eine Bezeichnung für den manuelle Speicherung ein.");
-                return
+                duration: JW78Utils.longAniDuration
             }
-            saveVisit(manualName.displayText, "")
+        }
+
+        Behavior on x {
+            NumberAnimation {
+                duration: JW78Utils.longAniDuration
+            }
+        }
+        Behavior on y {
+            NumberAnimation {
+                duration: JW78Utils.longAniDuration
+            }
+        }
+        Behavior on width {
+            NumberAnimation {
+                duration: JW78Utils.longAniDuration
+            }
+        }
+        Behavior on height {
+            NumberAnimation {
+                duration: JW78Utils.longAniDuration
+            }
+        }
+        Behavior on opacity {
+            NumberAnimation {
+                duration: JW78Utils.longAniDuration
+            }
+        }
+        onBackPressed: closeManual()
+
+        Column
+        {
+            width: parent.width
+            anchors.bottom: saveButton.top
+            anchors.bottomMargin: ESAA.spacing
+            ESAALineInputWithCaption
+            {
+                width: parent.width - 2 * ESAA.spacing
+                caption: qsTr("Manuelle Eingabe")
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: manualName
+            }
+        }
+
+        CentralActionButton
+        {
+            id: saveButton
+            text: "Speichern"
+            onClicked:
+            {
+                if (manualName.displayText == "")
+                {
+                    ESAA.showMessage("Bitte geben Sie noch eine Bezeichnung für den manuelle Speicherung ein.");
+                    return
+                }
+                saveVisit(manualName.displayText, "")
+            }
         }
     }
 }
