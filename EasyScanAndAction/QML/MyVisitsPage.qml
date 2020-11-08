@@ -39,7 +39,7 @@ ESAAPage
     {
         id: view
         anchors.top: parent.top
-        anchors.topMargin: ESAA.spacing
+        anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: backbutton.top
@@ -49,7 +49,7 @@ ESAAPage
         clip: true
         delegate: Item {
             width: view.width
-            height: view.height / 8
+            height: theColumn.height
             Item
             {
                 id: logoItem
@@ -60,44 +60,62 @@ ESAAPage
                     id: logo
                     source: Visit.logoUrl
                     anchors.centerIn: parent
-                    height: parent.height - ESAA.spacing / 2
+                    height: parent.height - ESAA.spacing * 2
                     width: height
                     fillMode: Image.PreserveAspectFit
                 }
                 Rectangle
                 {
                     anchors.centerIn: parent
-                    height: parent.height - ESAA.spacing / 2
+                    height: parent.height - ESAA.spacing * 2
                     width: height
                     radius: width / 2
                     color: ESAA.buttonColor
                     visible: logo.source == ""
                 }
             }
-            ESAAText
+            Column
             {
-                anchors.top: parent.top
+                id: theColumn
                 anchors.left: logoItem.right
                 anchors.leftMargin: ESAA.spacing
-                text: Visit.count + ". Besuch bei: " + Visit.facilityName
-                font.pixelSize: ESAA.fontTextPixelsize * 1.1
-            }
-            ESAAText
-            {
-                anchors.left: logoItem.right
-                anchors.leftMargin: ESAA.spacing
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: ESAA.spacing / 4
-                font.pixelSize: ESAA.fontTextPixelsize * 0.9
-                text: JW78Utils.formatDate(Visit.begin) + " " + JW78Utils.formatTime(Visit.begin)
-            }
-
-            Rectangle
-            {
-                anchors.bottom: parent.bottom
-                width: parent.width
-                height: 1
-                color: "black"
+                anchors.right: parent.right
+                Item
+                {
+                    height: ESAA.spacing
+                    width: parent.width
+                }
+                ESAAText
+                {
+                    width: parent.width
+                    text: Visit.count + ". Besuch bei: "
+                    color: JW78APP.headerFontColor
+                }
+                ESAAText
+                {
+                    width: parent.width
+                    text: Visit.facilityName
+                    font.pixelSize: ESAA.headerFontPixelsize
+                    color: JW78APP.headerFontColor
+                }
+                ESAAText
+                {
+                    width: parent.width
+                    font.pixelSize: ESAA.contentFontPixelsize
+                    color: JW78APP.contentFontColor
+                    text: JW78Utils.shortDayOfWeek(Visit.begin) + " " + JW78Utils.formatDate(Visit.begin) + " " + JW78Utils.formatTime(Visit.begin)
+                }
+                Item
+                {
+                    height: ESAA.spacing
+                    width: parent.width
+                }
+                Rectangle
+                {
+                    width: parent.width / 6
+                    height: 1
+                    color: "lightgrey"
+                }
             }
         }
     }
