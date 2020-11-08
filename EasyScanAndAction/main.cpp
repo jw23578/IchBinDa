@@ -6,11 +6,11 @@
 #include "QZXingImageProvider.h"
 #include "QZXingFilter.h"
 #include <QtSvg>
+#include <QQuickView>
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QApplication app(argc, argv);
 //    QGuiApplication app(argc, argv);
     int id1(QFontDatabase::addApplicationFont("://roboto/RobotoCondensed-Regular.ttf"));
@@ -18,7 +18,13 @@ int main(int argc, char *argv[])
     int id(QFontDatabase::addApplicationFont("://roboto/Roboto-Thin.ttf"));
 
     QQmlApplicationEngine engine;
-    qmlRegisterType<QZXing>("QZXing", 2, 3, "QZXing");
+
+//    view.setAttribute(Qt::WA_OpaquePaintEvent);
+//    view.setAttribute(Qt::WA_NoSystemBackground);
+//    view.viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
+//    view.viewport()->setAttribute(Qt::WA_NoSystemBackground);
+
+        qmlRegisterType<QZXing>("QZXing", 2, 3, "QZXing");
     qmlRegisterType<QZXingFilter>("QZXing", 2, 3, "QZXingFilter");
     engine.addImageProvider(QLatin1String("QZXing"), new QZXingImageProvider());
     ESAAApp esaa(engine);

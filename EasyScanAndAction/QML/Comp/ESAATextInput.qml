@@ -10,16 +10,17 @@ FocusScope
     property alias readOnly: input.readOnly
     property alias color: input.color
 //    property alias contentHeight: input.contentHeight
-    height: input.contentHeight + ESAA.spacing
+    height: input.contentHeight + JW78APP.spacing
     property bool colorEdit: false
     property string helpText: ""
+    property alias font: input.font
     Rectangle
     {
         id: rectangle
         anchors.fill: parent
-        border.color: ESAA.lineInputBorderColor
+        border.color: JW78APP.lineInputBorderColor
         border.width: 1
-        radius: ESAA.radius
+        radius: JW78APP.radius
         color: input.readOnly ? "white" : input.activeFocus ? "white" : border.color
         MouseArea
         {
@@ -44,8 +45,8 @@ FocusScope
             anchors.rightMargin: parent.border.width + 4 - colorEdit ? colorRect.width : 0
             verticalAlignment: Text.AlignVCenter
             font.family: "Roboto-Regular"
-            font.pixelSize: ESAA.fontInputPixelsize
-            color: ESAA.buttonColor
+            font.pixelSize: JW78APP.fontInputPixelsize
+            color: JW78APP.buttonColor
             clip: true
             selectByMouse: true
             onDisplayTextChanged:
@@ -58,20 +59,20 @@ FocusScope
             color: "black"
             id: colorRect
             height: parent.height
-            radius: ESAA.radius
+            radius: JW78APP.radius
             width: height
             anchors.right: helpButton.left
             anchors.verticalCenter: parent.verticalCenter
             visible: colorEdit
-            border.color: ESAA.lineInputBorderColor
+            border.color: JW78APP.lineInputBorderColor
             border.width: 1
         }
         Rectangle
         {
-            color: ESAA.buttonColor
+            color: JW78APP.buttonColor
             id: helpButton
             height: parent.height
-            radius: ESAA.radius
+            radius: JW78APP.radius
             width: input.activeFocus && helpText.length ? height : 0
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
@@ -99,7 +100,7 @@ FocusScope
         anchors.fill: rectangle
         radius: 8
         samples: 17
-        color: ESAA.lineInputBorderColor
+        color: JW78APP.lineInputBorderColor
         source: rectangle
     }
 }

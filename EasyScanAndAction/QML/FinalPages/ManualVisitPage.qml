@@ -199,21 +199,16 @@ PageWithBackButton
     }
     function openManual()
     {
-        manuell.x = 0
-        manuell.y = 0
-        manuell.width = manualvisitpage.width
-        manuell.height = manualvisitpage.height
+        manuell.opened = true
         manuell.opacity = 1
         manuell.radius = 0
         backButton.opacity = 0
         theRect.opacity = 0
     }
+
     function closeManual()
     {
-        manuell.x = manuelButton.x
-        manuell.y = manuelButton.y
-        manuell.width = manuelButton.width
-        manuell.height = manuelButton.height
+        manuell.opened = false
         manuell.opacity = 0
         manuell.radius = manualvisitpage.width / 2
         backButton.opacity = 1
@@ -223,11 +218,13 @@ PageWithBackButton
     PageWithBackButton
     {
         clip: true
+        property bool opened: false
         id: manuell
-        x: manuelButton.x
-        y: manuelButton.y
-        width: manuelButton.width
-        height: manuelButton.width
+        x: opened ? 0 : manuelButton.x
+        y: opened ? 0 : manuelButton.y
+        width: opened ? manualvisitpage.width : manuelButton.width
+        height: opened ? manualvisitpage.height : manuelButton.width
+
         radius: manualvisitpage.width /2
         Behavior on radius {
             NumberAnimation
@@ -277,29 +274,54 @@ PageWithBackButton
             }
         }
 
-        Column
+        Flickable
         {
             width: parent.width
+            anchors.top: parent.top
             anchors.bottom: saveButton.top
-            anchors.bottomMargin: ESAA.spacing
-            ESAALineInputWithCaption
+            anchors.margins: JW78APP.spacing
+            contentHeight: theColumn2.height
+            id: theFlickable
+            Column
             {
-                width: parent.width - 2 * ESAA.spacing
-                caption: qsTr("Manuelle Eingabe")
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: manualName
+                id: theColumn2
+                width: parent.width
+                spacing: JW78APP.spacing
+                Item
+                {
+                    width: parent.width
+                    height: Math.max(0, theFlickable.height - infoText.height - manualName.height - 2 * JW78APP.spacing)
+                }
+
+                ESAAText
+                {
+                    id: infoText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width - 2 * JW78APP.spacing
+                    wrapMode: Text.WordWrap
+                    text: qsTr("Der gesuchte Aufenthaltsort war nicht dabei? Gib hier einfach eine Bezeichnung für deinen Standort ein:")
+                    font.pixelSize: JW78APP.fontMessageTextPixelsize
+                }
+                ESAALineInputWithCaption
+                {
+                    width: parent.width - 2 * JW78APP.spacing
+                    caption: qsTr("Name des Geschäfts oder Orts")
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    id: manualName
+                    font.pixelSize: JW78APP.fontMessageTextPixelsize
+                }
             }
         }
 
         CentralActionButton
         {
             id: saveButton
-            text: "Speichern"
+            text: qsTr("Kontakt<br>situation<br>Speichern")
             onClicked:
             {
                 if (manualName.displayText == "")
                 {
-                    ESAA.showMessage("Bitte geben Sie noch eine Bezeichnung für den manuelle Speicherung ein.");
+                    ESAA.showMessage("Bitte geben Sie noch eine Bezeichnung für die manuelle Speicherung ein.");
                     return
                 }
                 saveVisit(manualName.displayText, "")

@@ -14,6 +14,7 @@ FocusScope
     property alias colorEdit: input.colorEdit
     property alias helpText: input.helpText
     signal helpClicked(string ht)
+    property alias font: input.font
 
     ESAATextInput
     {
@@ -32,6 +33,6 @@ FocusScope
         visible: input.displayText == ""
         color:  input.activeFocus ? "#aaaaaa" : "#555555"
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: ESAA.fontInputPixelsize * 0.8
+        font.pixelSize: input.font.pixelSize * 0.8
     }
 }

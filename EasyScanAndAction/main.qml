@@ -9,11 +9,11 @@ import "QML/FinalPages"
 import "QML/BasePages"
 
 ApplicationWindow {
-    id: mainWindow
-    visible: true
     width: 300
     height: 480
-    title: qsTr("Ich bin da!")
+    id: mainWindow
+    visible: true
+//    title: qsTr("Ich bin da!")
     property var previousPage: null
     property var theCurrentPage: null
     function showNewPage(currentPage, nextPage)
@@ -454,19 +454,17 @@ ApplicationWindow {
             showNewPage(scannerpage, questionpage)
         }
     }
+
     Component.onCompleted:
     {
-        theCamera.stop()
         JW78Utils.screenHeight = height
         JW78Utils.screenWidth = width
+        theCamera.stop()
         ESAA.calculateRatios()
-        console.log("Spacing: " + ESAA.spacing)
-        console.log("FontButtonPixelSize: " + ESAA.fontButtonPixelsize)
-        console.log("vorname: " + ESAA.vorname)
     }
-    onClosing: {
-        close.accepted = false
-    }
+//    onClosing: {
+//        close.accepted = false
+//    }
     Connections {
         target: Qt.application
         onStateChanged:
@@ -477,4 +475,24 @@ ApplicationWindow {
             }
         }
     }
+
+/*    Connections {
+        target: Qt.inputMethod
+        onVisibleChanged: {
+//            if (!Qt.inputMethod.visible) rc.y = root.height-rc.height-dp(10)
+            console.log("inputmthod.visible: " + Qt.inputMethod.visible)
+            console.log("screenheight: " + JW78Utils.screenHeight)
+            mainWindow.height = JW78Utils.screenHeight - Qt.inputMethod.keyboardRectangle.height / JW78Utils.getDevicePixelRatio()
+            console.log("mainWindow.height2: " + mainWindow.height)
+        }
+        onKeyboardRectangleChanged: {
+            console.log("keyboardRectangle.height: " + Qt.inputMethod.keyboardRectangle.height)
+            mainWindow.height = JW78Utils.screenHeight - Qt.inputMethod.keyboardRectangle.height / JW78Utils.getDevicePixelRatio()
+            console.log("mainWindow.height: " + mainWindow.height)
+//            if (Qt.inputMethod.visible) {
+//                rc.y = rc.y - 10 // keyboardY - (rc.height + dp(30) + _defaultNavBarHeight)
+//                _keyY = rc.y
+//            }
+        }
+    } */
 }

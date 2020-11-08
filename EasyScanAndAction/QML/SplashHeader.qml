@@ -7,8 +7,8 @@ Rectangle
     signal helpClicked
     id: splashscreen
     opacity: 1
-    y: 0
-    x: 0
+    anchors.top: parent.top
+    anchors.left: parent.left
     width: parent.width
     height: parent.height
     property bool minimized: false
