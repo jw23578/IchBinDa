@@ -256,6 +256,7 @@ public:
 
     Q_INVOKABLE void dummyGet();
 
+    Q_INVOKABLE void deleteAllCustomerCards();
     Q_INVOKABLE void saveCustomerCard(const QString &name, const QString &filename);
     Q_INVOKABLE void saveKontaktsituation(const QString &name, const QString &adress);
 

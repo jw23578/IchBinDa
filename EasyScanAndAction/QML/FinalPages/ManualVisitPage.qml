@@ -86,7 +86,7 @@ PageWithBackButton
                 id: showani
 
                 PauseAnimation {
-                    duration: index * 100
+                    duration: Math.max(0, index * 100)
                 }
                 NumberAnimation
                 {
@@ -100,9 +100,9 @@ PageWithBackButton
 
             width: view.width
             height: theColumn.height
-            Column {
+            Column
+            {
                 id: theColumn
-
                 width: view.width
                 Item
                 {
@@ -153,14 +153,28 @@ PageWithBackButton
     }
     Rectangle
     {
-        opacity: backButton.opacity / 2
+        opacity: backButton.opacity
         visible: opacity > 0 && PlacesManager.waitingForPlaces && !locationNotAvailable.visible
         anchors.fill: view
-        color: "red"
+        color: "#F4FBFE"
+        AnimatedImage
+        {
+            source: "qrc:/images/loading-icon.gif"
+            width: parent.width * 8 / 10
+            height: width
+            anchors.centerIn: parent
+            id: waitImage
+        }
+
         ESAAText
         {
-            anchors.centerIn: parent
-            text: "Umgebungsdaten werden abgerufen"
+            anchors.horizontalCenter: waitImage.horizontalCenter
+            anchors.top: waitImage.bottom
+            anchors.topMargin: JW78APP.spacing
+            text: "Bitte warten, die Umgebungsdaten werden abgerufen"
+            width: parent.width * 8 / 10
+            font.pixelSize: JW78APP.messageFontPixelsize
+            wrapMode: Text.WordWrap
         }
     }
     Rectangle

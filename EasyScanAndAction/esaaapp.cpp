@@ -1359,6 +1359,18 @@ void ESAAApp::dummyGet()
     });
 }
 
+void ESAAApp::deleteAllCustomerCards()
+{
+    QDir dir;
+    for (size_t i(0); i < allCustomerCards.size(); ++i)
+    {
+        CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(i)));
+        dir.remove(cc->filename());
+    }
+    allCustomerCards.clear();
+    database.clear("CustomerCards");
+}
+
 void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
 {
     QString customerCardsDir(jw78::Utils::getWriteablePath() + "/customerCards");

@@ -13,7 +13,7 @@ ApplicationWindow {
     height: 480
     id: mainWindow
     visible: true
-//    title: qsTr("Ich bin da!")
+    title: qsTr("Ich bin da!")
     property var previousPage: null
     property var theCurrentPage: null
     function showNewPage(currentPage, nextPage)
@@ -62,11 +62,12 @@ ApplicationWindow {
             }
         }
     }
+
     Item
     {
         id: header
         width: parent.width
-        height: parent.height / 20
+        height: parent.height / 16
     }
     Item
     {
@@ -462,9 +463,9 @@ ApplicationWindow {
         theCamera.stop()
         ESAA.calculateRatios()
     }
-//    onClosing: {
-//        close.accepted = false
-//    }
+    onClosing: {
+        close.accepted = false
+    }
     Connections {
         target: Qt.application
         onStateChanged:
