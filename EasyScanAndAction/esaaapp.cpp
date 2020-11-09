@@ -1371,6 +1371,17 @@ void ESAAApp::deleteAllCustomerCards()
     database.clear("CustomerCards");
 }
 
+void ESAAApp::deleteCustomerCardByIndex(int index)
+{
+    return;
+}
+
+//    QDir dir;
+//    CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(index)));
+//    dir.remove(cc->filename());
+//    allCustomerCards.
+//    database.clear("CustomerCards");}
+
 void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
 {
     QString customerCardsDir(jw78::Utils::getWriteablePath() + "/customerCards");

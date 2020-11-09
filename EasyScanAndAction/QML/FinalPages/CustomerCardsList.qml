@@ -37,6 +37,9 @@ ESAAPage {
                 model: AllCustomerCards
                 Item
                 {
+                    id: theItem
+
+
                     Component.onCompleted:
                     {
                         console.log("created " + height)
@@ -52,13 +55,35 @@ ESAAPage {
                             height: ESAA.spacing
                             width: parent.width
                         }
-                        ESAAText
+                        Item
                         {
-                            text: Card.name
                             width: parent.width
-                            font.pixelSize: ESAA.headerFontPixelsize
-                            color: JW78APP.headerFontColor
-                            id: cardName
+                            height: cardName.height
+                            ESAAText
+                            {
+                                text: Card.name
+                                width: parent.width
+                                font.pixelSize: ESAA.headerFontPixelsize
+                                color: JW78APP.headerFontColor
+                                id: cardName
+                                Behavior on x
+                                {
+                                    NumberAnimation
+                                    {
+                                        duration: JW78Utils.longAniDuration
+                                    }
+                                }
+                            }
+                            CircleButton
+                            {
+                                id: deleteButton
+                                anchors.right: parent.right
+                                width: theColumn.height
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: "Löschen"
+                                opacity: cardName.x / -theItem.height
+                                onClicked: JW78APP.deleteCustomerCardByIndex(index)
+                            }
                         }
 
                         Item
@@ -77,8 +102,42 @@ ESAAPage {
                     }
                     MouseArea
                     {
-                        anchors.fill: parent
-                        onClicked: showCustomerCard(Card.name, Card.filename)
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: parent.height
+                        anchors.horizontalCenterOffset: cardName.x
+                        property bool wasGesture: false
+                        onClicked: {
+                            if (wasGesture)
+                            {
+                                return
+                            }
+                            if (cardName.x < 0)
+                            {
+                                cardName.x = 0
+                                return
+                            }
+
+                            showCustomerCard(Card.name, Card.filename)
+                        }
+                        property int downStartX: 0
+                        onPressed:
+                        {
+                            wasGesture = false
+                            downStartX = mouse.x
+                        }
+                        onReleased:
+                        {
+                            console.log("downStartX: " + downStartX)
+                            console.log("mouse.x: " + mouse.x)
+                            console.log("diff: " + (downStartX - mouse.x))
+                            if (downStartX - mouse.x > JW78Utils.screenWidth / 20)
+                            {
+                                wasGesture = true
+                                cardName.x = -theItem.height
+                                mouse.accepted = true
+                            }
+                        }
                     }
                 }
             }
