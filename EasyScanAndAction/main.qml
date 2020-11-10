@@ -291,26 +291,6 @@ ApplicationWindow {
         CurrentVisitPage
         {
             id: currentVisitPage
-            //        y: 0
-            //        x: ESAA.isActiveVisit(changeCounter) ? 0 : -width
-            //        Behavior on x {
-            //            NumberAnimation {
-            //                duration: 300
-            //            }
-            //        }
-            //        width: parent.width
-            //        height: parent.height
-            //        z: 0
-            //        visible: true
-            //        opacity: 1
-            //        property int changeCounter: 0
-            //        Timer
-            //        {
-            //            interval: 10000
-            //            repeat: true
-            //            running: true
-            //            onTriggered: currentVisitPage.changeCounter += 1
-            //        }
             onQuestionVisitEnd:
             {
                 showNewPage(currentVisitPage, visitEndPage)

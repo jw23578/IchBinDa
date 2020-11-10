@@ -173,7 +173,7 @@ PageWithBackButton
             anchors.topMargin: JW78APP.spacing
             text: "Bitte warten, die Umgebungsdaten werden abgerufen"
             width: parent.width * 8 / 10
-            font.pixelSize: JW78APP.messageFontPixelsize
+            font.pixelSize: JW78APP.fontMessageTextPixelsize
             wrapMode: Text.WordWrap
         }
     }

@@ -19,6 +19,7 @@ ESAAPage {
     ESAAFlickable
     {
         id: theFlick
+        visible: theRepeater.count > 3
         anchors.margins: ESAA.spacing
         anchors.bottom: newCard.top
         anchors.left: parent.left
@@ -121,23 +122,23 @@ ESAAPage {
                             showCustomerCard(Card.name, Card.filename)
                         }
                         property int downStartX: 0
-                        onPressed:
-                        {
-                            wasGesture = false
-                            downStartX = mouse.x
-                        }
-                        onReleased:
-                        {
-                            console.log("downStartX: " + downStartX)
-                            console.log("mouse.x: " + mouse.x)
-                            console.log("diff: " + (downStartX - mouse.x))
-                            if (downStartX - mouse.x > JW78Utils.screenWidth / 20)
-                            {
-                                wasGesture = true
-                                cardName.x = -theItem.height
-                                mouse.accepted = true
-                            }
-                        }
+//                        onPressed:
+//                        {
+//                            wasGesture = false
+//                            downStartX = mouse.x
+//                        }
+//                        onReleased:
+//                        {
+//                            console.log("downStartX: " + downStartX)
+//                            console.log("mouse.x: " + mouse.x)
+//                            console.log("diff: " + (downStartX - mouse.x))
+//                            if (downStartX - mouse.x > JW78Utils.screenWidth / 20)
+//                            {
+//                                wasGesture = true
+//                                cardName.x = -theItem.height
+//                                mouse.accepted = true
+//                            }
+//                        }
                     }
                 }
             }
@@ -148,8 +149,11 @@ ESAAPage {
     {
         id: noCardsItem
         visible: theRepeater.count == 0
-        anchors.fill: theFlick
-
+        anchors.margins: ESAA.spacing
+        anchors.bottom: newCard.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
         SwipeView
         {
             id: theSwipeView
@@ -157,17 +161,19 @@ ESAAPage {
             anchors.bottom: indicator.top
             anchors.left: parent.left
             anchors.right: parent.right
-            Rectangle
+            Image
             {
                 id: itemA
-                color: "red"
                 opacity: 1 - theSwipeView.contentItem.contentX / width
+                source: "qrc:/images/kundenkarten_1.png"
+                fillMode: Image.PreserveAspectFit
             }
-            Rectangle
+            Image
             {
                 id: itemB
                 opacity: 1 - itemA.opacity
-                color: "blue"
+                source: "qrc:/images/kundenkarten_2.png"
+                fillMode: Image.PreserveAspectFit
             }
         }
         PageIndicator
@@ -184,6 +190,58 @@ ESAAPage {
                 width: JW78APP.spacing
                 height: width
                 color: index == indicator.currentIndex ? JW78APP.buttonFromColor : JW78APP.buttonToColor
+            }
+        }
+    }
+    Item
+    {
+        id: fewCardsItem
+        visible: theRepeater.count < 4 && theRepeater.count > 0
+        anchors.margins: ESAA.spacing
+        anchors.bottom: newCard.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        SwipeView
+        {
+            id: theSwipeView2
+            anchors.top: parent.top
+            anchors.bottom: fewCardsindicator.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            Repeater
+            {
+                id: fewCardsRepeater
+                model: AllCustomerCards
+                delegate: Image
+                {
+                    id: card1Item
+                    opacity: 1 - Math.abs((index * width - theSwipeView2.contentItem.contentX) / width)
+                    source: "file:" + Card.filename
+                    fillMode: Image.PreserveAspectFit
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: showCustomerCard(Card.name, Card.filename)
+                    }
+                }
+
+            }
+        }
+        PageIndicator
+        {
+            id: fewCardsindicator
+            height: JW78APP.spacing
+            currentIndex: theSwipeView2.currentIndex
+            anchors.bottom: parent.bottom
+            count: theSwipeView2.count
+            anchors.horizontalCenter: parent.horizontalCenter
+            delegate: Rectangle
+            {
+                radius: width/ 2
+                width: JW78APP.spacing
+                height: width
+                color: index == fewCardsindicator.currentIndex ? JW78APP.buttonFromColor : JW78APP.buttonToColor
             }
         }
     }

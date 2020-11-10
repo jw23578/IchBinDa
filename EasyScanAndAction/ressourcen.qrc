@@ -43,5 +43,7 @@
         <file>images/A5-So-funktioniert-es-1.png</file>
         <file>images/A6-So-funktioniert-es-1.png</file>
         <file>images/loading-icon.gif</file>
+        <file>images/kundenkarten_2.png</file>
+        <file>images/kundenkarten_1.png</file>
     </qresource>
 </RCC>
