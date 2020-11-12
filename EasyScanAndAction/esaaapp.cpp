@@ -1373,14 +1373,14 @@ void ESAAApp::deleteAllCustomerCards()
 
 void ESAAApp::deleteCustomerCardByIndex(int index)
 {
-    return;
+    qDebug() <<  __PRETTY_FUNCTION__ << index;
+    QDir dir;
+    CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(index)));
+    database.erase("CustomerCards", *cc);
+    dir.remove(cc->filename());
+    allCustomerCards.erase(index);
 }
 
-//    QDir dir;
-//    CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(index)));
-//    dir.remove(cc->filename());
-//    allCustomerCards.
-//    database.clear("CustomerCards");}
 
 void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
 {

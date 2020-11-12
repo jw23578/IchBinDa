@@ -135,6 +135,7 @@ ApplicationWindow {
             onShowCustomerCard:
             {
                 showcustomercard.imageFilename = "file:" + filename
+                showcustomercard.index = index
                 showNewPage(theCurrentPage, showcustomercard)
             }
         }

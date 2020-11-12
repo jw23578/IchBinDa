@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
-Item {
+Item
+{
     id: circlemultibutton
     signal openClicked
     signal closeClicked
@@ -12,6 +13,9 @@ Item {
     property alias button1: option1
     property alias button2: option2
     property alias button3: option3
+    property alias button1VisibleMaster: option1.visibleMaster
+    property alias button2VisibleMaster: option2.visibleMaster
+    property alias button3VisibleMaster: option3.visibleMaster
 
     visible: opacity > 0
     Behavior on opacity {
@@ -56,7 +60,8 @@ Item {
             CircleButton
             {
                 id: option1
-                visible: opacity > 0
+                property bool visibleMaster: true
+                visible: opacity > 0 && visibleMaster
                 width: smallWidth
                 opacity: 0
                 anchors.horizontalCenter: parent.right
@@ -74,7 +79,8 @@ Item {
             CircleButton
             {
                 id: option2
-                visible: opacity > 0
+                property bool visibleMaster: true
+                visible: opacity > 0 && visibleMaster
                 width: smallWidth
                 opacity: 0
                 anchors.horizontalCenter: parent.right
@@ -92,7 +98,8 @@ Item {
             CircleButton
             {
                 id: option3
-                visible: opacity > 0
+                property bool visibleMaster: true
+                visible: opacity > 0 && visibleMaster
                 width: smallWidth
                 opacity: 0
                 anchors.horizontalCenter: parent.right

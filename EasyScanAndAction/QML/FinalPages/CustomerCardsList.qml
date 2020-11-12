@@ -6,7 +6,7 @@ import "../Comp"
 ESAAPage {
     caption: "Kundenkarten"
     signal newCard;
-    signal showCustomerCard(string name, string filename)
+    signal showCustomerCard(string name, string filename, int index)
     CircleButton
     {
         anchors.right: parent.right
@@ -39,7 +39,25 @@ ESAAPage {
                 Item
                 {
                     id: theItem
-
+                    ParallelAnimation
+                    {
+                        id: deleteAni
+                        NumberAnimation
+                        {
+                            target: theItem
+                            property: "x"
+                            to: -width
+                            duration: JW78Utils.shortAniDuration
+                        }
+                        NumberAnimation
+                        {
+                            target: theItem
+                            property: "height"
+                            to: 0
+                            duration: JW78Utils.shortAniDuration
+                        }
+                        onStopped: JW78APP.deleteCustomerCardByIndex(index)
+                    }
 
                     Component.onCompleted:
                     {
@@ -51,6 +69,7 @@ ESAAPage {
                     {
                         id: theColumn
                         width: parent.width
+                        property int textWidth: width - cardName.height - JW78APP.spacing
                         Item
                         {
                             height: ESAA.spacing
@@ -60,18 +79,28 @@ ESAAPage {
                         {
                             width: parent.width
                             height: cardName.height
+                            Image
+                            {
+                                height: parent.height
+                                width: height
+                                id: cardThumbnail
+                                source: "file://" + Card.filename
+                                fillMode: Image.PreserveAspectFit
+                            }
+
                             ESAAText
                             {
                                 text: Card.name
-                                width: parent.width
+                                x: height + JW78APP.spacing
+                                width: theColumn.textWidth
                                 font.pixelSize: ESAA.headerFontPixelsize
                                 color: JW78APP.headerFontColor
                                 id: cardName
-                                Behavior on x
+                                Behavior on width
                                 {
                                     NumberAnimation
                                     {
-                                        duration: JW78Utils.longAniDuration
+                                        duration: JW78Utils.shortAniDuration
                                     }
                                 }
                             }
@@ -82,8 +111,11 @@ ESAAPage {
                                 width: theColumn.height
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "Löschen"
-                                opacity: cardName.x / -theItem.height
-                                onClicked: JW78APP.deleteCustomerCardByIndex(index)
+                                opacity: (cardName.width - theColumn.textWidth) / -theItem.height
+                                onClicked: {
+                                    theMouseArea.downStartX = 0
+                                    deleteAni.start()
+                                }
                             }
                         }
 
@@ -103,8 +135,11 @@ ESAAPage {
                     }
                     MouseArea
                     {
-                        anchors.centerIn: parent
-                        width: parent.width
+                        id: theMouseArea
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        hoverEnabled: true
+                        width: cardName.width
                         height: parent.height
                         anchors.horizontalCenterOffset: cardName.x
                         property bool wasGesture: false
@@ -113,32 +148,42 @@ ESAAPage {
                             {
                                 return
                             }
-                            if (cardName.x < 0)
+                            if (cardName.width < theColumn.textWidth)
                             {
-                                cardName.x = 0
+                                cardName.width = theColumn.textWidth
+                                theMouseArea.downStartX = 0
                                 return
                             }
 
-                            showCustomerCard(Card.name, Card.filename)
+                            showCustomerCard(Card.name, Card.filename, index)
                         }
                         property int downStartX: 0
-//                        onPressed:
-//                        {
-//                            wasGesture = false
-//                            downStartX = mouse.x
-//                        }
-//                        onReleased:
-//                        {
-//                            console.log("downStartX: " + downStartX)
-//                            console.log("mouse.x: " + mouse.x)
-//                            console.log("diff: " + (downStartX - mouse.x))
-//                            if (downStartX - mouse.x > JW78Utils.screenWidth / 20)
-//                            {
-//                                wasGesture = true
-//                                cardName.x = -theItem.height
-//                                mouse.accepted = true
-//                            }
-//                        }
+                        onPressed:
+                        {
+                            wasGesture = false
+                            downStartX = mouse.x
+                            console.log("pressed downStartX: " + downStartX)
+                        }
+                        onMouseXChanged: {
+                            if (downStartX - mouse.x > JW78Utils.screenWidth / 10)
+                            {
+                                wasGesture = true
+                                cardName.width = theColumn.textWidth - theItem.height
+                                mouse.accepted = true
+                            }
+                        }
+                        onReleased:
+                        {
+                            console.log("downStartX: " + downStartX)
+                            console.log("mouse.x: " + mouse.x)
+                            console.log("diff: " + (downStartX - mouse.x))
+                            if (downStartX - mouse.x > JW78Utils.screenWidth / 10)
+                            {
+                                wasGesture = true
+                                cardName.width = theColumn.textWidth - theItem.height
+                                mouse.accepted = true
+                            }
+                        }
                     }
                 }
             }
@@ -222,7 +267,7 @@ ESAAPage {
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: showCustomerCard(Card.name, Card.filename)
+                        onClicked: showCustomerCard(Card.name, Card.filename, index)
                     }
                 }
 
