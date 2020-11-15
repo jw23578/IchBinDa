@@ -28,6 +28,7 @@ PageWithBackButton
         y: JW78Utils.screenHeight / 480 * 360 - height / 2
         button1VisibleMaster: false
         button2VisibleMaster: false
+        button4VisibleMaster: false
         button3.text: "Karte<br>löschen"
         button3.onClicked: {
             backPressed()

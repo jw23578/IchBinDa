@@ -274,7 +274,7 @@ ESAAPage
         anchors.bottom: parent.bottom
         anchors.bottomMargin: ESAA.spacing * 2.5
         anchors.horizontalCenter: parent.horizontalCenter
-        text: meineDaten ? "speichern" : "Daten<br>senden"
+        text: meineDaten ? "Speichern" : "Daten<br>senden"
         belowCaption: meineDaten ? "" : "an: " + ESAA.facilityName
         onClicked:
         {

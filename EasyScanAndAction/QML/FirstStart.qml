@@ -152,7 +152,7 @@ ESAAPage
                       "<br><br>Deine Kontaktdaten werden <b>ausschließlich</b> in der App gespeichert und per <b>verschlüsselter</b> E-Mail an den Betreiber übermittelt. " +
 //                      "<br>Es gibt keinen zentralen Server auf dem " +
 //                      "deine persönlichen Daten gespeichert werden würden." +
-                      "<br><br>Der Betreiber/Anbieter ist <b>ausschließlich</b> in der Lage auf deine Kontaktdaten zuzugreifen, wenn er von entsprechenden Einrichtungen aufgefordert wird die Kontaktdaten auszuhändigen. " +
+                      "<br><br>Der Betreiber/Anbieter ist <b>ausschließlich</b> dann in der Lage auf deine Kontaktdaten zuzugreifen, wenn er von entsprechenden Einrichtungen aufgefordert wird die Kontaktdaten auszuhändigen. " +
 //                      "<br><br>Pro Besuch wird ein anonymes Token erzeugt und auf einem Server gespeichert. <b>Ausschließlich</b> deine App kann dieses Token dir zuordnen. Lediglich Besuchsort Standort und Datum/Uhrzeit lesbar, " +
 //                      "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +

@@ -205,8 +205,8 @@ PageWithBackButton
     {
         id: manuelButton
         anchors.right: parent.right
-        anchors.verticalCenter: backButton.verticalCenter
-        anchors.rightMargin: ESAA.spacing
+        anchors.bottom: parent.bottom
+        anchors.margins: ESAA.spacing
         text: "+"
         onClicked: openManual()
         width: backButton.width * 1.5
