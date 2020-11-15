@@ -75,7 +75,7 @@ ESAAPage
 
     HelpOverlay
     {
-        helpText1: "Hier kannst du den QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
+        helpText1: "Hier kannst du den <b>IchBinDa!</b>-QR-Code des Clubs, Restaurants, Sportvereins, Frisör usw. scannen um deine Kontaktdaten komfortabel und verschlüsselt zu übermitteln." +
                    "<br><br>Über den Button ganz unten kannst du das Menü aufrufen um die App zu erkunden."
         visible: ESAA.firstStart
         onDoneClick: {

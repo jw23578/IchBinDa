@@ -32,7 +32,7 @@ ESAAPage
     HelpOverlay
     {
         visible: true
-        helpText1: "Diesen Code kannst du von einer anderen IchBinDa!-App scannen lassen." +
+        helpText1: "Diesen Code kannst du von einer anderen <b>IchBinDa!</b>-App scannen lassen." +
                    "<br><br>Dann bekommt ihr beide eine Klartext E-Mail mit Vorname, Name und E-Mail-Adresse des jeweils anderen und könnt euch im Falle des Falles gegenseitig informieren."
         onDoneClick: visible = false
     }

@@ -30,7 +30,7 @@ ApplicationWindow {
         }
         if (ESAA.emailAdress == "")
         {
-            ESAA.showMessage("Bitte gib vorher noch deinen E-Mail-Adresse in deinen Kontaktdaten ein.")
+            ESAA.showMessage("Bitte gib vorher noch deine E-Mail-Adresse in deinen Kontaktdaten ein.")
             return;
         }
         showKontaktTagebuchQRCode.qrCodeFileName = ESAA.generateKontaktTagebuchQRCode()

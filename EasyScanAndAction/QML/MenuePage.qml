@@ -33,7 +33,7 @@ ESAAPage
         buttonTexts: [
             qsTr("QR-Code<br>nanlegen"),
             qsTr("Kontaktdaten<br>bearbeiten"),
-            qsTr("IchBinDa!<br>im Internet"),
+            qsTr("<b>IchBinDa!</b><br>im Internet"),
             qsTr("Meine<br>Besuche<br>") + AllVisits.count,
             qsTr("Hilfe"),
             qsTr("Spenden"),
