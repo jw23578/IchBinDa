@@ -9,7 +9,7 @@ ESAAPage
     signal editQRCode
     signal help
     signal myVisitsClicked
-    signal showKontaktTagebuchQRCode(string qrKontaktTagebuchQRCodeFilename);
+    signal showKontaktTagebuchQRCode;
     caption: "Menü"
 
     onShowing:
@@ -115,23 +115,7 @@ ESAAPage
             }
             if (buttonText == buttonTexts[7])
             {
-                if (ESAA.fstname == "")
-                {
-                    ESAA.showMessage("Bitte gib vorher noch deinen Vornamen in deinen Kontaktdaten ein.")
-                    return;
-                }
-                if (ESAA.surname == "")
-                {
-                    ESAA.showMessage("Bitte gib vorher noch deinen Nachnamen in deinen Kontaktdaten ein.")
-                    return;
-                }
-                if (ESAA.emailAdress == "")
-                {
-                    ESAA.showMessage("Bitte gib vorher noch deinen E-Mail-Adresse in deinen Kontaktdaten ein.")
-                    return;
-                }
-                var fn = ESAA.generateKontaktTagebuchQRCode()
-                showKontaktTagebuchQRCode(fn)
+                showKontaktTagebuchQRCode()
                 return
             }
         }

@@ -156,14 +156,14 @@ PageWithBackButton
         opacity: backButton.opacity
         visible: opacity > 0 && PlacesManager.waitingForPlaces && !locationNotAvailable.visible
         anchors.fill: view
-        color: "#F4FBFE"
+        color: "white"
         AnimatedImage
         {
-            source: "qrc:/images/loading-icon.gif"
-            width: parent.width * 8 / 10
-            height: width
+            source: "qrc:/images/loading.gif"
             anchors.centerIn: parent
             id: waitImage
+            width: parent.width / 2
+            height: width
         }
 
         ESAAText

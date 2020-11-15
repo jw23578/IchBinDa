@@ -973,6 +973,7 @@ void ESAAApp::action(QString qrCodeJSON)
         QString otherSurname(data["sn"].toString());
         showWaitMessage("Bitte einen Moment Geduld, die E-Mails werden versendet");
         sendKontaktTagebuchEMails(otherFstname, otherSurname, otherEMail);
+        saveKontaktsituation(otherFstname + " " + otherSurname, otherEMail);
         showMessage("Die Kontakttagebuch-E-Mails wurden versendet.");
         return;
     }

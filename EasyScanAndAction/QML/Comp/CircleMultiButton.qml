@@ -8,14 +8,15 @@ Item
     property bool open: false
     property int smallWidth: JW78Utils.screenWidth / 6
     property int largeWidth: JW78Utils.screenWidth / 4
-    property int targetAngle: 70
     property alias text: mainbutton.text
     property alias button1: option1
     property alias button2: option2
     property alias button3: option3
+    property alias button4: option4
     property alias button1VisibleMaster: option1.visibleMaster
     property alias button2VisibleMaster: option2.visibleMaster
     property alias button3VisibleMaster: option3.visibleMaster
+    property alias button4VisibleMaster: option4.visibleMaster
 
     visible: opacity > 0
     Behavior on opacity {
@@ -108,8 +109,30 @@ Item
                 onClicked: mainbutton.clicked()
             }
         }
+        Item
+        {
+            id: item4
+            anchors.centerIn: parent
+            width: 0
+            height: 0
+            CircleButton
+            {
+                id: option4
+                property bool visibleMaster: true
+                visible: opacity > 0 && visibleMaster
+                width: smallWidth
+                opacity: 0
+                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                rotation: -parent.rotation
+                onClicked: mainbutton.clicked()
+            }
+        }
     }
 
+    property int targetAngle: 180
+    property double horizontalMoveFaktor: 2.2
+    property int optionCount: 4
     SequentialAnimation
     {
         id: openani1
@@ -126,7 +149,7 @@ Item
                 target: item1
                 property: "width"
                 duration: 200
-                to: -2 * largeWidth
+                to: -horizontalMoveFaktor * largeWidth
             }
             NumberAnimation {
                 target: option1
@@ -145,7 +168,7 @@ Item
                 target: item2
                 property: "width"
                 duration: 200
-                to: -2 * largeWidth
+                to: -horizontalMoveFaktor * largeWidth
             }
             NumberAnimation {
                 target: option2
@@ -164,7 +187,7 @@ Item
                 target: item3
                 property: "width"
                 duration: 200
-                to: -2 * largeWidth
+                to: -horizontalMoveFaktor * largeWidth
             }
             NumberAnimation {
                 target: option3
@@ -174,6 +197,25 @@ Item
             }
             NumberAnimation {
                 target: option3
+                property: "opacity"
+                duration: 200
+                to: 1
+            }
+
+            NumberAnimation {
+                target: item4
+                property: "width"
+                duration: 200
+                to: -horizontalMoveFaktor * largeWidth
+            }
+            NumberAnimation {
+                target: option4
+                property: "width"
+                duration: 200
+                to: largeWidth
+            }
+            NumberAnimation {
+                target: option4
                 property: "opacity"
                 duration: 200
                 to: 1
@@ -193,21 +235,28 @@ Item
             {
                 target: item1
                 property: "rotation"
-                to: (180 - 2 * targetAngle) / 2
+                to: targetAngle / (optionCount - 1) * 0
                 duration: 200
             }
             NumberAnimation
             {
                 target: item2
                 property: "rotation"
-                to: targetAngle + (180 - 2 * targetAngle) / 2
+                to: targetAngle / (optionCount - 1) * 1
                 duration: 200
             }
             NumberAnimation
             {
                 target: item3
                 property: "rotation"
-                to: targetAngle * 2 + (180 - 2 * targetAngle) / 2
+                to: targetAngle / (optionCount - 1) * 2
+                duration: 200
+            }
+            NumberAnimation
+            {
+                target: item4
+                property: "rotation"
+                to: targetAngle / (optionCount - 1) * 3
                 duration: 200
             }
         }
@@ -245,6 +294,13 @@ Item
                 to: 0
                 duration: 200
             }
+            NumberAnimation
+            {
+                target: item4
+                property: "rotation"
+                to: 0
+                duration: 200
+            }
         }
         ParallelAnimation
         {
@@ -307,6 +363,24 @@ Item
             }
             NumberAnimation {
                 target: option3
+                property: "opacity"
+                duration: 200
+                to: 0
+            }
+            NumberAnimation {
+                target: item4
+                property: "width"
+                duration: 200
+                to: 0
+            }
+            NumberAnimation {
+                target: option4
+                property: "width"
+                duration: 200
+                to: smallWidth
+            }
+            NumberAnimation {
+                target: option4
                 property: "opacity"
                 duration: 200
                 to: 0

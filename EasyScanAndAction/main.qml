@@ -16,6 +16,27 @@ ApplicationWindow {
     title: qsTr("Ich bin da!")
     property var previousPage: null
     property var theCurrentPage: null
+    function funcShowKontaktTagebuchQRCode()
+    {
+        if (ESAA.fstname == "")
+        {
+            ESAA.showMessage("Bitte gib vorher noch deinen Vornamen in deinen Kontaktdaten ein.")
+            return;
+        }
+        if (ESAA.surname == "")
+        {
+            ESAA.showMessage("Bitte gib vorher noch deinen Nachnamen in deinen Kontaktdaten ein.")
+            return;
+        }
+        if (ESAA.emailAdress == "")
+        {
+            ESAA.showMessage("Bitte gib vorher noch deinen E-Mail-Adresse in deinen Kontaktdaten ein.")
+            return;
+        }
+        showKontaktTagebuchQRCode.qrCodeFileName = ESAA.generateKontaktTagebuchQRCode()
+        showNewPage(theCurrentPage, showKontaktTagebuchQRCode)
+    }
+
     function showNewPage(currentPage, nextPage)
     {
         if (currentPage == nextPage)
@@ -167,6 +188,8 @@ ApplicationWindow {
             button2.downSource: "qrc:/images/share_blau.svg"
             button3.text: "Kontakt<br>situation<br>eintragen"
             button3.onClicked: showNewPage(theCurrentPage, manualvisitpage)
+            button4.text: "Kontakt<br>tagebuch<br>QR-Code"
+            button4.onClicked: funcShowKontaktTagebuchQRCode()
             onOpenClicked: hideCallMenueButton.start()
             onCloseClicked: hideAndShowCallMenueButton.start()
         }
@@ -233,7 +256,7 @@ ApplicationWindow {
         ShowKontaktTagebuchQRCode
         {
             id: showKontaktTagebuchQRCode
-            onBack: showNewPage(showKontaktTagebuchQRCode, menuepage)
+            onBack: showNewPage(showKontaktTagebuchQRCode, previousPage)
         }
         TimeRecordingEvents
         {
@@ -275,11 +298,7 @@ ApplicationWindow {
                 showNewPage(menuepage, firststart)
             }
             onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
-            onShowKontaktTagebuchQRCode:
-            {
-                showKontaktTagebuchQRCode.qrCodeFileName = qrKontaktTagebuchQRCodeFilename
-                showNewPage(menuepage, showKontaktTagebuchQRCode)
-            }
+            onShowKontaktTagebuchQRCode: funcShowKontaktTagebuchQRCode()
         }
         AgreePage
         {
@@ -458,7 +477,7 @@ ApplicationWindow {
         }
     }
 
-/*    Connections {
+    /*    Connections {
         target: Qt.inputMethod
         onVisibleChanged: {
 //            if (!Qt.inputMethod.visible) rc.y = root.height-rc.height-dp(10)
