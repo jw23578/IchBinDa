@@ -3,9 +3,26 @@ import QtQuick 2.0
 Item
 {
     id: circlemultibutton
+    width: JW78Utils.screenWidth / 4
+    height: width
     signal openClicked
+    function open()
+    {
+        openani1.start()
+        isOpen = true
+        text = "-"
+        openClicked()
+    }
+
     signal closeClicked
-    property bool open: false
+    function close()
+    {
+        isOpen = false
+        text = "+"
+        closeani1.start()
+        closeClicked()
+    }
+    property bool isOpen: false
     property int smallWidth: JW78Utils.screenWidth / 6
     property int largeWidth: JW78Utils.screenWidth / 4
     property alias text: mainbutton.text
@@ -36,19 +53,13 @@ Item
             text: "+"
             onClicked:
             {
-                if (circlemultibutton.open)
+                if (circlemultibutton.isOpen)
                 {
-                    open = false
-                    text = "+"
-                    closeani1.start()
-                    closeClicked()
+                    close()
                 }
                 else
                 {
-                    openani1.start()
-                    open = true
-                    text = "-"
-                    openClicked()
+                    open()
                 }
             }
         }
@@ -133,6 +144,7 @@ Item
     property int targetAngle: 180
     property double horizontalMoveFaktor: 2.2
     property int optionCount: 4
+    property int yMoveOnOpen: smallWidth
     SequentialAnimation
     {
         id: openani1
@@ -227,7 +239,7 @@ Item
             {
                 target: allButtons
                 property: "anchors.verticalCenterOffset"
-                to: smallWidth
+                to: yMoveOnOpen
                 duration: 200
             }
 

@@ -254,20 +254,34 @@ ESAAPage {
             anchors.bottom: fewCardsindicator.top
             anchors.left: parent.left
             anchors.right: parent.right
+            anchors.margins: JW78APP.spacing
             Repeater
             {
                 id: fewCardsRepeater
                 model: AllCustomerCards
-                delegate: Image
-                {
-                    id: card1Item
+                delegate: Item {
                     opacity: 1 - Math.abs((index * width - theSwipeView2.contentItem.contentX) / width)
-                    source: "file:" + Card.filename
-                    fillMode: Image.PreserveAspectFit
-                    MouseArea
+                    id: card1Item
+                    Rectangle
                     {
+                        color: JW78APP.buttonFromColor
+                        anchors.centerIn: parent
+                        width: cardImage.paintedWidth + 2 * JW78APP.spacing
+                        height: cardImage.paintedHeight + 2 * JW78APP.spacing
+                        radius: JW78APP.radius
+                    }
+                    Image
+                    {
+                        anchors.margins: JW78APP.spacing
                         anchors.fill: parent
-                        onClicked: showCustomerCard(Card.name, Card.filename, index)
+                        id: cardImage
+                        source: "file:" + Card.filename
+                        fillMode: Image.PreserveAspectFit
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: showCustomerCard(Card.name, Card.filename, index)
+                        }
                     }
                 }
 
@@ -281,12 +295,23 @@ ESAAPage {
             anchors.bottom: parent.bottom
             count: theSwipeView2.count
             anchors.horizontalCenter: parent.horizontalCenter
-            delegate: Rectangle
-            {
-                radius: width/ 2
+            delegate: Item {
                 width: JW78APP.spacing
                 height: width
-                color: index == fewCardsindicator.currentIndex ? JW78APP.buttonFromColor : JW78APP.buttonToColor
+                Rectangle
+                {
+                    anchors.centerIn: parent
+                    radius: width/ 2
+                    width: index == fewCardsindicator.currentIndex ? JW78APP.spacing : JW78APP.spacing / 2
+                    Behavior on width {
+                        NumberAnimation {
+                            duration: JW78Utils.shortAniDuration
+                        }
+                    }
+
+                    height: width
+                    color: index == fewCardsindicator.currentIndex ? JW78APP.buttonFromColor : JW78APP.buttonToColor
+                }
             }
         }
     }

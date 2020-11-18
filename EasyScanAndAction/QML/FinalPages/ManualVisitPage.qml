@@ -204,7 +204,7 @@ PageWithBackButton
     CircleButton
     {
         id: manuelButton
-        anchors.right: parent.right
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.margins: ESAA.spacing
         text: "+"

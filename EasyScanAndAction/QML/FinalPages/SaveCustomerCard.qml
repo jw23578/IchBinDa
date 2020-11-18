@@ -35,6 +35,7 @@ PageWithBackButton {
         anchors.right: parent.right
         anchors.bottom: saveButton.top
         anchors.margins: ESAA.spacing
+        font.pixelSize: JW78APP.fontMessageTextPixelsize
     }
 
     CentralActionButton
