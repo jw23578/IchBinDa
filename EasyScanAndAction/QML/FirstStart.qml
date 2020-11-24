@@ -168,6 +168,7 @@ ESAAPage
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Meine<br>Kontaktdaten<br>bearbeiten")
             onClicked: goEditContactData()
+            font.pixelSize: JW78APP.fontButtonPixelsize * 0.7
         }
 
 //        TwoCircleButtons

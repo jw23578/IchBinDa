@@ -61,7 +61,7 @@ ESAAPage
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        contentHeight: theColumn.height * 1.3
+        contentHeight: theColumn.height * 1.4
         Column
         {
             parent: theFlick.contentItem

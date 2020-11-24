@@ -31,7 +31,7 @@ ESAAPage
         width: Math.min(parent.width - 2 * ESAA.spacing, contentWidth)
 
         buttonTexts: [
-            qsTr("QR-Code<br>nanlegen"),
+            qsTr("QR-Code<br>anlegen"),
             qsTr("Kontaktdaten<br>bearbeiten"),
             qsTr("<b>IchBinDa!</b><br>im Internet"),
             qsTr("Meine<br>Besuche<br>") + AllVisits.count,

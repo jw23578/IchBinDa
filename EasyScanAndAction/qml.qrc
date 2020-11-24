@@ -49,5 +49,6 @@
         <file>QML/FinalPages/WorkTimeSpans.qml</file>
         <file>QML/Comp/CircleMultiButton.qml</file>
         <file>QML/Comp/CircleButtonsMenue.qml</file>
+        <file>QML/Comp/CustomerCardsSwipe.qml</file>
     </qresource>
 </RCC>
