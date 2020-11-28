@@ -653,11 +653,6 @@ void ESAAApp::hideWaitMessage()
     emit hideWaitMessageSignal();
 }
 
-void ESAAApp::scan()
-{
-    emit scanSignal();
-}
-
 void ESAAApp::sendContactData()
 {
     lastVisit.setBegin(QDateTime::currentDateTime());

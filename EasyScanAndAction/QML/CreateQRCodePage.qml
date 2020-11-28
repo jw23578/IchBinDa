@@ -110,10 +110,6 @@ ESAAPage
                 width: parent.width
                 caption: "Farbcode (Format: #ffffff)"
                 colorEdit: true
-                onDisplayTextChanged:
-                {
-                    colorRectangle.color = displayText
-                }
                 id: colorInput
                 helpText: "Diese Farbe wird angezeigt, wenn ein Besucher seine Daten gesendet hat, so kann - zusammen mit dem Logo - schnell erkannt werden, dass der richtige Besuch angezeigt wird."
                 onHelpClicked: ESAA.showMessage(ht)
@@ -255,7 +251,7 @@ ESAAPage
                         width: parent.width - height
                         caption: (index + 1) + ". Frage"
                         id: yesQuestion
-                        Component.onCompleted: text = yesQuestionVector[index]
+                        Component.onCompleted: text = yesQuestionVector.length > index ? yesQuestionVector[index] : ""
                         onDisplayTextChanged: yesQuestionVector[index] = displayText
                     }
                     Item

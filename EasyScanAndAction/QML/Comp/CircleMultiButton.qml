@@ -9,6 +9,7 @@ Item
     function open()
     {
         openani1.start()
+        optionsRepeater.openAll()
         isOpen = true
         text = "-"
         openClicked()
@@ -20,20 +21,18 @@ Item
         isOpen = false
         text = "+"
         closeani1.start()
+        optionsRepeater.closeAll()
         closeClicked()
     }
     property bool isOpen: false
     property int smallWidth: JW78Utils.screenWidth / 6
     property int largeWidth: JW78Utils.screenWidth / 4
     property alias text: mainbutton.text
-    property alias button1: option1
-    property alias button2: option2
-    property alias button3: option3
-    property alias button4: option4
-    property alias button1VisibleMaster: option1.visibleMaster
-    property alias button2VisibleMaster: option2.visibleMaster
-    property alias button3VisibleMaster: option3.visibleMaster
-    property alias button4VisibleMaster: option4.visibleMaster
+    property var texts: null
+    property var clickEvents: null
+    property var visibleMasters: null
+    property var sources: null
+    property var downSources: null
 
     visible: opacity > 0
     Behavior on opacity {
@@ -41,6 +40,11 @@ Item
             duration: 200
         }
     }
+
+    property int targetAngle: 180
+    property double horizontalMoveFaktor: 2.2
+    property int optionCount: 4
+    property int yMoveOnOpen: smallWidth
 
     Item
     {
@@ -63,340 +67,159 @@ Item
                 }
             }
         }
-        Item
+        Repeater
         {
-            id: item1
-            anchors.centerIn: parent
-            width: 0
-            height: 0
-            CircleButton
+            id: optionsRepeater
+            model: optionCount
+            delegate: Item
             {
-                id: option1
-                property bool visibleMaster: true
-                visible: opacity > 0 && visibleMaster
-                width: smallWidth
-                opacity: 0
-                anchors.horizontalCenter: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                rotation: -parent.rotation
-                onClicked: mainbutton.clicked()
+                id: optionItem
+                anchors.centerIn: parent
+                width: 0
+                height: 0
+                function startOpenAni()
+                {
+                    openOption.start()
+                }
+                function startCloseAni()
+                {
+                    closeOption.start()
+                }
+                CircleButton
+                {
+                    id: theOption
+                    property bool visibleMaster: circlemultibutton.visibleMasters == null ? true : circlemultibutton.visibleMasters.length > index ? circlemultibutton.visibleMasters[index] : true
+                    visible: opacity > 0 && visibleMaster
+                    width: smallWidth
+                    opacity: 0
+                    anchors.horizontalCenter: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    rotation: -parent.rotation
+                    text: circlemultibutton.texts[index]
+                    onClicked: circlemultibutton.clickEvents[index]()
+                    source: circlemultibutton.sources == null ? "" : circlemultibutton.sources.length > index ? circlemultibutton.sources[index] : ""
+                    downSource: circlemultibutton.downSources == null ? "" : circlemultibutton.downSources.length > index ? circlemultibutton.downSources[index] : ""
+
+                }
+                SequentialAnimation
+                {
+                    id: openOption
+                    ParallelAnimation
+                    {
+                        NumberAnimation {
+                            target: optionItem
+                            property: "width"
+                            duration: 200
+                            to: -horizontalMoveFaktor * largeWidth
+                        }
+                        NumberAnimation {
+                            target: theOption
+                            property: "width"
+                            duration: 200
+                            to: largeWidth
+                        }
+                        NumberAnimation {
+                            target: theOption
+                            property: "opacity"
+                            duration: 200
+                            to: 1
+                        }
+
+                    }
+                    NumberAnimation
+                    {
+                        target: optionItem
+                        property: "rotation"
+                        to: targetAngle / (optionCount - 1) * index
+                        duration: 200
+                    }
+                }
+                SequentialAnimation
+                {
+                    id: closeOption
+                    NumberAnimation
+                    {
+                        target: optionItem
+                        property: "rotation"
+                        to: 0
+                        duration: 200
+                    }
+                    ParallelAnimation
+                    {
+                        NumberAnimation {
+                            target: optionItem
+                            property: "width"
+                            duration: 200
+                            to: 0
+                        }
+                        NumberAnimation {
+                            target: theOption
+                            property: "width"
+                            duration: 200
+                            to: smallWidth
+                        }
+                        NumberAnimation {
+                            target: theOption
+                            property: "opacity"
+                            duration: 200
+                            to: 0
+                        }
+                    }
+                }
             }
-        }
-        Item
-        {
-            id: item2
-            anchors.centerIn: parent
-            width: 0
-            height: 0
-            CircleButton
+            function openAll()
             {
-                id: option2
-                property bool visibleMaster: true
-                visible: opacity > 0 && visibleMaster
-                width: smallWidth
-                opacity: 0
-                anchors.horizontalCenter: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                rotation: -parent.rotation
-                onClicked: mainbutton.clicked()
+                for (var i = 0; i < count; ++i)
+                {
+                    var item = optionsRepeater.itemAt(i)
+                    item.startOpenAni()
+                }
             }
-        }
-        Item
-        {
-            id: item3
-            anchors.centerIn: parent
-            width: 0
-            height: 0
-            CircleButton
+            function closeAll()
             {
-                id: option3
-                property bool visibleMaster: true
-                visible: opacity > 0 && visibleMaster
-                width: smallWidth
-                opacity: 0
-                anchors.horizontalCenter: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                rotation: -parent.rotation
-                onClicked: mainbutton.clicked()
-            }
-        }
-        Item
-        {
-            id: item4
-            anchors.centerIn: parent
-            width: 0
-            height: 0
-            CircleButton
-            {
-                id: option4
-                property bool visibleMaster: true
-                visible: opacity > 0 && visibleMaster
-                width: smallWidth
-                opacity: 0
-                anchors.horizontalCenter: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                rotation: -parent.rotation
-                onClicked: mainbutton.clicked()
+                for (var i = 0; i < count; ++i)
+                {
+                    var item = optionsRepeater.itemAt(i)
+                    item.startCloseAni()
+                }
             }
         }
     }
 
-    property int targetAngle: 180
-    property double horizontalMoveFaktor: 2.2
-    property int optionCount: 4
-    property int yMoveOnOpen: smallWidth
     SequentialAnimation
     {
         id: openani1
-        ParallelAnimation
+        NumberAnimation
         {
-            NumberAnimation
-            {
-                target: mainbutton
-                property: "width"
-                to: smallWidth
-                duration: 200
-            }
-            NumberAnimation {
-                target: item1
-                property: "width"
-                duration: 200
-                to: -horizontalMoveFaktor * largeWidth
-            }
-            NumberAnimation {
-                target: option1
-                property: "width"
-                duration: 200
-                to: largeWidth
-            }
-            NumberAnimation {
-                target: option1
-                property: "opacity"
-                duration: 200
-                to: 1
-            }
-
-            NumberAnimation {
-                target: item2
-                property: "width"
-                duration: 200
-                to: -horizontalMoveFaktor * largeWidth
-            }
-            NumberAnimation {
-                target: option2
-                property: "width"
-                duration: 200
-                to: largeWidth
-            }
-            NumberAnimation {
-                target: option2
-                property: "opacity"
-                duration: 200
-                to: 1
-            }
-
-            NumberAnimation {
-                target: item3
-                property: "width"
-                duration: 200
-                to: -horizontalMoveFaktor * largeWidth
-            }
-            NumberAnimation {
-                target: option3
-                property: "width"
-                duration: 200
-                to: largeWidth
-            }
-            NumberAnimation {
-                target: option3
-                property: "opacity"
-                duration: 200
-                to: 1
-            }
-
-            NumberAnimation {
-                target: item4
-                property: "width"
-                duration: 200
-                to: -horizontalMoveFaktor * largeWidth
-            }
-            NumberAnimation {
-                target: option4
-                property: "width"
-                duration: 200
-                to: largeWidth
-            }
-            NumberAnimation {
-                target: option4
-                property: "opacity"
-                duration: 200
-                to: 1
-            }
+            target: mainbutton
+            property: "width"
+            to: smallWidth
+            duration: 200
         }
-        ParallelAnimation
+        NumberAnimation
         {
-            NumberAnimation
-            {
-                target: allButtons
-                property: "anchors.verticalCenterOffset"
-                to: yMoveOnOpen
-                duration: 200
-            }
-
-            NumberAnimation
-            {
-                target: item1
-                property: "rotation"
-                to: targetAngle / (optionCount - 1) * 0
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item2
-                property: "rotation"
-                to: targetAngle / (optionCount - 1) * 1
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item3
-                property: "rotation"
-                to: targetAngle / (optionCount - 1) * 2
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item4
-                property: "rotation"
-                to: targetAngle / (optionCount - 1) * 3
-                duration: 200
-            }
+            target: allButtons
+            property: "anchors.verticalCenterOffset"
+            to: yMoveOnOpen
+            duration: 200
         }
     }
     SequentialAnimation
     {
         id: closeani1
-        ParallelAnimation
+        NumberAnimation
         {
-            NumberAnimation
-            {
-                target: allButtons
-                property: "anchors.verticalCenterOffset"
-                to: 0
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item1
-                property: "rotation"
-                to: 0
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item2
-                property: "rotation"
-                to: 0
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item3
-                property: "rotation"
-                to: 0
-                duration: 200
-            }
-            NumberAnimation
-            {
-                target: item4
-                property: "rotation"
-                to: 0
-                duration: 200
-            }
+            target: allButtons
+            property: "anchors.verticalCenterOffset"
+            to: 0
+            duration: 200
         }
-        ParallelAnimation
+        NumberAnimation
         {
-            NumberAnimation
-            {
-                target: mainbutton
-                property: "width"
-                to: largeWidth
-                duration: 200
-            }
-            NumberAnimation {
-                target: item1
-                property: "width"
-                duration: 200
-                to: 0
-            }
-            NumberAnimation {
-                target: option1
-                property: "width"
-                duration: 200
-                to: smallWidth
-            }
-            NumberAnimation {
-                target: option1
-                property: "opacity"
-                duration: 200
-                to: 0
-            }
-
-            NumberAnimation {
-                target: item2
-                property: "width"
-                duration: 200
-                to: 0
-            }
-            NumberAnimation {
-                target: option2
-                property: "width"
-                duration: 200
-                to: smallWidth
-            }
-            NumberAnimation {
-                target: option2
-                property: "opacity"
-                duration: 200
-                to: 0
-            }
-
-            NumberAnimation {
-                target: item3
-                property: "width"
-                duration: 200
-                to: 0
-            }
-            NumberAnimation {
-                target: option3
-                property: "width"
-                duration: 200
-                to: smallWidth
-            }
-            NumberAnimation {
-                target: option3
-                property: "opacity"
-                duration: 200
-                to: 0
-            }
-            NumberAnimation {
-                target: item4
-                property: "width"
-                duration: 200
-                to: 0
-            }
-            NumberAnimation {
-                target: option4
-                property: "width"
-                duration: 200
-                to: smallWidth
-            }
-            NumberAnimation {
-                target: option4
-                property: "opacity"
-                duration: 200
-                to: 0
-            }
+            target: mainbutton
+            property: "width"
+            to: largeWidth
+            duration: 200
         }
     }
 }

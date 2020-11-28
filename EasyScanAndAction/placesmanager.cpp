@@ -109,7 +109,7 @@ void PlacesManager::positionUpdated(const QGeoPositionInfo &update)
     xmlRequest += QString::number(update.coordinate().latitude()).toUtf8();
     xmlRequest += QByteArray("\" lon=\"");
     xmlRequest += QString::number(update.coordinate().longitude()).toUtf8();
-    xmlRequest += QByteArray("\" radius=\"50\"/>"
+    xmlRequest += QByteArray("\" radius=\"30\"/>"
             "</query>"
             "<print/>"
           "</osm-script>");

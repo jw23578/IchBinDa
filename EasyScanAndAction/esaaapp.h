@@ -211,7 +211,6 @@ public:
     Q_INVOKABLE void showMessageWithCallback(const QString &mt, QJSValue callback);
     Q_INVOKABLE void showWaitMessage(const QString &mt);
     Q_INVOKABLE void hideWaitMessage();
-    Q_INVOKABLE void scan();
     Q_INVOKABLE void sendContactData();
     Q_INVOKABLE void ignoreQRCode();
     Q_INVOKABLE void action(QString qrCodeJSON);
@@ -269,7 +268,6 @@ signals:
     void hideWaitMessageSignal();
     void showMessageSignal(const QString &mt, QJSValue callback);
     void showBadMessageSignal(const QString &mt);
-    void scanSignal();
     void validQRCodeDetected();
     void invalidQRCodeDetected();
     void showSendedData();

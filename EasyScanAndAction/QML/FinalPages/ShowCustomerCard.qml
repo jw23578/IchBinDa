@@ -29,13 +29,14 @@ PageWithBackButton
         x: JW78Utils.screenWidth / 300 * 150 - width / 2
         anchors.bottom: parent.bottom
         anchors.bottomMargin: JW78APP.spacing
-        button1VisibleMaster: false
-        button2VisibleMaster: false
-        button4VisibleMaster: false
-        button3.text: "Karte<br>löschen"
-        button3.onClicked: {
-            backPressed()
-            JW78APP.deleteCustomerCardByIndex(index)
-        }
+
+        visibleMasters: [false, false, true, false]
+        texts: ["", "", "Karte<br>löschen", ""]
+        clickEvents: [null, null,
+            function() {
+                backPressed()
+                JW78APP.deleteCustomerCardByIndex(index)
+            }, null]
+
     }
 }

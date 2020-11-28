@@ -83,7 +83,7 @@ ESAAPage
                 qrCodeEMailAdresse.forceActiveFocus();
                 return
             }
-            ESAA.showWaitMessage("Bitte einen Moment Geduld. Es werden ein paar PDFs mit Logo und QR-Code erstellt, das dauert kurz.")
+            ESAA.showWaitMessage("Bitte einen Moment Geduld. Es werden ein paar PDFs mit Logo und QR-Code erstellt und versendet, das dauert kurz.")
             ESAA.sendQRCode(qrCodeEMailAdresse.displayText, facilityName, logoUrl)
             back()
         }

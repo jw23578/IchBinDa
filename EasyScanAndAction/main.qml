@@ -43,6 +43,7 @@ ApplicationWindow {
         {
             return;
         }
+        theMultiButton.close()
 
         theCurrentPage = nextPage;
         previousPage = currentPage
@@ -181,15 +182,14 @@ ApplicationWindow {
             x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
             y: JW78Utils.screenHeight / 480 * 360 - height / 2
             visible: !ESAA.firstStart && scannerpage.visible
-            button1.text: "Kunden<br>karten"
-            button1.onClicked: showNewPage(scannerpage, customercardslist)
-            button2.onClicked: ESAA.recommend()
-            button2.source: "qrc:/images/share_weiss.svg"
-            button2.downSource: "qrc:/images/share_blau.svg"
-            button3.text: "Kontakt<br>situation<br>eintragen"
-            button3.onClicked: showNewPage(theCurrentPage, manualvisitpage)
-            button4.text: "Kontakt<br>tagebuch<br>QR-Code"
-            button4.onClicked: funcShowKontaktTagebuchQRCode()
+            texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
+                "Kontakt<br>tagebuch<br>QR-Code"]
+            clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
+            function() {ESAA.recommend()},
+            function() {showNewPage(theCurrentPage, manualvisitpage)},
+            function() {funcShowKontaktTagebuchQRCode()}]
+            sources: ["", "qrc:/images/share_weiss.svg"]
+            downSources: ["", "qrc:/images/share_blau.svg"]
             onOpenClicked: hideCallMenueButton.start()
             onCloseClicked: hideAndShowCallMenueButton.start()
         }
@@ -438,20 +438,36 @@ ApplicationWindow {
     Connections
     {
         target: ESAA
-        onYesNoQuestion: yesnoquestion.show(mt, yescallback, nocallback)
-        onShowSendedData: showNewPage(scannerpage, sendedDataPage)
-        onShowWaitMessageSignal: waitMessage.show(mt)
-        onHideWaitMessageSignal: waitMessage.hide()
-        onShowMessageSignal: message.show(mt, callback)
-        onShowBadMessageSignal: badMessage.show(mt)
-        onScanSignal: scannerpage.show()
-        onValidQRCodeDetected:
+        function onYesNoQuestion(mt, yescallback, nocallback)
+        {
+            yesnoquestion.show(mt, yescallback, nocallback)
+        }
+        function onShowSendedData()
+        {
+            showNewPage(scannerpage, sendedDataPage)
+        }
+        function onShowWaitMessageSignal(mt)
+        {
+            waitMessage.show(mt)
+        }
+        function onHideWaitMessageSignal()
+        {
+            waitMessage.hide()
+        }
+        function onShowMessageSignal(mt, callback)
+        {
+            message.show(mt, callback)
+        }
+        function onShowBadMessageSignal(mt)
+        {
+            badMessage.show(mt)
+        }
+        function onValidQRCodeDetected()
         {
             if (theCurrentPage == questionpage)
             {
                 return;
             }
-
             showNewPage(scannerpage, questionpage)
         }
     }
@@ -468,7 +484,7 @@ ApplicationWindow {
     }
     Connections {
         target: Qt.application
-        onStateChanged:
+        function onStateChanged()
         {
             if (Qt.application.state == Qt.ApplicationActive)
             {
