@@ -124,11 +124,11 @@ contains(QT_ARCH, "x86_64") {
     SOURCES += botan_all_x64.cpp
 }
 
-ANDROID_VERSION_NAME = "Version 1.12"
-ANDROID_VERSION_CODE = "23"
+ANDROID_VERSION_NAME = "Version 2.0"
+ANDROID_VERSION_CODE = "25"
 ANDROID_TARGET_SDK_VERSION = "29"
 
-VERSION = 1.12.5
+VERSION = 1.12.6
 ios{
     Q_ENABLE_BITCODE.name = ENABLE_BITCODE
     Q_ENABLE_BITCODE.value = NO
@@ -228,4 +228,4 @@ include(JW78QTLib/JW78QTLib.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 
-ANDROID_ABIS = armeabi-v7a
+ANDROID_ABIS = armeabi-v7a arm64-v8a

@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "place.h"
+#include "JW78QTLib/jw78utils.h"
 
 PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
     source(nullptr),
@@ -18,7 +19,7 @@ PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
 
 void PlacesManager::update()
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    jw78::Utils::log(__FILE__, __LINE__, "update");
     setWaitingForPlaces(true);
     places.clear();
     if (source == nullptr)
@@ -45,6 +46,7 @@ void PlacesManager::simulate()
 
 void PlacesManager::handleReplyFinished(QNetworkReply *reply)
 {
+    jw78::Utils::log(__FILE__, __LINE__, "reply finished");
     if (reply->error() != QNetworkReply::NoError)
     {
         update();
@@ -54,13 +56,17 @@ void PlacesManager::handleReplyFinished(QNetworkReply *reply)
     QJsonDocument json(QJsonDocument::fromJson(data));
     if (json.isNull())
     {
+        jw78::Utils::log(__FILE__, __LINE__, "isNull");
         setIsNull(true);
+        setWaitingForPlaces(false);
         return;
     }
     setIsNull(false);
     if (json.isEmpty())
     {
+        jw78::Utils::log(__FILE__, __LINE__, "isEmpty");
         setIsEmpty(true);
+        setWaitingForPlaces(false);
         return;
     }
     setIsEmpty(false);
@@ -69,6 +75,7 @@ void PlacesManager::handleReplyFinished(QNetworkReply *reply)
     if (elements.size() == 0)
     {
         setNoElements(true);
+        setWaitingForPlaces(false);
         return;
     }
     setNoElements(false);

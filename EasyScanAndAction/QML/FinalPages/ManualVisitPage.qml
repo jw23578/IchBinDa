@@ -153,6 +153,22 @@ PageWithBackButton
     }
     Rectangle
     {
+        id: noLocationFound
+        anchors.fill: view
+        color: "white"
+        opacity: backButton.opacity
+        visible: opacity > 0 && Places.count == 0
+        ESAAText
+        {
+            anchors.centerIn: parent
+            width: parent.width * 8 / 10
+            wrapMode: Text.WordWrap
+            text: "An deinem aktuellen Standort wurden leider keine Locations gefunden. Bitte trag deinen Besuch über den Plus-Button ein."
+            font.pixelSize: JW78APP.fontMessageTextPixelsize
+        }
+    }
+    Rectangle
+    {
         opacity: backButton.opacity
         visible: opacity > 0 && PlacesManager.waitingForPlaces && !locationNotAvailable.visible
         anchors.fill: view
@@ -190,6 +206,7 @@ PageWithBackButton
             width: parent.width * 8 / 10
             wrapMode: Text.WordWrap
             text: "Die Standortdaten können nicht abgerufen werden, bitte aktivieren sie die Lokalisierung in den " + MobileExtensions.systemName + " Einstellungen."
+            font.pixelSize: JW78APP.fontMessageTextPixelsize
         }
         onVisibleChanged: {
             if (!visible && manualvisitpage.visible)
