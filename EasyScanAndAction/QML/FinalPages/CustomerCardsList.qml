@@ -81,6 +81,7 @@ ESAAPage {
                             height: cardName.height
                             Image
                             {
+                                autoTransform: true
                                 height: parent.height
                                 width: height
                                 id: cardThumbnail

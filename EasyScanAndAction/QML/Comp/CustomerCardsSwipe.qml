@@ -43,6 +43,7 @@ Item
 
                 Image
                 {
+                    autoTransform: true
                     anchors.leftMargin: JW78APP.spacing
                     anchors.rightMargin: JW78APP.spacing
                     anchors.bottomMargin: JW78APP.spacing
