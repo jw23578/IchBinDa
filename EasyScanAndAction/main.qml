@@ -161,6 +161,12 @@ ApplicationWindow {
                 showNewPage(theCurrentPage, showcustomercard)
             }
         }
+        EngagementStart
+        {
+            id: engagementstart
+            onBackPressed: showNewPage(theCurrentPage, previousPage)
+        }
+
         CamVideoScan
         {
             z: 10
@@ -183,11 +189,15 @@ ApplicationWindow {
             y: JW78Utils.screenHeight / 480 * 360 - height / 2
             visible: !ESAA.firstStart && scannerpage.visible
             texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
-                "Kontakt<br>tagebuch<br>QR-Code"]
+                "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
+            optionCount: JW78APP.isDevelop ? 5 : 4
+            yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
+            stepAngle: JW78APP.isDevelop ? 72 : 60
             clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
             function() {ESAA.recommend()},
             function() {showNewPage(theCurrentPage, manualvisitpage)},
-            function() {funcShowKontaktTagebuchQRCode()}]
+            function() {funcShowKontaktTagebuchQRCode()},
+            function() {showNewPage(theCurrentPage, engagementstart)}]
             sources: ["", "qrc:/images/share_weiss.svg"]
             downSources: ["", "qrc:/images/share_blau.svg"]
             onOpenClicked: hideCallMenueButton.start()

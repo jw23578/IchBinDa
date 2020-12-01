@@ -45,5 +45,7 @@
         <file>images/kundenkarten_2.png</file>
         <file>images/kundenkarten_1.png</file>
         <file>images/loading.gif</file>
+        <file>images/engagement_1.png</file>
+        <file>images/engagement_2.png</file>
     </qresource>
 </RCC>

@@ -41,7 +41,7 @@ Item
         }
     }
 
-    property int targetAngle: 180
+    property int stepAngle: 60
     property double horizontalMoveFaktor: 2.2
     property int optionCount: texts != null && sources != null ? Math.max(texts.length, sources.length) : texts != null ? texts.length : source != null ? source.length : 0
     property int yMoveOnOpen: smallWidth
@@ -130,7 +130,7 @@ Item
                     {
                         target: optionItem
                         property: "rotation"
-                        to: targetAngle / (optionCount - 1) * index
+                        to: stepAngle * index
                         duration: 200
                     }
                 }
