@@ -43,7 +43,7 @@ Item
 
     property int targetAngle: 180
     property double horizontalMoveFaktor: 2.2
-    property int optionCount: 4
+    property int optionCount: texts != null && sources != null ? Math.max(texts.length, sources.length) : texts != null ? texts.length : source != null ? source.length : 0
     property int yMoveOnOpen: smallWidth
 
     Item
