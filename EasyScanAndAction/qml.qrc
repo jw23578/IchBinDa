@@ -50,7 +50,8 @@
         <file>QML/Comp/CircleMultiButton.qml</file>
         <file>QML/Comp/CircleButtonsMenue.qml</file>
         <file>QML/Comp/CustomerCardsSwipe.qml</file>
-        <file>QML/FinalPages/EngagementStart.qml</file>
+        <file>QML/FinalPages/EngagementStartPage.qml</file>
         <file>QML/Comp/EmptySwipeView.qml</file>
+        <file>QML/FinalPages/EngagementOfferPage.qml</file>
     </qresource>
 </RCC>

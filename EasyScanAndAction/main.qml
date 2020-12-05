@@ -161,11 +161,18 @@ ApplicationWindow {
                 showNewPage(theCurrentPage, showcustomercard)
             }
         }
-        EngagementStart
+        EngagementStartPage
         {
             id: engagementstart
             onBackPressed: showNewPage(theCurrentPage, previousPage)
+            onOfferHelpClicked: showNewPage(theCurrentPage, engagementOfferPage)
         }
+        EngagementOfferPage
+        {
+            id: engagementOfferPage
+            onBackPressed: showNewPage(theCurrentPage, previousPage)
+        }
+
 
         CamVideoScan
         {

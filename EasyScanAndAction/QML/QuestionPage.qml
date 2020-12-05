@@ -281,14 +281,14 @@ ESAAPage
             ESAA.clearData2Send()
             if (meineDaten)
             {
-                ESAA.fstname = fstname.text
-                ESAA.surname = surname.text
-                ESAA.street = street.text
-                ESAA.housenumber = housenumber.text
-                ESAA.zip = zip.text
-                ESAA.location = location.text
-                ESAA.emailAdress = emailAdress.text
-                ESAA.mobile = mobile.text
+                ESAA.fstname = fstname.displayText
+                ESAA.surname = surname.displayText
+                ESAA.street = street.displayText
+                ESAA.housenumber = housenumber.displayText
+                ESAA.zip = zip.displayText
+                ESAA.location = location.displayText
+                ESAA.emailAdress = emailAdress.displayText
+                ESAA.mobile = mobile.displayText
                 ESAA.saveData();
                 ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
                 waitAndClose.start()
@@ -318,69 +318,69 @@ ESAAPage
             ESAA.addData2Send(qsTr("FacilityName"), ESAA.facilityName)
             if (fstname.visible)
             {
-                if (fstname.text == "")
+                if (fstname.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deinen Vornamen ein"), fstname)
                     return;
                 }
-                ESAA.fstname = fstname.text
-                ESAA.lastVisitFstname = fstname.text
-                ESAA.addData2Send(qsTr("Vorname"), fstname.text)
+                ESAA.fstname = fstname.displayText
+                ESAA.lastVisitFstname = fstname.displayText
+                ESAA.addData2Send(qsTr("Vorname"), fstname.displayText)
             }
             if (surname.visible)
             {
-                if (surname.text == "")
+                if (surname.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deinen Nachnamen ein"), surname)
                     return;
                 }
-                ESAA.surname = surname.text
-                ESAA.lastVisitSurname = surname.text
-                ESAA.addData2Send(qsTr("Nachname"), surname.text)
+                ESAA.surname = surname.displayText
+                ESAA.lastVisitSurname = surname.displayText
+                ESAA.addData2Send(qsTr("Nachname"), surname.displayText)
             }
             if (street.visible)
             {
-                if (street.text == "")
+                if (street.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deine Straße ein"), street)
                     return;
                 }
-                ESAA.street = street.text
-                ESAA.lastVisitStreet = street.text
-                ESAA.addData2Send(qsTr("Straße"), street.text)
+                ESAA.street = street.displayText
+                ESAA.lastVisitStreet = street.displayText
+                ESAA.addData2Send(qsTr("Straße"), street.displayText)
             }
             if (housenumber.visible)
             {
-                if (housenumber.text == "")
+                if (housenumber.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deine Hausnummer ein"), housenumber)
                     return;
                 }
-                ESAA.housenumber = housenumber.text
-                ESAA.lastVisitHousenumber = housenumber.text
-                ESAA.addData2Send(qsTr("Hausnummer"), housenumber.text)
+                ESAA.housenumber = housenumber.displayText
+                ESAA.lastVisitHousenumber = housenumber.displayText
+                ESAA.addData2Send(qsTr("Hausnummer"), housenumber.displayText)
             }
             if (zip.visible)
             {
-                if (zip.text == "")
+                if (zip.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deine Postleitzahl ein"), zip)
                     return;
                 }
-                ESAA.addData2Send(qsTr("Postleitzahl"), zip.text)
-                ESAA.zip = zip.text
-                ESAA.lastVisitZip = zip.text
+                ESAA.addData2Send(qsTr("Postleitzahl"), zip.displayText)
+                ESAA.zip = zip.displayText
+                ESAA.lastVisitZip = zip.displayText
             }
             if (location.visible)
             {
-                if (location.text == "")
+                if (location.displayText == "")
                 {
                     focusMessage(qsTr("Bitte gib noch deinen Ort ein"), location)
                     return;
                 }
-                ESAA.addData2Send(qsTr("Ort"), location.text)
-                ESAA.location = location.text
-                ESAA.lastVisitLocation = location.text
+                ESAA.addData2Send(qsTr("Ort"), location.displayText)
+                ESAA.location = location.displayText
+                ESAA.lastVisitLocation = location.displayText
             }
             if (mobile.visible)
             {

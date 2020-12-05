@@ -2,9 +2,12 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ".."
 import "../Comp"
+import "../BasePages"
 
-ESAAPage {
+PageWithBackButton
+{
     caption: "Engagement"
+    signal offerHelpClicked
     EmptySwipeView
     {
         anchors.margins: ESAA.spacing
@@ -20,13 +23,9 @@ ESAAPage {
     {
         id: buttons
         leftText: "Ich möchte<br>helfen"
+        onLeftClicked: offerHelpClicked()
         rightText: "Ich benötige<br>Hilfe"
         anchors.bottom: parent.bottom
         anchors.bottomMargin: JW78APP.spacing * 3
-    }
-
-    BackButton
-    {
-        onClicked: backPressed()
     }
 }

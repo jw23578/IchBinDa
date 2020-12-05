@@ -489,10 +489,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 {
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
-    if (jw78::Utils::getWriteablePath().contains("/home/jw78"))
-    {
-        setIsDevelop(true);
-    }
     dummyGet();
     publicKeyMap.setFiledata("0", ":/keys/publicKey2020-07-26.txt");
     publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
