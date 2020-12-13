@@ -55,6 +55,9 @@ class ESAAApp: public QObject
     // Einstellungen    
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
 
+    JWPROPERTY(QString, baseServerURL, BaseServerURL, "");
+    JWPROPERTY(bool, loggedIn, LoggedIn, false);
+
 
     JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
@@ -137,8 +140,8 @@ class ESAAApp: public QObject
     std::string publicKeyEncrypt(const std::string &plainText);
     SimpleMail::Server smtpServer;
 
-    QString ibdTokenStoreURL;
-    QString fileStoreURL;
+    QString ibdTokenStoreMethod;
+    QString fileStoreMethod;
 
     void sendKontaktTagebuchEMails(const QString &otherFstname,
                                    const QString &otherSurname,

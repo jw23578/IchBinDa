@@ -166,6 +166,7 @@ ApplicationWindow {
             id: engagementstart
             onBackPressed: showNewPage(theCurrentPage, previousPage)
             onOfferHelpClicked: showNewPage(theCurrentPage, engagementOfferPage)
+            onGoLogin: showNewPage(theCurrentPage, loginAndOrRegister)
         }
         EngagementOfferPage
         {
@@ -233,6 +234,12 @@ ApplicationWindow {
                 showNewPage(theCurrentPage, savecustomercard)
             }
         }
+        LoginAndOrRegister
+        {
+            id: loginAndOrRegister
+            onBackPressed: showNewPage(theCurrentPage, previousPage)
+        }
+
         FirstStart
         {
             id: firststart

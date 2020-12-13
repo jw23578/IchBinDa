@@ -8,6 +8,7 @@ PageWithBackButton
 {
     caption: "Engagement"
     signal offerHelpClicked
+    signal goLogin;
     EmptySwipeView
     {
         anchors.margins: ESAA.spacing
@@ -23,7 +24,14 @@ PageWithBackButton
     {
         id: buttons
         leftText: "Ich möchte<br>helfen"
-        onLeftClicked: offerHelpClicked()
+        onLeftClicked: {
+            if (!JW78APP.loggedIn)
+            {
+                goLogin()
+                return
+            }
+            offerHelpClicked()
+        }
         rightText: "Ich benötige<br>Hilfe"
         anchors.bottom: parent.bottom
         anchors.bottomMargin: JW78APP.spacing * 3

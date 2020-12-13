@@ -28,6 +28,11 @@ void ESAAApp::checkDevelopMobile()
     {
         setIsDevelop(true);
     }
+    if (mobile() == "197823578")
+    {
+        setIsDevelop(true);
+        setBaseServerURL("https://127.0.0.1:23578");
+    }
 }
 
 void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,
@@ -135,7 +140,7 @@ void ESAAApp::sendMail()
         lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
         lastVisit.ibdToken += QString(".") + locationGUID();
         lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
-        QString url(ibdTokenStoreURL + lastVisit.ibdToken);
+        QString url(baseServerURL() + ibdTokenStoreMethod + lastVisit.ibdToken);
         QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
         QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
             qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
@@ -563,10 +568,13 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         emailSender.scdSmtpSender = QString(buf).trimmed();
 
         file.readLine(buf, 1000);
-        ibdTokenStoreURL = QString(buf).trimmed();
+        setBaseServerURL(QString(buf).trimmed());
 
         file.readLine(buf, 1000);
-        fileStoreURL = QString(buf).trimmed();
+        ibdTokenStoreMethod = QString(buf).trimmed();
+
+        file.readLine(buf, 1000);
+        fileStoreMethod = QString(buf).trimmed();
     }
 }
 
@@ -1142,7 +1150,7 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
 
 void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 {
-    QString url(fileStoreURL);
+    QString url(baseServerURL() + fileStoreMethod);
     QJsonObject json;
     json["name"] = "idbQRCodeData";
     json["filename"] = filename;

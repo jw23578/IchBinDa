@@ -53,5 +53,6 @@
         <file>QML/FinalPages/EngagementStartPage.qml</file>
         <file>QML/Comp/EmptySwipeView.qml</file>
         <file>QML/FinalPages/EngagementOfferPage.qml</file>
+        <file>QML/FinalPages/LoginAndOrRegister.qml</file>
     </qresource>
 </RCC>
