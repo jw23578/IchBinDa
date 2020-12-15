@@ -5,12 +5,23 @@ import "../BasePages"
 import "../Comp"
 
 PageWithBackButton {
+    id: loginAndOrRegister
     caption: "Login"
     onShowing:
     {
     }
     onHiding:
     {
+    }
+    signal loginSuccessful
+
+    Connections
+    {
+        target: ESAA
+        function onLoginSuccessful()
+        {
+            loginAndOrRegister.loginSuccessful()
+        }
     }
 
     ESAALineInputWithCaption
@@ -42,7 +53,7 @@ PageWithBackButton {
         anchors.bottom: buttons.top
         anchors.margins: ESAA.spacing
         font.pixelSize: JW78APP.fontMessageTextPixelsize
-        helpText: "Den Logincode können wir dir an deine E-Mail-Adresse zuschicken wenn du dein Passwort nicht mehr weißt."
+        helpText: "Den Logincode können wir Dir an Deine E-Mail-Adresse zuschicken wenn Du Dein Passwort nicht mehr weißt.<br><br>Bei Deiner <b>Registrierung</b> bekommst Du ebenfalls einen Code den Du hier eingeben kannst."
         onHelpClicked: ESAA.showMessage(ht)
     }
     TwoCircleButtons
@@ -51,6 +62,32 @@ PageWithBackButton {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: JW78APP.spacing * 3
         leftText: "Login"
+        onLeftClicked: JW78APP.login(loginEMail.displayText,
+                                     password.displayText,
+                                     loginCode.displayText)
         rightText: "Registrieren"
+        onRightClicked: {
+            if (loginEMail.displayText == "")
+            {
+                JW78APP.showMessage("Bitte gib eine E-Mail als Login ein.")
+                loginEMail.forceActiveFocus()
+                return
+            }
+            if (!JW78APP.isEmailValid(loginEMail.displayText))
+            {
+                JW78APP.showMessage("Bitte gib eine gültige E-Mail-Adresse an.")
+                loginEMail.forceActiveFocus()
+                return
+            }
+
+            if (password.displayText == "")
+            {
+                JW78APP.showMessage("Bitte gib ein Passwort ein.")
+                password.forceActiveFocus()
+                return
+            }
+            JW78APP.registerAccount(loginEMail.displayText,
+                                    password.displayText)
+        }
     }
 }

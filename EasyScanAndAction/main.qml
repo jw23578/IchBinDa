@@ -164,9 +164,18 @@ ApplicationWindow {
         EngagementStartPage
         {
             id: engagementstart
-            onBackPressed: showNewPage(theCurrentPage, previousPage)
-            onOfferHelpClicked: showNewPage(theCurrentPage, engagementOfferPage)
-            onGoLogin: showNewPage(theCurrentPage, loginAndOrRegister)
+            onBackPressed: showNewPage(theCurrentPage, scannerpage)
+            onOfferHelpClicked: {
+                if (!JW78APP.loggedIn)
+                {
+                    loginAndOrRegister.goodPage = engagementOfferPage
+                    loginAndOrRegister.backPage = engagementstart
+                    showNewPage(theCurrentPage, loginAndOrRegister)
+                    return
+                }
+                showNewPage(theCurrentPage, engagementOfferPage)
+            }
+
         }
         EngagementOfferPage
         {
@@ -237,7 +246,14 @@ ApplicationWindow {
         LoginAndOrRegister
         {
             id: loginAndOrRegister
-            onBackPressed: showNewPage(theCurrentPage, previousPage)
+            property var goodPage: null
+            property var backPage: null
+            onBackPressed: showNewPage(theCurrentPage, backPage)
+            onLoginSuccessful: {
+                showNewPage(theCurrentPage, goodPage)
+                previousPage = backPage
+            }
+
         }
 
         FirstStart
@@ -462,6 +478,7 @@ ApplicationWindow {
     Connections
     {
         target: ESAA
+
         function onYesNoQuestion(mt, yescallback, nocallback)
         {
             yesnoquestion.show(mt, yescallback, nocallback)

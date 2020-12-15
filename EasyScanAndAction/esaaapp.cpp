@@ -492,6 +492,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     allVisits(e, "AllVisits", "Visit"),
     allCustomerCards(e, "AllCustomerCards", "Card")
 {
+    loadConfigFile();
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
     dummyGet();
@@ -538,8 +539,10 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
         allCustomerCards.add(cc);
     }
+}
 
-    QString data;
+void ESAAApp::loadConfigFile()
+{
     QString EMailConfig(":/EMailConfig.txt");
 
     QFile file(EMailConfig);
@@ -575,6 +578,9 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
 
         file.readLine(buf, 1000);
         fileStoreMethod = QString(buf).trimmed();
+
+        file.readLine(buf, 1000);
+        secToken = QString(buf).trimmed();
     }
 }
 
@@ -1426,6 +1432,101 @@ void ESAAApp::setWorkTimeScheme()
     setButtonDownColor("white");
     setButtonFromColor("orange");
     setButtonToColor(buttonFromColor().darker(150));
+}
+
+QNetworkReply *ESAAApp::serverPost(const QString &url, const QMap<QString, QString> &variables)
+{
+    QJsonObject json;
+    QMap<QString, QString>::const_iterator it(variables.begin());
+    while (it != variables.end())
+    {
+        json[it.key()] = it.value();
+        ++it;
+    }
+    QJsonObject jsonData;
+    jsonData["data"] = json;
+
+    QByteArray ba(QJsonDocument(jsonData).toJson(QJsonDocument::Compact));
+    QNetworkRequest request(url);
+
+    if (isDevelop())
+    {
+        QSslConfiguration conf(request.sslConfiguration());
+        conf.setPeerVerifyMode(QSslSocket::VerifyNone);
+        request.setSslConfiguration(conf);
+    }
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QUrlQuery postdata;
+    postdata.addQueryItem("json", QUrl::toPercentEncoding(ba));
+    QNetworkReply *networkReply(networkAccessManager.post(request, postdata.toString(QUrl::FullyEncoded).toUtf8()));
+    return networkReply;
+}
+
+
+void ESAAApp::login(QString loginEMail,
+                    QString password,
+                    QString tan)
+{
+    QString url(baseServerURL() + "/notloggedin/login?sec_token=" + secToken);
+    QMap<QString, QString> variables;
+    variables["loginEMail"] = loginEMail;
+    variables["password"] = password;
+    variables["tan"] = tan;
+    QNetworkReply *networkReply(serverPost(url, variables));
+    showWaitMessage("Bitte einen Moment Geduld");
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        hideWaitMessage();
+        QByteArray answer(networkReply->readAll());
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
+        QJsonObject jsonObject(jsonDoc.object());
+        bool error(jsonObject["error"].toBool());
+        int messageCode(jsonObject["messageCode"].toInt());
+        qDebug() << answer;
+        if (messageCode == 1)
+        {
+            showMessage("Diese E-Mail-Adresse ist kein registrierter Account, bitte registriere dich erst.");
+        }
+        if (messageCode == 13)
+        {
+            showMessage("Die Registrierung ist noch nicht abgeschlossen, bitte kontrolliere deine E-Mails und nutze den Login-Code");
+        }
+        if (messageCode == 3)
+        {
+            loginTokenString = jsonObject["loginTokenString"].toString();
+            setLoggedIn(true);
+            emit loginSuccessful();
+        }
+        networkReply->deleteLater();// Don't forget to delete it
+    });
+}
+
+void ESAAApp::registerAccount(QString loginEMail, QString password)
+{
+    QString url(baseServerURL() + "/notloggedin/register?sec_token=" + secToken);
+    QMap<QString, QString> variables;
+    variables["loginEMail"] = loginEMail;
+    variables["password"] = password;
+    QNetworkReply *networkReply(serverPost(url, variables));
+    showWaitMessage("Bitte einen Moment Geduld");
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        hideWaitMessage();
+        QByteArray answer(networkReply->readAll());
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
+        QJsonObject jsonObject(jsonDoc.object());
+        bool error(jsonObject["error"].toBool());
+        QString message(jsonObject["message"].toString());
+        qDebug() << message;
+        if (message == "Person registered")
+        {
+            showMessage("Registrierung erfolgreich, wir haben Dir eine E-Mail mit einem Login-Code zugeschickt.<br>Bitte kontrolliere deine E-Mails.");
+        }
+        if (message == "E-Mail already in use")
+        {
+            showMessage("Dieser Login wird schon verwendet, falls du Dein Passwort vergessen hast kannst du einen Login-Code anfordern.");
+        }
+        networkReply->deleteLater();// Don't forget to delete it
+    });
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

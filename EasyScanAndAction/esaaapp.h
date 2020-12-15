@@ -50,12 +50,16 @@ class ESAAApp: public QObject
     jw78::ObjectListModel allVisits;
     jw78::ObjectListModel allCustomerCards;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
+    void loadConfigFile();
+    QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
 
     JWPROPERTY(QString, baseServerURL, BaseServerURL, "");
+    QString secToken;
+    QString loginTokenString;
     JWPROPERTY(bool, loggedIn, LoggedIn, false);
 
 
@@ -266,6 +270,12 @@ public:
     Q_INVOKABLE void setIchBinDaScheme();
     Q_INVOKABLE void setWorkTimeScheme();
 
+    Q_INVOKABLE void login(QString loginEMail,
+                           QString password,
+                           QString tan);
+    Q_INVOKABLE void registerAccount(QString loginEMail,
+                                     QString password);
+
 signals:
     void showWaitMessageSignal(const QString &mt);
     void hideWaitMessageSignal();
@@ -275,6 +285,7 @@ signals:
     void invalidQRCodeDetected();
     void showSendedData();
     void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
+    void loginSuccessful();
 
 
 };
