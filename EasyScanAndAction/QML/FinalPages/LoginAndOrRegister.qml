@@ -24,6 +24,18 @@ PageWithBackButton {
         }
     }
 
+    property var elemToFocus: null
+
+    function setFocusNow()
+    {
+        elemToFocus.forceActiveFocus()
+    }
+    function focusMessage(theMessage, elem)
+    {
+        elemToFocus = elem
+        ESAA.showMessageWithCallback(theMessage, setFocusNow)
+    }
+
     ESAALineInputWithCaption
     {
         caption: "Login (E-Mail)"
@@ -62,28 +74,44 @@ PageWithBackButton {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: JW78APP.spacing * 3
         leftText: "Login"
-        onLeftClicked: JW78APP.login(loginEMail.displayText,
-                                     password.displayText,
-                                     loginCode.displayText)
-        rightText: "Registrieren"
-        onRightClicked: {
+        onLeftClicked:
+        {
             if (loginEMail.displayText == "")
             {
-                JW78APP.showMessage("Bitte gib eine E-Mail als Login ein.")
-                loginEMail.forceActiveFocus()
+                focusMessage("Bitte gib eine E-Mail mit der du dich registrieren und einloggen möchtest ein.", loginEMail)
                 return
             }
             if (!JW78APP.isEmailValid(loginEMail.displayText))
             {
-                JW78APP.showMessage("Bitte gib eine gültige E-Mail-Adresse an.")
-                loginEMail.forceActiveFocus()
+                focusMessage("Bitte gib eine gültige E-Mail-Adresse an.", loginEMail)
+                return
+            }
+
+            if (password.displayText == "" && loginCode.displayText == "")
+            {
+                focusMessage("Bitte gib ein Passwort ider Logincode ein.", password)
+                return
+            }
+            JW78APP.login(loginEMail.displayText,
+                                     password.displayText,
+                                     loginCode.displayText)
+        }
+        rightText: "Registrieren"
+        onRightClicked: {
+            if (loginEMail.displayText == "")
+            {
+                focusMessage("Bitte gib eine E-Mail als Login ein.", loginEMail)
+                return
+            }
+            if (!JW78APP.isEmailValid(loginEMail.displayText))
+            {
+                focusMessage("Bitte gib eine gültige E-Mail-Adresse an.", loginEMail)
                 return
             }
 
             if (password.displayText == "")
             {
-                JW78APP.showMessage("Bitte gib ein Passwort ein.")
-                password.forceActiveFocus()
+                focusMessage("Bitte gib ein Passwort ein.", password)
                 return
             }
             JW78APP.registerAccount(loginEMail.displayText,
