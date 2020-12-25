@@ -246,6 +246,10 @@ ApplicationWindow {
         LoginAndOrRegister
         {
             id: loginAndOrRegister
+//            opacity: 1
+//            x: 0
+//            y: 0
+//            z: 500
             property var goodPage: null
             property var backPage: null
             onBackPressed: showNewPage(theCurrentPage, backPage)
@@ -533,6 +537,8 @@ ApplicationWindow {
             }
         }
     }
+
+
 
     /*    Connections {
         target: Qt.inputMethod

@@ -20,14 +20,16 @@ Button
     property color buttonDownColor: JW78APP.buttonDownColor
     property color buttonFromColor: JW78APP.buttonFromColor
     property color buttonToColor: JW78APP.buttonToColor
+    property int animationDuration: JW78Utils.longAniDuration
+
     Behavior on buttonToColor {
         ColorAnimation {
-            duration: JW78Utils.longAniDuration
+            duration: animationDuration
         }
     }
     Behavior on buttonFromColor {
         ColorAnimation {
-            duration: JW78Utils.longAniDuration
+            duration: animationDuration
         }
     }
 

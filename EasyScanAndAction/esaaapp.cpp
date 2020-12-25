@@ -1520,6 +1520,7 @@ void ESAAApp::registerAccount(QString loginEMail, QString password)
         if (message == "Person registered")
         {
             showMessage("Registrierung erfolgreich, wir haben Dir eine E-Mail mit einem Login-Code zugeschickt.<br>Bitte kontrolliere deine E-Mails.");
+            setRegistered(true);
         }
         if (message == "E-Mail already in use")
         {
@@ -1527,6 +1528,12 @@ void ESAAApp::registerAccount(QString loginEMail, QString password)
         }
         networkReply->deleteLater();// Don't forget to delete it
     });
+}
+
+void ESAAApp::requestLoginCode(QString loginEMail)
+{
+    // not yet implemented
+    emit requestLoginCodeSuccessful();
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

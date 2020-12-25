@@ -61,6 +61,7 @@ class ESAAApp: public QObject
     QString secToken;
     QString loginTokenString;
     JWPROPERTY(bool, loggedIn, LoggedIn, false);
+    JWPROPERTY(bool, registered, Registered, false);
 
 
     JWPROPERTY(QColor, textColor, TextColor, "white");
@@ -72,6 +73,8 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "white");
     JWPROPERTY(QColor, buttonFromColor, ButtonFromColor, "#4581B3");
     JWPROPERTY(QColor, buttonToColor, ButtonToColor, "#364995");
+    JWPROPERTY(QColor, disabledButtonFromColor, DisabledButtonFromColor, "#d0d0d0");
+    JWPROPERTY(QColor, disabledButtonToColor, DisabledButtonToColor, "#c0c0c0");
 
 
     JWPROPERTY(int, headerFontPixelsize, HeaderFontPixelsize, 10);
@@ -275,6 +278,7 @@ public:
                            QString tan);
     Q_INVOKABLE void registerAccount(QString loginEMail,
                                      QString password);
+    Q_INVOKABLE void requestLoginCode(QString loginEMail);
 
 signals:
     void showWaitMessageSignal(const QString &mt);
@@ -286,6 +290,7 @@ signals:
     void showSendedData();
     void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
     void loginSuccessful();
+    void requestLoginCodeSuccessful();
 
 
 };
