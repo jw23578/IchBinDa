@@ -14,6 +14,7 @@ FocusScope
     property bool colorEdit: false
     property string helpText: ""
     property alias font: input.font
+    property alias echoMode: input.echoMode
     Rectangle
     {
         id: rectangle

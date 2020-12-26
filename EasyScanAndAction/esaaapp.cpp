@@ -271,6 +271,10 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
 
 void ESAAApp::saveData()
 {
+    if (loading)
+    {
+        return;
+    }
     QFile dataFile(dataFileName);
     if (!dataFile.open(QIODevice::WriteOnly))
     {
@@ -302,6 +306,7 @@ void ESAAApp::saveData()
     }
 
     QJsonObject data;
+    data["loginTokenString"] = loginTokenString();
     data["ibdToken"] = lastVisit.ibdToken;
     data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
     data["lastVisitLogoUrl"] = lastVisit.logoUrl();
@@ -342,6 +347,7 @@ void ESAAApp::loadData()
         qWarning("dataFile konnte nicht zum laden geöffnet werden.");
         return;
     }
+    loading = true;
     QByteArray saveData = dataFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject data(loadDoc.object());
@@ -376,6 +382,8 @@ void ESAAApp::loadData()
     setLastVisitCountXColor(data["lastVisitCountXColor"].toString());
     setLastVisitCountX(data["lastVisitCountX"].toInt());
 
+    setLoginTokenString(data["loginTokenString"].toString());
+
     if (data.contains("firstStart"))
     {
         setFirstStart(data["firstStart"].toBool());
@@ -408,6 +416,7 @@ void ESAAApp::loadData()
         setEmailAdress(contactData["emailAdress"].toString());
         setMobile(contactData["mobile"].toString());
     }
+    loading = false;
 }
 
 #include <fstream>
@@ -485,6 +494,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     placesManager(e),
     mobileExtensions(e),
     networkAccessManager(this),
+    sek30Timer(this),
     emailSender(this),
     internetTester(this),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
@@ -539,6 +549,11 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
         allCustomerCards.add(cc);
     }
+    sek30Timer.setInterval(1000 * 30);
+    sek30Timer.setSingleShot(false);
+    connect(&sek30Timer, &QTimer::timeout, this, &ESAAApp::onSek30Timeout);
+    sek30Timer.start();
+    checkLoggedIn();
 }
 
 void ESAAApp::loadConfigFile()
@@ -701,6 +716,43 @@ QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bo
     qrCodes.insert(jw78::Utils::getTempPath() + "/" + fn + ".png");
     qrCodes.insert(jw78::Utils::getTempPath() + "/" + fn + ".jpg");
     return filename;
+}
+
+void ESAAApp::onSek30Timeout()
+{
+    checkLoggedIn();
+}
+
+void ESAAApp::checkLoggedIn()
+{
+    if (!loginTokenString().size())
+    {
+        setLoggedIn(false);
+        return;
+    }
+    QString url(baseServerURL() + "/notloggedin/login?sec_token=" + secToken);
+    QMap<QString, QString> variables;
+    variables["loginTokenString"] = loginTokenString();
+    QNetworkReply *networkReply(serverPost(url, variables));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        QByteArray answer(networkReply->readAll());
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
+        QJsonObject jsonObject(jsonDoc.object());
+        bool error(jsonObject["error"].toBool());
+        int messageCode(jsonObject["messageCode"].toInt());
+        qDebug() << answer;
+        if (messageCode != 3)
+        {
+            setLoginTokenString("");
+            setLoggedIn(false);
+            emit notLoggedIn();
+        }
+        if (messageCode == 3)
+        {
+            setLoggedIn(true);
+        }
+        networkReply->deleteLater();// Don't forget to delete it
+    });
 }
 
 void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
@@ -1493,9 +1545,15 @@ void ESAAApp::login(QString loginEMail,
         }
         if (messageCode == 3)
         {
-            loginTokenString = jsonObject["loginTokenString"].toString();
+            setLoginTokenString(jsonObject["loginTokenString"].toString());
             setLoggedIn(true);
             emit loginSuccessful();
+        }
+        if (messageCode == 2)
+        {
+            setLoginTokenString("");
+            setLoggedIn(false);
+            showMessage("Der Login oder das Passwort waren falsch, bitte versuch es erneut oder registriere dich.");
         }
         networkReply->deleteLater();// Don't forget to delete it
     });
@@ -1516,6 +1574,7 @@ void ESAAApp::registerAccount(QString loginEMail, QString password)
         QJsonObject jsonObject(jsonDoc.object());
         bool error(jsonObject["error"].toBool());
         QString message(jsonObject["message"].toString());
+        int messageCode(jsonObject["messageCode"].toInt());
         qDebug() << message;
         if (message == "Person registered")
         {
@@ -1533,6 +1592,32 @@ void ESAAApp::registerAccount(QString loginEMail, QString password)
 void ESAAApp::requestLoginCode(QString loginEMail)
 {
     // not yet implemented
+    QString url(baseServerURL() + "/notloggedin/forgotPassword?sec_token=" + secToken);
+    QMap<QString, QString> variables;
+    variables["loginEMail"] = loginEMail;
+    QNetworkReply *networkReply(serverPost(url, variables));
+    showWaitMessage("Bitte einen Moment Geduld");
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        hideWaitMessage();
+        QByteArray answer(networkReply->readAll());
+        qDebug() << answer;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
+        QJsonObject jsonObject(jsonDoc.object());
+        bool error(jsonObject["error"].toBool());
+        QString message(jsonObject["message"].toString());
+        int messageCode(jsonObject["messageCode"].toInt());
+        qDebug() << messageCode << " " << message;
+        if (messageCode == 1)
+        {
+            showMessage("Die E-Mail-Adresse ist leider unbekannt.");
+        }
+        if (messageCode == 18)
+        {
+            showMessage("Wir haben dir einen Code an die angegebene E-Mail-Adresse geschickt. Bitte kontrolliere deine E-Mails.");
+        }
+        networkReply->deleteLater();// Don't forget to delete it
+    });
+
     emit requestLoginCodeSuccessful();
 }
 

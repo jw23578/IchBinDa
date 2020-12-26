@@ -15,6 +15,7 @@ FocusScope
     property alias helpText: input.helpText
     signal helpClicked(string ht)
     property alias font: input.font
+    property alias echoMode: input.echoMode
 
     ESAATextInput
     {

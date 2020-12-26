@@ -29,6 +29,7 @@
 #include "JW78QTLib/jw78sqliteadapter.h"
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
+#include <QTimer>
 
 class ESAAApp: public QObject
 {
@@ -39,6 +40,7 @@ class ESAAApp: public QObject
     PlacesManager placesManager;
     MobileExtensions mobileExtensions;
     QNetworkAccessManager networkAccessManager;
+    QTimer sek30Timer;
     EMailSender emailSender;
     InternetTester internetTester;
     QRCodeStore qrCodeStore;
@@ -59,7 +61,7 @@ class ESAAApp: public QObject
 
     JWPROPERTY(QString, baseServerURL, BaseServerURL, "");
     QString secToken;
-    QString loginTokenString;
+    JWPROPERTYAFTERSET(QString, loginTokenString, LoginTokenString, "", saveData);
     JWPROPERTY(bool, loggedIn, LoggedIn, false);
     JWPROPERTY(bool, registered, Registered, false);
 
@@ -170,10 +172,13 @@ class ESAAApp: public QObject
     void saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd);
 
     QString dataFileName;
+    bool loading;
     void loadData();
     const int actionIDCoronaKontaktdatenerfassung = 1;
     const int actionIDKontakttagebuch = 2;
     QString generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList);
+    void onSek30Timeout();
+    void checkLoggedIn();
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,
@@ -290,6 +295,7 @@ signals:
     void showSendedData();
     void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
     void loginSuccessful();
+    void notLoggedIn();
     void requestLoginCodeSuccessful();
 
 

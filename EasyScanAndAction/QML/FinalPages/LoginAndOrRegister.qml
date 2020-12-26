@@ -143,6 +143,7 @@ PageWithBackButton
         }
         ESAALineInputWithCaption
         {
+            echoMode: TextInput.Password
             visible: opacity > 0
             anchors.left: parent.left
             anchors.right: parent.right
@@ -191,7 +192,7 @@ PageWithBackButton
                 return
             }
             JW78APP.login(loginEMail.displayText,
-                          password.displayText,
+                          password.text,
                           "")
         }
     }
@@ -227,7 +228,7 @@ PageWithBackButton
                 return
             }
             JW78APP.registerAccount(loginEMail.displayText,
-                                    password.displayText)
+                                    password.text)
         }
     }
     CircleButtonWithBehavior
@@ -270,10 +271,33 @@ PageWithBackButton
         width: smallWidth
         onClicked:
         {
-            loginAndOrRegister.state = "enterCode"
+            if (loginAndOrRegister.state != "enterCode")
+            {
+                loginAndOrRegister.state = "enterCode"
+                return
+            }
+            if (loginEMail.displayText == "")
+            {
+                focusMessage("Bitte gib die E-Mail-Adresse ein mit der du dich einloggen möchtest ein.", loginEMail)
+                return
+            }
+            if (!JW78APP.isEmailValid(loginEMail.displayText))
+            {
+                focusMessage("Bitte gib eine gültige E-Mail-Adresse an.", loginEMail)
+                return
+            }
+
+            if (password.displayText == "")
+            {
+                focusMessage("Bitte gib deinen Code ein.", password)
+                return
+            }
+            JW78APP.login(loginEMail.displayText,
+                          "",
+                          password.text)
         }
     }
-    states:         [
+    states: [
         State {
             name: "register"
             PropertyChanges {
@@ -397,6 +421,7 @@ PageWithBackButton
                 target: password
                 text: ""
                 caption: "Code"
+                echoMode: TextInput.Normal
             }
             PropertyChanges
             {
