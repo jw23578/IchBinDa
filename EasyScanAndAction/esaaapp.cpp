@@ -33,6 +33,10 @@ void ESAAApp::checkDevelopMobile()
         setIsDevelop(true);
         setBaseServerURL("https://127.0.0.1:23578");
     }
+    if (mobile() == "999999")
+    {
+        setLoginTokenString("");
+    }
 }
 
 void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,

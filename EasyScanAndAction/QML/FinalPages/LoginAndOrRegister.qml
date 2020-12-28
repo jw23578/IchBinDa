@@ -42,10 +42,14 @@ PageWithBackButton
         ESAA.showMessageWithCallback(theMessage, setFocusNow)
     }
 
+    property color smallButtonDownColor: JW78APP.buttonFromColor
+    property color bigButtonDownColor: JW78APP.buttonDownColor
     property color offFromColor: JW78APP.disabledButtonFromColor
     property color offToColor: JW78APP.disabledButtonToColor
     property int smallWidth: JW78Utils.screenWidth / 4.5
     property int bigWidth: JW78Utils.screenWidth / 4
+    property int smallFontPixelSize: JW78APP.fontButtonPixelsize * 0.6
+    property int bigFontPixelSize: JW78APP.fontButtonPixelsize * 0.8
     property double topButtonY: inputColumn.y + inputColumn.height + ESAA.spacing * 2
     property double topButtonX: (parent.width - bigWidth) / 2
     property double bottomButtonY: backButton.y - smallWidth - ESAA.spacing
@@ -168,6 +172,9 @@ PageWithBackButton
         text: "Login"
         x: topButtonX
         y: topButtonY
+        width: bigWidth
+        font.pixelSize: bigFontPixelSize
+        buttonDownColor: bigButtonDownColor
         onClicked:
         {
             if (loginAndOrRegister.state != "")
@@ -205,6 +212,8 @@ PageWithBackButton
         buttonFromColor: offFromColor
         buttonToColor: offToColor
         width: smallWidth
+        font.pixelSize: smallFontPixelSize
+        buttonDownColor: smallButtonDownColor
         onClicked:
         {
             if (loginAndOrRegister.state != "register")
@@ -240,6 +249,8 @@ PageWithBackButton
         buttonFromColor: offFromColor
         buttonToColor: offToColor
         width: smallWidth
+        font.pixelSize: smallFontPixelSize
+        buttonDownColor: smallButtonDownColor
         onClicked:
         {
             if (loginAndOrRegister.state != "forgotPassword")
@@ -269,6 +280,8 @@ PageWithBackButton
         buttonFromColor: offFromColor
         buttonToColor: offToColor
         width: smallWidth
+        font.pixelSize: smallFontPixelSize
+        buttonDownColor: smallButtonDownColor
         onClicked:
         {
             if (loginAndOrRegister.state != "enterCode")
@@ -307,6 +320,8 @@ PageWithBackButton
                 buttonFromColor: JW78APP.buttonFromColor
                 buttonToColor: JW78APP.buttonToColor
                 width: bigWidth
+                font.pixelSize: bigFontPixelSize
+                buttonDownColor: bigButtonDownColor
             }
             PropertyChanges {
                 target: loginButton
@@ -315,6 +330,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: forgotPasswordButton
@@ -323,6 +340,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: enterCodeButton
@@ -331,6 +350,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target:  registerText
@@ -347,6 +368,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: registerButton
@@ -355,6 +378,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: forgotPasswordButton
@@ -363,6 +388,8 @@ PageWithBackButton
                 buttonFromColor: JW78APP.buttonFromColor
                 buttonToColor: JW78APP.buttonToColor
                 width: bigWidth
+                font.pixelSize: bigFontPixelSize
+                buttonDownColor: bigButtonDownColor
             }
             PropertyChanges {
                 target: enterCodeButton
@@ -371,6 +398,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: password
@@ -392,6 +421,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: registerButton
@@ -400,6 +431,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: forgotPasswordButton
@@ -408,6 +441,8 @@ PageWithBackButton
                 buttonFromColor: offFromColor
                 buttonToColor: offToColor
                 width: smallWidth
+                font.pixelSize: smallFontPixelSize
+                buttonDownColor: smallButtonDownColor
             }
             PropertyChanges {
                 target: enterCodeButton
@@ -416,6 +451,8 @@ PageWithBackButton
                 buttonFromColor: JW78APP.buttonFromColor
                 buttonToColor: JW78APP.buttonToColor
                 width: bigWidth
+                font.pixelSize: bigFontPixelSize
+                buttonDownColor: bigButtonDownColor
             }
             PropertyChanges {
                 target: password
@@ -434,6 +471,6 @@ PageWithBackButton
     ]
     Component.onCompleted:
     {
-        topButtonY = inputColumn.y + inputColumn.height
+        topButtonY = inputColumn.y + inputColumn.height + JW78APP.spacing
     }
 }

@@ -21,5 +21,10 @@ CircleButton
             duration: animationDuration
         }
     }
+    Behavior on buttonDownColor {
+        ColorAnimation {
+            duration: animationDuration
+        }
+    }
 
 }

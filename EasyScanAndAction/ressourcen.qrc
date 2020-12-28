@@ -47,6 +47,5 @@
         <file>images/loading.gif</file>
         <file>images/engagement_1.png</file>
         <file>images/engagement_2.png</file>
-        <file>QML/Comp/CircleButtonWithBehavior.qml</file>
     </qresource>
 </RCC>

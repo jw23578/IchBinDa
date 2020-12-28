@@ -54,5 +54,6 @@
         <file>QML/Comp/EmptySwipeView.qml</file>
         <file>QML/FinalPages/EngagementOfferPage.qml</file>
         <file>QML/FinalPages/LoginAndOrRegister.qml</file>
+        <file>QML/Comp/CircleButtonWithBehavior.qml</file>
     </qresource>
 </RCC>
