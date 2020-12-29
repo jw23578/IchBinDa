@@ -3,6 +3,7 @@ import "Comp"
 
 Rectangle
 {
+    property int headerHeight: parent.height / 16
     signal splashDone
     signal helpClicked
     id: splashscreen
@@ -45,7 +46,9 @@ Rectangle
         y: (parent.height - height) / 2
         width: Math.min(parent.height, parent.width)
         height: width
+        visible: parent.height != headerHeight || !JW78APP.loggedIn
     }
+
     Behavior on height {
         NumberAnimation
         {
@@ -61,6 +64,60 @@ Rectangle
             ESAA.reset()
         }
     }
+    NumberAnimation
+    {
+        id: rotateProfileImage
+        target: profileImage
+        property: "rotation"
+        from: 0
+        to: 360
+        duration: JW78Utils.longAniDuration
+    }
+
+    Connections
+    {
+        target: JW78APP
+        function onLoggedInChanged() {
+            rotateProfileImage.start()
+        }
+    }
+
+    Item
+    {
+        id: profileItem
+        visible: parent.height == headerHeight && JW78APP.loggedIn
+        width: height
+        height: headerHeight
+        Image
+        {
+            id: profileImage
+            mipmap: true
+            source: "qrc:/images/user.svg"
+            anchors.centerIn: parent
+            width: parent.width * 0.9
+            height: parent.height * 0.9
+        }
+        MouseArea
+        {
+            z: 1
+            anchors.fill: parent
+            onClicked:
+            {
+                console.log("hello")
+                JW78APP.loggedIn = false
+                JW78APP.loginTokenString = ""
+            }
+        }
+
+    }
+
+    onHeightChanged: {
+        if (height == headerHeight)
+        {
+            rotateProfileImage.start()
+        }
+    }
+
     Image
     {
         property int changeCounter: 0
@@ -73,8 +130,8 @@ Rectangle
         }
         id: helpImage
         anchors.right: parent.right
-        anchors.rightMargin: (parent.parent.height / 16 - parent.parent.height / 20) / 2
-        anchors.topMargin: (parent.parent.height / 16 - parent.parent.height / 20) / 2
+        anchors.rightMargin: (parent.headerHeight - parent.parent.height / 20) / 2
+        anchors.topMargin: (parent.headerHeight - parent.parent.height / 20) / 2
         anchors.top: parent.top
         width: parent.parent.height / 20
         height: width
@@ -106,7 +163,7 @@ Rectangle
     function minimize()
     {
         minimized = true
-        height = parent.height / 16
+        height = headerHeight
         logo.qrCodeOffset = parent.height / 10 / 8
         logo.claimImageX = parent.height / 10 / 8
         longWait.start()

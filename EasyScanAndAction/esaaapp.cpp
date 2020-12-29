@@ -36,6 +36,7 @@ void ESAAApp::checkDevelopMobile()
     if (mobile() == "999999")
     {
         setLoginTokenString("");
+        setLoggedIn(false);
     }
 }
 
