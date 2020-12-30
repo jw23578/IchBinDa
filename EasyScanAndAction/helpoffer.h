@@ -2,10 +2,10 @@
 #define HELPOFFER_H
 
 #include "JW78QTLib/jw78ProxyObject.h"
-#include "JW78QTLib/jw78reflectableobject.h"
+#include "JW78QTLib/reflection/jw_purereflection.h"
 #include <QDateTime>
 
-class HelpOffer: public jw78::ProxyObject, public jw78::ReflectableObject
+class HelpOffer: public jw78::ProxyObject, public jw::pureReflection
 {
     Q_OBJECT
     JWPROPERTY(QString, descricption, Description, "");
@@ -14,7 +14,11 @@ class HelpOffer: public jw78::ProxyObject, public jw78::ReflectableObject
     JWPROPERTY(double, longitude, Longitute, 0);
     JWPROPERTY(QString, offererUuid, OffererUuid, "");
 public:
-    HelpOffer();
+    HelpOffer(bool genUuid);
+
+    // pureReflection interface
+public:
+    jw::pureReflection *create(bool genUuid) const;
 };
 
 #endif // HELPOFFER_H
