@@ -546,7 +546,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     loadAllVisits();
 
     std::unique_ptr<CustomerCard> te(new CustomerCard(false));
-    QVector<jw78::ReflectableObject*> temp;
+    QVector<jw::pureReflection*> temp;
     database.createTableCollectionOrFileIfNeeded("CustomerCards", *te);
     database.selectAll("CustomerCards", temp, *te);
     for (auto e: temp)

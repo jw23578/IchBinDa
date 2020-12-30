@@ -1,17 +1,17 @@
 #ifndef DATETIMEREFLECTABLE_H
 #define DATETIMEREFLECTABLE_H
 
-#include "JW78QTLib/jw78reflectableobject.h"
+#include "JW78QTLib/reflection/jw_purereflection.h"
 #include <QDateTime>
 
-class DateTimeReflectable: public jw78::ReflectableObject
+class DateTimeReflectable: public jw::pureReflection
 {
 public:
     QString name;
     QDateTime value;
-    DateTimeReflectable(bool setUuid);
+    DateTimeReflectable(bool genUuid);
 
-    ReflectableObject *create(bool setUuid) const;
+    pureReflection *create(bool genUuid) const;
 };
 
 #endif // DATETIMEREFLECTABLE_H

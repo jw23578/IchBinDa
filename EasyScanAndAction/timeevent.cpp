@@ -1,15 +1,15 @@
 #include "timeevent.h"
 
-TimeEvent::TimeEvent(bool setUuid):jw78::ProxyObject(0), jw78::ReflectableObject(setUuid)
+TimeEvent::TimeEvent(bool genUuid):jw78::ProxyObject(0), jw::pureReflection(genUuid, "TimeEvent")
 {
-    ADD_VARIABLE(m_eventType)
-            ADD_VARIABLE(m_timeStamp)
-            ADD_VARIABLE(transferedToServer)
+    ADD_VARIABLE(m_eventType);
+    ADD_VARIABLE(m_timeStamp);
+    ADD_VARIABLE(transferedToServer);
 }
 
-jw78::ReflectableObject *TimeEvent::create(bool setUuid) const
+jw::pureReflection *TimeEvent::create(bool genUuid) const
 {
-    return new TimeEvent(setUuid);
+    return new TimeEvent(genUuid);
 }
 
 QString TimeEvent::type2String()

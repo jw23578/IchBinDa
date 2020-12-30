@@ -1,12 +1,12 @@
 #include "customercard.h"
 
-CustomerCard::CustomerCard(bool setUuid):jw78::ProxyObject(0), jw78::ReflectableObject(setUuid)
+CustomerCard::CustomerCard(bool genUuid):jw78::ProxyObject(0), jw::pureReflection(genUuid, "CustomerCard")
 {
     ADD_VARIABLE(m_name);
     ADD_VARIABLE(m_filename);
 }
 
-CustomerCard *CustomerCard::create(bool setUuid) const
+CustomerCard *CustomerCard::create(bool genUuid) const
 {
-    return new CustomerCard(setUuid);
+    return new CustomerCard(genUuid);
 }

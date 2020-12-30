@@ -22,6 +22,7 @@ SOURCES += \
     datetimereflectable.cpp \
     emailsender.cpp \
     esaaapp.cpp \
+    helpoffer.cpp \
     internettester.cpp \
     pausetimespan.cpp \
     persistentmap.cpp \
@@ -70,6 +71,7 @@ HEADERS += \
     datetimereflectable.h \
     emailsender.h \
     esaaapp.h \
+    helpoffer.h \
     internettester.h \
     pausetimespan.h \
     persistentmap.h \
@@ -225,6 +227,7 @@ include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
 include(JW78MobileExtensions/JW78MobileExtensions.pri)
 include(JW78QTLib/JW78QTLib.pri)
+include(JW78CoreLib/JW78CoreLib.pri)
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 

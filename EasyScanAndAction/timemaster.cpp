@@ -165,7 +165,7 @@ void TimeMaster::load(int year, int month)
     allTimeEvents.clear();
     workTimeSpans.clear();
     TimeEvent templateEvent(false);
-    QVector<jw78::ReflectableObject*> temp;
+    QVector<jw::pureReflection*> temp;
     QDate monthStart(year, month, 1);
     QDate nextMonthStart(monthStart.addMonths(1));
     pa.selectAllBetween("TimeEvents", "m_timeStamp",
