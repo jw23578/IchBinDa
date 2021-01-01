@@ -26,7 +26,7 @@
 #include "visit.h"
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
-#include "JW78QTLib/jw78sqliteadapter.h"
+#include "JW78QTLib/persistent/jw78persistentadaptersqlite.h"
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
 #include <QTimer>
@@ -35,7 +35,7 @@ class ESAAApp: public QObject
 {
     Q_OBJECT
     jw78::Utils jw78Utils;
-    jw78::SQLiteAdapter database;
+    jw78::PersistentAdapterSqlite database;
     TimeMaster timeMaster;
     PlacesManager placesManager;
     MobileExtensions mobileExtensions;

@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <QString>
 #include <JW78QTLib/jw78ObjectListModel.h>
-#include <JW78QTLib/jw78persistentadapter.h>
+#include <JW78QTLib/persistent/jw78persistentadapter.h>
 #include "worktimespan.h"
 #include "datetimereflectable.h"
 
