@@ -1,13 +1,13 @@
 #include "timeevent.h"
 
-TimeEvent::TimeEvent(bool genUuid):jw78::ProxyObject(0), jw::pureReflection(genUuid, "TimeEvent")
+TimeEvent::TimeEvent(bool genUuid):jw78::ProxyObject(0), jw78::PersistentObject(genUuid, "TimeEvent")
 {
     ADD_VARIABLE(m_eventType);
     ADD_VARIABLE(m_timeStamp);
     ADD_VARIABLE(transferedToServer);
 }
 
-jw::pureReflection *TimeEvent::create(bool genUuid) const
+jw::pureReflection *TimeEvent::internalCreate(bool genUuid) const
 {
     return new TimeEvent(genUuid);
 }

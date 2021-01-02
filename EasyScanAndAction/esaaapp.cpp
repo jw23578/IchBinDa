@@ -546,7 +546,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     loadAllVisits();
 
     std::unique_ptr<CustomerCard> te(new CustomerCard(false));
-    QVector<jw::pureReflection*> temp;
+    QVector<jw78::PersistentObject*> temp;
     database.createTableCollectionOrFileIfNeeded("CustomerCards", *te);
     database.selectAll("CustomerCards", temp, *te);
     for (auto e: temp)
@@ -559,6 +559,17 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     connect(&sek30Timer, &QTimer::timeout, this, &ESAAApp::onSek30Timeout);
     sek30Timer.start();
     checkLoggedIn();
+    runTests();
+}
+#include "helpoffer.h"
+void ESAAApp::runTests()
+{
+    jw78::PersistentAdapterJWServer *serverAdapter(new jw78::PersistentAdapterJWServer(&networkAccessManager,
+                                                                                       "127.0.0.1", 23578, secToken));
+    serverAdapter->setLoginTokenString(loginTokenString());
+    HelpOffer *ho(new HelpOffer(true));
+    serverAdapter->insert(ho->get_entity_name(),
+                          *ho);
 }
 
 void ESAAApp::loadConfigFile()
@@ -1184,8 +1195,8 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["x"] = visitCountX;
     qr["xcolor"]  = visitCountXColor;
     QByteArray shortQRCode;
-//    shortQRCode += superCodePrefix.toLatin1();
-//    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact).toBase64();
+    //    shortQRCode += superCodePrefix.toLatin1();
+    //    shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact).toBase64();
     shortQRCode += QJsonDocument(qr).toJson(QJsonDocument::Compact);
     for (size_t i(0); i < yesQuestions.size(); ++i)
     {

@@ -27,6 +27,7 @@
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
 #include "JW78QTLib/persistent/jw78persistentadaptersqlite.h"
+#include "JW78QTLib/persistent/jw78persistentadapterjwserver.h"
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
 #include <QTimer>
@@ -211,6 +212,7 @@ private:
     void loadAllVisits();
 public:
     ESAAApp(QQmlApplicationEngine &e);
+    void runTests();
 
     Q_INVOKABLE bool keyNumberOK(int number);
     Q_INVOKABLE void clearYesQuestions();

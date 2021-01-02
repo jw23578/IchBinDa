@@ -2,19 +2,20 @@
 #define TIMEEVENT_H
 
 #include "JW78QTLib/jw78ProxyObject.h"
-#include "JW78QTLib/reflection/jw_purereflection.h"
+#include "JW78QTLib/persistent/jw78persistentobject.h"
 #include <QDateTime>
 
-class TimeEvent: public jw78::ProxyObject, public jw::pureReflection
+class TimeEvent: public jw78::ProxyObject, public jw78::PersistentObject
 {
     Q_OBJECT
     JWPROPERTY(qint64, eventType, EventType, 0)
     JWPROPERTY(QDateTime, timeStamp, TimeStamp, QDateTime())
     qint64 transferedToServer;
+protected:
+    pureReflection *internalCreate(bool genUuid) const override;
 public:
     TimeEvent(bool genUuid);
 
-    pureReflection *create(bool genUuid) const;
     Q_INVOKABLE QString type2String();
 };
 
