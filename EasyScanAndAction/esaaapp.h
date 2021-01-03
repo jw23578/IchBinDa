@@ -55,6 +55,7 @@ class ESAAApp: public QObject
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
+    JWPROPERTY(int, appVersion, AppVersion, 0);
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    

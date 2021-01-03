@@ -5,8 +5,8 @@ HelpOffer::HelpOffer(bool genUuid):jw78::ProxyObject(0), jw78::PersistentObject(
     ADD_VARIABLE(m_offererUuid);
     ADD_VARIABLE(m_caption);
     ADD_VARIABLE(m_descricption);
-//    ADD_VARIABLE(m_longitude);
-    //    ADD_VARIABLE(m_latitude);
+    ADD_VARIABLE(m_longitude);
+    ADD_VARIABLE(m_latitude);
 }
 
 jw::pureReflection *HelpOffer::internalCreate(bool genUuid) const

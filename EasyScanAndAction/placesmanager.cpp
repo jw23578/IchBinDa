@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include "place.h"
 #include "JW78QTLib/jw78utils.h"
+#include "qthelper.h"
 
 PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
     source(nullptr),
@@ -122,6 +123,7 @@ void PlacesManager::positionUpdated(const QGeoPositionInfo &update)
           "</osm-script>");
     QString url("https://overpass-api.de/api/interpreter");
     QNetworkRequest request(url);
+    qthelper::setSSL(request);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     network.post(request, xmlRequest);
 }

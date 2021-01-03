@@ -21,9 +21,12 @@
 #include <QDesktopServices>
 #include <QPdfWriter>
 #include "customercard.h"
+#include "jw78core_debug.h"
+#include "qthelper.h"
 
 void ESAAApp::checkDevelopMobile()
 {
+    jw78core::debug::gi()->setIgnoreSSL(false);
     if (mobile() == "230578")
     {
         setIsDevelop(true);
@@ -32,12 +35,14 @@ void ESAAApp::checkDevelopMobile()
     {
         setIsDevelop(true);
         setBaseServerURL("https://127.0.0.1:23578");
+        jw78core::debug::gi()->setIgnoreSSL(true);
     }
     if (mobile() == "999999")
     {
         setLoginTokenString("");
         setLoggedIn(false);
     }
+    jw78core::debug::gi()->setDevelop(isDevelop());
 }
 
 void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,
@@ -146,7 +151,8 @@ void ESAAApp::sendMail()
         lastVisit.ibdToken += QString(".") + locationGUID();
         lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
         QString url(baseServerURL() + ibdTokenStoreMethod + lastVisit.ibdToken);
-        QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+        QNetworkRequest request(url);
+        QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
         QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
             qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
             networkReply->deleteLater();// Don't forget to delete it
@@ -311,6 +317,7 @@ void ESAAApp::saveData()
     }
 
     QJsonObject data;
+    data["appVersion"] = appVersion();
     data["loginTokenString"] = loginTokenString();
     data["ibdToken"] = lastVisit.ibdToken;
     data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
@@ -356,6 +363,7 @@ void ESAAApp::loadData()
     QByteArray saveData = dataFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject data(loadDoc.object());
+    setAppVersion(data["appVersion"].toInt(0));
     setAggreementChecked(data["aggrementChecked"].toBool());
     QDateTime help;
     help.setSecsSinceEpoch(data["lastVisitBegin"].toInt());
@@ -543,6 +551,16 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     dataFileName = jw78::Utils::getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
+    if (appVersion() == 0)
+    {
+        // die spaltennamen in den Tabellen haben jetzt kein "m_" mehr vorne weg.
+        // leider verlieren wir damit einmal die Kundenkarten und die Zeiterfasungsevents,
+        // aber ich gehe davon aus, dass das niemanden betrifft.
+        database.dropTableCollectionOrFileIfNeeded("TimeEvents");
+        database.dropTableCollectionOrFileIfNeeded("CustomerCards");
+        setAppVersion(1);
+        saveData();
+    }
     loadAllVisits();
 
     std::unique_ptr<CustomerCard> te(new CustomerCard(false));
@@ -568,6 +586,11 @@ void ESAAApp::runTests()
                                                                                        "127.0.0.1", 23578, secToken));
     serverAdapter->setLoginTokenString(loginTokenString());
     HelpOffer *ho(new HelpOffer(true));
+    ho->setLatitude(10);
+    ho->setLongitute(9.9);
+    ho->setDescription("Erste Beschreibung");
+    ho->setCaption("Erstes Hilfsangebot");
+    ho->setOffererUuid("1234");
     serverAdapter->insert(ho->get_entity_name(),
                           *ho);
 }
@@ -774,7 +797,8 @@ void ESAAApp::checkLoggedIn()
 void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
 {
     QString url(logoUrl);
-    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QNetworkRequest request(url);
+    QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
     QEventLoop loop;
     connect(networkReply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
@@ -993,7 +1017,8 @@ void ESAAApp::fetchExtendedQRCodeData(const QString &facilityId)
         interpretExtendedQRCodeData(qrCode);
     }
     QString url("https://www.jw78.de/ibd/qrCodeFiles/" + facilityId + ".ibd");
-    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QNetworkRequest request(url);
+    QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this, qrCode] {
         QByteArray data(networkReply->readAll());
         if (data != qrCode)
@@ -1111,7 +1136,8 @@ void ESAAApp::openUrlORPdf(const QString &urlOrPdf)
             QDesktopServices::openUrl(QUrl(filename));
             return;
         }
-        QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+        QNetworkRequest request(url);
+        QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
         QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, filename] {
             qDebug() << "PDF loaded finished" << networkReply->error();
             QFile dataFile(filename);
@@ -1234,6 +1260,7 @@ void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 
     QByteArray ba(QJsonDocument(jsonData).toJson(QJsonDocument::Compact));
     QNetworkRequest request(url);
+    qthelper::setSSL(request);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QUrlQuery postdata;
     postdata.addQueryItem("json", QUrl::toPercentEncoding(ba));
@@ -1426,7 +1453,8 @@ bool ESAAApp::isActiveVisit(int changeCounter)
 void ESAAApp::dummyGet()
 {
     QString url("https://www.jw78.de/ibd/qrCodeFiles/902f2e65-9d45-4194-b067-d9b495b5664b.ibd");
-    QNetworkReply *networkReply(networkAccessManager.get(QNetworkRequest(url)));
+    QNetworkRequest request(url);
+    QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
         qDebug() << "Dummy get finished" << networkReply->error();
         networkReply->deleteLater();// Don't forget to delete it
@@ -1516,14 +1544,7 @@ QNetworkReply *ESAAApp::serverPost(const QString &url, const QMap<QString, QStri
 
     QByteArray ba(QJsonDocument(jsonData).toJson(QJsonDocument::Compact));
     QNetworkRequest request(url);
-
-    if (isDevelop())
-    {
-        QSslConfiguration conf(request.sslConfiguration());
-        conf.setPeerVerifyMode(QSslSocket::VerifyNone);
-        request.setSslConfiguration(conf);
-    }
-
+    qthelper::setSSL(request);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QUrlQuery postdata;
     postdata.addQueryItem("json", QUrl::toPercentEncoding(ba));
