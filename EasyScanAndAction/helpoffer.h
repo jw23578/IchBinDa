@@ -8,7 +8,7 @@
 class HelpOffer: public jw78::ProxyObject, public jw78::PersistentObject
 {
     Q_OBJECT
-    JWPROPERTY(QString, descricption, Description, "");
+    JWPROPERTY(QString, description, Description, "");
     JWPROPERTY(QString, caption, Caption, "");
     JWPROPERTY(double, latitude, Latitude, 0);
     JWPROPERTY(double, longitude, Longitute, 0);

@@ -23,6 +23,7 @@
 #include "customercard.h"
 #include "jw78core_debug.h"
 #include "qthelper.h"
+#include "helpoffer.h"
 
 void ESAAApp::checkDevelopMobile()
 {
@@ -502,19 +503,24 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     jw78Utils(e),
+    networkAccessManager(this),
     database(jw78::Utils::getWriteablePath() + "/ichbinda.db"),
+    serverAdapter(networkAccessManager, "", 0, ""),
     timeMaster(e, *this, database),
     placesManager(e),
     mobileExtensions(e),
-    networkAccessManager(this),
     sek30Timer(this),
     emailSender(this),
     internetTester(this),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
     publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit"),
-    allCustomerCards(e, "AllCustomerCards", "Card")
+    allCustomerCards(e, "AllCustomerCards", "Card"),
+    myHelpOffers(e, "MyHelpOffers", "HelpOffer")
 {
+    connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectStored, this, &ESAAApp::onObjectStored);
+    connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectNotStored, this, &ESAAApp::onObjectNotStored);
+
     loadConfigFile();
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
@@ -572,6 +578,18 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
         allCustomerCards.add(cc);
     }
+
+    temp.clear();
+    std::unique_ptr<HelpOffer> templateHelpOffer(new HelpOffer(false));
+    database.createTableCollectionOrFileIfNeeded("HelpOffer", *templateHelpOffer);
+    database.selectAll("HelpOffer", temp, *templateHelpOffer);
+    for (auto e: temp)
+    {
+        HelpOffer *ho(dynamic_cast<HelpOffer*>(e));
+        myHelpOffers.add(ho);
+    }
+
+
     sek30Timer.setInterval(1000 * 30);
     sek30Timer.setSingleShot(false);
     connect(&sek30Timer, &QTimer::timeout, this, &ESAAApp::onSek30Timeout);
@@ -579,20 +597,19 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     checkLoggedIn();
     runTests();
 }
-#include "helpoffer.h"
+
 void ESAAApp::runTests()
 {
-    jw78::PersistentAdapterJWServer *serverAdapter(new jw78::PersistentAdapterJWServer(&networkAccessManager,
-                                                                                       "127.0.0.1", 23578, secToken));
-    serverAdapter->setLoginTokenString(loginTokenString());
-    HelpOffer *ho(new HelpOffer(true));
-    ho->setLatitude(10);
-    ho->setLongitute(9.9);
-    ho->setDescription("Erste Beschreibung");
-    ho->setCaption("Erstes Hilfsangebot");
-    ho->setOffererUuid("1234");
-    serverAdapter->insert(ho->get_entity_name(),
-                          *ho);
+//    serverAdapter.setComm("127.0.0.1", 23578, secToken);
+//    serverAdapter.setLoginTokenString(loginTokenString());
+//    HelpOffer *ho(new HelpOffer(true));
+//    ho->setLatitude(10);
+//    ho->setLongitute(9.9);
+//    ho->setDescription("Erste Beschreibung");
+//    ho->setCaption("Erstes Hilfsangebot");
+//    ho->setOffererUuid("1234");
+//    serverAdapter.insert(ho->get_entity_name(),
+//                          *ho);
 }
 
 void ESAAApp::loadConfigFile()
@@ -760,6 +777,7 @@ QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bo
 void ESAAApp::onSek30Timeout()
 {
     checkLoggedIn();
+    storeHelpOffer();
 }
 
 void ESAAApp::checkLoggedIn()
@@ -774,24 +792,45 @@ void ESAAApp::checkLoggedIn()
     variables["loginTokenString"] = loginTokenString();
     QNetworkReply *networkReply(serverPost(url, variables));
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        networkReply->deleteLater();// Don't forget to delete it
+        if (networkReply->error() != QNetworkReply::NoError)
+        {
+            setLoggedIn(false);
+            return;
+        }
         QByteArray answer(networkReply->readAll());
         QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
         QJsonObject jsonObject(jsonDoc.object());
-        bool error(jsonObject["error"].toBool());
         int messageCode(jsonObject["messageCode"].toInt());
         qDebug() << answer;
         if (messageCode != 3)
         {
-            setLoginTokenString("");
             setLoggedIn(false);
-            emit notLoggedIn();
         }
         if (messageCode == 3)
         {
             setLoggedIn(true);
         }
-        networkReply->deleteLater();// Don't forget to delete it
     });
+}
+
+void ESAAApp::storeHelpOffer()
+{
+    if (!loggedIn())
+    {
+        return;
+    }
+    serverAdapter.setComm("127.0.0.1", 23578, secToken);
+    serverAdapter.setLoginTokenString(loginTokenString());
+    for (int i(0); i < myHelpOffers.size(); ++i)
+    {
+        HelpOffer *ho(dynamic_cast<HelpOffer*>(myHelpOffers.at(i)));
+        if (ho && !ho->getStored())
+        {
+            serverAdapter.insert(ho->get_entity_name(),
+                                 *ho);
+        }
+    }
 }
 
 void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
@@ -1656,6 +1695,28 @@ void ESAAApp::requestLoginCode(QString loginEMail)
     });
 
     emit requestLoginCodeSuccessful();
+}
+
+void ESAAApp::saveHelpOffer(QString caption, QString description, double longitude, double latitude)
+{
+    HelpOffer *ho(new HelpOffer(true));
+    ho->setCaption(caption);
+    ho->setDescription(description);
+    ho->setLatitude(latitude);
+    ho->setLongitute(longitude);
+    myHelpOffers.add(ho);
+    database.insert(ho->get_entity_name(),
+                    *ho);
+}
+
+void ESAAApp::onObjectStored(const jw78::PersistentObject &object)
+{
+    qDebug() << "object stored";
+}
+
+void ESAAApp::onObjectNotStored(const jw78::PersistentObject &object)
+{
+    qDebug() << "object not stored";
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

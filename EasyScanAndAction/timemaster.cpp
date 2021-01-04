@@ -168,7 +168,7 @@ void TimeMaster::load(int year, int month)
     QVector<jw78::PersistentObject*> temp;
     QDate monthStart(year, month, 1);
     QDate nextMonthStart(monthStart.addMonths(1));
-    pa.selectAllBetween("TimeEvents", "m_timeStamp",
+    pa.selectAllBetween("TimeEvents", "timeStamp",
                         monthStart.toString(Qt::ISODate),
                         nextMonthStart.toString(Qt::ISODate),
                         temp, templateEvent);

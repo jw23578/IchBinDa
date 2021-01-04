@@ -27,7 +27,7 @@ PageWithBackButton
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
-                id: helpOfferShort
+                id: helpOfferCaption
                 width: parent.width
                 caption: qsTr("Wie möchtest du helfen? (Einkaufshilfe, Haustierausführen, Medikamente abholen, ...)")
                 helpText: ""
@@ -85,7 +85,7 @@ PageWithBackButton
             ESAALineInputWithCaption
             {
                 color: createqrcodepage.textColor
-                id: helpOfferLong
+                id: description
                 width: parent.width
                 caption: qsTr("Beschreibung deiner Hilfe")
             }
@@ -95,5 +95,12 @@ PageWithBackButton
     {
         id: addHelp
         text: "Angebot<br>eintragen"
+        onClicked:
+        {
+            JW78APP.saveHelpOffer(helpOfferCaption.displayText,
+                                  description.text,
+                                  0,
+                                  0)
+        }
     }
 }

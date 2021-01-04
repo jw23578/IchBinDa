@@ -25,14 +25,12 @@ void InternetTester::connectToGoogle()
 
 void InternetTester::onTimerTimeout()
 {
-    qDebug() << "timeout " << tcpSocket.state();
     connectToGoogle();
 }
 
 void InternetTester::onConnected()
 {
     setInternetConnected(true);
-    qDebug() << "connected";
     tcpSocket.disconnect();
     tcpSocket.abort();
     timer.setInterval(5 * 1000);

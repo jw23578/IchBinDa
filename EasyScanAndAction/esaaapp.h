@@ -36,11 +36,12 @@ class ESAAApp: public QObject
 {
     Q_OBJECT
     jw78::Utils jw78Utils;
+    QNetworkAccessManager networkAccessManager;
     jw78::PersistentAdapterSqlite database;
+    jw78::PersistentAdapterJWServer serverAdapter;
     TimeMaster timeMaster;
     PlacesManager placesManager;
     MobileExtensions mobileExtensions;
-    QNetworkAccessManager networkAccessManager;
     QTimer sek30Timer;
     EMailSender emailSender;
     InternetTester internetTester;
@@ -52,6 +53,7 @@ class ESAAApp: public QObject
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     jw78::ObjectListModel allCustomerCards;
+    jw78::ObjectListModel myHelpOffers;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
@@ -181,6 +183,7 @@ class ESAAApp: public QObject
     QString generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList);
     void onSek30Timeout();
     void checkLoggedIn();
+    void storeHelpOffer();
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,
@@ -288,6 +291,15 @@ public:
                                      QString password);
     Q_INVOKABLE void requestLoginCode(QString loginEMail);
 
+    Q_INVOKABLE void saveHelpOffer(QString caption,
+                                   QString description,
+                                   double longitude,
+                                   double latitude);
+
+public slots:
+    void onObjectStored(const jw78::PersistentObject &object);
+    void onObjectNotStored(const jw78::PersistentObject &object);
+
 signals:
     void showWaitMessageSignal(const QString &mt);
     void hideWaitMessageSignal();
@@ -298,7 +310,6 @@ signals:
     void showSendedData();
     void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
     void loginSuccessful();
-    void notLoggedIn();
     void requestLoginCodeSuccessful();
 
 
