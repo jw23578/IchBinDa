@@ -508,6 +508,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     serverAdapter(networkAccessManager, "", 0, ""),
     timeMaster(e, *this, database),
     placesManager(e),
+    helpOfferManager(e, database, serverAdapter),
     mobileExtensions(e),
     sek30Timer(this),
     emailSender(this),
@@ -515,8 +516,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
     publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit"),
-    allCustomerCards(e, "AllCustomerCards", "Card"),
-    myHelpOffers(e, "MyHelpOffers", "HelpOffer")
+    allCustomerCards(e, "AllCustomerCards", "Card")
 {
     connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectStored, this, &ESAAApp::onObjectStored);
     connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectNotStored, this, &ESAAApp::onObjectNotStored);
@@ -578,17 +578,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
         allCustomerCards.add(cc);
     }
-
-    temp.clear();
-    std::unique_ptr<HelpOffer> templateHelpOffer(new HelpOffer(false));
-    database.createTableCollectionOrFileIfNeeded("HelpOffer", *templateHelpOffer);
-    database.selectAll("HelpOffer", temp, *templateHelpOffer);
-    for (auto e: temp)
-    {
-        HelpOffer *ho(dynamic_cast<HelpOffer*>(e));
-        myHelpOffers.add(ho);
-    }
-
 
     sek30Timer.setInterval(1000 * 30);
     sek30Timer.setSingleShot(false);
@@ -777,7 +766,9 @@ QString ESAAApp::generateQRcodeIntern(const QString &code, const QString &fn, bo
 void ESAAApp::onSek30Timeout()
 {
     checkLoggedIn();
-    storeHelpOffer();
+    helpOfferManager.storeHelpOffer(loggedIn(),
+                                    loginTokenString(),
+                                    secToken);
 }
 
 void ESAAApp::checkLoggedIn()
@@ -812,25 +803,6 @@ void ESAAApp::checkLoggedIn()
             setLoggedIn(true);
         }
     });
-}
-
-void ESAAApp::storeHelpOffer()
-{
-    if (!loggedIn())
-    {
-        return;
-    }
-    serverAdapter.setComm("127.0.0.1", 23578, secToken);
-    serverAdapter.setLoginTokenString(loginTokenString());
-    for (int i(0); i < myHelpOffers.size(); ++i)
-    {
-        HelpOffer *ho(dynamic_cast<HelpOffer*>(myHelpOffers.at(i)));
-        if (ho && !ho->getStored())
-        {
-            serverAdapter.insert(ho->get_entity_name(),
-                                 *ho);
-        }
-    }
 }
 
 void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
@@ -1695,18 +1667,6 @@ void ESAAApp::requestLoginCode(QString loginEMail)
     });
 
     emit requestLoginCodeSuccessful();
-}
-
-void ESAAApp::saveHelpOffer(QString caption, QString description, double longitude, double latitude)
-{
-    HelpOffer *ho(new HelpOffer(true));
-    ho->setCaption(caption);
-    ho->setDescription(description);
-    ho->setLatitude(latitude);
-    ho->setLongitute(longitude);
-    myHelpOffers.add(ho);
-    database.insert(ho->get_entity_name(),
-                    *ho);
 }
 
 void ESAAApp::onObjectStored(const jw78::PersistentObject &object)

@@ -31,6 +31,7 @@
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
 #include <QTimer>
+#include "helpoffermanager.h"
 
 class ESAAApp: public QObject
 {
@@ -41,6 +42,7 @@ class ESAAApp: public QObject
     jw78::PersistentAdapterJWServer serverAdapter;
     TimeMaster timeMaster;
     PlacesManager placesManager;
+    HelpOfferManager helpOfferManager;
     MobileExtensions mobileExtensions;
     QTimer sek30Timer;
     EMailSender emailSender;
@@ -53,7 +55,6 @@ class ESAAApp: public QObject
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     jw78::ObjectListModel allCustomerCards;
-    jw78::ObjectListModel myHelpOffers;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
@@ -183,7 +184,6 @@ class ESAAApp: public QObject
     QString generateQRcodeIntern(const QString &code, const QString &fn, bool addToQrCodesList);
     void onSek30Timeout();
     void checkLoggedIn();
-    void storeHelpOffer();
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
     QString generateA6Flyer(const QString &facilityName,
@@ -290,11 +290,6 @@ public:
     Q_INVOKABLE void registerAccount(QString loginEMail,
                                      QString password);
     Q_INVOKABLE void requestLoginCode(QString loginEMail);
-
-    Q_INVOKABLE void saveHelpOffer(QString caption,
-                                   QString description,
-                                   double longitude,
-                                   double latitude);
 
 public slots:
     void onObjectStored(const jw78::PersistentObject &object);

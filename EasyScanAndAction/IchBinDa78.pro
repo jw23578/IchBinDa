@@ -23,6 +23,7 @@ SOURCES += \
     emailsender.cpp \
     esaaapp.cpp \
     helpoffer.cpp \
+    helpoffermanager.cpp \
     internettester.cpp \
     pausetimespan.cpp \
     persistentmap.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     emailsender.h \
     esaaapp.h \
     helpoffer.h \
+    helpoffermanager.h \
     internettester.h \
     pausetimespan.h \
     persistentmap.h \

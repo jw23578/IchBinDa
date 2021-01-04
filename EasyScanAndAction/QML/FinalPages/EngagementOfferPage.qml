@@ -97,7 +97,7 @@ PageWithBackButton
         text: "Angebot<br>eintragen"
         onClicked:
         {
-            JW78APP.saveHelpOffer(helpOfferCaption.displayText,
+            HelpOfferManager.saveHelpOffer(helpOfferCaption.displayText,
                                   description.text,
                                   0,
                                   0)
