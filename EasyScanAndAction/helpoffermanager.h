@@ -27,6 +27,7 @@ public:
                                    QString description,
                                    double longitude,
                                    double latitude);
+    Q_INVOKABLE void deleteHelpOfferByIndex(int index);
 
 };
 

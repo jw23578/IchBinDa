@@ -6,6 +6,8 @@ import "../BasePages"
 
 PageWithBackButton
 {
+    id: offerHelpPage
+    signal helpOfferSaved()
     caption: "Hilfe anbieten"
     ESAAFlickable
     {
@@ -91,16 +93,44 @@ PageWithBackButton
             }
         }
     }
+    property var elemToFocus: null
+
+    function setFocusNow()
+    {
+        elemToFocus.forceActiveFocus()
+    }
+    function focusMessage(theMessage, elem)
+    {
+        elemToFocus = elem
+        ESAA.showMessageWithCallback(theMessage, setFocusNow)
+    }
+
     CentralActionButton
     {
         id: addHelp
         text: "Angebot<br>eintragen"
         onClicked:
         {
+            if (helpOfferCaption.displayText == "")
+            {
+                focusMessage("Bitte gib noch eine Bezeichnung deiner Hilfe ein.", helpOfferCaption)
+                return;
+            }
+            if (description.displayText == "")
+            {
+                focusMessage("Bitte gib noch eine Beschreibung deiner Hilfe ein.", description)
+                return;
+            }
+
             HelpOfferManager.saveHelpOffer(helpOfferCaption.displayText,
-                                  description.text,
+                                  description.displayText,
                                   0,
                                   0)
+            theFlick.contentY = 0
+            helpOfferCaption.text = ""
+            description.text = ""
+            JW78APP.showMessage("Dein Angebot wurde gespeichert, vielen Dank.")
+            helpOfferSaved()
         }
     }
 }

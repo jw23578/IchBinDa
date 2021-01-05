@@ -7,7 +7,7 @@ import "../BasePages"
 PageWithBackButton
 {
     caption: "Engagement"
-    signal offerHelpClicked
+    signal wantToHelpClicked()
     EmptySwipeView
     {
         anchors.margins: ESAA.spacing
@@ -24,7 +24,7 @@ PageWithBackButton
         id: buttons
         leftText: "Ich möchte<br>helfen"
         onLeftClicked: {
-            offerHelpClicked()
+            wantToHelpClicked()
         }
         rightText: "Ich benötige<br>Hilfe"
         anchors.bottom: parent.bottom

@@ -46,12 +46,9 @@ Background
         message.forceActiveFocus()
         Qt.inputMethod.hide();
     }
-    CircleButton
+    CentralActionButton
     {
         id: sendButton
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing * 2.5
         text: "Schließen"
         onClicked:
         {

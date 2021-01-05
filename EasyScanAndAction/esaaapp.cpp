@@ -23,7 +23,6 @@
 #include "customercard.h"
 #include "jw78core_debug.h"
 #include "qthelper.h"
-#include "helpoffer.h"
 
 void ESAAApp::checkDevelopMobile()
 {

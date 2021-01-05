@@ -165,24 +165,23 @@ ApplicationWindow {
         {
             id: engagementstart
             onBackPressed: showNewPage(theCurrentPage, scannerpage)
-            onOfferHelpClicked: {
+            onWantToHelpClicked: {
                 if (!JW78APP.loggedIn)
                 {
-                    loginAndOrRegister.goodPage = engagementOfferPage
+                    loginAndOrRegister.goodPage = myHelpOffersPage
                     loginAndOrRegister.backPage = engagementstart
                     showNewPage(theCurrentPage, loginAndOrRegister)
                     return
                 }
-                showNewPage(theCurrentPage, engagementOfferPage)
+                showNewPage(theCurrentPage, myHelpOffersPage)
             }
 
         }
-        EngagementOfferPage
+        MyHelpOffersPage
         {
-            id: engagementOfferPage
+            id: myHelpOffersPage
             onBackPressed: showNewPage(theCurrentPage, previousPage)
         }
-
 
         CamVideoScan
         {

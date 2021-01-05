@@ -57,4 +57,14 @@ void HelpOfferManager::saveHelpOffer(QString caption,
     myHelpOffers.add(ho);
     database.insert(ho->get_entity_name(),
                     *ho);
+    ho->setUnStored();
+}
+
+void HelpOfferManager::deleteHelpOfferByIndex(int index)
+{
+    qDebug() <<  __PRETTY_FUNCTION__ << index;
+    HelpOffer *ho(dynamic_cast<HelpOffer*>(myHelpOffers.at(index)));
+    database.erase("HelpOffer", *ho);
+    myHelpOffers.erase(index);
+
 }

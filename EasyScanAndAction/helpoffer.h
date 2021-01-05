@@ -17,7 +17,6 @@ protected:
     pureReflection *internalCreate(bool genUuid) const override;
 public:
     HelpOffer(bool genUuid);
-
 };
 
 #endif // HELPOFFER_H
