@@ -65,6 +65,7 @@ void HelpOfferManager::deleteHelpOfferByIndex(int index)
     qDebug() <<  __PRETTY_FUNCTION__ << index;
     HelpOffer *ho(dynamic_cast<HelpOffer*>(myHelpOffers.at(index)));
     database.erase("HelpOffer", *ho);
+    serverAdapter.erase(ho->get_entity_name(), *ho);
     myHelpOffers.erase(index);
 
 }

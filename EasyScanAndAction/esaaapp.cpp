@@ -556,13 +556,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     dataFileName = jw78::Utils::getWriteablePath() + "/esaaData.json";
     qDebug() << dataFileName;
     loadData();
-    if (appVersion() == 0)
+    if (appVersion() < 1)
     {
-        // die spaltennamen in den Tabellen haben jetzt kein "m_" mehr vorne weg.
-        // leider verlieren wir damit einmal die Kundenkarten und die Zeiterfasungsevents,
-        // aber ich gehe davon aus, dass das niemanden betrifft.
-        database.dropTableCollectionOrFileIfNeeded("TimeEvents");
-        database.dropTableCollectionOrFileIfNeeded("CustomerCards");
         setAppVersion(1);
         saveData();
     }
