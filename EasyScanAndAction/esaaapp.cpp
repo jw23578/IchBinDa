@@ -84,7 +84,7 @@ void ESAAApp::sendMail()
 {
     SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
     message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-    message->addTo(SimpleMail::EmailAddress(lastVisitLocationContactMailAdress()));
+    message->addTo(SimpleMail::EmailAddress(lastVisit.locationContactMailAdress()));
 
     QString subject("Kontaktdaten ");
     if (lastVisit.end().isValid())
@@ -115,11 +115,11 @@ void ESAAApp::sendMail()
         jsonData2Send["TimeVisitEnd"] = lastVisit.end().time().toString(Qt::ISODate);
     }
     QString plainText(QJsonDocument(jsonData2Send).toJson());
-    std::string encrypted(publicKeyEncrypt(plainText.toStdString()));
+    std::string encrypted(encrypter.publicKeyEncrypt(plainText.toStdString()));
     work += "\n\n";
     work += encrypted.c_str();
     work += "\n\n";
-    std::string publicKeyString(Botan::X509::PEM_encode(*publicKey));
+    std::string publicKeyString(Botan::X509::PEM_encode(*encrypter.publicKey));
     work += publicKeyString.c_str();
 
     text->setText(work);
@@ -128,12 +128,12 @@ void ESAAApp::sendMail()
     message->addPart(text);
     emailSender.addMailToSend(message, true);
 
-    if (anonymContactMailAdress().size())
+    if (lastVisit.locationAnonymContactMailAdress().size())
     {
 
         SimpleMail::MimeMessage *visitMessage(new SimpleMail::MimeMessage);
         visitMessage->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-        visitMessage->addTo(SimpleMail::EmailAddress(anonymContactMailAdress()));
+        visitMessage->addTo(SimpleMail::EmailAddress(lastVisit.locationAnonymContactMailAdress()));
 
         subject = "Besuchmeldung " + facilityName();
         visitMessage->setSubject(subject);
@@ -145,33 +145,6 @@ void ESAAApp::sendMail()
 
         emailSender.addMailToSend(visitMessage, false);
     }
-    if (lastVisit.end().isNull())
-    {
-        lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
-        lastVisit.ibdToken += QString(".") + locationGUID();
-        lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
-        QString url(baseServerURL() + ibdTokenStoreMethod + lastVisit.ibdToken);
-        QNetworkRequest request(url);
-        QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
-        QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
-            qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
-            networkReply->deleteLater();// Don't forget to delete it
-        });
-        Visit *newVisit(new Visit);
-        *newVisit = lastVisit;
-        if (!lastVisitOfFacility[newVisit->facilityName()].isValid() || lastVisitOfFacility[newVisit->facilityName()].addSecs(60 * 60 * 6) < newVisit->begin())
-        {
-            facilityName2VisitCount[newVisit->facilityName()] += 1;
-            newVisit->setCount(facilityName2VisitCount[newVisit->facilityName()]);
-            allVisits.add(newVisit);
-        }
-    }
-    saveVisit(lastVisit.begin(), lastVisit.end());
-    if (lastVisit.end().isValid())
-    {
-        lastVisit.ibdToken = "";
-    }
-    saveData();
 }
 
 int ESAAApp::updateAndGetVisitCount(const QString &locationGUID, QDateTime const &visitBegin)
@@ -245,7 +218,7 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
     visitObject["locationGUID"] = locationGUID();
     visitObject["logoUrl"] = logoUrl();
     visitObject["color"] = color().name();
-    visitObject["locationContactMailAdress"] = locationContactMailAdress();
+    visitObject["locationContactMailAdress"] = lastVisit.locationContactMailAdress();
     visitObject["visitCount"] = lastVisitCount();
     visitObject["CountXColor"] = lastVisitCountXColor().name();
     visitObject["CountX"] = lastVisitCountX();
@@ -320,7 +293,7 @@ void ESAAApp::saveData()
     data["appVersion"] = appVersion();
     data["loginTokenString"] = loginTokenString();
     data["ibdToken"] = lastVisit.ibdToken;
-    data["lastVisitLocationContactMailAdress"] = lastVisitLocationContactMailAdress();
+    data["lastVisitLocationContactMailAdress"] = lastVisit.locationContactMailAdress();
     data["lastVisitLogoUrl"] = lastVisit.logoUrl();
     data["lastVisitColor"] = lastVisit.color().name();
     data["contactData"] = contactData;
@@ -371,7 +344,7 @@ void ESAAApp::loadData()
     help.setSecsSinceEpoch(data["lastVisitEnd"].toInt());
     lastVisit.setEnd(help);
 
-    setLastVisitLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
+    lastVisit.setLocationContactMailAdress(data["lastVisitLocationContactMailAdress"].toString());
 
     lastVisit.ibdToken = data["ibdToken"].toString();
     lastVisit.setLogoUrl(data["lastVisitLogoUrl"].toString());
@@ -432,74 +405,6 @@ void ESAAApp::loadData()
     loading = false;
 }
 
-#include <fstream>
-
-std::string ESAAApp::publicKeyEncrypt(const std::string &plainText)
-{
-    Botan::AutoSeeded_RNG rng;
-
-    Botan::secure_vector<uint8_t> data(plainText.data(), plainText.data() + plainText.length());
-
-    const std::string OAEP_HASH = "SHA-256";
-    const std::string aead_algo = "AES-256/GCM";
-
-    std::unique_ptr<Botan::AEAD_Mode> aead =
-            Botan::AEAD_Mode::create(aead_algo, Botan::ENCRYPTION);
-
-    const Botan::OID aead_oid = Botan::OID::from_string(aead_algo);
-
-
-    const Botan::AlgorithmIdentifier hash_id(OAEP_HASH, Botan::AlgorithmIdentifier::USE_EMPTY_PARAM);
-    const Botan::AlgorithmIdentifier pk_alg_id("RSA/OAEP", hash_id.BER_encode());
-
-    Botan::PK_Encryptor_EME enc(*publicKey, rng, "OAEP(" + OAEP_HASH + ")");
-
-    const Botan::secure_vector<uint8_t> file_key = rng.random_vec(aead->key_spec().maximum_keylength());
-
-    const std::vector<uint8_t> encrypted_key = enc.encrypt(file_key, rng);
-
-    const Botan::secure_vector<uint8_t> nonce = rng.random_vec(aead->default_nonce_length());
-    aead->set_key(file_key);
-    aead->set_associated_data_vec(encrypted_key);
-    aead->start(nonce);
-
-    aead->finish(data);
-
-    std::vector<uint8_t> buf;
-    Botan::DER_Encoder der(buf);
-
-    der.start_cons(Botan::SEQUENCE)
-            .encode(pk_alg_id)
-            .encode(encrypted_key, Botan::OCTET_STRING)
-            .encode(aead_oid)
-            .encode(nonce, Botan::OCTET_STRING)
-            .encode(data, Botan::OCTET_STRING)
-            .end_cons();
-    std::string message(Botan::PEM_Code::encode(buf, "PUBKEY ENCRYPTED MESSAGE"));
-    return message;
-}
-
-void ESAAApp::setPublicKey(int qrCodeNumber)
-{
-    if (qrCodeNumber == 0 || qrCodeNumber == 9999)
-    {
-        /*        QFile publicKeyFile(":/keys/publicKey2020-07-26.txt");
-        publicKeyFile.open(QIODevice::ReadOnly);
-        QByteArray publicKeyData(publicKeyFile.readAll());
-        Botan::DataSource_Memory datasource(publicKeyData.toStdString());
-        publicKey = Botan::X509::load_key(datasource);*/
-        qrCodeNumber = 0;
-    }
-    if (!publicKeyMap.contains(QString::number(qrCodeNumber)))
-    {
-        qrCodeNumber = 0;
-    }
-    Botan::DataSource_Memory datasource(publicKeyMap.get(QString::number(qrCodeNumber)).toStdString());
-    publicKey = Botan::X509::load_key(datasource);
-}
-
-
-
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     jw78Utils(e),
     databaseFilename(jw78::Utils::getWriteablePath() + "/ichbinda.db"),
@@ -512,7 +417,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     emailSender(this),
     internetTester(this),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
-    publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit"),
     customerCardsManager(e, *this, databaseFilename)
 {
@@ -520,18 +424,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
     dummyGet();
-    publicKeyMap.setFiledata("0", ":/keys/publicKey2020-07-26.txt");
-    publicKeyMap.setFiledata("120415", ":/keys/publicKey120415.txt");
-    publicKeyMap.setFiledata("274412", ":/keys/publicKey274412.txt");
-    publicKeyMap.setFiledata("406176", ":/keys/publicKey406176.txt");
-    publicKeyMap.setFiledata("465958", ":/keys/publicKey465958.txt");
-    publicKeyMap.setFiledata("620974", ":/keys/publicKey620974.txt");
-    publicKeyMap.setFiledata("647954", ":/keys/publicKey647954.txt");
-    publicKeyMap.setFiledata("698005", ":/keys/publicKey698005.txt");
-    publicKeyMap.setFiledata("774513", ":/keys/publicKey774513.txt");
-    publicKeyMap.setFiledata("823902", ":/keys/publicKey823902.txt");
-    publicKeyMap.setFiledata("873700", ":/keys/publicKey873700.txt");
-    setPublicKey(0);
 
     e.rootContext()->setContextProperty("JW78APP", QVariant::fromValue(this));
     e.rootContext()->setContextProperty("ESAA", QVariant::fromValue(this));
@@ -626,11 +518,7 @@ void ESAAApp::loadConfigFile()
 
 bool ESAAApp::keyNumberOK(int number)
 {
-    if (number == 9999)
-    {
-        return true;
-    }
-    return publicKeyMap.contains(QString::number(number));
+    return encrypter.keyNumberOK(number);
 }
 
 void ESAAApp::clearYesQuestions()
@@ -710,6 +598,28 @@ void ESAAApp::sendContactData()
     setLastVisitCount(updateAndGetVisitCount(locationGUID(), lastVisit.begin()));
     lastVisit.setEnd(QDateTime());
     sendMail();
+
+    lastVisit.ibdToken = QDateTime::currentDateTime().toString(Qt::ISODate);
+    lastVisit.ibdToken += QString(".") + locationGUID();
+    lastVisit.ibdToken += QString(".") + jw78::Utils::genUUID();
+    QString url(baseServerURL() + ibdTokenStoreMethod + lastVisit.ibdToken);
+    QNetworkRequest request(url);
+    QNetworkReply *networkReply(networkAccessManager.get(qthelper::setSSL(request)));
+    QObject::connect(networkReply, &QNetworkReply::finished, [networkReply] {
+        qDebug() << "StoreToken finished" << networkReply->error() << networkReply->readAll();
+        networkReply->deleteLater();// Don't forget to delete it
+    });
+    Visit *newVisit(new Visit);
+    *newVisit = lastVisit;
+    if (!lastVisitOfFacility[newVisit->facilityName()].isValid() || lastVisitOfFacility[newVisit->facilityName()].addSecs(60 * 60 * 6) < newVisit->begin())
+    {
+        facilityName2VisitCount[newVisit->facilityName()] += 1;
+        newVisit->setCount(facilityName2VisitCount[newVisit->facilityName()]);
+        allVisits.add(newVisit);
+    }
+
+    saveVisit(lastVisit.begin(), lastVisit.end());
+    saveData();
 }
 
 void ESAAApp::ignoreQRCode()
@@ -1077,7 +987,7 @@ void ESAAApp::action(QString qrCodeJSON)
         setSeatNumberWanted(false);
         qDebug() << "actionIDCoronaKontaktdatenerfassung";
         int qrCodeNumber(data["qn"].toInt());
-        setPublicKey(qrCodeNumber);
+        encrypter.setPublicKey(qrCodeNumber);
         QString email(data["e"].toString());
         QString wantedData(data["d"].toString());
         QString logo(data["logo"].toString());
@@ -1093,6 +1003,8 @@ void ESAAApp::action(QString qrCodeJSON)
         qDebug() << "logo: " << logo;
         qDebug() << "backgroundColor: " << backgroundColor;
         currentQRCodeData.setLogoUrl(logo);
+        currentQRCodeData.setLocationContactMailAdress(email);
+        currentQRCodeData.setLocationAnonymContactMailAdress(anonymEMail);
         setLocationGUID(facilityId);
         setAdressWanted(wantedData.contains("adress"));
         setEMailWanted(wantedData.contains("email"));
@@ -1100,8 +1012,6 @@ void ESAAApp::action(QString qrCodeJSON)
         setLogoUrl(logo);
         setColor(backgroundColor);
         setFacilityName(theFacilityName);
-        setLocationContactMailAdress(email);
-        setAnonymContactMailAdress(anonymEMail);
         setLastVisitCountX(data["x"].toInt());
         setLastVisitCountXColor(data["colorx"].toString());
         emit validQRCodeDetected();
@@ -1425,6 +1335,9 @@ void ESAAApp::finishVisit()
     lastVisit.setEnd(QDateTime::currentDateTime());
     saveData();
     sendMail();
+    saveVisit(lastVisit.begin(), lastVisit.end());
+    lastVisit.ibdToken = "";
+    saveData();
 }
 
 bool ESAAApp::isActiveVisit(int changeCounter)

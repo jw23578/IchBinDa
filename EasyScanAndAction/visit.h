@@ -11,6 +11,7 @@ class Visit: public jw78::ProxyObject
 {
     Q_OBJECT
     JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
+    JWPROPERTY(QString, locationAnonymContactMailAdress, LocationAnonymContactMailAdress, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
 

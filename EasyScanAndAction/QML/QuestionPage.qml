@@ -312,8 +312,8 @@ ESAAPage
             LastVisit.individualURL1Caption = CurrentQRCodeData.individualURL1Caption
             LastVisit.lunchMenueURL = CurrentQRCodeData.lunchMenueURL
             LastVisit.color = ESAA.color
-
-            ESAA.lastVisitLocationContactMailAdress = ESAA.locationContactMailAdress
+            LastVisit.locationContactMailAdress = CurrentQRCodeData.locationContactMailAdress
+            LastVisit.locationAnonymContactMailAdress = CurrentQRCodeData.anonymContactMailAdress
 
             ESAA.addData2Send(qsTr("FacilityName"), ESAA.facilityName)
             if (fstname.visible)

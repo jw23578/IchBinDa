@@ -21,11 +21,13 @@ SOURCES += \
     customercard.cpp \
     customercardsmanager.cpp \
     datetimereflectable.cpp \
-    emailsender.cpp \
+    environment/emailsender.cpp \
+    environment/encrypter.cpp \
     esaaapp.cpp \
     helpoffer.cpp \
     helpoffermanager.cpp \
     internettester.cpp \
+    mailoffice.cpp \
     pausetimespan.cpp \
     persistentmap.cpp \
     place.cpp \
@@ -72,11 +74,13 @@ HEADERS += \
     customercard.h \
     customercardsmanager.h \
     datetimereflectable.h \
-    emailsender.h \
+    environment/emailsender.h \
+    environment/encrypter.h \
     esaaapp.h \
     helpoffer.h \
     helpoffermanager.h \
     internettester.h \
+    mailoffice.h \
     pausetimespan.h \
     persistentmap.h \
     place.h \

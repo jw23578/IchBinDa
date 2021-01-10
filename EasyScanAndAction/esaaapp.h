@@ -6,22 +6,13 @@
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
-#include "emailsender.h"
+#include "environment/emailsender.h"
 #include <set>
 #include <QNetworkAccessManager>
 #include "internettester.h"
 #include "qrcodestore.h"
 #include "persistentmap.h"
 #include "timemaster.h"
-#ifdef DMOBILEDEVICE
-#ifdef DMOBILEIOS
-#include "botan_all_iosarmv7.h"
-#else
-#include "botan_all_arm32.h"
-#endif
-#else
-#include "botan_all_x64.h"
-#endif
 #include <QJsonObject>
 #include "visit.h"
 #include "JW78QTLib/jw78ObjectListModel.h"
@@ -31,6 +22,7 @@
 #include <QTimer>
 #include "helpoffermanager.h"
 #include "customercardsmanager.h"
+#include "environment/encrypter.h"
 
 class ESAAApp: public QObject
 {
@@ -46,7 +38,7 @@ class ESAAApp: public QObject
     EMailSender emailSender;
     InternetTester internetTester;
     QRCodeStore qrCodeStore;
-    PersistentMap publicKeyMap;
+    Encrypter encrypter;
     Visit currentQRCodeData;
     Visit lastVisit;
     std::map<QString, QDateTime> lastVisitOfFacility;
@@ -103,9 +95,7 @@ class ESAAApp: public QObject
     static std::set<std::string> invalidEMailDomains;      
 
     // Aktuelle Location
-    JWPROPERTY(QString, anonymContactMailAdress, AnonymContactMailAdress, "");
     JWPROPERTY(QString, facilityName, FacilityName, "");
-    JWPROPERTY(QString, locationContactMailAdress, LocationContactMailAdress, "");
     JWPROPERTY(QString, logoUrl, LogoUrl, "");
     JWPROPERTY(QColor, color, Color, "#ffffff");
     JWPROPERTY(QString, locationGUID, LocationGUID, "");
@@ -134,8 +124,6 @@ class ESAAApp: public QObject
     JWPROPERTYAFTERSET(QString, mobile, Mobile, "", checkDevelopMobile);
     JWPROPERTY(QString, data2send, Data2send, "");
 
-    JWPROPERTY(QString, lastVisitLocationContactMailAdress, LastVisitLocationContactMailAdress, "");
-
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
     JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
     JWPROPERTY(QString, lastVisitSurname, LastVisitSurname, "");
@@ -148,8 +136,6 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, lastVisitCountXColor, LastVisitCountXColor, "");
     JWPROPERTY(int, lastVisitCountX, LastVisitCountX, 0);
 
-    Botan::Public_Key *publicKey = nullptr;
-    std::string publicKeyEncrypt(const std::string &plainText);
     SimpleMail::Server smtpServer;
 
     QString ibdTokenStoreMethod;
@@ -209,7 +195,6 @@ private:
     void postQRCodeData(const QString &filename, QByteArray const &data);
     void interpretExtendedQRCodeData(const QString &qrCodeJSON);
     void fetchExtendedQRCodeData(const QString &facilityId);
-    void setPublicKey(int qrCodeNumber);
     bool appendAVisit(Visit *aVisit);
     void loadAllVisits();
 public:
