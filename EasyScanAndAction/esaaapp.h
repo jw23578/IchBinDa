@@ -26,20 +26,18 @@
 #include "visit.h"
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
-#include "JW78QTLib/persistent/jw78persistentadaptersqlite.h"
-#include "JW78QTLib/persistent/jw78persistentadapterjwserver.h"
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
 #include <QTimer>
 #include "helpoffermanager.h"
+#include "customercardsmanager.h"
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
     jw78::Utils jw78Utils;
+    const QString databaseFilename;
     QNetworkAccessManager networkAccessManager;
-    jw78::PersistentAdapterSqlite database;
-    jw78::PersistentAdapterJWServer serverAdapter;
     TimeMaster timeMaster;
     PlacesManager placesManager;
     HelpOfferManager helpOfferManager;
@@ -54,7 +52,7 @@ class ESAAApp: public QObject
     std::map<QString, QDateTime> lastVisitOfFacility;
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
-    jw78::ObjectListModel allCustomerCards;
+    CustomerCardsManager customerCardsManager;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
@@ -276,9 +274,6 @@ public:
 
     Q_INVOKABLE void dummyGet();
 
-    Q_INVOKABLE void deleteAllCustomerCards();
-    Q_INVOKABLE void deleteCustomerCardByIndex(int index);
-    Q_INVOKABLE void saveCustomerCard(const QString &name, const QString &filename);
     Q_INVOKABLE void saveKontaktsituation(const QString &name, const QString &adress);
 
     Q_INVOKABLE void setIchBinDaScheme();
@@ -290,10 +285,6 @@ public:
     Q_INVOKABLE void registerAccount(QString loginEMail,
                                      QString password);
     Q_INVOKABLE void requestLoginCode(QString loginEMail);
-
-public slots:
-    void onObjectStored(const jw78::PersistentObject &object);
-    void onObjectNotStored(const jw78::PersistentObject &object);
 
 signals:
     void showWaitMessageSignal(const QString &mt);

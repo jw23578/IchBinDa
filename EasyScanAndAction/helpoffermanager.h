@@ -1,24 +1,25 @@
 #ifndef HELPOFFERMANAGER_H
 #define HELPOFFERMANAGER_H
 
-#include "JW78QTLib/persistent/jw78persistentadaptersqlite.h"
-#include "JW78QTLib/persistent/jw78persistentadapterjwserver.h"
 #include "helpoffer.h"
 #include "JW78QTLib/jw78ObjectListModel.h"
 #include <QNetworkAccessManager>
 #include <QQmlApplicationEngine>
+#include "persistent/jw78persistentstorejwserver.h"
+#include "persistent/jw78persistentstoresqlite.h"
 
 
 class HelpOfferManager: public QObject
 {
     Q_OBJECT
-    jw78::PersistentAdapterSqlite &database;
-    jw78::PersistentAdapterJWServer &serverAdapter;
+    jw78::ReflectionFactory factory;
+    jw78::PersistentStoreSQLite databaseStore;
+    jw78::PersistentStoreJWServer serverStore;
     jw78::ObjectListModel myHelpOffers;
 public:
     HelpOfferManager(QQmlApplicationEngine &e,
-                     jw78::PersistentAdapterSqlite &database,
-                     jw78::PersistentAdapterJWServer &serverAdapter);
+                     const QString &databaseFilename,
+                     QNetworkAccessManager &networkAccessManager);
     void storeHelpOffer(bool loggedIn,
                         const QString &loginTokenString,
                         const QString &secToken);
@@ -28,6 +29,10 @@ public:
                                    double longitude,
                                    double latitude);
     Q_INVOKABLE void deleteHelpOfferByIndex(int index);
+
+public slots:
+    void onHelpOfferStored(const jw78::PersistentObject &object);
+    void onHelpOfferNotStored(const jw78::PersistentObject &object);
 
 };
 

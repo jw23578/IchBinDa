@@ -35,7 +35,7 @@ PageWithBackButton
         clickEvents: [null, null,
             function() {
                 backPressed()
-                JW78APP.deleteCustomerCardByIndex(index)
+                CustomerCardsManager.deleteCustomerCardByIndex(index)
             }, null]
 
     }

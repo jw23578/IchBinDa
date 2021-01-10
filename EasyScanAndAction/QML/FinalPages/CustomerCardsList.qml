@@ -13,7 +13,7 @@ ESAAPage {
         anchors.top: parent.top
         text: "alle karten<br>löschen"
         visible: JW78APP.isDevelop
-        onClicked: JW78APP.deleteAllCustomerCards()
+        onClicked: CustomerCardsManager.deleteAllCustomerCards()
         z: 2
     }
     ESAAFlickable
@@ -56,7 +56,7 @@ ESAAPage {
                             to: 0
                             duration: JW78Utils.shortAniDuration
                         }
-                        onStopped: JW78APP.deleteCustomerCardByIndex(index)
+                        onStopped: CustomerCardsManager.deleteCustomerCardByIndex(index)
                     }
 
                     Component.onCompleted:

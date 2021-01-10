@@ -7,17 +7,17 @@
 #include <QDateTime>
 #include <QString>
 #include <JW78QTLib/jw78ObjectListModel.h>
-#include <JW78QTLib/persistent/jw78persistentadapter.h>
 #include "worktimespan.h"
 #include "datetimereflectable.h"
-
+#include "persistent/jw78persistentstoresqlite.h"
 class ESAAApp;
 
 class TimeMaster : public QObject
 {
     Q_OBJECT
     ESAAApp &theApp;
-    jw78::PersistentAdapter &pa;
+    jw78::PersistentStoreSQLite currentStateDatabase;
+    jw78::PersistentStoreSQLite timeEventsDatabase;
     DateTimeReflectable dbCurrentWorkStart;
     DateTimeReflectable dbCurrentPauseStart;
     DateTimeReflectable dbCurrentWorkTravelStart;
@@ -31,7 +31,10 @@ class TimeMaster : public QObject
     jw78::ObjectListModel workTimeSpans;
 
 public:
-    explicit TimeMaster(QQmlApplicationEngine &engine, ESAAApp &app, jw78::PersistentAdapter &pa, QObject *parent = nullptr);
+    explicit TimeMaster(QQmlApplicationEngine &engine,
+                        ESAAApp &app,
+                        const QString &databaseFilename,
+                        QObject *parent = nullptr);
 
     Q_INVOKABLE void developPrepare();
 

@@ -49,7 +49,7 @@ PageWithBackButton {
                 ESAA.showMessage("Bitte gib noch eine Bezeichnung ein.")
                 return
             }
-            ESAA.saveCustomerCard(cardName.text, parent.imageFilename)
+            CustomerCardsManager.saveCustomerCard(cardName.text, parent.imageFilename)
             parent.cardSaved()
         }
     }

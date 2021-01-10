@@ -502,12 +502,11 @@ void ESAAApp::setPublicKey(int qrCodeNumber)
 
 ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     jw78Utils(e),
+    databaseFilename(jw78::Utils::getWriteablePath() + "/ichbinda.db"),
     networkAccessManager(this),
-    database(jw78::Utils::getWriteablePath() + "/ichbinda.db"),
-    serverAdapter(networkAccessManager, "", 0, ""),
-    timeMaster(e, *this, database),
+    timeMaster(e, *this, databaseFilename),
     placesManager(e),
-    helpOfferManager(e, database, serverAdapter),
+    helpOfferManager(e, databaseFilename, networkAccessManager),
     mobileExtensions(e),
     sek30Timer(this),
     emailSender(this),
@@ -515,11 +514,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
     publicKeyMap(jw78::Utils::getWriteablePath() + "/publicKeys.json", "number", "publicKey"),
     allVisits(e, "AllVisits", "Visit"),
-    allCustomerCards(e, "AllCustomerCards", "Card")
+    customerCardsManager(e, *this, databaseFilename)
 {
-    connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectStored, this, &ESAAApp::onObjectStored);
-    connect(&serverAdapter, &jw78::PersistentAdapterJWServer::objectNotStored, this, &ESAAApp::onObjectNotStored);
-
     loadConfigFile();
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;
@@ -562,16 +558,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
         saveData();
     }
     loadAllVisits();
-
-    std::unique_ptr<CustomerCard> te(new CustomerCard(false));
-    QVector<jw78::PersistentObject*> temp;
-    database.createTableCollectionOrFileIfNeeded("CustomerCards", *te);
-    database.selectAll("CustomerCards", temp, *te);
-    for (auto e: temp)
-    {
-        CustomerCard *cc(dynamic_cast<CustomerCard*>(e));
-        allCustomerCards.add(cc);
-    }
 
     sek30Timer.setInterval(1000 * 30);
     sek30Timer.setSingleShot(false);
@@ -1466,47 +1452,6 @@ void ESAAApp::dummyGet()
     });
 }
 
-void ESAAApp::deleteAllCustomerCards()
-{
-    QDir dir;
-    for (size_t i(0); i < allCustomerCards.size(); ++i)
-    {
-        CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(i)));
-        dir.remove(cc->filename());
-    }
-    allCustomerCards.clear();
-    database.clear("CustomerCards");
-}
-
-void ESAAApp::deleteCustomerCardByIndex(int index)
-{
-    qDebug() <<  __PRETTY_FUNCTION__ << index;
-    QDir dir;
-    CustomerCard *cc(dynamic_cast<CustomerCard*>(allCustomerCards.at(index)));
-    database.erase("CustomerCards", *cc);
-    dir.remove(cc->filename());
-    allCustomerCards.erase(index);
-}
-
-
-void ESAAApp::saveCustomerCard(const QString &name, const QString &filename)
-{
-    QString customerCardsDir(jw78::Utils::getWriteablePath() + "/customerCards");
-    QDir dir;
-    if (!dir.exists(customerCardsDir))
-    {
-        dir.mkdir(customerCardsDir);
-    }
-    QString customerCardImageFilename(customerCardsDir + "/" + jw78::Utils::genUUID() + ".jpg");
-    QString work(filename);
-    work.replace("file:", "");
-    dir.rename(work, customerCardImageFilename);
-    CustomerCard *cc(new CustomerCard(true));
-    cc->setFilename(customerCardImageFilename);
-    cc->setName(name);
-    database.insert("CustomerCards", *cc);
-    allCustomerCards.add(cc);
-}
 
 void ESAAApp::saveKontaktsituation(const QString &name, const QString &adress)
 {
@@ -1661,16 +1606,6 @@ void ESAAApp::requestLoginCode(QString loginEMail)
     });
 
     emit requestLoginCodeSuccessful();
-}
-
-void ESAAApp::onObjectStored(const jw78::PersistentObject &object)
-{
-    qDebug() << "object stored";
-}
-
-void ESAAApp::onObjectNotStored(const jw78::PersistentObject &object)
-{
-    qDebug() << "object not stored";
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

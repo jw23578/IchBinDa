@@ -19,6 +19,7 @@ DEFINES += NO_PNG
 
 SOURCES += \
     customercard.cpp \
+    customercardsmanager.cpp \
     datetimereflectable.cpp \
     emailsender.cpp \
     esaaapp.cpp \
@@ -69,6 +70,7 @@ main.cpp
 
 HEADERS += \
     customercard.h \
+    customercardsmanager.h \
     datetimereflectable.h \
     emailsender.h \
     esaaapp.h \

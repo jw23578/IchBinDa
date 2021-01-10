@@ -24,7 +24,7 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             te->setEventType(0);
         }
         dbCurrentWorkStart.value = value;
-        pa.upsert("Config", dbCurrentWorkStart);
+        currentStateDatabase.store(dbCurrentWorkStart);
     }
     if (name == m_currentPauseStartName)
     {
@@ -39,7 +39,7 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             te->setEventType(2);
         }
         dbCurrentPauseStart.value = value;
-        pa.upsert("Config", dbCurrentPauseStart);
+        currentStateDatabase.store(dbCurrentPauseStart);
     }
     if (name == m_currentWorkTravelStartName)
     {
@@ -54,17 +54,18 @@ void TimeMaster::handleEvent(const QString &name, const QDateTime &value)
             te->setEventType(4);
         }
         dbCurrentWorkTravelStart.value = value;
-        pa.upsert("Config", dbCurrentWorkTravelStart);
+        currentStateDatabase.store(dbCurrentWorkTravelStart);
     }
-    pa.insert("TimeEvents", *te);
+    timeEventsDatabase.insert(*te);
 }
 
 TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
                        ESAAApp &app,
-                       jw78::PersistentAdapter &pa,
+                       const QString &databaseFilename,
                        QObject *parent) : QObject(parent),
     theApp(app),
-    pa(pa),
+    currentStateDatabase(databaseFilename, "Config", *new DateTimeReflectable(false)),
+    timeEventsDatabase(databaseFilename, "TimeEvents", *new TimeEvent(false)),
     dbCurrentWorkStart(true),
     dbCurrentPauseStart(true),
     dbCurrentWorkTravelStart(true),
@@ -76,23 +77,20 @@ TimeMaster::TimeMaster(QQmlApplicationEngine &engine,
     dbCurrentWorkStart.name = "currentWorkStart";
     dbCurrentPauseStart.name = "currentPauseStart";
     dbCurrentWorkTravelStart.name = "currentWorkTravelStart";
-    pa.createTableCollectionOrFileIfNeeded("Config", dbCurrentWorkStart);
-    pa.selectOne("Config", "name", dbCurrentWorkStart.name, dbCurrentWorkStart);
+    currentStateDatabase.fetchOneByEntityField("name", dbCurrentWorkStart.name, dbCurrentWorkStart);
     m_currentWorkStart = dbCurrentWorkStart.value;
-    pa.selectOne("Config", "name", dbCurrentPauseStart.name, dbCurrentPauseStart);
+    currentStateDatabase.fetchOneByEntityField("name", dbCurrentPauseStart.name, dbCurrentPauseStart);
     m_currentPauseStart = dbCurrentPauseStart.value;
-    pa.selectOne("Config", "name", dbCurrentWorkTravelStart.name, dbCurrentWorkTravelStart);
+    currentStateDatabase.fetchOneByEntityField("name", dbCurrentWorkTravelStart.name, dbCurrentWorkTravelStart);
     m_currentWorkTravelStart = dbCurrentWorkTravelStart.value;
 
-    std::unique_ptr<TimeEvent> te(new TimeEvent(false));
-    pa.createTableCollectionOrFileIfNeeded("TimeEvents", *te);
     load(QDate::currentDate().year(),
-         QDate::currentDate().month() - 1);
+         QDate::currentDate().month());
 }
 
 void TimeMaster::developPrepare()
 {
-    pa.clear("TimeEvents");
+    timeEventsDatabase.clear();
     QDate work(2020, 5, 1);
     int counter(1);
     while (work < QDate::currentDate())
@@ -102,39 +100,39 @@ void TimeMaster::developPrepare()
         TimeEvent te(true);
         te.setEventType(0);
         te.setTimeStamp(QDateTime(work, QTime(8, 0, 0, 0).addSecs(randMinutes * 60)));
-        pa.insert("TimeEvents", te);
+        timeEventsDatabase.insert(te);
         te.setEventType(1);
         randMinutes = rand() % 20;
         te.setTimeStamp(QDateTime(work, QTime(17, 0, 0, 0).addSecs(randMinutes * 60)));
-        pa.insert("TimeEvents", te);
+        timeEventsDatabase.insert(te);
         if (counter % 3 == 1)
         {
             randMinutes = rand() % 20;
             te.setEventType(2);
             te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0).addSecs(randMinutes * 60)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
             te.setEventType(3);
             randMinutes = rand() % 20;
             te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0).addSecs(randMinutes * 60)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
         }
         if (counter % 3 == 2)
         {
             randMinutes = rand() % 20;
             te.setEventType(2);
             te.setTimeStamp(QDateTime(work, QTime(9, 30, 0, 0).addSecs(randMinutes * 60)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
             te.setEventType(3);
             randMinutes = rand() % 20;
             te.setTimeStamp(QDateTime(work, QTime(9, 45, 0, 0).addSecs(randMinutes * 60)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
 
             te.setEventType(2);
             te.setTimeStamp(QDateTime(work, QTime(12, 30, 0, 0)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
             te.setEventType(3);
             te.setTimeStamp(QDateTime(work, QTime(13, 15, 0, 0)));
-            pa.insert("TimeEvents", te);
+            timeEventsDatabase.insert(te);
         }
         work = work.addDays(1);
     }
@@ -168,10 +166,10 @@ void TimeMaster::load(int year, int month)
     QVector<jw78::PersistentObject*> temp;
     QDate monthStart(year, month, 1);
     QDate nextMonthStart(monthStart.addMonths(1));
-    pa.selectAllBetween("TimeEvents", "timeStamp",
-                        monthStart.toString(Qt::ISODate),
-                        nextMonthStart.toString(Qt::ISODate),
-                        temp, templateEvent);
+    timeEventsDatabase.selectAllBetween("timeStamp",
+                                        monthStart.toString(Qt::ISODate),
+                                        nextMonthStart.toString(Qt::ISODate),
+                                        temp);
     WorkTimeSpan *currentWorkTimeSpan(nullptr);
     PauseTimeSpan *currentPauseTimeSpan(nullptr);
     for (auto t : temp)

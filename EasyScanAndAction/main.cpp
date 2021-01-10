@@ -7,15 +7,25 @@
 #include "QZXingFilter.h"
 #include <QtSvg>
 #include <QQuickView>
+#include "jw78core_debug.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
 //    QGuiApplication app(argc, argv);
-    int id1(QFontDatabase::addApplicationFont("://roboto/RobotoCondensed-Regular.ttf"));
-    int id2(QFontDatabase::addApplicationFont("://roboto/Roboto-Regular.ttf"));
-    int id(QFontDatabase::addApplicationFont("://roboto/Roboto-Thin.ttf"));
+    if (QFontDatabase::addApplicationFont("://roboto/RobotoCondensed-Regular.ttf") == -1)
+    {
+        jw78core::debug::gi()->d(__FILE__, __LINE__, "Font could not be loaded");
+    }
+    if (QFontDatabase::addApplicationFont("://roboto/Roboto-Regular.ttf") == -1)
+    {
+        jw78core::debug::gi()->d(__FILE__, __LINE__, "Font could not be loaded");
+    }
+    if (QFontDatabase::addApplicationFont("://roboto/Roboto-Thin.ttf") == -1)
+    {
+        jw78core::debug::gi()->d(__FILE__, __LINE__, "Font could not be loaded");
+    }
 
     QQmlApplicationEngine engine;
 
