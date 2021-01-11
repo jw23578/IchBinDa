@@ -87,374 +87,441 @@ ApplicationWindow {
 
     Item
     {
-        id: header
-        width: parent.width
-        height: parent.height / 16
-    }
-    Item
-    {
-        anchors.top: header.bottom
-        id: contentItem
-        width: parent.width
-        height: parent.height - y
         clip: true
-        QuestionPage
-        {
-            id: questionpage
-            onClose:
-            {
-                if (previousPage == firststart)
-                {
-                    showNewPage(questionpage, scannerpage)
-                    return;
+        states: [
+            State {
+                name: "MainProfileOpen"
+                PropertyChanges {
+                    target: rotation
+                    angle: 35
                 }
-                if (previousPage == menuepage)
-                {
-                    showNewPage(questionpage, previousPage)
-                    return
+                PropertyChanges {
+                    target: area1Hider
+                    opacity: 0.3
                 }
-                showNewPage(questionpage, sendedDataPage)
             }
-            onAbort:
-            {
-                if (previousPage == menuepage)
-                {
-                    showNewPage(questionpage, previousPage)
-                    return
-                }
-                if (previousPage == firststart)
-                {
-                    showNewPage(questionpage, previousPage)
-                    return;
-                }
-                showNewPage(questionpage, scannerpage)
-            }
-        }
-        TimeMain
-        {
-            id: timemainpage
-            onBackPressed: showNewPage(timemainpage, scannerpage)
-        }
-        SaveCustomerCard
-        {
-            id: savecustomercard
-            onBackPressed: showNewPage(theCurrentPage, takepicturepage)
-            onCardSaved: showNewPage(theCurrentPage, customercardslist)
-        }
-
-
-        ShowCustomerCard
-        {
-            id: showcustomercard
-            onBackPressed: showNewPage(theCurrentPage, customercardslist)
-        }
-
-        CustomerCardsList
-        {
-            id: customercardslist
-            onBackPressed: showNewPage(theCurrentPage, scannerpage)
-            onNewCard: showNewPage(theCurrentPage, takepicturepage)
-            onShowCustomerCard:
-            {
-                showcustomercard.imageFilename = "file:" + filename
-                showcustomercard.index = index
-                showNewPage(theCurrentPage, showcustomercard)
-            }
-        }
-        EngagementStartPage
-        {
-            id: engagementstart
-            onBackPressed: showNewPage(theCurrentPage, scannerpage)
-            onWantToHelpClicked: {
-                if (!JW78APP.loggedIn)
-                {
-                    loginAndOrRegister.goodPage = myHelpOffersPage
-                    loginAndOrRegister.backPage = engagementstart
-                    showNewPage(theCurrentPage, loginAndOrRegister)
-                    return
-                }
-                showNewPage(theCurrentPage, myHelpOffersPage)
-            }
-
-        }
-        MyHelpOffersPage
-        {
-            id: myHelpOffersPage
-            onBackPressed: showNewPage(theCurrentPage, previousPage)
-        }
-
-        CamVideoScan
-        {
-            z: 10
-            id: theCamera
-            onTagFound: scannerpage.tagFound(tag)
-            onImageSaved: takepicturepage.saveTheImage(filename)
-        }
-        ManualVisitPage
-        {
-            id: manualvisitpage
-            onBackPressed: showNewPage(theCurrentPage, scannerpage)
-        }
-
-        CircleMultiButton
-        {
-            z: 11
+        ]
+        Rectangle {
+            z: 100
+            id: area1Hider
+            anchors.fill: parent
+            visible: opacity > 0
             opacity: 0
-            id: theMultiButton
-            x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
-            y: JW78Utils.screenHeight / 480 * 360 - height / 2
-            visible: !ESAA.firstStart && scannerpage.visible
-            texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
-                "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
-            optionCount: JW78APP.isDevelop ? 5 : 4
-            yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
-            stepAngle: JW78APP.isDevelop ? 72 : 60
-            clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
-            function() {ESAA.recommend()},
-            function() {showNewPage(theCurrentPage, manualvisitpage)},
-            function() {funcShowKontaktTagebuchQRCode()},
-            function() {showNewPage(theCurrentPage, engagementstart)}]
-            sources: ["", "qrc:/images/share_weiss.svg"]
-            downSources: ["", "qrc:/images/share_blau.svg"]
-            onOpenClicked: hideCallMenueButton.start()
-            onCloseClicked: hideAndShowCallMenueButton.start()
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: JW78Utils.longAniDuration
+                }
+            }
+            MouseArea
+            {
+                anchors.fill: parent
+            }
         }
 
-        ScannerPage
+
+        anchors.fill: parent
+        id: area1
+        Item
         {
-            id: scannerpage
-            camera: theCamera
-            multiButton: theMultiButton
-            onGoRightClicked: showNewPage(scannerpage, timemainpage)
+            id: header
+            width: parent.width
+            height: parent.height / 16
         }
-        TakePicturePage
+        Item
         {
-            id: takepicturepage
-            targetFileName: ESAA.tempTakenPicture
-            camera: theCamera
-            caption: "Neue Kundenkarte"
-            onBackPressed: showNewPage(theCurrentPage, customercardslist)
-            function saveTheImage(filename)
+            anchors.top: header.bottom
+            id: contentItem
+            width: parent.width
+            height: parent.height - y
+            clip: true
+            QuestionPage
             {
-                console.log("image saved: " + filename)
-                savecustomercard.imageFilename = ""
-                savecustomercard.imageFilename = "file:" + filename
-                showNewPage(theCurrentPage, savecustomercard)
+                id: questionpage
+                onClose:
+                {
+                    if (previousPage == firststart)
+                    {
+                        showNewPage(questionpage, scannerpage)
+                        return;
+                    }
+                    if (previousPage == menuepage)
+                    {
+                        showNewPage(questionpage, previousPage)
+                        return
+                    }
+                    showNewPage(questionpage, sendedDataPage)
+                }
+                onAbort:
+                {
+                    if (previousPage == menuepage)
+                    {
+                        showNewPage(questionpage, previousPage)
+                        return
+                    }
+                    if (previousPage == firststart)
+                    {
+                        showNewPage(questionpage, previousPage)
+                        return;
+                    }
+                    showNewPage(questionpage, scannerpage)
+                }
             }
-        }
-        LoginAndOrRegister
-        {
-            id: loginAndOrRegister
-//            opacity: 1
-//            x: 0
-//            y: 0
-//            z: 500
-            property var goodPage: null
-            property var backPage: null
-            onBackPressed: showNewPage(theCurrentPage, backPage)
-            onLoginSuccessful: {
-                showNewPage(theCurrentPage, goodPage)
-                previousPage = backPage
+            TimeMain
+            {
+                id: timemainpage
+                onBackPressed: showNewPage(timemainpage, scannerpage)
+            }
+            SaveCustomerCard
+            {
+                id: savecustomercard
+                onBackPressed: showNewPage(theCurrentPage, takepicturepage)
+                onCardSaved: showNewPage(theCurrentPage, customercardslist)
             }
 
+
+            ShowCustomerCard
+            {
+                id: showcustomercard
+                onBackPressed: showNewPage(theCurrentPage, customercardslist)
+            }
+
+            CustomerCardsList
+            {
+                id: customercardslist
+                onBackPressed: showNewPage(theCurrentPage, scannerpage)
+                onNewCard: showNewPage(theCurrentPage, takepicturepage)
+                onShowCustomerCard:
+                {
+                    showcustomercard.imageFilename = "file:" + filename
+                    showcustomercard.index = index
+                    showNewPage(theCurrentPage, showcustomercard)
+                }
+            }
+            EngagementStartPage
+            {
+                id: engagementstart
+                onBackPressed: showNewPage(theCurrentPage, scannerpage)
+                onWantToHelpClicked: {
+                    if (!JW78APP.loggedIn)
+                    {
+                        loginAndOrRegister.goodPage = myHelpOffersPage
+                        loginAndOrRegister.backPage = engagementstart
+                        showNewPage(theCurrentPage, loginAndOrRegister)
+                        return
+                    }
+                    showNewPage(theCurrentPage, myHelpOffersPage)
+                }
+
+            }
+            MyHelpOffersPage
+            {
+                id: myHelpOffersPage
+                onBackPressed: showNewPage(theCurrentPage, previousPage)
+            }
+
+            CamVideoScan
+            {
+                z: 10
+                id: theCamera
+                onTagFound: scannerpage.tagFound(tag)
+                onImageSaved: takepicturepage.saveTheImage(filename)
+            }
+            ManualVisitPage
+            {
+                id: manualvisitpage
+                onBackPressed: showNewPage(theCurrentPage, scannerpage)
+            }
+
+            CircleMultiButton
+            {
+                z: 11
+                opacity: 0
+                id: theMultiButton
+                x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
+                y: JW78Utils.screenHeight / 480 * 360 - height / 2
+                visible: !ESAA.firstStart && scannerpage.visible
+                texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
+                    "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
+                optionCount: JW78APP.isDevelop ? 5 : 4
+                yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
+                stepAngle: JW78APP.isDevelop ? 72 : 60
+                clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
+                function() {ESAA.recommend()},
+                function() {showNewPage(theCurrentPage, manualvisitpage)},
+                function() {funcShowKontaktTagebuchQRCode()},
+                function() {showNewPage(theCurrentPage, engagementstart)}]
+                sources: ["", "qrc:/images/share_weiss.svg"]
+                downSources: ["", "qrc:/images/share_blau.svg"]
+                onOpenClicked: hideCallMenueButton.start()
+                onCloseClicked: hideAndShowCallMenueButton.start()
+            }
+
+            ScannerPage
+            {
+                id: scannerpage
+                camera: theCamera
+                multiButton: theMultiButton
+                onGoRightClicked: showNewPage(scannerpage, timemainpage)
+            }
+            TakePicturePage
+            {
+                id: takepicturepage
+                targetFileName: ESAA.tempTakenPicture
+                camera: theCamera
+                caption: "Neue Kundenkarte"
+                onBackPressed: showNewPage(theCurrentPage, customercardslist)
+                function saveTheImage(filename)
+                {
+                    console.log("image saved: " + filename)
+                    savecustomercard.imageFilename = ""
+                    savecustomercard.imageFilename = "file:" + filename
+                    showNewPage(theCurrentPage, savecustomercard)
+                }
+            }
+            LoginAndOrRegister
+            {
+                id: loginAndOrRegister
+                //            opacity: 1
+                //            x: 0
+                //            y: 0
+                //            z: 500
+                property var goodPage: null
+                property var backPage: null
+                onBackPressed: showNewPage(theCurrentPage, backPage)
+                onLoginSuccessful: {
+                    showNewPage(theCurrentPage, goodPage)
+                    previousPage = backPage
+                }
+
+            }
+
+            FirstStart
+            {
+                id: firststart
+                onStartNow:
+                {
+                    showNewPage(firststart, scannerpage)
+                }
+                onBack: showNewPage(firststart, menuepage)
+                onEditContactData:
+                {
+                    ESAA.facilityName = "MeineDaten"
+                    showNewPage(firststart, questionpage)
+                }
+            }
+            CreateQRCodePage
+            {
+                id: createqrcodepage
+                onClose: showNewPage(createqrcodepage, menuepage)
+                onShowCode:
+                {
+                    showqrcodepage.facilityName = createqrcodepage.theFacilityName
+                    showqrcodepage.sendEMailTo = createqrcodepage.theContactReceiveEMail
+                    showNewPage(createqrcodepage, showqrcodepage)
+                }
+            }
+            ShowQRCode
+            {
+                id: showqrcodepage
+                logoUrl: createqrcodepage.theLogoUrl
+                qrCodeFileName: createqrcodepage.qrCodeFileName
+                onBack: showNewPage(showqrcodepage, createqrcodepage)
+            }
+            MyVisitsPage
+            {
+                id: myvisitspage
+                onClose: showNewPage(myvisitspage, menuepage)
+            }
+            ShowKontaktTagebuchQRCode
+            {
+                id: showKontaktTagebuchQRCode
+                onBack: showNewPage(showKontaktTagebuchQRCode, previousPage)
+            }
+            TimeRecordingEvents
+            {
+                id: timerecordingevents
+                onBackPressed: showNewPage(timerecordingevents, timerecordmenuepage)
+            }
+            WorkTimeSpans
+            {
+                id: worktimespans
+                onBackPressed: showNewPage(worktimespans, timerecordmenuepage)
+            }
+
+            TimeRecordingMenue
+            {
+                id: timerecordmenuepage
+                onBackPressed: showNewPage(timerecordmenuepage, timemainpage)
+                onShowTimeEvents: showNewPage(timerecordmenuepage, timerecordingevents)
+                onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespans)
+            }
+
+            MenuePage
+            {
+                id: menuepage
+                onClose:
+                {
+                    showNewPage(menuepage, scannerpage)
+                }
+                onEditContactData:
+                {
+                    ESAA.facilityName = "MeineDaten"
+                    showNewPage(menuepage, questionpage)
+                }
+                onEditQRCode:
+                {
+                    showNewPage(menuepage, createqrcodepage)
+                }
+                onHelp:
+                {
+                    showNewPage(menuepage, firststart)
+                }
+                onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
+                onShowKontaktTagebuchQRCode: funcShowKontaktTagebuchQRCode()
+            }
+            AgreePage
+            {
+                id: agreepage
+                onAgreed:
+                {
+                    showNewPage(agreepage, firststart)
+                }
+            }
+            CurrentVisitPage
+            {
+                id: currentVisitPage
+                onQuestionVisitEnd:
+                {
+                    showNewPage(currentVisitPage, visitEndPage)
+                }
+            }
         }
 
-        FirstStart
+        SequentialAnimation
         {
-            id: firststart
-            onStartNow:
-            {
-                showNewPage(firststart, scannerpage)
+            id: hideAndShowCallMenueButton
+            NumberAnimation {
+                target: callMenueButton
+                property: "anchors.verticalCenterOffset"
+                duration: 500
+                easing.type: Easing.InOutQuint
+                to: width
             }
-            onBack: showNewPage(firststart, menuepage)
-            onEditContactData:
-            {
-                ESAA.facilityName = "MeineDaten"
-                showNewPage(firststart, questionpage)
-            }
-        }
-        CreateQRCodePage
-        {
-            id: createqrcodepage
-            onClose: showNewPage(createqrcodepage, menuepage)
-            onShowCode:
-            {
-                showqrcodepage.facilityName = createqrcodepage.theFacilityName
-                showqrcodepage.sendEMailTo = createqrcodepage.theContactReceiveEMail
-                showNewPage(createqrcodepage, showqrcodepage)
+            NumberAnimation {
+                target: callMenueButton
+                property: "anchors.verticalCenterOffset"
+                duration: 500
+                easing.type: Easing.InOutQuint
+                to: 0 // callMenueButton.width / 6
             }
         }
-        ShowQRCode
-        {
-            id: showqrcodepage
-            logoUrl: createqrcodepage.theLogoUrl
-            qrCodeFileName: createqrcodepage.qrCodeFileName
-            onBack: showNewPage(showqrcodepage, createqrcodepage)
-        }
-        MyVisitsPage
-        {
-            id: myvisitspage
-            onClose: showNewPage(myvisitspage, menuepage)
-        }
-        ShowKontaktTagebuchQRCode
-        {
-            id: showKontaktTagebuchQRCode
-            onBack: showNewPage(showKontaktTagebuchQRCode, previousPage)
-        }
-        TimeRecordingEvents
-        {
-            id: timerecordingevents
-            onBackPressed: showNewPage(timerecordingevents, timerecordmenuepage)
-        }
-        WorkTimeSpans
-        {
-            id: worktimespans
-            onBackPressed: showNewPage(worktimespans, timerecordmenuepage)
-        }
-
-        TimeRecordingMenue
-        {
-            id: timerecordmenuepage
-            onBackPressed: showNewPage(timerecordmenuepage, timemainpage)
-            onShowTimeEvents: showNewPage(timerecordmenuepage, timerecordingevents)
-            onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespans)
-        }
-
-        MenuePage
-        {
-            id: menuepage
-            onClose:
-            {
-                showNewPage(menuepage, scannerpage)
-            }
-            onEditContactData:
-            {
-                ESAA.facilityName = "MeineDaten"
-                showNewPage(menuepage, questionpage)
-            }
-            onEditQRCode:
-            {
-                showNewPage(menuepage, createqrcodepage)
-            }
-            onHelp:
-            {
-                showNewPage(menuepage, firststart)
-            }
-            onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
-            onShowKontaktTagebuchQRCode: funcShowKontaktTagebuchQRCode()
-        }
-        AgreePage
-        {
-            id: agreepage
-            onAgreed:
-            {
-                showNewPage(agreepage, firststart)
-            }
-        }
-        CurrentVisitPage
-        {
-            id: currentVisitPage
-            onQuestionVisitEnd:
-            {
-                showNewPage(currentVisitPage, visitEndPage)
-            }
-        }
-    }
-
-    SequentialAnimation
-    {
-        id: hideAndShowCallMenueButton
         NumberAnimation {
             target: callMenueButton
             property: "anchors.verticalCenterOffset"
-            duration: 500
+            duration: 1000
             easing.type: Easing.InOutQuint
+            id: hideCallMenueButton
             to: width
         }
-        NumberAnimation {
-            target: callMenueButton
-            property: "anchors.verticalCenterOffset"
-            duration: 500
-            easing.type: Easing.InOutQuint
-            to: 0 // callMenueButton.width / 6
-        }
-    }
-    NumberAnimation {
-        target: callMenueButton
-        property: "anchors.verticalCenterOffset"
-        duration: 1000
-        easing.type: Easing.InOutQuint
-        id: hideCallMenueButton
-        to: width
-    }
 
-    CircleButton
-    {
-        id: callMenueButton
-        visible: !ESAA.firstStart
-        alertAniRunning: MainPerson.fstname == "" || ESAA.surname == ""
-        repeatAlertAni: MainPerson.fstname == "" || ESAA.surname == ""
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.bottom
-        verticalImageOffset: -height / 4
-        imageSizeFactor: 0.7
-        source: "qrc:/images/menue_weiss.svg"
-        downSource: "qrc:/images/menue_blau.svg"
-        onClicked:
+        CircleButton
         {
-            if (theCurrentPage == timemainpage)
+            id: callMenueButton
+            visible: !ESAA.firstStart
+            alertAniRunning: MainPerson.fstname == "" || ESAA.surname == ""
+            repeatAlertAni: MainPerson.fstname == "" || ESAA.surname == ""
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.bottom
+            verticalImageOffset: -height / 4
+            imageSizeFactor: 0.7
+            source: "qrc:/images/menue_weiss.svg"
+            downSource: "qrc:/images/menue_blau.svg"
+            onClicked:
             {
-                showNewPage(timemainpage, timerecordmenuepage)
-                return
-            }
-
-            showNewPage(scannerpage, menuepage)
-        }
-    }
-
-
-
-    ESAASendedDataPage
-    {
-        id: sendedDataPage
-        onClose: showNewPage(sendedDataPage, currentVisitPage)
-    }
-    VisitEndQuestion
-    {
-        id: visitEndPage
-        onEndVisit:
-        {
-            ESAA.finishVisit()
-            showNewPage(visitEndPage, scannerpage)
-        }
-        onClose:
-        {
-            showNewPage(visitEndPage, currentVisitPage)
-        }
-    }
-    SplashHeader
-    {
-        id: splashheader
-        onSplashDone:
-        {
-            if (!ESAA.aggrementChecked)
-            {
-                showNewPage(null, agreepage)
-            }
-            else
-            {
-                if (ESAA.isActiveVisit(0))
+                if (theCurrentPage == timemainpage)
                 {
-                    showNewPage(null, currentVisitPage)
+                    showNewPage(timemainpage, timerecordmenuepage)
+                    return
+                }
+
+                showNewPage(scannerpage, menuepage)
+            }
+        }
+
+
+
+        ESAASendedDataPage
+        {
+            id: sendedDataPage
+            onClose: showNewPage(sendedDataPage, currentVisitPage)
+        }
+        VisitEndQuestion
+        {
+            id: visitEndPage
+            onEndVisit:
+            {
+                ESAA.finishVisit()
+                showNewPage(visitEndPage, scannerpage)
+            }
+            onClose:
+            {
+                showNewPage(visitEndPage, currentVisitPage)
+            }
+        }
+        SplashHeader
+        {
+            id: splashheader
+            onProfileIconClicked:
+            {
+                if (area1.state == "MainProfileOpen")
+                {
+                    area1.state = ""
+                    return;
+                }
+                area1.state = "MainProfileOpen"
+
+//                JW78APP.loggedIn = false
+//                JW78APP.loginTokenString = ""
+            }
+
+            onSplashDone:
+            {
+                if (!ESAA.aggrementChecked)
+                {
+                    showNewPage(null, agreepage)
                 }
                 else
                 {
-                    showNewPage(null, scannerpage)
+                    if (ESAA.isActiveVisit(0))
+                    {
+                        showNewPage(null, currentVisitPage)
+                    }
+                    else
+                    {
+                        showNewPage(null, scannerpage)
+                    }
+                }
+            }
+            onHelpClicked: showNewPage(theCurrentPage, firststart)
+        }
+        transform: Rotation {
+            id: rotation
+            origin.x: 0
+            origin.y: height / 2
+            axis {
+                x: 0
+                y: 1
+                z: 0
+            }
+            angle: 0
+            Behavior on angle {
+                NumberAnimation {
+                    duration: JW78Utils.longAniDuration
                 }
             }
         }
-        onHelpClicked: showNewPage(theCurrentPage, firststart)
     }
+
     YesNoQuestionPage
     {
         id: yesnoquestion

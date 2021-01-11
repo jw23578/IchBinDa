@@ -6,6 +6,7 @@ Rectangle
     property int headerHeight: parent.height / 16
     signal splashDone
     signal helpClicked
+    signal profileIconClicked
     id: splashscreen
     opacity: 1
     anchors.top: parent.top
@@ -101,12 +102,7 @@ Rectangle
         {
             z: 1
             anchors.fill: parent
-            onClicked:
-            {
-                console.log("hello")
-                JW78APP.loggedIn = false
-                JW78APP.loginTokenString = ""
-            }
+            onClicked: profileIconClicked();
         }
 
     }
