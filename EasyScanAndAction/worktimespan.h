@@ -2,7 +2,7 @@
 #define WORKTIMESPAN_H
 
 #include "pausetimespan.h"
-#include "JW78QTLib/jw78ProxyObject.h"
+#include "dataModel/jw78ProxyObject.h"
 #include <QDateTime>
 
 class WorkTimeSpan: public jw78::ProxyObject

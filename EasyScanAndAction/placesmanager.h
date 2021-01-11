@@ -2,7 +2,7 @@
 #define PLACESMANAGER_H
 
 #include <QQmlApplicationEngine>
-#include "JW78QTLib/jw78ObjectListModel.h"
+#include "dataModel/jw78ObjectListModel.h"
 #include <QNetworkAccessManager>
 #include <QGeoPositionInfoSource>
 

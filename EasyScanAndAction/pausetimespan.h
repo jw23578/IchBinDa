@@ -1,7 +1,7 @@
 #ifndef PAUSETIMESPAN_H
 #define PAUSETIMESPAN_H
 
-#include "JW78QTLib/jw78ProxyObject.h"
+#include "JW78QTLib/dataModel/jw78ProxyObject.h"
 #include <QDateTime>
 
 class PauseTimeSpan: public jw78::ProxyObject

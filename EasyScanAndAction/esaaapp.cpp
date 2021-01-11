@@ -386,6 +386,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     allVisits(e, "AllVisits", "Visit"),
     customerCardsManager(e, *this, databaseFilename)
 {
+    e.rootContext()->setContextProperty("MainPerson", QVariant::fromValue(&mainPerson));
     loadConfigFile();
     setTempTakenPicture(jw78::Utils::getTempPath() + "/tempTakenPicture.jpg");
     allVisits.reverse = true;

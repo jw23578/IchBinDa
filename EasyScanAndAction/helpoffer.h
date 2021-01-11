@@ -1,8 +1,8 @@
 #ifndef HELPOFFER_H
 #define HELPOFFER_H
 
-#include "JW78QTLib/jw78ProxyObject.h"
-#include "JW78QTLib/persistent/jw78persistentobject.h"
+#include "dataModel/jw78ProxyObject.h"
+#include "persistent/jw78persistentobject.h"
 #include <QDateTime>
 
 class HelpOffer: public jw78::ProxyObject, public jw78::PersistentObject

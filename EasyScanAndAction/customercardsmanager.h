@@ -4,7 +4,7 @@
 #include <QQmlApplicationEngine>
 #include "persistent/jw78persistentstoresqlite.h"
 #include "customercard.h"
-#include "jw78ObjectListModel.h"
+#include "dataModel/jw78ObjectListModel.h"
 
 class ESAAApp;
 

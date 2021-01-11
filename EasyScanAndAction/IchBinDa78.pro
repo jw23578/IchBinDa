@@ -27,6 +27,7 @@ SOURCES += \
     esaaapp.cpp \
     helpoffer.cpp \
     helpoffermanager.cpp \
+    ibdperson.cpp \
     internettester.cpp \
     mailoffice.cpp \
     pausetimespan.cpp \
@@ -81,6 +82,7 @@ HEADERS += \
     esaaapp.h \
     helpoffer.h \
     helpoffermanager.h \
+    ibdperson.h \
     internettester.h \
     mailoffice.h \
     pausetimespan.h \

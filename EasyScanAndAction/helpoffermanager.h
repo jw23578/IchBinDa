@@ -2,7 +2,7 @@
 #define HELPOFFERMANAGER_H
 
 #include "helpoffer.h"
-#include "JW78QTLib/jw78ObjectListModel.h"
+#include "dataModel/jw78ObjectListModel.h"
 #include <QNetworkAccessManager>
 #include <QQmlApplicationEngine>
 #include "persistent/jw78persistentstorejwserver.h"

@@ -1,7 +1,7 @@
 #ifndef PLACE_H
 #define PLACE_H
 
-#include "JW78QTLib/jw78ProxyObject.h"
+#include "dataModel/jw78ProxyObject.h"
 
 class Place: public jw78::ProxyObject
 {

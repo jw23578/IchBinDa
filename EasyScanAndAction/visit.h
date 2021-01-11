@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QColor>
 #include <QDateTime>
-#include "JW78QTLib/jw78ProxyObject.h"
+#include "dataModel/jw78ProxyObject.h"
 
 
 class Visit: public jw78::ProxyObject

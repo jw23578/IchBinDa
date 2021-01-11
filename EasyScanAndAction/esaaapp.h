@@ -15,7 +15,7 @@
 #include "timemaster.h"
 #include <QJsonObject>
 #include "visit.h"
-#include "JW78QTLib/jw78ObjectListModel.h"
+#include "dataModel/jw78ObjectListModel.h"
 #include "JW78MobileExtensions/mobileextensions.h"
 #include "JW78QTLib/jw78utils.h"
 #include "placesmanager.h"
@@ -24,10 +24,12 @@
 #include "customercardsmanager.h"
 #include "environment/encrypter.h"
 #include "mailoffice.h"
+#include "ibdperson.h"
 
 class ESAAApp: public QObject
 {
     Q_OBJECT
+    IBDPerson mainPerson;
     jw78::Utils jw78Utils;
     const QString databaseFilename;
     QNetworkAccessManager networkAccessManager;
@@ -47,7 +49,7 @@ class ESAAApp: public QObject
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     CustomerCardsManager customerCardsManager;
-    const QString superCodePrefix = "http://onelink.to/ichbinda?a=";
+    const QString superCodePrefix = "http://onelink.to/ichbinda?a=";    
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);
     JWPROPERTY(int, appVersion, AppVersion, 0);
