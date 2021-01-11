@@ -76,7 +76,7 @@ PageWithBackButton
                 id: email
                 width: parent.width
                 caption: qsTr("E-Mail-Adresse")
-                text: JW78APP.emailAdress
+                text: MainPerson.emailAdress
             }
             ESAAText
             {

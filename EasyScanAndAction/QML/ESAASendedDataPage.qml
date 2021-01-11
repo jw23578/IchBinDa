@@ -115,7 +115,7 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus: true
                 id: fstname
-                text: ESAA.lastVisitFstname
+                text: LastVisit.fstname
                 color: textColor
                 readOnly: true
             }
@@ -126,7 +126,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: surname
-                text: ESAA.lastVisitSurname
+                text: LastVisit.surname
                 color: textColor
                 readOnly: true
             }

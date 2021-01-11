@@ -11,6 +11,10 @@ public:
     JWPROPERTY(QString, fstname, Fstname, "")
     JWPROPERTY(QString, surname, Surname, "");
     JWPROPERTY(QString, street, Street, "");
+    JWPROPERTY(QString, housenumber, Housenumber, "");
+    JWPROPERTY(QString, zip, Zip, "");
+    JWPROPERTY(QString, location, Location, "");
+    JWPROPERTY(QString, emailAdress, EmailAdress, "");
 };
 
 #endif // IBDPERSON_H

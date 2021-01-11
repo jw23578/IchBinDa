@@ -117,17 +117,11 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, seatNumberWanted, SeatNumberWanted, false);
 
     // eingegebene Kontaktdaten
-    JWPROPERTY(QString, housenumber, Housenumber, "");
-    JWPROPERTY(QString, zip, Zip, "");
-    JWPROPERTY(QString, location, Location, "");
-    JWPROPERTY(QString, emailAdress, EmailAdress, "");
     void checkDevelopMobile();
     JWPROPERTYAFTERSET(QString, mobile, Mobile, "", checkDevelopMobile);
     JWPROPERTY(QString, data2send, Data2send, "");
 
     JWPROPERTY(int, lastVisitCount, LastVisitCount, 0);
-    JWPROPERTY(QString, lastVisitFstname, LastVisitFstname, "")
-    JWPROPERTY(QString, lastVisitSurname, LastVisitSurname, "");
     JWPROPERTY(QString, lastVisitStreet, LastVisitStreet, "");
     JWPROPERTY(QString, lastVisitHousenumber, LastVisitHousenumber, "");
     JWPROPERTY(QString, lastVisitZip, LastVisitZip, "");

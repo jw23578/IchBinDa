@@ -69,7 +69,7 @@ void ESAAApp::sendMail()
     QString work;
     work += tr("Datum: ") + lastVisit.begin().date().toString() + "\n";
     work += tr("Uhrzeit: ") + lastVisit.begin().time().toString() + "\n";
-    work += mainPerson.fstname() + " aus " + location();
+    work += mainPerson.fstname() + " aus " + mainPerson.location();
 
 
     jsonData2Send["DateVisitBegin"] = lastVisit.begin().date().toString(Qt::ISODate);
@@ -172,8 +172,8 @@ void ESAAApp::saveVisit(QDateTime const &visitBegin, QDateTime const &visitEnd)
     visitObject["individualURL1"] = lastVisit.individualURL1();
     visitObject["individualURL1Caption"] = lastVisit.individualURL1Caption();
     visitObject["lunchMenueURL"] = lastVisit.lunchMenueURL();
-    visitObject["fstname"] = lastVisitFstname();
-    visitObject["surname"] = lastVisitSurname();
+    visitObject["fstname"] = lastVisit.fstname();
+    visitObject["surname"] = lastVisit.surname();
     visitObject["street"] = lastVisitStreet();
     visitObject["housenumber"] = lastVisitHousenumber();
     visitObject["zip"] = lastVisitZip();
@@ -234,10 +234,10 @@ void ESAAApp::saveData()
     contactData["fstname"] = mainPerson.fstname();
     contactData["surname"] = mainPerson.surname();
     contactData["street"] = mainPerson.street();
-    contactData["housenumber"] = housenumber();
-    contactData["zip"] = zip();
-    contactData["location"] = location();
-    contactData["emailAdress"] = emailAdress();
+    contactData["housenumber"] = mainPerson.housenumber();
+    contactData["zip"] = mainPerson.zip();
+    contactData["location"] = mainPerson.location();
+    contactData["emailAdress"] = mainPerson.emailAdress();
     contactData["mobile"] = mobile();
 
     QJsonArray locationInfos;
@@ -274,8 +274,8 @@ void ESAAApp::saveData()
     data["individualURL1"] = lastVisit.individualURL1();
     data["individualURL1Caption"] = lastVisit.individualURL1Caption();
     data["lunchMenueURL"] = lastVisit.lunchMenueURL();
-    data["lastVisitFstname"] = lastVisitFstname();
-    data["lastVisitSurname"] = lastVisitSurname();
+    data["lastVisitFstname"] = lastVisit.fstname();
+    data["lastVisitSurname"] = lastVisit.surname();
     data["lastVisitStreet"] = lastVisitStreet();
     data["lastVisitHousenumber"] = lastVisitHousenumber();
     data["lastVisitZip"] = lastVisitZip();
@@ -321,9 +321,9 @@ void ESAAApp::loadData()
     lastVisit.setIndividualURL1Caption(data["individualURL1Caption"].toString());
     lastVisit.setLunchMenueURL(data["lunchMenueURL"].toString());
     lastVisit.setColor(data["lastVisitColor"].toString());
+    lastVisit.setFstname(data["lastVisitFstname"].toString());
+    lastVisit.setSurname(data["lastVisitSurname"].toString());
 
-    setLastVisitFstname(data["lastVisitFstname"].toString());
-    setLastVisitSurname(data["lastVisitSurname"].toString());
     setLastVisitStreet(data["lastVisitStreet"].toString());
     setLastVisitHousenumber(data["lastVisitHousenumber"].toString());
     setLastVisitZip(data["lastVisitZip"].toString());
@@ -361,10 +361,10 @@ void ESAAApp::loadData()
         mainPerson.setFstname(contactData["fstname"].toString());
         mainPerson.setSurname(contactData["surname"].toString());
         mainPerson.setStreet(contactData["street"].toString());
-        setHousenumber(contactData["housenumber"].toString());
-        setZip(contactData["zip"].toString());
-        setLocation(contactData["location"].toString());
-        setEmailAdress(contactData["emailAdress"].toString());
+        mainPerson.setHousenumber(contactData["housenumber"].toString());
+        mainPerson.setZip(contactData["zip"].toString());
+        mainPerson.setLocation(contactData["location"].toString());
+        mainPerson.setEmailAdress(contactData["emailAdress"].toString());
         setMobile(contactData["mobile"].toString());
     }
     loading = false;
@@ -765,7 +765,7 @@ void ESAAApp::action(QString qrCodeJSON)
     }
     if (actionID == actionIDKontakttagebuch)
     {
-        if (mainPerson.fstname() == "" || mainPerson.surname() == "" || emailAdress() == "")
+        if (mainPerson.fstname() == "" || mainPerson.surname() == "" || mainPerson.emailAdress() == "")
         {
             showMessage("Bitte gib noch deine Kontaktdaten (Vorname, Name, E-Mail-Adresse) zum Austausch an. (Menü/Kontaktdaten bearbeiten)");
             return;
@@ -774,7 +774,7 @@ void ESAAApp::action(QString qrCodeJSON)
         QString otherFstname(data["fn"].toString());
         QString otherSurname(data["sn"].toString());
         showWaitMessage("Bitte einen Moment Geduld, die E-Mails werden versendet");
-        mailOffice.sendKontaktTagebuchEMails(mainPerson.fstname(), mainPerson.surname(), emailAdress(), otherFstname, otherSurname, otherEMail);
+        mailOffice.sendKontaktTagebuchEMails(mainPerson.fstname(), mainPerson.surname(), mainPerson.emailAdress(), otherFstname, otherSurname, otherEMail);
         saveKontaktsituation(otherFstname + " " + otherSurname, otherEMail);
         showMessage("Die Kontakttagebuch-E-Mails wurden versendet.");
         return;
@@ -863,7 +863,7 @@ QString ESAAApp::generateKontaktTagebuchQRCode()
     qr["ai"] = actionIDKontakttagebuch;
     qr["fn"] = mainPerson.fstname();
     qr["sn"] = mainPerson.surname();
-    qr["ea"] = emailAdress();
+    qr["ea"] = mainPerson.emailAdress();
     QByteArray qrCodeData(QJsonDocument(qr).toJson(QJsonDocument::Compact));
     QString qrCodeFilename(generateQRcodeIntern(qrCodeData, "kontaktTagebuchQRCode", false));
     return qrCodeFilename;

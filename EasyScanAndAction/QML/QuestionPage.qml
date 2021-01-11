@@ -185,7 +185,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: housenumber
-                text: ESAA.housenumber
+                text: MainPerson.housenumber
                 visible: meineDaten || ESAA.adressWanted
                 color: textColor
             }
@@ -195,7 +195,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: zip
-                text: ESAA.zip
+                text: MainPerson.zip
                 visible: meineDaten || ESAA.adressWanted
                 inputMethodHints: Qt.ImhDigitsOnly
                 color: textColor
@@ -206,7 +206,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: location
-                text: ESAA.location
+                text: MainPerson.location
                 visible: meineDaten || ESAA.adressWanted
                 color: textColor
             }
@@ -227,7 +227,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: emailAdress
-                text: ESAA.emailAdress
+                text: MainPerson.emailAdress
                 visible: meineDaten || ESAA.emailWanted
                 inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
                 color: textColor
@@ -280,18 +280,18 @@ ESAAPage
                 MainPerson.fstname = fstname.displayText
                 MainPerson.surname = surname.displayText
                 MainPerson.street = street.displayText
-                ESAA.housenumber = housenumber.displayText
-                ESAA.zip = zip.displayText
-                ESAA.location = location.displayText
-                ESAA.emailAdress = emailAdress.displayText
+                MainPerson.housenumber = housenumber.displayText
+                MainPerson.zip = zip.displayText
+                MainPerson.location = location.displayText
+                MainPerson.emailAdress = emailAdress.displayText
                 ESAA.mobile = mobile.displayText
                 ESAA.saveData();
                 ESAA.showMessage("Deine Kontaktdaten wurden gespeichert")
                 waitAndClose.start()
                 return
             }
-            ESAA.lastVisitFstname = ""
-            ESAA.lastVisitSurname = ""
+            LastVisit.fstname = ""
+            LastVisit.surname = ""
             ESAA.lastVisitStreet = ""
             ESAA.lastVisitHousenumber = ""
             ESAA.lastVisitZip = ""
@@ -320,7 +320,7 @@ ESAAPage
                     return;
                 }
                 MainPerson.fstname = fstname.displayText
-                ESAA.lastVisitFstname = fstname.displayText
+                LastVisit.fstname = fstname.displayText
                 ESAA.addData2Send(qsTr("Vorname"), fstname.displayText)
             }
             if (surname.visible)
@@ -331,7 +331,7 @@ ESAAPage
                     return;
                 }
                 MainPerson.surname = surname.displayText
-                ESAA.lastVisitSurname = surname.displayText
+                LastVisit.surname = surname.displayText
                 ESAA.addData2Send(qsTr("Nachname"), surname.displayText)
             }
             if (street.visible)
@@ -352,7 +352,7 @@ ESAAPage
                     focusMessage(qsTr("Bitte gib noch deine Hausnummer ein"), housenumber)
                     return;
                 }
-                ESAA.housenumber = housenumber.displayText
+                MainPerson.housenumber = housenumber.displayText
                 ESAA.lastVisitHousenumber = housenumber.displayText
                 ESAA.addData2Send(qsTr("Hausnummer"), housenumber.displayText)
             }
@@ -364,7 +364,7 @@ ESAAPage
                     return;
                 }
                 ESAA.addData2Send(qsTr("Postleitzahl"), zip.displayText)
-                ESAA.zip = zip.displayText
+                MainPerson.zip = zip.displayText
                 ESAA.lastVisitZip = zip.displayText
             }
             if (location.visible)
@@ -375,7 +375,7 @@ ESAAPage
                     return;
                 }
                 ESAA.addData2Send(qsTr("Ort"), location.displayText)
-                ESAA.location = location.displayText
+                MainPerson.location = location.displayText
                 ESAA.lastVisitLocation = location.displayText
             }
             if (mobile.visible)
@@ -396,7 +396,7 @@ ESAAPage
                     focusMessage(qsTr("Bitte gib noch deine E-Mail-Adresse ein"), emailAdress)
                     return;
                 }
-                ESAA.emailAdress = emailAdress.displayText
+                MainPerson.emailAdress = emailAdress.displayText
                 ESAA.lastVisitEmailAdress = emailAdress.displayText
                 ESAA.addData2Send(qsTr("E-Mail-Adresse"), emailAdress.displayText)
             }
