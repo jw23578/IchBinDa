@@ -18,7 +18,7 @@ ApplicationWindow {
     property var theCurrentPage: null
     function funcShowKontaktTagebuchQRCode()
     {
-        if (ESAA.fstname == "")
+        if (MainPerson.fstname == "")
         {
             ESAA.showMessage("Bitte gib vorher noch deinen Vornamen in deinen Kontaktdaten ein.")
             return;
@@ -392,8 +392,8 @@ ApplicationWindow {
     {
         id: callMenueButton
         visible: !ESAA.firstStart
-        alertAniRunning: ESAA.fstname == "" || ESAA.surname == ""
-        repeatAlertAni: ESAA.fstname == "" || ESAA.surname == ""
+        alertAniRunning: MainPerson.fstname == "" || ESAA.surname == ""
+        repeatAlertAni: MainPerson.fstname == "" || ESAA.surname == ""
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.bottom
         verticalImageOffset: -height / 4

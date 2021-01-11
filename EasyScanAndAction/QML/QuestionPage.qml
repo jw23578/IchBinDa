@@ -155,7 +155,7 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus: true
                 id: fstname
-                text: ESAA.fstname
+                text: MainPerson.fstname
                 color: textColor
             }
 
@@ -165,7 +165,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: surname
-                text: ESAA.surname
+                text: MainPerson.surname
                 color: textColor
             }
 
@@ -175,7 +175,7 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: street
-                text: ESAA.street
+                text: MainPerson.street
                 visible: meineDaten || ESAA.adressWanted
                 color: textColor
             }
@@ -267,13 +267,9 @@ ESAAPage
             }
         }
     }
-    CircleButton
+    CentralActionButton
     {
         id: sendButton
-        anchors.margins: ESAA.spacing
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: ESAA.spacing * 2.5
-        anchors.horizontalCenter: parent.horizontalCenter
         text: meineDaten ? "Speichern" : "Daten<br>senden"
         belowCaption: meineDaten ? "" : "an: " + ESAA.facilityName
         onClicked:
@@ -281,9 +277,9 @@ ESAAPage
             ESAA.clearData2Send()
             if (meineDaten)
             {
-                ESAA.fstname = fstname.displayText
-                ESAA.surname = surname.displayText
-                ESAA.street = street.displayText
+                MainPerson.fstname = fstname.displayText
+                MainPerson.surname = surname.displayText
+                MainPerson.street = street.displayText
                 ESAA.housenumber = housenumber.displayText
                 ESAA.zip = zip.displayText
                 ESAA.location = location.displayText
@@ -323,7 +319,7 @@ ESAAPage
                     focusMessage(qsTr("Bitte gib noch deinen Vornamen ein"), fstname)
                     return;
                 }
-                ESAA.fstname = fstname.displayText
+                MainPerson.fstname = fstname.displayText
                 ESAA.lastVisitFstname = fstname.displayText
                 ESAA.addData2Send(qsTr("Vorname"), fstname.displayText)
             }
@@ -334,7 +330,7 @@ ESAAPage
                     focusMessage(qsTr("Bitte gib noch deinen Nachnamen ein"), surname)
                     return;
                 }
-                ESAA.surname = surname.displayText
+                MainPerson.surname = surname.displayText
                 ESAA.lastVisitSurname = surname.displayText
                 ESAA.addData2Send(qsTr("Nachname"), surname.displayText)
             }
@@ -345,7 +341,7 @@ ESAAPage
                     focusMessage(qsTr("Bitte gib noch deine Straße ein"), street)
                     return;
                 }
-                ESAA.street = street.displayText
+                MainPerson.street = street.displayText
                 ESAA.lastVisitStreet = street.displayText
                 ESAA.addData2Send(qsTr("Straße"), street.displayText)
             }

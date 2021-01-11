@@ -52,7 +52,7 @@ PageWithBackButton
                 id: name
                 width: parent.width
                 caption: qsTr("Vorname")
-                text: ESAA.fstname
+                text: MainPerson.fstname
             }
             ESAALineInputWithCaption
             {
@@ -60,7 +60,7 @@ PageWithBackButton
                 id: surname
                 width: parent.width
                 caption: qsTr("Nachname")
-                text: ESAA.surname
+                text: MainPerson.surname
             }
             ESAALineInputWithCaption
             {

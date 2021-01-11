@@ -69,7 +69,7 @@ void ESAAApp::sendMail()
     QString work;
     work += tr("Datum: ") + lastVisit.begin().date().toString() + "\n";
     work += tr("Uhrzeit: ") + lastVisit.begin().time().toString() + "\n";
-    work += fstname() + " aus " + location();
+    work += mainPerson.fstname() + " aus " + location();
 
 
     jsonData2Send["DateVisitBegin"] = lastVisit.begin().date().toString(Qt::ISODate);
@@ -231,9 +231,9 @@ void ESAAApp::saveData()
         return;
     }
     QJsonObject contactData;
-    contactData["fstname"] = fstname();
-    contactData["surname"] = surname();
-    contactData["street"] = street();
+    contactData["fstname"] = mainPerson.fstname();
+    contactData["surname"] = mainPerson.surname();
+    contactData["street"] = mainPerson.street();
     contactData["housenumber"] = housenumber();
     contactData["zip"] = zip();
     contactData["location"] = location();
@@ -358,9 +358,9 @@ void ESAAApp::loadData()
     if (data.contains("contactData"))
     {
         QJsonObject contactData(data["contactData"].toObject());
-        setFstname(contactData["fstname"].toString());
-        setSurname(contactData["surname"].toString());
-        setStreet(contactData["street"].toString());
+        mainPerson.setFstname(contactData["fstname"].toString());
+        mainPerson.setSurname(contactData["surname"].toString());
+        mainPerson.setStreet(contactData["street"].toString());
         setHousenumber(contactData["housenumber"].toString());
         setZip(contactData["zip"].toString());
         setLocation(contactData["location"].toString());
@@ -765,7 +765,7 @@ void ESAAApp::action(QString qrCodeJSON)
     }
     if (actionID == actionIDKontakttagebuch)
     {
-        if (fstname() == "" || surname() == "" || emailAdress() == "")
+        if (mainPerson.fstname() == "" || mainPerson.surname() == "" || emailAdress() == "")
         {
             showMessage("Bitte gib noch deine Kontaktdaten (Vorname, Name, E-Mail-Adresse) zum Austausch an. (Menü/Kontaktdaten bearbeiten)");
             return;
@@ -774,7 +774,7 @@ void ESAAApp::action(QString qrCodeJSON)
         QString otherFstname(data["fn"].toString());
         QString otherSurname(data["sn"].toString());
         showWaitMessage("Bitte einen Moment Geduld, die E-Mails werden versendet");
-        mailOffice.sendKontaktTagebuchEMails(fstname(), surname(), emailAdress(), otherFstname, otherSurname, otherEMail);
+        mailOffice.sendKontaktTagebuchEMails(mainPerson.fstname(), mainPerson.surname(), emailAdress(), otherFstname, otherSurname, otherEMail);
         saveKontaktsituation(otherFstname + " " + otherSurname, otherEMail);
         showMessage("Die Kontakttagebuch-E-Mails wurden versendet.");
         return;
@@ -861,8 +861,8 @@ QString ESAAApp::generateKontaktTagebuchQRCode()
 {
     QJsonObject qr;
     qr["ai"] = actionIDKontakttagebuch;
-    qr["fn"] = fstname();
-    qr["sn"] = surname();
+    qr["fn"] = mainPerson.fstname();
+    qr["sn"] = mainPerson.surname();
     qr["ea"] = emailAdress();
     QByteArray qrCodeData(QJsonDocument(qr).toJson(QJsonDocument::Compact));
     QString qrCodeFilename(generateQRcodeIntern(qrCodeData, "kontaktTagebuchQRCode", false));

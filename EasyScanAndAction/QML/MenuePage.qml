@@ -50,7 +50,7 @@ ESAAPage
             ""]
         alertAniRunnings: [
             false,
-            ESAA.fstname == "" || ESAA.surname == "",
+            MainPerson.fstname == "" || MainPerson.surname == "",
             false,
             false,
             false,
@@ -59,7 +59,7 @@ ESAAPage
             false]
         repeatAlertAnis: [
             false,
-            ESAA.fstname == "" || ESAA.surname == "",
+            MainPerson.fstname == "" || MainPerson.surname == "",
             false,
             false,
             false,

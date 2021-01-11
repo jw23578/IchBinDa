@@ -29,6 +29,7 @@
 class ESAAApp: public QObject
 {
     Q_OBJECT
+    JWPROPERTY(QString, appName, AppName, "IchBinDa!");
     IBDPerson mainPerson;
     jw78::Utils jw78Utils;
     const QString databaseFilename;
@@ -93,7 +94,6 @@ class ESAAApp: public QObject
     JWPROPERTY(int, spacing, Spacing, 20);
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
-    JWPROPERTY(QString, appName, AppName, "IchBinDa!");
     JWPROPERTY(int, yesQuestionCount, YesQuestionCount, 0);
     std::set<QString> qrCodes;
     static std::set<std::string> invalidEMailDomains;      
@@ -117,9 +117,6 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, seatNumberWanted, SeatNumberWanted, false);
 
     // eingegebene Kontaktdaten
-    JWPROPERTY(QString, fstname, Fstname, "")
-    JWPROPERTY(QString, surname, Surname, "");
-    JWPROPERTY(QString, street, Street, "");
     JWPROPERTY(QString, housenumber, Housenumber, "");
     JWPROPERTY(QString, zip, Zip, "");
     JWPROPERTY(QString, location, Location, "");
