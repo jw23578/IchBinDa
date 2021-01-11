@@ -45,41 +45,6 @@ void ESAAApp::checkDevelopMobile()
     jw78core::debug::gi()->setDevelop(isDevelop());
 }
 
-void ESAAApp::sendKontaktTagebuchEMails(const QString &otherFstname,
-                                        const QString &otherSurname,
-                                        const QString &otherEMail)
-{
-    SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
-    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-    message->addTo(SimpleMail::EmailAddress(otherEMail));
-    QString subject("IchBinDa! Kontakttagebuch");
-    message->setSubject(subject);
-    auto text = new SimpleMail::MimeText;
-    QString work;
-    work += tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
-    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
-    work += "\n";
-    work += fstname() + " " + surname() + "\n";
-    work += emailAdress();
-    text->setText(work);
-    message->addPart(text);
-    emailSender.addMailToSend(message, false);
-
-    message = new SimpleMail::MimeMessage;
-    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-    message->addTo(SimpleMail::EmailAddress(emailAdress()));
-    message->setSubject(subject);
-    text = new SimpleMail::MimeText;
-    work = tr("Datum: ") + QDateTime::currentDateTime().date().toString() + "\n";
-    work += tr("Uhrzeit: ") + QDateTime::currentDateTime().time().toString() + "\n";
-    work += "\n";
-    work += otherFstname + " " + otherSurname + "\n";
-    work += otherEMail;
-    text->setText(work);
-    message->addPart(text);
-    emailSender.addMailToSend(message, true);
-}
-
 void ESAAApp::sendMail()
 {
     SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
@@ -417,6 +382,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     emailSender(this),
     internetTester(this),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
+    mailOffice(appName(), encrypter, emailSender),
     allVisits(e, "AllVisits", "Visit"),
     customerCardsManager(e, *this, databaseFilename)
 {
@@ -706,170 +672,6 @@ void ESAAApp::fetchLogo(const QString &logoUrl, QImage &target)
     target.loadFromData(networkReply->readAll());
 }
 
-QString ESAAApp::generateA6Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
-{
-    QString a6Flyer(jw78::Utils::getTempPath() + "/a6flyer " + QString::number(number) + ".pdf");
-    QPdfWriter pdf(a6Flyer);
-    QPageLayout layout(pdf.pageLayout());
-    layout.setOrientation(QPageLayout::Landscape);
-    layout.setMode(QPageLayout::FullPageMode);
-    QPageSize ps(QPageSize::A6);
-    layout.setPageSize(ps);
-    pdf.setPageLayout(layout);
-    QPainter painter(&pdf);
-    QRect r(painter.viewport());
-    int pdfPixelWidth(r.width());
-    int pdfPixelHeight(r.height());
-    QImage background(QString(":/images/A6-So-funktioniert-es-") + QString::number(number) + ".png");
-    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
-    int pngPixelWidth(1653);
-    int pngPixelHeight(1181);
-    QRect logoRect(pdfPixelWidth * 67 / pngPixelWidth,
-                   pdfPixelHeight * 67 / pngPixelHeight,
-                   pdfPixelWidth * 290 / pngPixelWidth,
-                   pdfPixelHeight * 290 / pngPixelHeight);
-    painter.fillRect(logoRect, "white");
-
-    QRect behindCaption(logoRect.right(),
-                        logoRect.top(),
-                        pdfPixelWidth - logoRect.right(),
-                        logoRect.height() / 4);
-    painter.fillRect(behindCaption, "white");
-
-    painter.drawImage(logoRect, logo);
-    QFont font = painter.font();
-    font.setPixelSize(logoRect.height() / 4);
-    painter.setFont(font);
-    QPen pen = painter.pen();
-    pen.setColor("black");
-    painter.setPen(pen);
-    QFontMetrics fontMetrics(painter.fontMetrics());
-    QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText(pdfPixelWidth * 366 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
-
-    QImage qr(qrCodeFilename);
-    QRect qrCodeRect(pdfPixelWidth * 1026 / pngPixelWidth,
-                     pdfPixelHeight * 530 / pngPixelHeight,
-                     pdfPixelWidth * 540 / pngPixelWidth,
-                     pdfPixelHeight * 540 / pngPixelHeight);
-
-    painter.drawImage(qrCodeRect, qr);
-
-    painter.end();
-    return a6Flyer;
-}
-
-QString ESAAApp::generateA5Flyer(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
-{
-    QString a5Flyer(jw78::Utils::getTempPath() + "/a5flyer " + QString::number(number) + ".pdf");
-    QPdfWriter pdf(a5Flyer);
-    QPageLayout layout(pdf.pageLayout());
-    layout.setOrientation(QPageLayout::Landscape);
-    layout.setMode(QPageLayout::FullPageMode);
-    QPageSize ps(QPageSize::A5);
-    layout.setPageSize(ps);
-    pdf.setPageLayout(layout);
-    QPainter painter(&pdf);
-    QRect r(painter.viewport());
-    int pdfPixelWidth(r.width());
-    int pdfPixelHeight(r.height());
-    QImage background(QString(":/images/A5-So-funktioniert-es-") + QString::number(number) + ".png");
-    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
-    int pngPixelWidth(2480);
-    int pngPixelHeight(1653);
-    QRect logoRect(pdfPixelWidth * 105 / pngPixelWidth,
-                   pdfPixelHeight * 100 / pngPixelHeight,
-                   pdfPixelWidth * 420 / pngPixelWidth,
-                   pdfPixelHeight * 420 / pngPixelHeight);
-    painter.fillRect(logoRect, "white");
-
-    QRect behindCaption(logoRect.right(),
-                        logoRect.top(),
-                        pdfPixelWidth - logoRect.right(),
-                        logoRect.height() / 4);
-    painter.fillRect(behindCaption, "white");
-
-    painter.drawImage(logoRect, logo);
-    QFont font = painter.font();
-    font.setPixelSize(logoRect.height() / 4);
-    painter.setFont(font);
-    QPen pen = painter.pen();
-    pen.setColor("black");
-    painter.setPen(pen);
-    QFontMetrics fontMetrics(painter.fontMetrics());
-    QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText(pdfPixelWidth * 585 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
-
-    QImage qr(qrCodeFilename);
-    QRect qrCodeRect(pdfPixelWidth * 1475 / pngPixelWidth,
-                     pdfPixelHeight * 690 / pngPixelHeight,
-                     pdfPixelWidth * 845 / pngPixelWidth,
-                     pdfPixelHeight * 845 / pngPixelHeight);
-
-    painter.drawImage(qrCodeRect, qr);
-
-    painter.end();
-    return a5Flyer;
-}
-
-QString ESAAApp::generateA4Flyer1(const QString &facilityName, const QImage &logo, const QString qrCodeFilename, int number)
-{
-    QString a4Flyer(jw78::Utils::getTempPath() + "/a4flyer" + QString::number(number) + ".pdf");
-    QPdfWriter pdf(a4Flyer);
-    QPageLayout layout(pdf.pageLayout());
-    layout.setOrientation(QPageLayout::Portrait);
-    layout.setMode(QPageLayout::FullPageMode);
-    QPageSize ps(QPageSize::A4);
-    layout.setPageSize(ps);
-    pdf.setPageLayout(layout);
-    QPainter painter(&pdf);
-    QRect r(painter.viewport());
-    int pdfPixelWidth(r.width());
-    int pdfPixelHeight(r.height());
-    QImage background(QString(":/images/A4-So-funktioniert-es-") + QString::number(number) + ".png");
-    painter.drawImage(QRect(0, 0, pdfPixelWidth, pdfPixelHeight), background);
-    int pngPixelWidth(2481);
-    int pngPixelHeight(3508);
-
-    QRect logoRect(pdfPixelWidth * 156 / pngPixelWidth,
-                   pdfPixelHeight * 100 / pngPixelHeight,
-                   pdfPixelWidth * 420 / pngPixelWidth,
-                   pdfPixelHeight * 420 / pngPixelHeight);
-    painter.fillRect(logoRect, "white");
-
-    QRect behindCaption(logoRect.right(),
-                        logoRect.top(),
-                        pdfPixelWidth - logoRect.right(),
-                        logoRect.height() / 4);
-    painter.fillRect(behindCaption, "white");
-
-    painter.drawImage(logoRect, logo);
-    QFont font = painter.font();
-    font.setPixelSize(logoRect.height() / 4);
-    painter.setFont(font);
-    QPen pen = painter.pen();
-    pen.setColor("black");
-    painter.setPen(pen);
-    QFontMetrics fontMetrics(painter.fontMetrics());
-    QRect nameRect(fontMetrics.boundingRect(facilityName));
-    painter.drawText(pdfPixelWidth * 634 / pngPixelWidth, logoRect.top() + nameRect.height() / 3 * 2, facilityName);
-
-    QImage qr(qrCodeFilename);
-    QRect qrCodeRect(pdfPixelWidth * 1107 / pngPixelWidth,
-                     pdfPixelHeight * 924 / pngPixelHeight,
-                     pdfPixelWidth * 1122 / pngPixelWidth,
-                     pdfPixelHeight * 1122 / pngPixelHeight);
-    if (number == 3)
-    {
-        qrCodeRect = QRect(pdfPixelWidth * 684 / pngPixelWidth,
-                           pdfPixelHeight * 1008 / pngPixelHeight,
-                           pdfPixelWidth * 1122 / pngPixelWidth,
-                           pdfPixelHeight * 1122 / pngPixelHeight);
-    }
-    painter.drawImage(qrCodeRect, qr);
-    painter.end();
-    return a4Flyer;
-}
 
 void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
 {
@@ -971,7 +773,7 @@ void ESAAApp::action(QString qrCodeJSON)
         QString otherFstname(data["fn"].toString());
         QString otherSurname(data["sn"].toString());
         showWaitMessage("Bitte einen Moment Geduld, die E-Mails werden versendet");
-        sendKontaktTagebuchEMails(otherFstname, otherSurname, otherEMail);
+        mailOffice.sendKontaktTagebuchEMails(fstname(), surname(), emailAdress(), otherFstname, otherSurname, otherEMail);
         saveKontaktsituation(otherFstname + " " + otherSurname, otherEMail);
         showMessage("Die Kontakttagebuch-E-Mails wurden versendet.");
         return;
@@ -1149,6 +951,15 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     return qrCodeFilename;
 }
 
+void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName, const QString &logoUrl)
+{
+    QImage logo;
+    fetchLogo(logoUrl, logo);
+    mailOffice.sendQRCode(qrCodeReceiver, facilityName, logo, qrCodes);
+    postQRCodeData(facilityIdToPost, qrCodeDataToPost);
+    showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
+}
+
 void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 {
     QString url(baseServerURL() + fileStoreMethod);
@@ -1173,89 +984,6 @@ void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 
 }
 
-void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityName, const QString &logoUrl)
-{
-    SimpleMail::MimeMessage *message(new SimpleMail::MimeMessage);
-    message->setSender(SimpleMail::EmailAddress(emailSender.smtpSender, appName()));
-    message->addTo(SimpleMail::EmailAddress(qrCodeReceiver));
-
-    QString subject("QR-Code ");
-    subject += facilityName;
-    message->setSubject(subject);
-
-    // Now add some text to the email.
-    SimpleMail::MimeHtml *html = new SimpleMail::MimeHtml;
-
-    QString jpgGuid(jw78::Utils::genUUID());
-
-    html->setHtml(QLatin1String("<h1> Hier folgt der QR-Code </h1>"
-                                "<img src=\"cid:") + jpgGuid + "\" />");
-
-    // Now add it to the mail
-    message->addPart(html);
-
-    // Create a MimeInlineFile object for each image
-    std::set<QString>::iterator it(qrCodes.begin());
-    QString pngQRCodeFilename;
-    while (it != qrCodes.end())
-    {
-        auto image1 = new SimpleMail::MimeInlineFile(new QFile(*it));
-
-        // An unique content id must be setted
-        if (it->right(3) == "jpg")
-        {
-            image1->setContentId(jpgGuid.toLatin1());
-            image1->setContentType(QByteArrayLiteral("image/jpg"));
-        }
-        if (it->right(3) == "png")
-        {
-            image1->setContentId(jw78::Utils::genUUID().toLatin1());
-            image1->setContentType(QByteArrayLiteral("image/png"));
-            pngQRCodeFilename = *it;
-        }
-        if (it->right(3) == "svg")
-        {
-            image1->setContentId(jw78::Utils::genUUID().toLatin1());
-            image1->setContentType(QByteArrayLiteral("image/svg+xml"));
-        }
-
-        message->addPart(image1);
-        ++it;
-    }
-    SimpleMail::MimeAttachment *attachmentInstallationA4PDF(new SimpleMail::MimeAttachment(new QFile(QLatin1String(":/pdfs/InstallationA4.pdf"))));
-    attachmentInstallationA4PDF->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentInstallationA4PDF);
-
-    SimpleMail::MimeAttachment *attachmentInstallationA4PDFQuer(new SimpleMail::MimeAttachment(new QFile(QLatin1String(":/pdfs/InstallationA4Quer.pdf"))));
-    attachmentInstallationA4PDFQuer->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentInstallationA4PDFQuer);
-
-    QImage logo;
-    fetchLogo(logoUrl, logo);
-    SimpleMail::MimeAttachment *attachmentA4Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 1))));
-    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentA4Flyer1);
-
-    SimpleMail::MimeAttachment *attachmentA4Flyer2(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 2))));
-    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentA4Flyer2);
-
-    SimpleMail::MimeAttachment *attachmentA4Flyer3(new SimpleMail::MimeAttachment(new QFile(generateA4Flyer1(facilityName, logo, pngQRCodeFilename, 3))));
-    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentA4Flyer3);
-
-    SimpleMail::MimeAttachment *attachmentA6Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA6Flyer(facilityName, logo, pngQRCodeFilename, 1))));
-    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentA6Flyer1);
-
-    SimpleMail::MimeAttachment *attachmentA5Flyer1(new SimpleMail::MimeAttachment(new QFile(generateA5Flyer(facilityName, logo, pngQRCodeFilename, 1))));
-    attachmentA4Flyer1->setContentType(QByteArrayLiteral("application/pdf"));
-    message->addPart(attachmentA5Flyer1);
-
-    emailSender.addMailToSend(message, true);
-    postQRCodeData(facilityIdToPost, qrCodeDataToPost);
-    showMessage(QString("Der QR-Code wurde an ") + qrCodeReceiver + " gesendet");
-}
 
 void ESAAApp::recommend()
 {

@@ -23,6 +23,7 @@
 #include "helpoffermanager.h"
 #include "customercardsmanager.h"
 #include "environment/encrypter.h"
+#include "mailoffice.h"
 
 class ESAAApp: public QObject
 {
@@ -41,6 +42,7 @@ class ESAAApp: public QObject
     Encrypter encrypter;
     Visit currentQRCodeData;
     Visit lastVisit;
+    MailOffice mailOffice;
     std::map<QString, QDateTime> lastVisitOfFacility;
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
@@ -141,9 +143,6 @@ class ESAAApp: public QObject
     QString ibdTokenStoreMethod;
     QString fileStoreMethod;
 
-    void sendKontaktTagebuchEMails(const QString &otherFstname,
-                                   const QString &otherSurname,
-                                   const QString &otherEMail);
     void sendMail();
 
     struct SLocationInfo
@@ -170,18 +169,6 @@ class ESAAApp: public QObject
     void checkLoggedIn();
 public:
     void fetchLogo(const QString &logoUrl, QImage &target);
-    QString generateA6Flyer(const QString &facilityName,
-                            const QImage &logo,
-                            const QString qrCodeFilename,
-                            int number);
-    QString generateA5Flyer(const QString &facilityName,
-                            const QImage &logo,
-                            const QString qrCodeFilename,
-                            int number);
-    QString generateA4Flyer1(const QString &facilityName,
-                             const QImage &logo,
-                             const QString qrCodeFilename,
-                             int number);
 private:
 
 

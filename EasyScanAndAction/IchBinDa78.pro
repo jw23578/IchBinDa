@@ -23,6 +23,7 @@ SOURCES += \
     datetimereflectable.cpp \
     environment/emailsender.cpp \
     environment/encrypter.cpp \
+    environment/flyergenerator.cpp \
     esaaapp.cpp \
     helpoffer.cpp \
     helpoffermanager.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     datetimereflectable.h \
     environment/emailsender.h \
     environment/encrypter.h \
+    environment/flyergenerator.h \
     esaaapp.h \
     helpoffer.h \
     helpoffermanager.h \
