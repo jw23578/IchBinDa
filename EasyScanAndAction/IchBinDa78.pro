@@ -237,9 +237,9 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
-include(JW78MobileExtensions/JW78MobileExtensions.pri)
-include(JW78QTLib/JW78QTLib.pri)
-include(JW78CoreLib/JW78CoreLib.pri)
+include(../../JW78MobileExtensions/JW78MobileExtensions.pri)
+include(../../JW78QTLib/JW78QTLib.pri)
+include(../../jw78corelib/JW78CoreLib.pri)
 include(../../independentQML/independentQML.pri)
 
 

@@ -1,7 +1,7 @@
 #ifndef DATETIMEREFLECTABLE_H
 #define DATETIMEREFLECTABLE_H
 
-#include "JW78QTLib/persistent/jw78persistentobject.h"
+#include "persistent/jw78persistentobject.h"
 #include <QDateTime>
 
 class DateTimeReflectable: public jw78::PersistentObject

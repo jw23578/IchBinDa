@@ -1,5 +1,5 @@
 #include "pausetimespan.h"
-#include "JW78QTLib/jw78utils.h"
+#include "jw78utils.h"
 
 void PauseTimeSpan::calculate()
 {

@@ -2,7 +2,7 @@
 #define ESAAAPP_H
 
 #include <QObject>
-#include "JW78QTLib/jw78qtmacros.h"
+#include "jw78qtmacros.h"
 #include <QQmlApplicationEngine>
 #include <QColor>
 #include <SimpleMailSRC/SimpleMail>
@@ -16,8 +16,8 @@
 #include <QJsonObject>
 #include "visit.h"
 #include "dataModel/jw78ObjectListModel.h"
-#include "JW78MobileExtensions/mobileextensions.h"
-#include "JW78QTLib/jw78utils.h"
+#include "mobileextensions.h"
+#include "jw78utils.h"
 #include "placesmanager.h"
 #include <QTimer>
 #include "helpoffermanager.h"

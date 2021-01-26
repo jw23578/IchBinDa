@@ -3,10 +3,10 @@
 
 #include <QObject>
 #include <QQmlApplicationEngine>
-#include "JW78QTLib/jw78qtmacros.h"
+#include "jw78qtmacros.h"
 #include <QDateTime>
 #include <QString>
-#include <JW78QTLib/dataModel/jw78ObjectListModel.h>
+#include <dataModel/jw78ObjectListModel.h>
 #include "worktimespan.h"
 #include "datetimereflectable.h"
 #include "persistent/jw78persistentstoresqlite.h"

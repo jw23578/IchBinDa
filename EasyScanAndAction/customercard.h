@@ -1,8 +1,8 @@
 #ifndef CUSTOMERCARD_H
 #define CUSTOMERCARD_H
 
-#include "JW78QTLib/dataModel/jw78ProxyObject.h"
-#include "JW78QTLib/persistent/jw78persistentobject.h"
+#include "dataModel/jw78ProxyObject.h"
+#include "persistent/jw78persistentobject.h"
 
 class CustomerCard: public jw78::ProxyObject, public jw78::PersistentObject
 {

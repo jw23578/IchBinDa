@@ -6,7 +6,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "place.h"
-#include "JW78QTLib/jw78utils.h"
+#include "jw78utils.h"
 #include "qthelper.h"
 
 PlacesManager::PlacesManager(QQmlApplicationEngine &engine): QObject(&engine),
