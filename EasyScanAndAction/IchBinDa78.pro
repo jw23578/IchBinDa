@@ -240,6 +240,8 @@ include(SimpleMailSRC/simplemail.pri)
 include(JW78MobileExtensions/JW78MobileExtensions.pri)
 include(JW78QTLib/JW78QTLib.pri)
 include(JW78CoreLib/JW78CoreLib.pri)
+include(../../independentQML/independentQML.pri)
+
 
 android: include(/home/jw78/Android/Sdk/android_openssl/openssl.pri)
 

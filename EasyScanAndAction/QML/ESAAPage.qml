@@ -3,7 +3,9 @@ import QtQuick 2.15
 Background
 {
     signal showing;
+    signal showed;
     signal hiding;
+    signal hided;
     signal backPressed
     focus: true
     property string caption: ""
@@ -47,6 +49,7 @@ Background
             duration: 400
             to: 1
         }
+        onStopped: showed()
     }
     ParallelAnimation
     {
@@ -65,6 +68,7 @@ Background
             duration: 600
             to: 0
         }
+        onStopped: hided()
     }
 
     function show(moveLeft)

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "Comp"
+import "qrc:/foundation"
 
 Item
 {
@@ -26,7 +27,7 @@ Item
         color: ESAA.buttonColor
     }
 
-    ESAAText
+    IDPText
     {
         id: infotext
         width: parent.width - 2 * ESAA.spacing

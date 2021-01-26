@@ -3,11 +3,12 @@ import QtCharts 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
     caption: "Arbeitszeiten"
-    CircleButton
+    IDPButtonCircle
     {
         anchors.right: parent.right
         anchors.top: parent.top
@@ -61,28 +62,28 @@ ESAAPage
                     }
                 }
 
-                ESAAText
+                IDPText
                 {
                     id: dienstBeginnEndeAmSelbenTag
                     visible: JW78Utils.formatDate(timeSpan.workBegin) == JW78Utils.formatDate(timeSpan.workEnd)
                     text: "Dienst " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin) + " - " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                 }
-                ESAAText
+                IDPText
                 {
                     visible: !dienstBeginnEndeAmSelbenTag.visible
                     text: "Dienst von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
                 }
-                ESAAText
+                IDPText
                 {
                     visible: !dienstBeginnEndeAmSelbenTag.visible
                     text: "Dienst bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto + timeSpan.addedPauseMinutes) + " (" + timeSpan.pauseCount + ")"
                     visible: timeSpan.pauseCount > 0
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dauer: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
                 }
@@ -103,31 +104,31 @@ ESAAPage
                 anchors.left: parent.left
                 anchors.leftMargin: ESAA.spacing
                 anchors.verticalCenter: parent.verticalCenter
-                ESAAText
+                IDPText
                 {
                     text: "Dienst von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dienst bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dauer Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesBrutto);
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Pause Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto) + " Anzahl Pausen: " + timeSpan.pauseCount
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Pause Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto);
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Hinzugefügte Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.addedPauseMinutes);
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dauer Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
                 }
@@ -150,15 +151,15 @@ ESAAPage
                 anchors.right: parent.right
                 anchors.rightMargin: ESAA.spacing
                 anchors.verticalCenter: parent.verticalCenter
-                ESAAText
+                IDPText
                 {
                     text: "Dienst von " + JW78Utils.formatDate(timeSpan.workBegin) + " " + JW78Utils.formatTimeHHMM(timeSpan.workBegin)
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dienst bis " + JW78Utils.formatDate(timeSpan.workEnd) + " " + JW78Utils.formatTimeHHMM(timeSpan.workEnd)
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dauer Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesBrutto);
                 }
@@ -177,15 +178,15 @@ ESAAPage
                             anchors.leftMargin: ESAA.spacing
                             property var pause: timeSpan.getPause(index)
                             spacing: 0
-                            ESAAText
+                            IDPText
                             {
                                 text: "Pause von " + JW78Utils.formatDate(parent.pause.pauseBegin) + " " + JW78Utils.formatTimeHHMM(parent.pause.pauseBegin)
                             }
-                            ESAAText
+                            IDPText
                             {
                                 text: "Pause bis " + JW78Utils.formatDate(parent.pause.pauseEnd) + " " + JW78Utils.formatTimeHHMM(parent.pause.pauseEnd)
                             }
-                            ESAAText
+                            IDPText
                             {
                                 text: "Dauer: " + JW78Utils.formatMinutesHHMM(parent.pause.minutes);
                             }
@@ -193,19 +194,19 @@ ESAAPage
                     }
                 }
 
-                ESAAText
+                IDPText
                 {
                     text: "Pause Brutto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesBrutto) + " Anzahl Pausen: " + timeSpan.pauseCount
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Pause Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.pauseMinutesNetto);
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Hinzugefügte Pause: " + JW78Utils.formatMinutesHHMM(timeSpan.addedPauseMinutes);
                 }
-                ESAAText
+                IDPText
                 {
                     text: "Dauer Netto: " + JW78Utils.formatMinutesHHMM(timeSpan.workMinutesNetto);
                 }
@@ -284,7 +285,7 @@ ESAAPage
                 TimeMaster.load(JW78Utils.year(TimeMaster.currentYearMonth), JW78Utils.month(TimeMaster.currentYearMonth))
             }
         }
-        ESAAText
+        IDPText
         {
             text: JW78Utils.formatDateMonthYear(TimeMaster.currentYearMonth)
             anchors.centerIn: parent

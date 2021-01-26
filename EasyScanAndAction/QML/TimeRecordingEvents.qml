@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtCharts 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -25,18 +26,18 @@ ESAAPage
                 anchors.left: parent.left
                 anchors.leftMargin: ESAA.spacing
                 anchors.verticalCenter: parent.verticalCenter
-                ESAAText
+                IDPText
                 {
                     text: JW78Utils.formatDate(event.timeStamp)
                     id: datetext
                 }
-                ESAAText
+                IDPText
                 {
                     text: JW78Utils.formatTimeHHMM(event.timeStamp)
                     id: timetext
                 }
             }
-            ESAAText
+            IDPText
             {
                 anchors.centerIn: parent
                 text: event.type2String()

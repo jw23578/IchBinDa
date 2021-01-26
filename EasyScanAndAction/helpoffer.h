@@ -16,6 +16,7 @@ class HelpOffer: public jw78::ProxyObject, public jw78::PersistentObject
 protected:
     pureReflection *internalCreate(bool genUuid) const override;
 public:
+    bool transferred;
     HelpOffer(bool genUuid);
 };
 

@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
 Row
 {
@@ -15,26 +16,29 @@ Row
 
     property alias disabledLeftText: leftButton.disabledText
     property alias disabledRightText: rightButton.disabledText
+    property var coverContainer: null
     Item
     {
         width: parent.w
         height: 1
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: leftButton
         onClicked: leftClicked()
+        coverContainer: parent.coverContainer
     }
     Item
     {
         width: parent.w
         height: 1
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: rightButton
         onClicked: rightClicked()
         width: leftButton.width
+        coverContainer: parent.coverContainer
     }
     Item
     {

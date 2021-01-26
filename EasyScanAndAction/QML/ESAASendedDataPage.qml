@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -26,7 +27,7 @@ ESAAPage
             width: parent.width
             height: 1
         }
-        ESAAText
+        IDPText
         {
             width: parent.width - 2 * ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
@@ -77,7 +78,7 @@ ESAAPage
             }
         }
 
-        ESAAText
+        IDPText
         {
             id: messageText
             width: parent.width
@@ -208,7 +209,7 @@ ESAAPage
             }
         }
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: closeButton
         anchors.horizontalCenter: parent.horizontalCenter

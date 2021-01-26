@@ -48,5 +48,6 @@
         <file>images/engagement_1.png</file>
         <file>images/engagement_2.png</file>
         <file>images/user.svg</file>
+        <file>images/noProfileImage.svg</file>
     </qresource>
 </RCC>

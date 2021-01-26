@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -151,7 +152,7 @@ ESAAPage
                 colorEdit: true
                 id: colorInputVisitCount
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width
                 id: textId
@@ -160,12 +161,12 @@ ESAAPage
                 wrapMode: Text.WordWrap
             }
 
-            ESAASwitch
+            IDPText
             {
                 id: adressSwitch
                 width: parent.width
                 text: qsTr("Adressdaten")
-                fontColor: createqrcodepage.textColor
+                color: createqrcodepage.textColor
             }
             ESAASwitch
             {
@@ -181,7 +182,7 @@ ESAAPage
                 text: qsTr("Handynummer")
                 fontColor: createqrcodepage.textColor
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width
                 color: createqrcodepage.textColor
@@ -230,7 +231,7 @@ ESAAPage
                 text: qsTr("Die Sitznummer")
                 fontColor: createqrcodepage.textColor
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width
                 color: createqrcodepage.textColor
@@ -291,13 +292,13 @@ ESAAPage
                     }
                 }
             }
-            CircleButton
+            IDPButtonCircle
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "weitere<br>Frage"
                 onClicked: yesQuestionRepeater.model = yesQuestionRepeater.count + 1
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width
                 color: createqrcodepage.textColor
@@ -359,7 +360,7 @@ ESAAPage
             }
         }
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: showCodeButton
         anchors.bottom: parent.bottom

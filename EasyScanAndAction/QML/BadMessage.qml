@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 Background
 {
@@ -17,7 +18,7 @@ Background
         anchors.margins: parent.width / 20
         contentHeight: Math.max(messageText.contentHeight, sendButton.y)
         clip: true
-        ESAAText
+        IDPText
         {
             id: messageText
             anchors.centerIn: parent
@@ -34,7 +35,7 @@ Background
         messageText.text = mt
         visible = true
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: sendButton
         anchors.horizontalCenter: parent.horizontalCenter

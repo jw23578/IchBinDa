@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
 Flickable
 {
@@ -47,7 +48,7 @@ Flickable
         {
             id: theRepeater
             model: buttonTexts
-            CircleButton
+            IDPButtonCircle
             {
                 id: aButton
                 smallTopText: buttonSmallTopTexts[index]

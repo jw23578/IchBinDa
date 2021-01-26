@@ -31,7 +31,7 @@ public:
     Q_INVOKABLE void deleteHelpOfferByIndex(int index);
 
 public slots:
-    void onHelpOfferStored(const jw78::PersistentObject &object);
+    void onHelpOfferStored(jw78::PersistentObject &object);
     void onHelpOfferNotStored(const jw78::PersistentObject &object);
 
 };

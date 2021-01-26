@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
+import "qrc:/foundation"
 
 PageWithBackButton
 {
@@ -62,7 +63,7 @@ PageWithBackButton
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: inputColumn.top
-        ESAAText
+        IDPText
         {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width - 2 * JW78APP.spacing
@@ -83,7 +84,7 @@ PageWithBackButton
                 }
             }
         }
-        ESAAText
+        IDPText
         {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width - 2 * JW78APP.spacing
@@ -104,7 +105,7 @@ PageWithBackButton
                 }
             }
         }
-        ESAAText
+        IDPText
         {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width - 2 * JW78APP.spacing
@@ -135,25 +136,26 @@ PageWithBackButton
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -parent.height / 10
-        anchors.margins: ESAA.spacing
+        anchors.margins: ESAA.spacing * 2
         spacing: ESAA.spacing
-        ESAALineInputWithCaption
+        IDPLineEditWithTopCaption
         {
-            caption: "Login (E-Mail)"
+            containedCaption: true
+            caption: qsTr("Login (E-Mail)")
             id: loginEMail
             anchors.left: parent.left
             anchors.right: parent.right
-            font.pixelSize: JW78APP.fontMessageTextPixelsize
+            inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
         }
-        ESAALineInputWithCaption
+        IDPLineEditWithTopCaption
         {
+            containedCaption: true
             echoMode: TextInput.Password
             visible: opacity > 0
             anchors.left: parent.left
             anchors.right: parent.right
-            caption: "Passwort"
+            caption: qsTr("Passwort")
             id: password
-            font.pixelSize: JW78APP.fontMessageTextPixelsize
             Behavior on opacity {
                 NumberAnimation {
                     duration: JW78Utils.shortAniDuration
@@ -166,7 +168,7 @@ PageWithBackButton
             }
         }
     }
-    CircleButtonWithBehavior
+    IDPButtonCircleWithBehavior
     {
         id: loginButton
         text: "Login"
@@ -203,7 +205,7 @@ PageWithBackButton
                           "")
         }
     }
-    CircleButtonWithBehavior
+    IDPButtonCircleWithBehavior
     {
         id: registerButton
         text: "Registrieren"
@@ -240,7 +242,7 @@ PageWithBackButton
                                     password.text)
         }
     }
-    CircleButtonWithBehavior
+    IDPButtonCircleWithBehavior
     {
         id: forgotPasswordButton
         text: "Passwort\nvergessen"
@@ -271,7 +273,7 @@ PageWithBackButton
             JW78APP.requestLoginCode(loginEMail.displayText)
         }
     }
-    CircleButtonWithBehavior
+    IDPButtonCircleWithBehavior
     {
         id: enterCodeButton
         text: "Code\neingeben"

@@ -1,6 +1,7 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
-CircleButton
+IDPButtonCircle
 {
     property bool rightArrow: true
     imageRotation: rightArrow ? 180 : 0

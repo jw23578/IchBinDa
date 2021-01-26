@@ -2,12 +2,13 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ".."
 import "../Comp"
+import "qrc:/foundation"
 
 ESAAPage {
     caption: "Kundenkarten"
     signal newCard;
     signal showCustomerCard(string name, string filename, int index)
-    CircleButton
+    IDPButtonCircle
     {
         anchors.right: parent.right
         anchors.top: parent.top
@@ -89,7 +90,7 @@ ESAAPage {
                                 fillMode: Image.PreserveAspectFit
                             }
 
-                            ESAAText
+                            IDPText
                             {
                                 text: Card.name
                                 x: height + JW78APP.spacing
@@ -105,7 +106,7 @@ ESAAPage {
                                     }
                                 }
                             }
-                            CircleButton
+                            IDPButtonCircle
                             {
                                 id: deleteButton
                                 anchors.right: parent.right

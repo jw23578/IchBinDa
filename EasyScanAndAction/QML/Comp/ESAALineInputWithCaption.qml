@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
 FocusScope
 {
@@ -24,7 +25,7 @@ FocusScope
         width: parent.width
         onHelpClicked: theItem.helpClicked(ht)
     }
-    ESAAText
+    IDPText
     {
         id: captionText
         anchors.fill: input
@@ -35,5 +36,10 @@ FocusScope
         color:  input.activeFocus ? "#aaaaaa" : "#555555"
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: input.font.pixelSize * 0.8
+    }
+    property alias coverContainer: cover.coverContainer
+    IDPCover
+    {
+        id: cover
     }
 }

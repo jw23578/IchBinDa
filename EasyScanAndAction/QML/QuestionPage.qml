@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -84,7 +85,7 @@ ESAAPage
                     console.log("Logosource: " + source)
                 }
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -239,7 +240,7 @@ ESAAPage
                 {
                     width: parent.width - 2 * ESAA.spacing
                     anchors.horizontalCenter: parent.horizontalCenter
-                    ESAAText
+                    IDPText
                     {
                         width: parent.width
                         id: textId

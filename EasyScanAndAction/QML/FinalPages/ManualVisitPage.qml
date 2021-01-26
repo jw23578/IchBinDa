@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
+import "qrc:/foundation"
 
 PageWithBackButton
 {
@@ -15,7 +16,7 @@ PageWithBackButton
         ESAA.askYesNoQuestion("Soll ein Besuch bei <br><br><b>" + name + "</b><br><br> eingetragen werden?", visitAccepted, visitNotAccepted)
     }
 
-    CircleButton
+    IDPButtonCircle
     {
         anchors.right: parent.right
         anchors.top: parent.top
@@ -110,7 +111,7 @@ PageWithBackButton
                     width: parent.width
                 }
 
-                ESAAText
+                IDPText
                 {
                     text: place.name
                     width: parent.width
@@ -122,7 +123,7 @@ PageWithBackButton
                     height: ESAA.spacing / 4
                     width: parent.width
                 }
-                ESAAText
+                IDPText
                 {
                     font.pixelSize: ESAA.contentFontPixelsize
                     color: JW78APP.contentFontColor
@@ -158,7 +159,7 @@ PageWithBackButton
         color: "white"
         opacity: backButton.opacity
         visible: opacity > 0 && Places.count == 0
-        ESAAText
+        IDPText
         {
             anchors.centerIn: parent
             width: parent.width * 8 / 10
@@ -182,7 +183,7 @@ PageWithBackButton
             height: width
         }
 
-        ESAAText
+        IDPText
         {
             anchors.horizontalCenter: waitImage.horizontalCenter
             anchors.top: waitImage.bottom
@@ -200,7 +201,7 @@ PageWithBackButton
         color: "orange"
         opacity: backButton.opacity
         visible: opacity > 0 && MobileExtensions.locationServicesDeniedByUser
-        ESAAText
+        IDPText
         {
             anchors.centerIn: parent
             width: parent.width * 8 / 10
@@ -218,7 +219,7 @@ PageWithBackButton
             }
         }
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: manuelButton
         anchors.horizontalCenter: parent.horizontalCenter
@@ -324,7 +325,7 @@ PageWithBackButton
                     height: Math.max(0, theFlickable.height - infoText.height - manualName.height - 2 * JW78APP.spacing)
                 }
 
-                ESAAText
+                IDPText
                 {
                     id: infoText
                     anchors.horizontalCenter: parent.horizontalCenter

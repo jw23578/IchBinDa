@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -23,7 +24,7 @@ ESAAPage
             visible: true
             cache: true
         }
-        ESAAText
+        IDPText
         {
             id: besuchBeginn
             anchors.left: logoImage.right
@@ -36,7 +37,7 @@ ESAAPage
             wrapMode: Text.WordWrap
             text: JW78Utils.formatTime(LastVisit.begin)
         }
-        ESAAText
+        IDPText
         {
             anchors.left: logoImage.right
             anchors.leftMargin: ESAA.spacing
@@ -78,7 +79,7 @@ ESAAPage
             spacing: ESAA.spacing
             //        spacing: (width - columns * buttonSize) / (columns - 1)
             rowSpacing: ESAA.spacing
-            CircleButton
+            IDPButtonCircle
             {
                 id: lastTransmissionbutton
                 text: qsTr("Letzte<br>Übertragung")
@@ -86,7 +87,7 @@ ESAAPage
                 font.pixelSize: theGrid.buttonFontPixelSize
                 width: parent.buttonSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 id: websiteButton
                 text: qsTr("Webseite<br>öffnen")
@@ -95,7 +96,7 @@ ESAAPage
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
                 width: parent.buttonSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 text: qsTr("Speise-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
@@ -103,7 +104,7 @@ ESAAPage
                 visible: LastVisit.foodMenueURL != ""
                 width: parent.buttonSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 text: qsTr("Getränke-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
@@ -111,7 +112,7 @@ ESAAPage
                 visible: LastVisit.drinksMenueURL != ""
                 width: parent.buttonSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 text: qsTr("Mittags-<br>karte")
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
@@ -119,7 +120,7 @@ ESAAPage
                 visible: LastVisit.lunchMenueURL != ""
                 width: parent.buttonSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 text: LastVisit.individualURL1Caption
                 font.pixelSize: theGrid.buttonFontPixelSize * 1.3
@@ -133,7 +134,7 @@ ESAAPage
     {
         id: shareButton
     }
-    CircleButton
+    IDPButtonCircle
     {
         id: finishVisit
         text: qsTr("Besuch<br>beenden")

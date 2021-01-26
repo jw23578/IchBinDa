@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "Comp"
+import "qrc:/foundation"
 
 Rectangle
 {
@@ -33,7 +34,7 @@ Rectangle
         GradientStop {position: 0.0; color: gradientFromColor}
         GradientStop {position: 1.0; color: gradientToColor}
     }
-    ESAAText
+    IDPText
     {
         anchors.centerIn: parent
         id: headerCaption

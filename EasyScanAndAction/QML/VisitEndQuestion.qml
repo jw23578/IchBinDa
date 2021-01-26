@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -12,7 +13,7 @@ ESAAPage
         close()
     }
 
-    ESAAText
+    IDPText
     {
         id: messageText
         anchors.centerIn: parent

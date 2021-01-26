@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import QtQuick.Window 2.15
+import "qrc:/foundation"
 
 Button
 {
@@ -23,7 +24,7 @@ Button
     property alias belowCaption: belowCaptionText.text
     property alias aboveCaption: aboveCaptionText.text
     contentItem: Item {
-        ESAAText
+        IDPText
         {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -38,7 +39,7 @@ Button
             font.family: "Roboto-Thin"
 
         }
-        ESAAText
+        IDPText
         {
             anchors.centerIn: parent
             text: control.text
@@ -50,7 +51,7 @@ Button
             elide: Text.ElideRight
         }
     }
-    ESAAText
+    IDPText
     {
         visible: text != ""
         id: belowCaptionText
@@ -62,7 +63,7 @@ Button
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.bottom
     }
-    ESAAText
+    IDPText
     {
         visible: text != ""
         id: aboveCaptionText

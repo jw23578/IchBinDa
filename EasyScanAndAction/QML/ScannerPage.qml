@@ -4,6 +4,7 @@ import QtMultimedia 5.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -25,15 +26,16 @@ ESAAPage
     {
         multiButton.opacity = 1
         camera.scan = true
-        camera.anchors.top = parent.top
-        camera.width = parent.width
+        var space = IDPGlobals.spacing * 2
+        camera.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
+                      space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+        camera.start()
         if (!ESAA.isActiveVisit(1))
         {
             camera.stop()
             camera.start()
             camera.searchAndLock()
         }
-        camera.height = camera.width
     }
 
     onShowing:
@@ -47,12 +49,17 @@ ESAAPage
         myShowFunction()
     }
 
-
+    function myHideFunction()
+    {
+        camera.stop()
+        var space = IDPGlobals.spacing * 2
+        camera.moveOut(space, 0, parent.width - 2 * space, 0, parent.width / 15)
+    }
 
     onHiding:
     {
         multiButton.opacity = 0
-        camera.stop()
+        myHideFunction()
     }
 
     signal playBackClicked

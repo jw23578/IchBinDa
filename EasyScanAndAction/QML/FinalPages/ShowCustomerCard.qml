@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
+import "qrc:/foundation"
 
 PageWithBackButton
 {
@@ -21,7 +22,7 @@ PageWithBackButton
         anchors.margins: ESAA.spacing
         fillMode: Image.PreserveAspectFit
     }
-    CircleMultiButton
+    IDPButtonCircleMulti
     {
         z: 11
         id: theMultiButton

@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ".."
 import "../Comp"
 import "../BasePages"
+import "qrc:/foundation"
 
 PageWithBackButton
 {
@@ -36,6 +37,8 @@ PageWithBackButton
         opacity: 1
         visible: MyHelpOffers.count == 0
     }
+    onShowed: theOfferPage.open()
+    onHided: theOfferPage.close()
     function deleteOfferByIndex(index)
     {
         HelpOfferManager.deleteHelpOfferByIndex(index);
@@ -68,7 +71,7 @@ PageWithBackButton
                 delegate: Rectangle {
                     opacity: 1 - Math.abs((index * width - theSwipeView2.contentItem.contentX) / width)
                     id: card1Item
-                    ESAAText
+                    IDPText
                     {
                         id: helpOfferCaption
                         horizontalAlignment: Text.AlignHCenter
@@ -76,7 +79,7 @@ PageWithBackButton
                         text: HelpOffer.caption
                         elide: Text.ElideRight
                     }
-                    ESAAText
+                    IDPText
                     {
                         id: helpOfferDecription
                         anchors.left: parent.left
@@ -87,7 +90,7 @@ PageWithBackButton
                         text: HelpOffer.description
                         wrapMode: Text.WordWrap
                     }
-                    CircleButton
+                    IDPButtonCircle
                     {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom

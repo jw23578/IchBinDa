@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -48,7 +49,7 @@ ESAAPage
         width: buttonSize
         topPadding: spacing
         spacing: buttonSize / 4
-        CircleButton
+        IDPButtonCircle
         {
             id: b1
             smallTopText: "Ich bin"
@@ -61,7 +62,7 @@ ESAAPage
             width: theGrid.buttonSize
             font.pixelSize: theGrid.buttonFontPixelSize
         }
-        CircleButton
+        IDPButtonCircle
         {
             smallTopText: "Ich bin"
             text: "Kunde<br>oder<br>Besucher"
@@ -112,7 +113,7 @@ ESAAPage
 
             }
         }
-        CircleButton
+        IDPButtonCircle
         {
             id: betreiberFinishedButton
             anchors.bottom: parent.bottom
@@ -160,7 +161,7 @@ ESAAPage
                 color: ESAA.buttonColor
             }
         }
-        CircleButton
+        IDPButtonCircle
         {
             id: editButton
             anchors.bottom: parent.bottom

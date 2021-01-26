@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtCharts 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -85,20 +86,20 @@ ESAAPage
                     height: ESAA.spacing
                     width: parent.width
                 }
-                ESAAText
+                IDPText
                 {
                     width: parent.width
                     text: Visit.count + ". Besuch bei: "
                     color: JW78APP.headerFontColor
                 }
-                ESAAText
+                IDPText
                 {
                     width: parent.width
                     text: Visit.facilityName
                     font.pixelSize: ESAA.headerFontPixelsize
                     color: JW78APP.headerFontColor
                 }
-                ESAAText
+                IDPText
                 {
                     width: parent.width
                     font.pixelSize: ESAA.contentFontPixelsize

@@ -21,7 +21,6 @@ HelpOfferManager::HelpOfferManager(QQmlApplicationEngine &e,
         HelpOffer *ho(dynamic_cast<HelpOffer*>(e));
         myHelpOffers.add(ho);
     }
-
 }
 
 
@@ -38,7 +37,7 @@ void HelpOfferManager::storeHelpOffer(bool loggedIn,
     for (int i(0); i < myHelpOffers.size(); ++i)
     {
         HelpOffer *ho(dynamic_cast<HelpOffer*>(myHelpOffers.at(i)));
-        if (ho && !ho->getStored())
+        if (ho && !ho->getStored() && !ho->transferred)
         {
             serverStore.store(*ho);
         }
@@ -74,10 +73,12 @@ void HelpOfferManager::deleteHelpOfferByIndex(int index)
 
 }
 
-void HelpOfferManager::onHelpOfferStored(const jw78::PersistentObject &object)
+void HelpOfferManager::onHelpOfferStored(jw78::PersistentObject &object)
 {
     qDebug() << "helpoffer stored";
-
+    HelpOffer *ho(dynamic_cast<HelpOffer*>(&object));
+    ho->transferred = true;
+    databaseStore.update(*ho);
 }
 
 void HelpOfferManager::onHelpOfferNotStored(const jw78::PersistentObject &object)

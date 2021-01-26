@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "qrc:/foundation"
 
 Item
 {
@@ -21,7 +22,7 @@ Item
             delegate: Item {
                 opacity: 1 - Math.abs((index * width - theSwipeView2.contentItem.contentX) / width)
                 id: card1Item
-                ESAAText
+                IDPText
                 {
                     id: cardCaption
                     anchors.horizontalCenter: parent.horizontalCenter

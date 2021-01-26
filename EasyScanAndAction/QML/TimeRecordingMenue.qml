@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -29,14 +30,14 @@ ESAAPage
             spacing: ESAA.spacing * 2
             rowSpacing: ESAA.spacing * 2
             topPadding: ESAA.spacing * 3
-            CircleButton
+            IDPButtonCircle
             {
                 text: "Ereignisse<br>anzeigen"
                 onClicked: showTimeEvents()
                 width: parent.buttonSize
                 font.pixelSize: theGrid.buttonFontPixelSize
             }
-            CircleButton
+            IDPButtonCircle
             {
                 text: "Arbeits<br>zeiten<br>(brutto)"
                 onClicked: showWorkTimeBrutto()

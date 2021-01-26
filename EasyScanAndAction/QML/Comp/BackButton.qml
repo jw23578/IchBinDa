@@ -1,6 +1,7 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
-CircleButton
+IDPButtonCircle
 {
     source: "qrc:/images/back_weiss.svg"
     downSource: "qrc:/images/back_blau.svg"

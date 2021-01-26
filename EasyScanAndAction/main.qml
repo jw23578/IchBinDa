@@ -7,6 +7,8 @@ import "QML"
 import "QML/Comp"
 import "QML/FinalPages"
 import "QML/BasePages"
+import "qrc:/foundation"
+import "qrc:/widgets"
 
 ApplicationWindow {
     width: 300
@@ -37,8 +39,27 @@ ApplicationWindow {
         showNewPage(theCurrentPage, showKontaktTagebuchQRCode)
     }
 
+    property var pages: []
+
+    function popPage()
+    {
+        pages.pop() // das ist immer theCurrentPage
+        var lastPage = pages.pop()
+        if (lastPage == loginAndOrRegister)
+        {
+            lastPage = pages.pop()
+        }
+
+        showNewPage(theCurrentPage, lastPage)
+    }
+
     function showNewPage(currentPage, nextPage)
     {
+        if (nextPage === scannerpage && cameraLoader.active == false)
+        {
+            cameraLoader.active = true
+            return
+        }
         if (currentPage == nextPage)
         {
             return;
@@ -56,6 +77,7 @@ ApplicationWindow {
         nextPage.z = 1
         nextPage.show(direction)
         splashheader.headerText = nextPage.caption
+
         if (nextPage === scannerpage || nextPage == timemainpage)
         {
             hideAndShowCallMenueButton.start()
@@ -66,6 +88,7 @@ ApplicationWindow {
             hideCallMenueButton.start()
         }
         nextPage.forceActiveFocus()
+        pages.push(nextPage)
     }
     Item
     {
@@ -85,33 +108,104 @@ ApplicationWindow {
         }
     }
 
-    Item
-    {
-        clip: true
-        states: [
-            State {
-                name: "MainProfileOpen"
-                PropertyChanges {
-                    target: rotation
-                    angle: 35
+    ParallelAnimation {
+        id: openProfile
+        property int aniDuration: IDPGlobals.slowAnimationDuration
+        NumberAnimation {
+            target: theMultiButton
+            property: "opacity"
+            duration: openProfile.aniDuration
+            to: 0
+        }
+        NumberAnimation {
+            duration: openProfile.aniDuration
+            target: rotation
+            property: "angle"
+            to: 35
+        }
+        NumberAnimation {
+            duration: openProfile.aniDuration
+            target: area1Hider
+            property: "opacity"
+            to: 0.3
+        }
+        SequentialAnimation
+        {
+            PauseAnimation {
+                duration:  openProfile.aniDuration / 2
+            }
+            ParallelAnimation
+            {
+                NumberAnimation {
+                    duration: openProfile.aniDuration
+                    target: area2
+                    property: "x"
+                    to: 0
                 }
-                PropertyChanges {
-                    target: area1Hider
-                    opacity: 0.3
+                NumberAnimation {
+                    duration: openProfile.aniDuration
+                    target: area2
+                    property: "opacity"
+                    to: 0.9
                 }
             }
-        ]
+        }
+    }
+    ParallelAnimation {
+        id: closeProfile
+        property int aniDuration: IDPGlobals.slowAnimationDuration
+        NumberAnimation {
+            duration: closeProfile.aniDuration
+            target: area2
+            property: "x"
+            to: -area2.width
+        }
+        NumberAnimation {
+            duration: closeProfile.aniDuration
+            target: area2
+            property: "opacity"
+            to: 0
+        }
+        SequentialAnimation
+        {
+            PauseAnimation {
+                duration:  closeProfile.aniDuration / 2
+            }
+            ParallelAnimation
+            {
+                NumberAnimation {
+                    duration: closeProfile.aniDuration
+                    target: rotation
+                    property: "angle"
+                    to: 0
+                }
+                NumberAnimation {
+                    duration: closeProfile.aniDuration
+                    target: area1Hider
+                    property: "opacity"
+                    to: 0
+                }
+                NumberAnimation {
+                    target: theMultiButton
+                    property: "opacity"
+                    duration: openProfile.aniDuration
+                    to: 1
+                }
+            }
+        }
+    }
+
+    Item
+    {
+        id: area1
+        anchors.fill: parent
+        clip: true
         Rectangle {
             z: 100
             id: area1Hider
             anchors.fill: parent
             visible: opacity > 0
             opacity: 0
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: JW78Utils.longAniDuration
-                }
-            }
             MouseArea
             {
                 anchors.fill: parent
@@ -119,8 +213,6 @@ ApplicationWindow {
         }
 
 
-        anchors.fill: parent
-        id: area1
         Item
         {
             id: header
@@ -169,12 +261,17 @@ ApplicationWindow {
             TimeMain
             {
                 id: timemainpage
-                onBackPressed: showNewPage(timemainpage, scannerpage)
+                onBackPressed: popPage()
             }
             SaveCustomerCard
             {
                 id: savecustomercard
-                onBackPressed: showNewPage(theCurrentPage, takepicturepage)
+                onBackPressed: {
+                    var space = IDPGlobals.spacing * 2
+                    cameraLoader.item.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
+                                             space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+                    takePictureForm.activate(cameraLoader.item, customercardslist.imageSaved, false)
+                }
                 onCardSaved: showNewPage(theCurrentPage, customercardslist)
             }
 
@@ -189,7 +286,24 @@ ApplicationWindow {
             {
                 id: customercardslist
                 onBackPressed: showNewPage(theCurrentPage, scannerpage)
-                onNewCard: showNewPage(theCurrentPage, takepicturepage)
+                function imageSaved(filename)
+                {
+                    console.log("saved: " + filename)
+                    savecustomercard.imageFilename = "file:/"  + filename
+                    cameraLoader.item.moveOut(cameraLoader.item.fromX,
+                                              cameraLoader.item.fromY,
+                                              cameraLoader.item.fromWidth,
+                                              cameraLoader.item.fromHeight,
+                                              cameraLoader.item.fromRadius)
+                    showNewPage(theCurrentPage, savecustomercard)
+                }
+                onNewCard:
+                {
+                    var space = IDPGlobals.spacing * 2
+                    cameraLoader.item.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
+                                             space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+                    takePictureForm.activate(cameraLoader.item, imageSaved, false)
+                }
                 onShowCustomerCard:
                 {
                     showcustomercard.imageFilename = "file:" + filename
@@ -204,27 +318,72 @@ ApplicationWindow {
                 onWantToHelpClicked: {
                     if (!JW78APP.loggedIn)
                     {
-                        loginAndOrRegister.goodPage = myHelpOffersPage
+                        wantToHelpLoader.load()
+                        loginAndOrRegister.goodPage = wantToHelpLoader.item
                         loginAndOrRegister.backPage = engagementstart
                         showNewPage(theCurrentPage, loginAndOrRegister)
                         return
                     }
-                    showNewPage(theCurrentPage, myHelpOffersPage)
+                    wantToHelpLoader.goWantToHelp()
+                    //                    showNewPage(theCurrentPage, myHelpOffersPage)
+                }
+            }
+            Loader {
+                anchors.fill: parent
+                id: wantToHelpLoader
+                function load()
+                {
+                    source = "qrc:/QML/FinalPages/WantToHelpPage.qml"
                 }
 
-            }
-            MyHelpOffersPage
-            {
-                id: myHelpOffersPage
-                onBackPressed: showNewPage(theCurrentPage, previousPage)
-            }
+                function goWantToHelp()
+                {
+                    load()
+                    showNewPage(theCurrentPage, item)
+                }
+                Connections {
+                    target: wantToHelpLoader.item
+                    function onShowMyHelpOffersClicked()
+                    {
+                        myHelpOffersLoader.goMyHelpOffers()
+                    }
+                    function onCreateNewHelpOfferClicked()
+                    {
+                        myHelpOffersLoader.goMyHelpOffers()
+                    }
+                    function onSearchNeededHelpClicked()
+                    {
+                        console.log("hello3")
+                    }
+                    function onBackPressed()
+                    {
+                        popPage()
+                    }
 
-            CamVideoScan
+                }
+            }
+            Loader
             {
-                z: 10
-                id: theCamera
-                onTagFound: scannerpage.tagFound(tag)
-                onImageSaved: takepicturepage.saveTheImage(filename)
+                anchors.fill: parent
+                id: myHelpOffersLoader
+                function load()
+                {
+                    source = "qrc:/QML/FinalPages/MyHelpOffersPage.qml"
+                }
+
+                function goMyHelpOffers()
+                {
+                    load()
+                    showNewPage(theCurrentPage, item)
+                }
+                Connections
+                {
+                    target: myHelpOffersLoader.item
+                    function onBackPressed()
+                    {
+                        popPage()
+                    }
+                }
             }
             ManualVisitPage
             {
@@ -232,52 +391,14 @@ ApplicationWindow {
                 onBackPressed: showNewPage(theCurrentPage, scannerpage)
             }
 
-            CircleMultiButton
-            {
-                z: 11
-                opacity: 0
-                id: theMultiButton
-                x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
-                y: JW78Utils.screenHeight / 480 * 360 - height / 2
-                visible: !ESAA.firstStart && scannerpage.visible
-                texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
-                    "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
-                optionCount: JW78APP.isDevelop ? 5 : 4
-                yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
-                stepAngle: JW78APP.isDevelop ? 72 : 60
-                clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
-                function() {ESAA.recommend()},
-                function() {showNewPage(theCurrentPage, manualvisitpage)},
-                function() {funcShowKontaktTagebuchQRCode()},
-                function() {showNewPage(theCurrentPage, engagementstart)}]
-                sources: ["", "qrc:/images/share_weiss.svg"]
-                downSources: ["", "qrc:/images/share_blau.svg"]
-                onOpenClicked: hideCallMenueButton.start()
-                onCloseClicked: hideAndShowCallMenueButton.start()
-            }
-
             ScannerPage
             {
                 id: scannerpage
-                camera: theCamera
+                camera: cameraLoader.item
                 multiButton: theMultiButton
                 onGoRightClicked: showNewPage(scannerpage, timemainpage)
             }
-            TakePicturePage
-            {
-                id: takepicturepage
-                targetFileName: ESAA.tempTakenPicture
-                camera: theCamera
-                caption: "Neue Kundenkarte"
-                onBackPressed: showNewPage(theCurrentPage, customercardslist)
-                function saveTheImage(filename)
-                {
-                    console.log("image saved: " + filename)
-                    savecustomercard.imageFilename = ""
-                    savecustomercard.imageFilename = "file:" + filename
-                    showNewPage(theCurrentPage, savecustomercard)
-                }
-            }
+
             LoginAndOrRegister
             {
                 id: loginAndOrRegister
@@ -424,7 +545,7 @@ ApplicationWindow {
             to: width
         }
 
-        CircleButton
+        IDPButtonCircle
         {
             id: callMenueButton
             visible: !ESAA.firstStart
@@ -473,15 +594,8 @@ ApplicationWindow {
             id: splashheader
             onProfileIconClicked:
             {
-                if (area1.state == "MainProfileOpen")
-                {
-                    area1.state = ""
-                    return;
-                }
-                area1.state = "MainProfileOpen"
-
-//                JW78APP.loggedIn = false
-//                JW78APP.loginTokenString = ""
+                openProfile.start()
+                scannerpage.myHideFunction()
             }
 
             onSplashDone:
@@ -514,35 +628,161 @@ ApplicationWindow {
                 z: 0
             }
             angle: 0
-            Behavior on angle {
-                NumberAnimation {
-                    duration: JW78Utils.longAniDuration
-                }
+        }
+    }
+    ItemProfile
+    {
+        id: area2
+        width: parent.width
+        height: parent.height
+        x: -width
+        onXChanged:
+        {
+            if (x == 0)
+            {
+                open()
             }
         }
+        function profileImageSaved(filename)
+        {
+            setProfileImageSource("file:/" + filename)
+            cameraLoader.item.moveOut(area2.image.x, area2.image.y, area2.image.width, area2.image.width, area2.image.radius)
+        }
+
+        onProfileImageClicked: {
+            cameraLoader.item.moveIn(area2.image.x, area2.image.y, area2.image.width, area2.image.width, area2.image.radius,
+                                     IDPGlobals.spacing * 2, IDPGlobals.spacing * 6, parent.width - 4 * IDPGlobals.spacing, parent.width - 4 * IDPGlobals.spacing,
+                                     (parent.width - 2 * IDPGlobals.spacing) / 2)
+            takePictureForm.activate(cameraLoader.item, profileImageSaved, true)
+        }
+        onBackButtonClicked:
+        {
+            close()
+            closeProfile.start()
+            if (theCurrentPage == scannerpage)
+            {
+                scannerpage.myShowFunction()
+            }
+        }
+    }
+    Background
+    {
+        id: takePictureForm
+        anchors.fill: parent
+        visible: opacity > 0
+        opacity: 0
+        property var camVideoScan: null
+        property var imageSavedCallback: null
+        function callbackProxy(filename)
+        {
+            deactivate()
+            imageSavedCallback(filename)
+        }
+
+        property string targetFileName: ""
+        Behavior on opacity {
+            NumberAnimation {
+                duration: IDPGlobals.slowAnimationDuration
+            }
+        }
+        function activate(camVideoScan, imageSavedCallback, circle)
+        {
+            takePictureForm.opacity = 1
+            takePictureForm.imageSavedCallback = imageSavedCallback
+            takePictureForm.camVideoScan = camVideoScan
+            camVideoScan.scan = false
+            targetFileName = ESAA.tempTakenPicture
+            camVideoScan.start()
+            camVideoScan.height = camVideoScan.width
+        }
+        function deactivate()
+        {
+            cameraLoader.item.stop()
+            opacity = 0
+        }
+        CentralActionButton
+        {
+            id: takePictureButton
+            text: "Foto<br>aufnehmen"
+            onClicked: cameraLoader.item.captureToFile(takePictureForm.targetFileName, takePictureForm.callbackProxy)
+        }
+        BackButton
+        {
+            onClicked:
+            {
+                cameraLoader.item.moveOut(cameraLoader.item.fromX,
+                                          cameraLoader.item.fromY,
+                                          cameraLoader.item.fromWidth,
+                                          cameraLoader.item.fromHeight,
+                                          cameraLoader.item.fromRadius)
+                takePictureForm.deactivate()
+            }
+        }
+    }
+    Loader
+    {
+        active: false
+        id: cameraLoader
+        z: 10
+        source: "qrc:/QML/Comp/CamVideoScan.qml"
+        asynchronous: false
+        onLoaded: {
+            item.stop()
+            showNewPage(theCurrentPage, scannerpage)
+        }
+        Connections {
+            target: cameraLoader.item
+            function onTagFound(tag) {
+                scannerpage.tagFound(tag)
+            }
+        }
+    }
+
+    IDPButtonCircleMulti
+    {
+        z: 11
+        opacity: 0
+        id: theMultiButton
+        x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
+        y: JW78Utils.screenHeight / 480 * 360 - height / 2
+        visible: !ESAA.firstStart && scannerpage.visible && opacity > 0
+        texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
+            "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
+        optionCount: JW78APP.isDevelop ? 5 : 4
+        yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
+        stepAngle: JW78APP.isDevelop ? 72 : 60
+        clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
+        function() {ESAA.recommend()},
+        function() {showNewPage(theCurrentPage, manualvisitpage)},
+        function() {funcShowKontaktTagebuchQRCode()},
+        function() {showNewPage(theCurrentPage, engagementstart)}]
+        sources: ["", "qrc:/images/share_weiss.svg"]
+        downSources: ["", "qrc:/images/share_blau.svg"]
+        onOpenClicked: hideCallMenueButton.start()
+        onCloseClicked: hideAndShowCallMenueButton.start()
     }
 
     YesNoQuestionPage
     {
         id: yesnoquestion
-        z: 2
+        z: 20
     }
-
     Message
     {
         id: message
-        z: 2
+        z: 20
     }
     BadMessage
     {
         id: badMessage
-        z: 2
+        z: 20
     }
     WaitMessage
     {
         id: waitMessage
-        z: 2
+        z: 20
     }
+
 
 
     Connections
@@ -585,10 +825,22 @@ ApplicationWindow {
 
     Component.onCompleted:
     {
+        console.log("completed")
         JW78Utils.screenHeight = height
         JW78Utils.screenWidth = width
-        theCamera.stop()
         ESAA.calculateRatios()
+        IDPGlobals.spacing = JW78APP.spacing
+        IDPGlobals.screenWidth = width
+        IDPGlobals.buttonCircleFontPixelSize = JW78APP.fontButtonPixelsize * 0.8
+        IDPGlobals.textFontColor = ESAA.fontColor
+        IDPGlobals.textFontPixelSize = ESAA.fontTextPixelsize
+        IDPGlobals.fontFamily = "Roboto-Regular"
+        IDPGlobals.fontPixelSizeInput = JW78APP.fontInputPixelsize
+        IDPGlobals.roundedDesignRadius = JW78APP.radius
+        IDPGlobals.defaultBorderColor = JW78APP.lineInputBorderColor
+        IDPGlobals.buttonCircleDownColor = JW78APP.buttonDownColor
+        IDPGlobals.buttonCircleFromColor = JW78APP.buttonFromColor
+        IDPGlobals.buttonCircleToColor = JW78APP.buttonToColor
     }
     onClosing: {
         close.accepted = false

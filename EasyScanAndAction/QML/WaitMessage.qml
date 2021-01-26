@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 Background
 {
@@ -25,7 +26,7 @@ Background
         anchors.margins: parent.width / 20
         contentHeight: Math.max(messageText.contentHeight, parent.height)
         clip: true
-        ESAAText
+        IDPText
         {
             id: messageText
             anchors.centerIn: parent

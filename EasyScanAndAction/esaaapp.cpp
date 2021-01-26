@@ -222,6 +222,7 @@ void ESAAApp::saveData()
 {
     if (loading)
     {
+        qWarning("Loading will not save");
         return;
     }
     QFile dataFile(dataFileName);
@@ -230,6 +231,7 @@ void ESAAApp::saveData()
         qWarning("dataFile konnte nicht zum speichern geöffnet werden.");
         return;
     }
+    qWarning("Save the Data");
     QJsonObject contactData;
     contactData["fstname"] = mainPerson.fstname();
     contactData["surname"] = mainPerson.surname();
@@ -384,7 +386,8 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     qrCodeStore(jw78::Utils::getWriteablePath() + "/knownQRCodes.json"),
     mailOffice(appName(), encrypter, emailSender),
     allVisits(e, "AllVisits", "Visit"),
-    customerCardsManager(e, *this, databaseFilename)
+    customerCardsManager(e, *this, databaseFilename),
+    loading(false)
 {
     e.rootContext()->setContextProperty("MainPerson", QVariant::fromValue(&mainPerson));
     loadConfigFile();
@@ -536,6 +539,11 @@ void ESAAApp::firstStartDone()
 void ESAAApp::askYesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback)
 {
     emit yesNoQuestion(mt, yescallback, nocallback);
+}
+
+void ESAAApp::showBadMessage(const QString &mt)
+{
+    emit showBadMessageSignal(mt);
 }
 
 void ESAAApp::showMessage(const QString &mt)
@@ -760,7 +768,7 @@ void ESAAApp::action(QString qrCodeJSON)
     int actionID(data["ai"].toInt());
     if (actionID == 0)
     {
-        emit showBadMessageSignal("Das ist leider kein \"IchBinDa!\"-QR-Code.");
+        showBadMessage("Das ist leider kein \"IchBinDa!\"-QR-Code.");
         return;
     }
     if (actionID == actionIDKontakttagebuch)
@@ -1157,7 +1165,13 @@ void ESAAApp::login(QString loginEMail,
     QNetworkReply *networkReply(serverPost(url, variables));
     showWaitMessage("Bitte einen Moment Geduld");
     QObject::connect(networkReply, &QNetworkReply::finished, [networkReply, this] {
+        networkReply->deleteLater();// Don't forget to delete it
         hideWaitMessage();
+        if (networkReply->error() != QNetworkReply::NoError)
+        {
+            showBadMessage("Der Login-Server ist derzeit nicht erreichbar, bitte versuche es später noch einmal.");
+            return;
+        }
         QByteArray answer(networkReply->readAll());
         QJsonDocument jsonDoc(QJsonDocument::fromJson(answer));
         QJsonObject jsonObject(jsonDoc.object());
@@ -1184,7 +1198,6 @@ void ESAAApp::login(QString loginEMail,
             setLoggedIn(false);
             showMessage("Der Login oder das Passwort waren falsch, bitte versuch es erneut oder registriere dich.");
         }
-        networkReply->deleteLater();// Don't forget to delete it
     });
 }
 

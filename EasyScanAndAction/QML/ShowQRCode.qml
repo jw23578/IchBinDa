@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -50,7 +51,7 @@ ESAAPage
                     source: qrCodeFileName ? "file://" + qrCodeFileName : ""
                 }
             }
-            ESAAText
+            IDPText
             {
                 width: parent.width
                 verticalAlignment: Text.AlignVCenter
@@ -68,7 +69,7 @@ ESAAPage
         }
     }
 
-    CircleButton
+    IDPButtonCircle
     {
         id: sendButton
         anchors.bottom: parent.bottom

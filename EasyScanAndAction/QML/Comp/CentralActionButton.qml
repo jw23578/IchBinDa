@@ -1,6 +1,7 @@
 import QtQuick 2.0
+import "qrc:/foundation"
 
-CircleButton
+IDPButtonCircle
 {
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom

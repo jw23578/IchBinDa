@@ -25,14 +25,11 @@
         <file>QML/TimeMain.qml</file>
         <file>QML/TimeRecordingMenue.qml</file>
         <file>QML/TimeRecordingEvents.qml</file>
-        <file>QML/BasePages/TakePicturePage.qml</file>
-        <file>QML/Comp/CircleButton.qml</file>
         <file>QML/Comp/ESAAFlickable.qml</file>
         <file>QML/Comp/TwoCircleButtons.qml</file>
         <file>QML/Comp/ArrowButton.qml</file>
         <file>QML/Comp/ESAALineInputWithCaption.qml</file>
         <file>QML/Comp/ShareButton.qml</file>
-        <file>QML/Comp/ESAAText.qml</file>
         <file>QML/Comp/ESAASwitch.qml</file>
         <file>QML/Comp/ESAAIconButton.qml</file>
         <file>QML/Comp/ESAATextInput.qml</file>
@@ -47,14 +44,14 @@
         <file>QML/FinalPages/ManualVisitPage.qml</file>
         <file>QML/FinalPages/YesNoQuestionPage.qml</file>
         <file>QML/FinalPages/WorkTimeSpans.qml</file>
-        <file>QML/Comp/CircleMultiButton.qml</file>
         <file>QML/Comp/CircleButtonsMenue.qml</file>
         <file>QML/Comp/CustomerCardsSwipe.qml</file>
         <file>QML/FinalPages/EngagementStartPage.qml</file>
         <file>QML/Comp/EmptySwipeView.qml</file>
         <file>QML/FinalPages/EngagementOfferPage.qml</file>
         <file>QML/FinalPages/LoginAndOrRegister.qml</file>
-        <file>QML/Comp/CircleButtonWithBehavior.qml</file>
         <file>QML/FinalPages/MyHelpOffersPage.qml</file>
+        <file>QML/ItemProfile.qml</file>
+        <file>QML/FinalPages/WantToHelpPage.qml</file>
     </qresource>
 </RCC>
