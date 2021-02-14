@@ -20,7 +20,7 @@ ApplicationWindow
         opacity: 1
         id: devDings
         property bool inDev: visible
-        visible: true
+        visible: false
     }
     width: 300
     height: 480
