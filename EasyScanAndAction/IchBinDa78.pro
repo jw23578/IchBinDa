@@ -18,6 +18,8 @@ DEFINES += NO_PNG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CPPQMLObjects/daytimespan.cpp \
+    CPPQMLObjects/daytimespanmodel.cpp \
     customercard.cpp \
     customercardsmanager.cpp \
     datetimereflectable.cpp \
@@ -73,6 +75,8 @@ zint-master/backend/upcean.c \
 main.cpp
 
 HEADERS += \
+    CPPQMLObjects/daytimespan.h \
+    CPPQMLObjects/daytimespanmodel.h \
     customercard.h \
     customercardsmanager.h \
     datetimereflectable.h \
@@ -239,7 +243,7 @@ include(QZXing/QZXing.pri)
 include(SimpleMailSRC/simplemail.pri)
 include(../../JW78MobileExtensions/JW78MobileExtensions.pri)
 include(../../JW78QTLib/JW78QTLib.pri)
-include(../../jw78corelib/JW78CoreLib.pri)
+include(../../JW78CoreLib/JW78CoreLib.pri)
 include(../../independentQML/independentQML.pri)
 
 

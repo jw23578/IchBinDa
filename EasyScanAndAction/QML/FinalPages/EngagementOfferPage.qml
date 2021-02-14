@@ -4,6 +4,8 @@ import ".."
 import "../Comp"
 import "../BasePages"
 import "qrc:/foundation"
+import "qrc:/windows"
+import "qrc:/javascript/IDPFormatFunctions.js" as FormatFunctions
 
 PageWithBackButton
 {
@@ -19,99 +21,6 @@ PageWithBackButton
     {
         IDPGlobals.closeCovers(helpType)
     }
-
-    /*    ESAAFlickable
-    {
-        id: theFlick
-        anchors.margins: ESAA.spacing
-        anchors.bottom: addHelp.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        contentHeight: theColumn.height * 1.3
-        Column
-        {
-            parent: theFlick.contentItem
-            y: ESAA.spacing
-            spacing: ESAA.spacing
-            id: theColumn
-            width: parent.width - 2 * ESAA.spacing
-            anchors.horizontalCenter: parent.horizontalCenter
-            ESAALineInputWithCaption
-            {
-                color: createqrcodepage.textColor
-                id: helpOfferCaption
-                width: parent.width
-                caption: qsTr("Wie möchtest du helfen? (Einkaufshilfe, Haustierausführen, Medikamente abholen, ...)")
-                helpText: ""
-                onHelpClicked: ESAA.showMessage(ht)
-            }
-            ESAALineInputWithCaption
-            {
-                color: createqrcodepage.textColor
-                id: helpLocation
-                width: parent.width
-                caption: qsTr("Wo möchtest du helfen? (Stadt, Landkreis, ...)")
-            }
-            IDPText
-            {
-                text: "Deine Kontaktdaten"
-            }
-            IDPText
-            {
-                width: parent.width
-                wrapMode: Text.WordWrap
-                text: "Beschreibe hier genauer, wie du anderen eine Freude machen möchtest"
-            }
-            ESAALineInputWithCaption
-            {
-                color: createqrcodepage.textColor
-                id: description
-                width: parent.width
-                caption: qsTr("Beschreibung deiner Hilfe")
-            }
-        }
-    }
-    property var elemToFocus: null
-
-    function setFocusNow()
-    {
-        elemToFocus.forceActiveFocus()
-    }
-    function focusMessage(theMessage, elem)
-    {
-        elemToFocus = elem
-        ESAA.showMessageWithCallback(theMessage, setFocusNow)
-    }
-
-    CentralActionButton
-    {
-        id: addHelp
-        text: "Angebot<br>eintragen"
-        onClicked:
-        {
-            if (helpOfferCaption.displayText == "")
-            {
-                focusMessage("Bitte gib noch eine Bezeichnung deiner Hilfe ein.", helpOfferCaption)
-                return;
-            }
-            if (description.displayText == "")
-            {
-                focusMessage("Bitte gib noch eine Beschreibung deiner Hilfe ein.", description)
-                return;
-            }
-
-            HelpOfferManager.saveHelpOffer(helpOfferCaption.displayText,
-                                  description.displayText,
-                                  0,
-                                  0)
-            theFlick.contentY = 0
-            helpOfferCaption.text = ""
-            description.text = ""
-            JW78APP.showMessage("Dein Angebot wurde gespeichert, vielen Dank.")
-            helpOfferSaved()
-        }
-    } */
     ListModel {
         property int selectedCount: 0
         function countSelected()
@@ -193,6 +102,7 @@ PageWithBackButton
                     fontSizeFactor: 2
                     wrapMode: Text.WordWrap
                     id: caption
+                    coverContainer: helpType
                 }
                 GridView
                 {
@@ -327,27 +237,458 @@ PageWithBackButton
                     coverContainer: helpOffer
                     fontSizeFactor: 1.5
                 }
-                IDPLineEditWithTopCaption
+                IDPTextBorder
                 {
-                    containedCaption: true
                     id: location
                     width: parent.width
-                    caption: qsTr("Standort")
+                    height: email.height
+                    text: "Ort wählen"
                     coverContainer: helpOffer
+                    onClicked: locationRadius.open()
+                }
+                IDPButtonCircle
+                {
+                    text: qsTr("Weiter")
+                    coverContainer: helpOffer
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked:
+                    {
+                        theSwipeView.currentIndex = 2
+                        IDPGlobals.closeCovers(helpOffer)
+                        IDPGlobals.openCovers(helpTime)
+                    }
+                }
+            }
+        }
+        Item
+        {
+            id: helpTime
+            Column
+            {
+                id: helpTimeColumn
+                property int elemWidth: width / 5
+                property int elemHeight: IDPGlobals.screenHeight / 14
+                property int circleSize: elemHeight * 0.9
+                property double captionFontSizeFaktor: 0.8
+                anchors.fill: parent
+                anchors.margins: IDPGlobals.spacing
+                IDPText
+                {
+                    width: parent.width - 2 * IDPGlobals.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("An welchen Tagen und Tageszeit kannst du deine Hilfe anbieten?")
+                    font.bold: true
+                    fontSizeFactor: 1.5
+                    wrapMode: Text.WordWrap
+                    coverContainer: helpTime
+                }
+                Item
+                {
+                    height: IDPGlobals.spacing
+                    width: parent.width
+                }
+                Item
+                {
+                    width: parent.width
+                    height: dayColumn.height
+                    Column
+                    {
+                        id: dayColumn
+                        visible: true
+                        width: parent.width
+                        Row
+                        {
+                            id: timesRow2
+                            Item
+                            {
+                                id: firstTimeItem
+                                width: helpTimeColumn.elemWidth
+                                height: helpTimeColumn.elemWidth / 2
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth
+                                height: firstTimeItem.height
+                                Column
+                                {
+                                    width: parent.width
+                                    IDPText
+                                    {
+                                        text: "Vormittag"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        font.bold: true
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                    IDPText
+                                    {
+                                        text: "8-11 Uhr"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth
+                                height: firstTimeItem.height
+                                Column
+                                {
+                                    width: parent.width
+                                    IDPText
+                                    {
+                                        text: "Mittag"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        font.bold: true
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                    IDPText
+                                    {
+                                        text: "11-14 Uhr"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth
+                                height: firstTimeItem.height
+                                Column
+                                {
+                                    width: parent.width
+                                    IDPText
+                                    {
+                                        text: "Nachmittag"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        font.bold: true
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                    IDPText
+                                    {
+                                        text: "14-17 Uhr"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth
+                                height: firstTimeItem.height
+                                Column
+                                {
+                                    width: parent.width
+                                    IDPText
+                                    {
+                                        text: "Abend"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        font.bold: true
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                    IDPText
+                                    {
+                                        text: "17-21 Uhr"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        coverContainer: helpTime
+                                        fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
+                                    }
+                                }
+                            }
+                        }
+                        Repeater
+                        {
+                            id: daysRepeater
+                            model: 7
+                            Row
+                            {
+                                property int dayIndex: index
+                                height: helpTimeColumn.elemHeight
+                                id: dayRow
+                                Item
+                                {
+                                    width: helpTimeColumn.elemWidth
+                                    height: helpTimeColumn.elemHeight
+                                    IDPTextCircle
+                                    {
+                                        anchors.centerIn: parent
+                                        width: helpTimeColumn.circleSize
+                                        text: JW78Utils.shortDayOfWeek(JW78Utils.incDays(new Date(2021, 1, 1), index))
+                                        coverContainer: helpTime
+                                        fontSizeFactor: 0.8
+                                    }
+                                }
+                                Repeater
+                                {
+                                    model: 4
+                                    id: timesRepeater
+                                    Item
+                                    {
+                                        property int timeIndex: index
+                                        width: helpTimeColumn.elemWidth
+                                        height: helpTimeColumn.elemHeight
+                                        IDPButtonCircleOnOff
+                                        {
+                                            anchors.centerIn: parent
+                                            width: helpTimeColumn.circleSize
+                                            coverContainer: helpTime
+                                            onClicked: {
+                                                var day = new Date(2021, 2, 8)
+                                                day.setDate(day.getDate() + dayRow.dayIndex);
+                                                var since = null
+                                                if (parent.timeIndex == 0)
+                                                {
+                                                    since = new Date(2021, 2, 8, 8);
+                                                }
+                                                if (parent.timeIndex == 1)
+                                                {
+                                                    since = new Date(2021, 2, 8, 11);
+                                                }
+                                                if (parent.timeIndex == 2)
+                                                {
+                                                    since = new Date(2021, 2, 8, 14);
+                                                }
+                                                if (parent.timeIndex == 3)
+                                                {
+                                                    since = new Date(2021, 2, 8, 17);
+                                                }
+                                                var until = null
+                                                if (parent.timeIndex == 0)
+                                                {
+                                                    until = new Date(2021, 2, 8, 11);
+                                                }
+                                                if (parent.timeIndex == 1)
+                                                {
+                                                    until = new Date(2021, 2, 8, 14);
+                                                }
+                                                if (parent.timeIndex == 2)
+                                                {
+                                                    until = new Date(2021, 2, 8, 17);
+                                                }
+                                                if (parent.timeIndex == 3)
+                                                {
+                                                    until = new Date(2021, 2, 8, 21);
+                                                }
+
+                                                DayTimeSpanModel.addDayTimeSpan(day, since, until)
+                                                console.log(dayRow.dayIndex + "  " + parent.timeIndex)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Flickable
+                    {
+                        id: inividualTimesFlickable
+                        visible: !dayColumn.visible
+                        width: parent.width
+                        height: parent.height
+                        contentHeight: timesColumn.height
+                        clip: true
+                        Column
+                        {
+                            id: timesColumn
+                            Repeater
+                            {
+                                id: timeRepeater
+                                model: DayTimeSpanModel
+                                Row
+                                {
+                                    id: timeRow
+                                    spacing: IDPGlobals.spacing
+                                    Item
+                                    {
+                                        width: helpTimeColumn.elemWidth * 1.5
+                                        height: helpTimeColumn.elemHeight
+                                        IDPTextBorder
+                                        {
+                                            id: dayButton
+                                            anchors.centerIn: parent
+                                            height: parent.height - IDPGlobals.spacing
+                                            width: parent.width
+                                            text: DTS.getDay(DTS.day)
+                                            onClicked: {
+                                                currentDayButton = dayButton
+                                                selectForm.caption = qsTr("Wochentag wählen")
+                                                selectForm.delegate = selectForm.circleDelegate
+                                                selectForm.model = selectForm.selectModelWeekdays
+                                                selectForm.open()
+                                            }
+                                        }
+                                    }
+                                    Item
+                                    {
+                                        width: helpTimeColumn.elemWidth * 1.2
+                                        height: helpTimeColumn.elemHeight
+                                        IDPTextBorder
+                                        {
+                                            id: sinceButton
+                                            anchors.centerIn: parent
+                                            height: parent.height - IDPGlobals.spacing
+                                            width: parent.width
+                                            text: DTS.getSince(DTS.since)
+                                            onClicked: {
+                                                currentDTS = DTS
+                                                selectTime.since = true
+                                                selectTime.open(DTS.since.getHours(), DTS.since.getMinutes())
+                                            }
+                                        }
+                                    }
+                                    Item
+                                    {
+                                        width: helpTimeColumn.elemWidth * 1.2
+                                        height: helpTimeColumn.elemHeight
+                                        IDPTextBorder
+                                        {
+                                            id: untilButton
+                                            anchors.centerIn: parent
+                                            height: parent.height - IDPGlobals.spacing
+                                            width: parent.width
+                                            text: DTS.getUntil(DTS.until)
+                                            onClicked: {
+                                                currentDTS = DTS
+                                                selectTime.since = false
+                                                selectTime.open(DTS.until.getHours(), DTS.until.getMinutes())
+                                            }
+                                        }
+                                    }
+                                    Item
+                                    {
+                                        width: helpTimeColumn.circleSize
+                                        height: helpTimeColumn.elemHeight
+                                        IDPTextCircle
+                                        {
+                                            visible: index > 0
+                                            anchors.centerIn: parent
+                                            width: helpTimeColumn.circleSize
+                                            text: "-"
+                                            onClicked: timeRepeater.model = timeRepeater.count - 1
+                                        }
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth
+                                height: helpTimeColumn.elemHeight
+                                IDPTextCircle
+                                {
+                                    anchors.centerIn: parent
+                                    width: helpTimeColumn.circleSize
+                                    text: "+"
+                                    onClicked: timeRepeater.model = timeRepeater.count + 1
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                Item
+                {
+                    width: parent.width
+                    height: IDPGlobals.spacing
+                }
+                IDPText
+                {
+                    anchors.right: parent.right
+                    anchors.rightMargin: IDPGlobals.spacing
+                    fontSizeFactor: 1.1
+                    text: dayColumn.visible ? qsTr("Uhrzeiten individuell festlegen") :
+                                              qsTr("Uhrzeiten schnell festlegen")
+                    clickable: true
+                    coverContainer: helpTime
+                    onClicked:
+                    {
+                        if (!dayColumn.visible)
+                        {
+                            question.callbackOpen("Sollen die individuellen Zeiten verworfen werden?",
+                                                  function(){console.log("yes")},
+                                                  null,
+                                                  function(){console.log("abort")})
+                            return
+                        }
+                        dayColumn.visible = !dayColumn.visible
+                        cover.visible = false
+                    }
+                    coverColor: "red"
+                }
+                Item
+                {
+                    width: parent.width
+                    height: IDPGlobals.spacing
+                }
+                IDPButtonCircle
+                {
+                    text: qsTr("Angebot\nerstellen")
+                    width: IDPGlobals.screenWidth / 5
+                    coverContainer: helpTime
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
         }
     }
+
     BackButton
     {
-        visible: theSwipeView.currentIndex > 0
+        visible: theSwipeView.currentIndex > 0 && selectForm.visible == false
         onClicked: {
+            if (theSwipeView.currentIndex == 2)
+            {
+                IDPGlobals.closeCovers(helpTime)
+                IDPGlobals.openCovers(helpOffer)
+            }
+
             if (theSwipeView.currentIndex == 1)
             {
                 IDPGlobals.closeCovers(helpOffer)
                 IDPGlobals.openCovers(helpType)
             }
             theSwipeView.currentIndex = theSwipeView.currentIndex - 1
+        }
+    }
+    property var currentDayButton: null
+    IDPSelectForm
+    {
+        id: selectForm
+        anchors.fill: parent
+        onSelected: {
+            currentDayButton.text = caption
+        }
+    }
+    property var currentDTS: null
+    IDPSelectTime
+    {
+        id: selectTime
+        minuteStep: 5
+        property bool since: false
+        onSelectedHourMinutes: {
+            if (since)
+            {
+                currentDTS.since = new Date(2000, 1, 1, hour, minutes)
+            }
+            else
+            {
+                currentDTS.until = new Date(2000, 1, 1, hour, minutes)
+            }
+        }
+    }
+    IDPWindowQuestion
+    {
+        id: question
+    }
+    IDPWindowLocationRadius {
+        id: locationRadius
+        BackButton {
+           onClicked: parent.close()
         }
     }
 }

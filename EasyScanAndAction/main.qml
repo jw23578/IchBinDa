@@ -9,8 +9,19 @@ import "QML/FinalPages"
 import "QML/BasePages"
 import "qrc:/foundation"
 import "qrc:/widgets"
+import "qrc:/windows"
 
-ApplicationWindow {
+ApplicationWindow
+{
+    IDPWindowLocationRadius
+    {
+        z: 1000
+        y: 0
+        opacity: 1
+        id: devDings
+        property bool inDev: visible
+        visible: false
+    }
     width: 300
     height: 480
     id: mainWindow
@@ -612,6 +623,10 @@ ApplicationWindow {
                     }
                     else
                     {
+                        if (devDings.inDev)
+                        {
+                            return
+                        }
                         showNewPage(null, scannerpage)
                     }
                 }
@@ -831,6 +846,7 @@ ApplicationWindow {
         ESAA.calculateRatios()
         IDPGlobals.spacing = JW78APP.spacing
         IDPGlobals.screenWidth = width
+        IDPGlobals.screenHeight = height
         IDPGlobals.buttonCircleFontPixelSize = JW78APP.fontButtonPixelsize * 0.8
         IDPGlobals.textFontColor = ESAA.fontColor
         IDPGlobals.textFontPixelSize = ESAA.fontTextPixelsize

@@ -387,6 +387,7 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mailOffice(appName(), encrypter, emailSender),
     allVisits(e, "AllVisits", "Visit"),
     customerCardsManager(e, *this, databaseFilename),
+    dayTimeSpanModel(e, "DayTimeSpanModel"),
     loading(false)
 {
     e.rootContext()->setContextProperty("MainPerson", QVariant::fromValue(&mainPerson));
@@ -1029,7 +1030,7 @@ void ESAAApp::calculateRatios()
     qreal height = qMax(rect.width(), rect.height());
     qreal width = qMin(rect.width(), rect.height());
 #ifndef DMOBILEDEVICE
-    height = 480;
+    height = 499;
     width = 300;
 #endif
     qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
@@ -1041,16 +1042,15 @@ void ESAAApp::calculateRatios()
     qDebug() << "m_ratio: " << m_ratio;
     qDebug() << "m_ratioFont: " << m_ratioFont;
     double baseFontSize(20);
-    double baseSpacing(45);
+    double baseSpacing(31);
 #ifdef DMOBILEDEVICE
     baseFontSize = 18;
-    baseSpacing = 40;
 #endif
-    setFontInputPixelsize(m_ratioFont * baseFontSize * 0.9);
+    setFontInputPixelsize(m_ratioFont * baseFontSize * 0.8);
     setFontButtonPixelsize(m_ratioFont * baseFontSize);
     setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.3);
     setSpacing(baseSpacing * m_ratio);
-    setFontTextPixelsize(m_ratioFont * baseFontSize);
+    setFontTextPixelsize(m_ratioFont * baseFontSize * 0.8);
     setHeaderFontPixelsize(m_ratioFont * baseFontSize * 1.5);
     setContentFontPixelsize(m_ratioFont * baseFontSize * 1.2);
 }
