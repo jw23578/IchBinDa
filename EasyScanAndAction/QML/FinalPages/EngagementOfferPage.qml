@@ -690,5 +690,11 @@ PageWithBackButton
         BackButton {
            onClicked: parent.close()
         }
+        DoneButton {
+            onClicked: {
+                parent.close()
+                location.text = locationRadius.currentPositionText
+            }
+        }
     }
 }
