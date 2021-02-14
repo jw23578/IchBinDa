@@ -13,15 +13,15 @@ import "qrc:/windows"
 
 ApplicationWindow
 {
-    IDPWindowLocationRadius
-    {
-        z: 1000
-        y: 0
-        opacity: 1
-        id: devDings
-        property bool inDev: visible
-        visible: false
-    }
+//    IDPWindowLocationRadius
+//    {
+//        z: 1000
+//        y: 0
+//        opacity: 1
+//        id: devDings
+//        property bool inDev: visible
+//        visible: false
+//    }
     width: 300
     height: 480
     id: mainWindow
