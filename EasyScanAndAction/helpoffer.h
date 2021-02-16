@@ -13,6 +13,7 @@ class HelpOffer: public jw78::ProxyObject, public jw78::PersistentObject
     JWPROPERTY(double, latitude, Latitude, 0);
     JWPROPERTY(double, longitude, Longitute, 0);
     JWPROPERTY(QString, offererUuid, OffererUuid, "");
+//    jw::ReflectionIndex2Container helpOfferCoordinateIndex;
 protected:
     pureReflection *internalCreate(bool genUuid) const override;
 public:
