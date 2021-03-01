@@ -34,41 +34,52 @@ PageWithBackButton
                 }
             }
         }
+        function addSelectedToCurrentHelpOffer()
+        {
+            TheCurrentHelpOffer.clearOfferTypes()
+            for (var i = 0; i < count; ++i)
+            {
+                if (get(i).selected)
+                {
+                    TheCurrentHelpOffer.addOfferType(get(i).caption)
+                }
+            }
+        }
 
         id: theHelpModel
         ListElement
         {
-            caption: qsTr("Einkaufen\ngehen")
+            caption: "Einkaufen\ngehen"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Medikamente\nabholen")
+            caption: "Medikamente\nabholen"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Post\nwegbringen")
+            caption: "Post\nwegbringen"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Müll\nentsorgen")
+            caption: "Müll\nentsorgen"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Haustier\nausführen")
+            caption: "Haustier\nausführen"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Begleitdienst")
+            caption: "Begleitdienst"
             selected: false
         }
         ListElement
         {
-            caption: qsTr("Sonstige\nHilfe")
+            caption: "Sonstige\nHilfe"
             selected: false
         }
         ListElement
@@ -113,6 +124,7 @@ PageWithBackButton
                     cellHeight: IDPGlobals.screenWidth / 4 + IDPGlobals.spacing / 2
                     height: parent.height - caption.height
                     model: theHelpModel
+                    clip: true
                     delegate: Item
                     {
                         width: gridView.cellWidth
@@ -120,16 +132,16 @@ PageWithBackButton
                         IDPButtonCircleOnOff
                         {
                             anchors.centerIn: parent
-                            text: model.caption
-                            visible: model.caption != qsTr("Weiter")
+                            text: qsTr(model.caption)
+                            visible: model.caption != "Weiter"
                             onClicked: model.selected = !model.selected
                             coverContainer: helpType
                         }
                         IDPButtonCircle
                         {
                             anchors.centerIn: parent
-                            text: model.caption
-                            visible: model.caption == qsTr("Weiter")
+                            text: qsTr(model.caption)
+                            visible: model.caption == "Weiter"
                             coverContainer: helpType
                             onClicked:
                             {
@@ -141,7 +153,7 @@ PageWithBackButton
                                 }
                                 theSwipeView.currentIndex = 1
                                 IDPGlobals.closeCovers(helpType)
-                                IDPGlobals.openCovers(helpOffer)
+                                IDPGlobals.openCovers(helpInfo)
                             }
                         }
                     }
@@ -150,7 +162,7 @@ PageWithBackButton
         }
         Item
         {
-            id: helpOffer
+            id: helpInfo
             Column
             {
                 anchors.fill: parent
@@ -161,7 +173,7 @@ PageWithBackButton
                     text: qsTr("DEIN ANGEBOT")
                     font.bold: true
                     fontSizeFactor: 2
-                    coverContainer: helpOffer
+                    coverContainer: helpInfo
                 }
                 ListView
                 {
@@ -180,7 +192,77 @@ PageWithBackButton
                         height: selectedListView.elemWidth
                         IDPTextCircle {
                             width: IDPGlobals.screenWidth / 6
-                            text: model.caption
+                            text: qsTr("model.caption")
+                            fontSizeFactor: 0.6
+                            coverContainer: helpInfo
+                        }
+                    }
+                }
+                IDPText
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("DEINE INFORMATIONEN")
+                    font.bold: true
+                    fontSizeFactor: 2
+                    coverContainer: helpInfo
+                }
+                IDPLineEditWithTopCaption
+                {
+                    containedCaption: true
+                    id: theCaption
+                    width: parent.width
+                    text: TheCurrentHelpOffer.caption
+                    caption: qsTr("Kurze Info (optional)")
+                    coverContainer: helpInfo
+                }
+                IDPButtonCircle
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("Weiter")
+                    coverContainer: helpInfo
+                    onClicked:
+                    {
+                        theSwipeView.currentIndex = 2
+                        IDPGlobals.closeCovers(helpInfo)
+                        IDPGlobals.openCovers(helpOffer)
+                    }
+                }
+            }
+        }
+
+        Item
+        {
+            id: helpOffer
+            Column
+            {
+                anchors.fill: parent
+                spacing: IDPGlobals.spacing
+                IDPText
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("DEIN ANGEBOT")
+                    font.bold: true
+                    fontSizeFactor: 2
+                    coverContainer: helpOffer
+                }
+                ListView
+                {
+                    id: selectedListViewInfo
+                    model: theHelpModel
+                    property int elemWidth: IDPGlobals.screenWidth / 6 + IDPGlobals.spacing / 2
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: Math.min(parent.width, theHelpModel.selectedCount * elemWidth)
+                    height: elemWidth
+                    orientation: ListView.Horizontal
+
+                    delegate: Item
+                    {
+                        visible: model.selected
+                        width: visible ? selectedListView.elemWidth : 0
+                        height: selectedListView.elemWidth
+                        IDPTextCircle {
+                            width: IDPGlobals.screenWidth / 6
+                            text: qsTr("model.caption")
                             fontSizeFactor: 0.6
                             coverContainer: helpOffer
                         }
@@ -245,6 +327,9 @@ PageWithBackButton
                     text: "Ort wählen"
                     coverContainer: helpOffer
                     onClicked: locationRadius.open()
+                    property double latitude: 0
+                    property double longitude: 0
+                    property int currentPositionRadiusKM: 0
                 }
                 IDPButtonCircle
                 {
@@ -253,7 +338,7 @@ PageWithBackButton
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked:
                     {
-                        theSwipeView.currentIndex = 2
+                        theSwipeView.currentIndex = 3
                         IDPGlobals.closeCovers(helpOffer)
                         IDPGlobals.openCovers(helpTime)
                     }
@@ -438,46 +523,26 @@ PageWithBackButton
                                             anchors.centerIn: parent
                                             width: helpTimeColumn.circleSize
                                             coverContainer: helpTime
+                                            property date day: JW78Utils.incDays(new Date(2021, 2, 8), dayRow.dayIndex)
+                                            property date since: parent.timeIndex == 0 ?
+                                                                     new Date(2021, 2, 8, 8) : parent.timeIndex == 1 ?
+                                                                         new Date(2021, 2, 8, 11) : parent.timeIndex == 2 ?
+                                                                             new Date(2021, 2, 8, 14) : new Date(2021, 2, 8, 17)
+                                            property date until: parent.timeIndex == 0 ?
+                                                                     new Date(2021, 2, 8, 11) : parent.timeIndex == 1 ?
+                                                                         new Date(2021, 2, 8, 14) : parent.timeIndex == 2 ?
+                                                                             new Date(2021, 2, 8, 17) : new Date(2021, 2, 8, 21)
+                                            onByExtern: true
+                                            on: DayTimeSpanModel.contains(day, since, until, DayTimeSpanModel.count)
                                             onClicked: {
-                                                var day = new Date(2021, 2, 8)
-                                                day.setDate(day.getDate() + dayRow.dayIndex);
-                                                var since = null
-                                                if (parent.timeIndex == 0)
+                                                if (on)
                                                 {
-                                                    since = new Date(2021, 2, 8, 8);
+                                                    DayTimeSpanModel.removeDayTimeSpan(day, since, until)
                                                 }
-                                                if (parent.timeIndex == 1)
+                                                else
                                                 {
-                                                    since = new Date(2021, 2, 8, 11);
+                                                    DayTimeSpanModel.addDayTimeSpan(day, since, until)
                                                 }
-                                                if (parent.timeIndex == 2)
-                                                {
-                                                    since = new Date(2021, 2, 8, 14);
-                                                }
-                                                if (parent.timeIndex == 3)
-                                                {
-                                                    since = new Date(2021, 2, 8, 17);
-                                                }
-                                                var until = null
-                                                if (parent.timeIndex == 0)
-                                                {
-                                                    until = new Date(2021, 2, 8, 11);
-                                                }
-                                                if (parent.timeIndex == 1)
-                                                {
-                                                    until = new Date(2021, 2, 8, 14);
-                                                }
-                                                if (parent.timeIndex == 2)
-                                                {
-                                                    until = new Date(2021, 2, 8, 17);
-                                                }
-                                                if (parent.timeIndex == 3)
-                                                {
-                                                    until = new Date(2021, 2, 8, 21);
-                                                }
-
-                                                DayTimeSpanModel.addDayTimeSpan(day, since, until)
-                                                console.log(dayRow.dayIndex + "  " + parent.timeIndex)
                                             }
                                         }
                                     }
@@ -485,111 +550,109 @@ PageWithBackButton
                             }
                         }
                     }
-                    Flickable
+                    ListView
                     {
-                        id: inividualTimesFlickable
-                        visible: !dayColumn.visible
+                        id: timesListview
                         width: parent.width
-                        height: parent.height
-                        contentHeight: timesColumn.height
+                        visible: !dayColumn.visible
+                        height: Math.min(helpTimeColumn.elemHeight * count, parent.width)
+                        model: DayTimeSpanModel
                         clip: true
-                        Column
+                        delegate: Row
                         {
-                            id: timesColumn
-                            Repeater
+                            id: timeRow
+                            spacing: IDPGlobals.spacing
+                            height: helpTimeColumn.elemHeight
+                            Item
                             {
-                                id: timeRepeater
-                                model: DayTimeSpanModel
-                                Row
+                                width: helpTimeColumn.elemWidth * 1.5
+                                height: helpTimeColumn.elemHeight
+                                IDPTextBorder
                                 {
-                                    id: timeRow
-                                    spacing: IDPGlobals.spacing
-                                    Item
-                                    {
-                                        width: helpTimeColumn.elemWidth * 1.5
-                                        height: helpTimeColumn.elemHeight
-                                        IDPTextBorder
-                                        {
-                                            id: dayButton
-                                            anchors.centerIn: parent
-                                            height: parent.height - IDPGlobals.spacing
-                                            width: parent.width
-                                            text: DTS.getDay(DTS.day)
-                                            onClicked: {
-                                                currentDayButton = dayButton
-                                                selectForm.caption = qsTr("Wochentag wählen")
-                                                selectForm.delegate = selectForm.circleDelegate
-                                                selectForm.model = selectForm.selectModelWeekdays
-                                                selectForm.open()
-                                            }
-                                        }
-                                    }
-                                    Item
-                                    {
-                                        width: helpTimeColumn.elemWidth * 1.2
-                                        height: helpTimeColumn.elemHeight
-                                        IDPTextBorder
-                                        {
-                                            id: sinceButton
-                                            anchors.centerIn: parent
-                                            height: parent.height - IDPGlobals.spacing
-                                            width: parent.width
-                                            text: DTS.getSince(DTS.since)
-                                            onClicked: {
-                                                currentDTS = DTS
-                                                selectTime.since = true
-                                                selectTime.open(DTS.since.getHours(), DTS.since.getMinutes())
-                                            }
-                                        }
-                                    }
-                                    Item
-                                    {
-                                        width: helpTimeColumn.elemWidth * 1.2
-                                        height: helpTimeColumn.elemHeight
-                                        IDPTextBorder
-                                        {
-                                            id: untilButton
-                                            anchors.centerIn: parent
-                                            height: parent.height - IDPGlobals.spacing
-                                            width: parent.width
-                                            text: DTS.getUntil(DTS.until)
-                                            onClicked: {
-                                                currentDTS = DTS
-                                                selectTime.since = false
-                                                selectTime.open(DTS.until.getHours(), DTS.until.getMinutes())
-                                            }
-                                        }
-                                    }
-                                    Item
-                                    {
-                                        width: helpTimeColumn.circleSize
-                                        height: helpTimeColumn.elemHeight
-                                        IDPTextCircle
-                                        {
-                                            visible: index > 0
-                                            anchors.centerIn: parent
-                                            width: helpTimeColumn.circleSize
-                                            text: "-"
-                                            onClicked: timeRepeater.model = timeRepeater.count - 1
-                                        }
+                                    id: dayButton
+                                    anchors.centerIn: parent
+                                    height: parent.height - IDPGlobals.spacing
+                                    width: parent.width
+                                    text: DTS.getDay(DTS.day)
+                                    onClicked: {
+                                        currentDayButton = dayButton
+                                        selectForm.caption = qsTr("Wochentag wählen")
+                                        selectForm.delegate = selectForm.circleDelegate
+                                        selectForm.model = selectForm.selectModelWeekdays
+                                        selectForm.open()
                                     }
                                 }
                             }
                             Item
                             {
-                                width: helpTimeColumn.elemWidth
+                                width: helpTimeColumn.elemWidth * 1.2
+                                height: helpTimeColumn.elemHeight
+                                IDPTextBorder
+                                {
+                                    id: sinceButton
+                                    anchors.centerIn: parent
+                                    height: parent.height - IDPGlobals.spacing
+                                    width: parent.width
+                                    text: DTS.getSince(DTS.since)
+                                    onClicked: {
+                                        currentDTS = DTS
+                                        selectTime.since = true
+                                        selectTime.open(DTS.since.getHours(), DTS.since.getMinutes())
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.elemWidth * 1.2
+                                height: helpTimeColumn.elemHeight
+                                IDPTextBorder
+                                {
+                                    id: untilButton
+                                    anchors.centerIn: parent
+                                    height: parent.height - IDPGlobals.spacing
+                                    width: parent.width
+                                    text: DTS.getUntil(DTS.until)
+                                    onClicked: {
+                                        currentDTS = DTS
+                                        selectTime.since = false
+                                        selectTime.open(DTS.until.getHours(), DTS.until.getMinutes())
+                                    }
+                                }
+                            }
+                            Item
+                            {
+                                width: helpTimeColumn.circleSize
                                 height: helpTimeColumn.elemHeight
                                 IDPTextCircle
                                 {
+                                    visible: index > 0
                                     anchors.centerIn: parent
                                     width: helpTimeColumn.circleSize
-                                    text: "+"
-                                    onClicked: timeRepeater.model = timeRepeater.count + 1
+                                    text: "-"
+                                    onClicked: DayTimeSpanModel.erase(index)
                                 }
                             }
                         }
-
                     }
+                    Item
+                    {
+                        anchors.top: timesListview.bottom
+                        visible: !dayColumn.visible
+                        width: helpTimeColumn.elemWidth
+                        height: helpTimeColumn.elemHeight
+                        IDPTextCircle
+                        {
+                            anchors.centerIn: parent
+                            width: helpTimeColumn.circleSize
+                            text: "+"
+                            onClicked: {
+                                DayTimeSpanModel.addDayTimeSpan(new Date(2021, 2, 8),
+                                                                new Date(2021, 2, 8, 8, 0),
+                                                                new Date(2021, 2, 8, 11, 0))
+                            }
+                        }
+                    }
+
                 }
 
                 Item
@@ -610,16 +673,26 @@ PageWithBackButton
                     {
                         if (!dayColumn.visible)
                         {
-                            question.callbackOpen("Sollen die individuellen Zeiten verworfen werden?",
-                                                  function(){console.log("yes")},
-                                                  null,
-                                                  function(){console.log("abort")})
+                            if (DayTimeSpanModel.hasSpecialDayTimes())
+                            {
+                                question.callbackOpen("Sollen die individuellen Zeiten verworfen werden?",
+                                                      function(){
+                                                          DayTimeSpanModel.removeSpecialDayTimes()
+                                                          dayColumn.visible = true},
+                                                      null,
+                                                      function(){console.log("abort")})
+                            }
+                            else
+                            {
+                                dayColumn.visible = true
+                            }
+
                             return
+
                         }
                         dayColumn.visible = !dayColumn.visible
                         cover.visible = false
                     }
-                    coverColor: "red"
                 }
                 Item
                 {
@@ -632,6 +705,14 @@ PageWithBackButton
                     width: IDPGlobals.screenWidth / 5
                     coverContainer: helpTime
                     anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        theHelpModel.addSelectedToCurrentHelpOffer()
+                        TheCurrentHelpOffer.caption = theCaption.displayText
+                        TheCurrentHelpOffer.setCenter(location.latitude,
+                                                      location.longitude)
+                        TheCurrentHelpOffer.centerRadiusKM = location.currentPositionRadiusKM
+                        HelpOfferManager.saveNewHelpOffer()
+                    }
                 }
             }
         }
@@ -641,15 +722,20 @@ PageWithBackButton
     {
         visible: theSwipeView.currentIndex > 0 && selectForm.visible == false
         onClicked: {
-            if (theSwipeView.currentIndex == 2)
+            if (theSwipeView.currentIndex == 3)
             {
                 IDPGlobals.closeCovers(helpTime)
                 IDPGlobals.openCovers(helpOffer)
             }
+            if (theSwipeView.currentIndex == 2)
+            {
+                IDPGlobals.closeCovers(helpOffer)
+                IDPGlobals.openCovers(helpInfo)
+            }
 
             if (theSwipeView.currentIndex == 1)
             {
-                IDPGlobals.closeCovers(helpOffer)
+                IDPGlobals.closeCovers(helpInfo)
                 IDPGlobals.openCovers(helpType)
             }
             theSwipeView.currentIndex = theSwipeView.currentIndex - 1
@@ -688,11 +774,14 @@ PageWithBackButton
     IDPWindowLocationRadius {
         id: locationRadius
         BackButton {
-           onClicked: parent.close()
+            onClicked: parent.close()
         }
         DoneButton {
             onClicked: {
                 parent.close()
+                location.latitude = locationRadius.currentPosition.latitude
+                location.longitude = locationRadius.currentPosition.longitude
+                location.currentPositionRadiusKM = locationRadius.currentPositionRadiusKM
                 location.text = locationRadius.currentPositionText
             }
         }

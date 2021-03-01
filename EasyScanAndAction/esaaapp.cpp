@@ -387,7 +387,6 @@ ESAAApp::ESAAApp(QQmlApplicationEngine &e):QObject(&e),
     mailOffice(appName(), encrypter, emailSender),
     allVisits(e, "AllVisits", "Visit"),
     customerCardsManager(e, *this, databaseFilename),
-    dayTimeSpanModel(e, "DayTimeSpanModel"),
     loading(false)
 {
     e.rootContext()->setContextProperty("MainPerson", QVariant::fromValue(&mainPerson));

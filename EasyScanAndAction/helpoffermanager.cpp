@@ -7,16 +7,19 @@ HelpOfferManager::HelpOfferManager(QQmlApplicationEngine &e,
     QObject(nullptr),
     databaseStore(databaseFilename, "HelpOffer", *new HelpOffer(false)),
     serverStore(networkAccessManager, "", 0, "", "HelpOffer", factory),
-    myHelpOffers(e, "MyHelpOffers", "HelpOffer")
+    myHelpOffers(e, "MyHelpOffers", "HelpOffer"),
+    dayTimeSpanModel(e, "DayTimeSpanModel"),
+    removedTimeSpanModel(e, "RemovedDayTimeSpanModel")
 {
     connect(&serverStore, &jw78::PersistentStoreJWServer::objectStored, this, &HelpOfferManager::onHelpOfferStored);
     connect(&serverStore, &jw78::PersistentStoreJWServer::objectNotStored, this, &HelpOfferManager::onHelpOfferNotStored);
 
     factory.addClass(new HelpOffer(false));
     e.rootContext()->setContextProperty("HelpOfferManager", QVariant::fromValue(this));
+    e.rootContext()->setContextProperty("TheCurrentHelpOffer", QVariant::fromValue(&theCurrentHelpOffer));
     QVector<jw78::PersistentObject*> temp;
     databaseStore.selectAll(temp);
-    for (auto e: temp)
+    for (auto &e: temp)
     {
         HelpOffer *ho(dynamic_cast<HelpOffer*>(e));
         myHelpOffers.add(ho);
@@ -44,16 +47,9 @@ void HelpOfferManager::storeHelpOffer(bool loggedIn,
     }
 }
 
-void HelpOfferManager::saveHelpOffer(QString caption,
-                                     QString description,
-                                     double longitude,
-                                     double latitude)
+void HelpOfferManager::saveNewHelpOffer()
 {
-    HelpOffer *ho(new HelpOffer(true));
-    ho->setCaption(caption);
-    ho->setDescription(description);
-    ho->setLatitude(latitude);
-    ho->setLongitute(longitude);
+    HelpOffer *ho(new HelpOffer(theCurrentHelpOffer));
     myHelpOffers.add(ho);
     databaseStore.store(*ho);
     ho->setUnStored();

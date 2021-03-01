@@ -25,7 +25,6 @@
 #include "environment/encrypter.h"
 #include "mailoffice.h"
 #include "ibdperson.h"
-#include "CPPQMLObjects/daytimespanmodel.h"
 
 class ESAAApp: public QObject
 {
@@ -51,7 +50,6 @@ class ESAAApp: public QObject
     std::map<QString, int> facilityName2VisitCount;
     jw78::ObjectListModel allVisits;
     CustomerCardsManager customerCardsManager;
-    DayTimeSpanModel dayTimeSpanModel;
     const QString superCodePrefix = "http://onelink.to/ichbinda?a=";    
     void loadConfigFile();
     QNetworkReply *serverPost(const QString &url, const QMap<QString, QString> &variables);

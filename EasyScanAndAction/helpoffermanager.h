@@ -7,6 +7,7 @@
 #include <QQmlApplicationEngine>
 #include "persistent/jw78persistentstorejwserver.h"
 #include "persistent/jw78persistentstoresqlite.h"
+#include "CPPQMLObjects/daytimespanmodel.h"
 
 
 class HelpOfferManager: public QObject
@@ -16,6 +17,10 @@ class HelpOfferManager: public QObject
     jw78::PersistentStoreSQLite databaseStore;
     jw78::PersistentStoreJWServer serverStore;
     jw78::ObjectListModel myHelpOffers;
+    HelpOffer theCurrentHelpOffer;
+    DayTimeSpanModel dayTimeSpanModel;
+    DayTimeSpanModel removedTimeSpanModel;
+
 public:
     HelpOfferManager(QQmlApplicationEngine &e,
                      const QString &databaseFilename,
@@ -24,10 +29,7 @@ public:
                         const QString &loginTokenString,
                         const QString &secToken);
 
-    Q_INVOKABLE void saveHelpOffer(QString caption,
-                                   QString description,
-                                   double longitude,
-                                   double latitude);
+    Q_INVOKABLE void saveNewHelpOffer();
     Q_INVOKABLE void deleteHelpOfferByIndex(int index);
 
 public slots:
