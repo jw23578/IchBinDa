@@ -673,17 +673,19 @@ PageWithBackButton
                     {
                         if (!dayColumn.visible)
                         {
-                            if (DayTimeSpanModel.hasSpecialDayTimes())
+                            if (DayTimeSpanModel.hasSpecialDayTimeSpans())
                             {
                                 question.callbackOpen("Sollen die individuellen Zeiten verworfen werden?",
                                                       function(){
-                                                          DayTimeSpanModel.removeSpecialDayTimes()
+                                                          DayTimeSpanModel.removeDoubleDayTimeSpans()
+                                                          DayTimeSpanModel.removeSpecialDayTimeSpans()
                                                           dayColumn.visible = true},
                                                       null,
                                                       function(){console.log("abort")})
                             }
                             else
                             {
+                                DayTimeSpanModel.removeDoubleDayTimeSpans()
                                 dayColumn.visible = true
                             }
 

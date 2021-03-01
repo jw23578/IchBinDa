@@ -19,8 +19,9 @@ public:
                                        QTime const &since,
                                        QTime const &until);
 
-    Q_INVOKABLE void removeSpecialDayTimes();
-    Q_INVOKABLE bool hasSpecialDayTimes();
+    Q_INVOKABLE void removeDoubleDayTimeSpans();
+    Q_INVOKABLE void removeSpecialDayTimeSpans();
+    Q_INVOKABLE bool hasSpecialDayTimeSpans();
     Q_INVOKABLE bool contains(QDate const &day,
                               QTime const &since,
                               QTime const &until,
