@@ -16,6 +16,9 @@ public:
     Q_INVOKABLE QString getDay(QDate dummy);
     Q_INVOKABLE QString getSince(QTime dummy);
     Q_INVOKABLE QString getUntil(QTime dummy);
+
+    bool operator==(const DayTimeSpan &other);
+
 };
 
 #endif // DAYTIMESPAN_H

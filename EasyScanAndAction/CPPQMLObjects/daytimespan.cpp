@@ -31,3 +31,8 @@ QString DayTimeSpan::getUntil(QTime dummy)
     }
     return until().toString("hh:mm");
 }
+
+bool DayTimeSpan::operator==(const DayTimeSpan &other)
+{
+    return day() == other.day() && since() == other.since() && until() == other.until();
+}
