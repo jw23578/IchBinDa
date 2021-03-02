@@ -13,14 +13,41 @@ import "qrc:/windows"
 
 ApplicationWindow
 {
-    IDPWindowLocationRadius
+    Rectangle
     {
+        anchors.fill: parent
         z: 1000
         y: 0
         opacity: 1
         id: devDings
         property bool inDev: visible
         visible: false
+        SwipeView
+        {
+            id: theSwipeView
+            anchors.margins: IDPGlobals.spacing
+            anchors.bottom: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            interactive: false
+            Item
+            {
+                Column
+                {
+                    anchors.fill: parent
+                    spacing: IDPGlobals.spacing
+                    Rectangle
+                    {
+                        width: parent.width
+                        height: IDPGlobals.spacing
+                        color: "white"
+                        border.width: 1
+                        border.color: "black"
+                    }
+                }
+            }
+        }
     }
     width: 300
     height: 480

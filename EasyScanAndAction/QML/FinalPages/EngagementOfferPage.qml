@@ -101,6 +101,7 @@ PageWithBackButton
         Item
         {
             id: helpType
+            clip: true
             Column
             {
                 anchors.fill: parent
@@ -163,6 +164,7 @@ PageWithBackButton
         Item
         {
             id: helpInfo
+            clip: true
             Column
             {
                 anchors.fill: parent
@@ -206,6 +208,7 @@ PageWithBackButton
                     fontSizeFactor: 2
                     coverContainer: helpInfo
                 }
+
                 IDPLineEditWithTopCaption
                 {
                     containedCaption: true
@@ -215,6 +218,17 @@ PageWithBackButton
                     caption: qsTr("Kurze Info (optional)")
                     coverContainer: helpInfo
                 }
+                IDPMultiLineEditWithTopCaption
+                {
+                    id: theDecription
+                    width: parent.width
+                    height: width / 2
+                    containedCaption: true
+                    text: TheCurrentHelpOffer.description
+                    caption: qsTr("Beschreibung (optional)")
+                    coverContainer: helpInfo
+                }
+
                 IDPButtonCircle
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -233,6 +247,7 @@ PageWithBackButton
         Item
         {
             id: helpOffer
+            clip: true
             Column
             {
                 anchors.fill: parent
@@ -348,6 +363,7 @@ PageWithBackButton
         Item
         {
             id: helpTime
+            clip: true
             Column
             {
                 id: helpTimeColumn
