@@ -15,14 +15,30 @@ PageWithBackButton
 
     function open()
     {
+        theSwipeView.currentIndex = 0
+        theHelpModel.reset()
+        theCaption.text = ""
+        theDecription.text = ""
+        TheCurrentHelpOffer.clearOfferTypes()
         IDPGlobals.openCovers(helpType)
     }
     function close()
     {
         IDPGlobals.closeCovers(helpType)
+        helpOfferSaved()
     }
     ListModel {
         property int selectedCount: 0
+        function reset()
+        {
+            for (var i = 0; i < count; ++i)
+            {
+                get(i).selected = false
+            }
+            gridView.model = 0
+            gridView.model = theHelpModel
+        }
+
         function countSelected()
         {
             selectedCount = 0;
@@ -194,7 +210,7 @@ PageWithBackButton
                         height: selectedListView.elemWidth
                         IDPTextCircle {
                             width: IDPGlobals.screenWidth / 6
-                            text: qsTr("model.caption")
+                            text: qsTr(model.caption)
                             fontSizeFactor: 0.6
                             coverContainer: helpInfo
                         }
@@ -215,7 +231,7 @@ PageWithBackButton
                     id: theCaption
                     width: parent.width
                     text: TheCurrentHelpOffer.caption
-                    caption: qsTr("Kurze Info (optional)")
+                    caption: qsTr("Kurze Info")
                     coverContainer: helpInfo
                 }
                 IDPMultiLineEditWithTopCaption
@@ -236,6 +252,12 @@ PageWithBackButton
                     coverContainer: helpInfo
                     onClicked:
                     {
+                        if (theCaption.displayText == "")
+                        {
+                            JW78APP.showBadMessage("Bitte gib noch eine kurze Info ein.")
+                            return
+                        }
+
                         theSwipeView.currentIndex = 2
                         IDPGlobals.closeCovers(helpInfo)
                         IDPGlobals.openCovers(helpOffer)
@@ -355,15 +377,15 @@ PageWithBackButton
                     {
                         theSwipeView.currentIndex = 3
                         IDPGlobals.closeCovers(helpOffer)
-                        IDPGlobals.openCovers(helpTime)
+                        IDPGlobals.openCovers(helpTimeColumn)
                     }
                 }
             }
         }
-        Item
+        Flickable
         {
-            id: helpTime
             clip: true
+            contentHeight: helpTimeColumn.height
             Column
             {
                 id: helpTimeColumn
@@ -371,7 +393,8 @@ PageWithBackButton
                 property int elemHeight: IDPGlobals.screenHeight / 14
                 property int circleSize: elemHeight * 0.9
                 property double captionFontSizeFaktor: 0.8
-                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.margins: IDPGlobals.spacing
                 IDPText
                 {
@@ -381,7 +404,7 @@ PageWithBackButton
                     font.bold: true
                     fontSizeFactor: 1.5
                     wrapMode: Text.WordWrap
-                    coverContainer: helpTime
+                    coverContainer: helpTimeColumn
                 }
                 Item
                 {
@@ -417,7 +440,7 @@ PageWithBackButton
                                     {
                                         text: "Vormittag"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         font.bold: true
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
@@ -425,7 +448,7 @@ PageWithBackButton
                                     {
                                         text: "8-11 Uhr"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
                                 }
@@ -441,7 +464,7 @@ PageWithBackButton
                                     {
                                         text: "Mittag"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         font.bold: true
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
@@ -449,7 +472,7 @@ PageWithBackButton
                                     {
                                         text: "11-14 Uhr"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
                                 }
@@ -465,7 +488,7 @@ PageWithBackButton
                                     {
                                         text: "Nachmittag"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         font.bold: true
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
@@ -473,7 +496,7 @@ PageWithBackButton
                                     {
                                         text: "14-17 Uhr"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
                                 }
@@ -489,7 +512,7 @@ PageWithBackButton
                                     {
                                         text: "Abend"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         font.bold: true
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
@@ -497,7 +520,7 @@ PageWithBackButton
                                     {
                                         text: "17-21 Uhr"
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         fontSizeFactor: helpTimeColumn.captionFontSizeFaktor
                                     }
                                 }
@@ -521,7 +544,7 @@ PageWithBackButton
                                         anchors.centerIn: parent
                                         width: helpTimeColumn.circleSize
                                         text: JW78Utils.shortDayOfWeek(JW78Utils.incDays(new Date(2021, 1, 1), index))
-                                        coverContainer: helpTime
+                                        coverContainer: helpTimeColumn
                                         fontSizeFactor: 0.8
                                     }
                                 }
@@ -538,7 +561,7 @@ PageWithBackButton
                                         {
                                             anchors.centerIn: parent
                                             width: helpTimeColumn.circleSize
-                                            coverContainer: helpTime
+                                            coverContainer: helpTimeColumn
                                             property date day: JW78Utils.incDays(new Date(2021, 2, 8), dayRow.dayIndex)
                                             property date since: parent.timeIndex == 0 ?
                                                                      new Date(2021, 2, 8, 8) : parent.timeIndex == 1 ?
@@ -684,7 +707,7 @@ PageWithBackButton
                     text: dayColumn.visible ? qsTr("Uhrzeiten individuell festlegen") :
                                               qsTr("Uhrzeiten schnell festlegen")
                     clickable: true
-                    coverContainer: helpTime
+                    coverContainer: helpTimeColumn
                     onClicked:
                     {
                         if (!dayColumn.visible)
@@ -721,7 +744,7 @@ PageWithBackButton
                 {
                     text: qsTr("Angebot\nerstellen")
                     width: IDPGlobals.screenWidth / 5
-                    coverContainer: helpTime
+                    //                    coverContainer: helpTime
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         theHelpModel.addSelectedToCurrentHelpOffer()
@@ -730,6 +753,8 @@ PageWithBackButton
                                                       location.longitude)
                         TheCurrentHelpOffer.centerRadiusKM = location.currentPositionRadiusKM
                         HelpOfferManager.saveNewHelpOffer()
+                        JW78APP.showMessage("Vielen Dank für ihr Angebot")
+                        offerHelpPage.close()
                     }
                 }
             }
@@ -742,7 +767,7 @@ PageWithBackButton
         onClicked: {
             if (theSwipeView.currentIndex == 3)
             {
-                IDPGlobals.closeCovers(helpTime)
+                IDPGlobals.closeCovers(helpTimeColumn)
                 IDPGlobals.openCovers(helpOffer)
             }
             if (theSwipeView.currentIndex == 2)

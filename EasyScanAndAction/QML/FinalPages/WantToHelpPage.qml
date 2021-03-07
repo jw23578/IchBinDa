@@ -47,7 +47,7 @@ PageWithBackButton
         {
             coverContainer: wantToHelpPage
             anchors.bottom: parent.bottom
-            leftText: MyHelpOffers.count ? qsTr("Meine Angebote") : qsTr("Hilfsangebot\nerstellen")
+            leftText: MyHelpOffers.count ? qsTr("Meine\nAngebote") : qsTr("Hilfsangebot\nerstellen")
             onLeftClicked: MyHelpOffers.count ? showMyHelpOffersClicked() : createNewHelpOfferClicked()
             rightText: qsTr("Hilfsgesuche\nanschauen")
             onRightClicked: searchNeededHelpClicked()

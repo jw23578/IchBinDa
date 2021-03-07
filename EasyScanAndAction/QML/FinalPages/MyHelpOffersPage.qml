@@ -141,6 +141,9 @@ PageWithBackButton
         id: addHelpButton
         text: "Weitere Hilfe\nanbietem"
         visible: !theOfferPage.visible
-        onClicked: parent.state = "offerHelp"
+        onClicked: {
+            theOfferPage.open()
+            parent.state = "offerHelp"
+        }
     }
 }
