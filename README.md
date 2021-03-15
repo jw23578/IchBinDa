@@ -74,7 +74,7 @@ https://play.google.com/store/apps/details?id=ichbinda78.jw78.de
 ### AppStore/iOS: 
 https://apps.apple.com/us/app/id1528926162 
 
-Prototyp: \
+Prototyp/Entwicklungs-/Testversion: \
 Upload: 12.9.2020 14:00 \
 https://www.jw78.de/download/ibd.apk \
 (Hängt den Änderungen immer etwas hinterher)
