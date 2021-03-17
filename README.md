@@ -55,7 +55,7 @@ Zint [4] \
 Botan [5]
 
 ## Lizenz
-https://github.com/jw23578/IchBinDa/blob/master/LICENSE
+[MIT-LICENSE](https://github.com/jw23578/IchBinDa/blob/master/LICENSE)
 
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
 [3] https://github.com/ftylitak/qzxing \
