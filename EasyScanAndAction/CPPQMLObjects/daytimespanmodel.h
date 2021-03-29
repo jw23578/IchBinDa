@@ -8,7 +8,9 @@ class DayTimeSpanModel: public jw78::ObjectListModel
 {
     Q_OBJECT
     QMap<QTime, QTime> standardSinceUntil;
+    static bool first;
 public:
+    DayTimeSpanModel();
     DayTimeSpanModel(QQmlApplicationEngine &engine,
                      QString const &qmlName);
 
@@ -26,6 +28,7 @@ public:
                               QTime const &since,
                               QTime const &until,
                               const int QMLTriggerDummy);
+    DayTimeSpan *dtsAt(int index);
 };
 
 #endif // DAYTIMESPANMODEL_H

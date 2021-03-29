@@ -3,17 +3,23 @@ import QtQuick.Controls 2.15
 import ".."
 import "../Comp"
 import "../BasePages"
+import "qrc:/windows"
 import "qrc:/foundation"
 
 PageWithBackButton
 {
-    caption: "Hilfe anbieten"
+    caption: "Meine Hilfe"
     id: thePage
     states: [State {
             name: "offerHelp"
             PropertyChanges {
                 target: theOfferPage
                 visible: true
+            }
+            PropertyChanges {
+                target: thePage
+                caption: "Neue Hilfe anbieten"
+
             }
         }
     ]
@@ -71,41 +77,98 @@ PageWithBackButton
                 delegate: Rectangle {
                     opacity: 1 - Math.abs((index * width - theSwipeView2.contentItem.contentX) / width)
                     id: card1Item
-                    IDPText
+                    Column
                     {
-                        id: helpOfferCaption
-                        horizontalAlignment: Text.AlignHCenter
-                        width: parent.width - 2 * ESAA.spacing
-                        text: HelpOffer.caption
-                        elide: Text.ElideRight
-                    }
-                    IDPText
-                    {
-                        id: helpOfferDecription
-                        anchors.left: parent.left
-                        anchors.top: helpOfferCaption.bottom
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        anchors.margins: ESAA.spacing
-                        text: HelpOffer.description
-                        wrapMode: Text.WordWrap
-                    }
-                    IDPButtonCircle
-                    {
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        text: "Löschen"
-                        onClicked: {
-                            if (index == 0 && theRepeater.count > 1)
+                        anchors.fill: parent
+                        ListView
+                        {
+                            id: offerTypesListView
+                            model: HelpOffer.getOfferTypesCount()
+                            property int elemWidth: IDPGlobals.screenWidth / 6 + IDPGlobals.spacing / 2
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: Math.min(parent.width, HelpOffer.getOfferTypesCount() * elemWidth)
+                            height: elemWidth
+                            orientation: ListView.Horizontal
+
+                            delegate: Item
                             {
-                                theSwipeView2.currentIndex = 1
-                                deleteOfferByIndex(0)
-                                return
+                                width: offerTypesListView.elemWidth
+                                height: offerTypesListView.elemWidth
+                                IDPTextCircle {
+                                    width: IDPGlobals.screenWidth / 6
+                                    text: qsTr(HelpOffer.getOfferType(index))
+                                    fontSizeFactor: 0.6
+                                }
                             }
-                            deleteOfferByIndex(index)
+                        }
+                        IDPText
+                        {
+                            id: helpOfferCaption
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.width - 2 * ESAA.spacing
+                            text: HelpOffer.caption
+                            elide: Text.ElideRight
+                        }
+                        IDPText
+                        {
+                            id: helpOfferDecription
+                            horizontalAlignment: Text.AlignLeft
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.width - 2 * ESAA.spacing
+                            height: width / 2
+                            text: HelpOffer.description
+                            wrapMode: Text.WordWrap
+                            clip: true
+                        }
+                        ListView
+                        {
+                            id: dayTimeSpanView
+                            model: HelpOffer.getDayTimeSpans()
+                            property int elemWidth: IDPGlobals.screenWidth / 6 + IDPGlobals.spacing / 2
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: Math.min(parent.width, HelpOffer.getOfferTypesCount() * elemWidth)
+                            height: elemWidth
+                            orientation: ListView.Horizontal
+
+                            delegate: Item
+                            {
+                                width: offerTypesListView.elemWidth
+                                height: offerTypesListView.elemWidth
+                                IDPTextCircle {
+                                    width: IDPGlobals.screenWidth / 6
+                                    text: index
+                                    fontSizeFactor: 0.6
+                                }
+                            }
+
                         }
                     }
-               }
+                    IDPButtonCircleMulti
+                    {
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        mainButtonLargeWidth: IDPGlobals.screenWidth / 7
+                        id: theMultiButton
+                        visibleMasters: [false, true, true]
+                        texts: ["", qsTr("Bearbeiten"), qsTr("Löschen")]
+                        yMoveOnOpen: 0
+                        xMoveOnOpen: -JW78Utils.screenWidth / 3
+                        clickEvents: [null, null,
+                            function() {
+                                question.callbackOpen("Soll das Hilfeangebot gelöscht werden?",
+                                                      function() {
+                                                          if (index == 0 && theRepeater.count > 1)
+                                                          {
+                                                              theSwipeView2.currentIndex = 1
+                                                              deleteOfferByIndex(0)
+                                                              return
+                                                          }
+                                                          deleteOfferByIndex(index)
+                                                      }, function() {})
+                            }, null]
+                    }
+                }
             }
         }
         PageIndicator
@@ -145,5 +208,8 @@ PageWithBackButton
             theOfferPage.open()
             parent.state = "offerHelp"
         }
+    }
+    IDPWindowQuestion {
+        id: question
     }
 }

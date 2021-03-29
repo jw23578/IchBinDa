@@ -96,7 +96,6 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(int, yesQuestionCount, YesQuestionCount, 0);
     std::set<QString> qrCodes;
-    static std::set<std::string> invalidEMailDomains;      
 
     // Aktuelle Location
     JWPROPERTY(QString, facilityName, FacilityName, "");
@@ -263,6 +262,7 @@ signals:
     void yesNoQuestion(const QString &mt, QJSValue yescallback, QJSValue nocallback);
     void loginSuccessful();
     void requestLoginCodeSuccessful();
+    void colorsChanged();
 
 
 };

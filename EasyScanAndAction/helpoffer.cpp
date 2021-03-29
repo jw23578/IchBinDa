@@ -40,6 +40,16 @@ HelpOffer::HelpOffer(const HelpOffer &other):
     offerTypes = other.offerTypes;
 }
 
+int HelpOffer::getOfferTypesCount()
+{
+    return offerTypes.size();
+}
+
+QString HelpOffer::getOfferType(int index)
+{
+    return offerTypes[index];
+}
+
 void HelpOffer::clearOfferTypes()
 {
     offerTypes.clear();
@@ -47,13 +57,28 @@ void HelpOffer::clearOfferTypes()
 
 void HelpOffer::addOfferType(const QString &type)
 {
-    offerTypes.insert(type);
+    if (offerTypes.contains(type))
+    {
+        return;
+    }
+    offerTypes.push_back(type);
 }
 
 void HelpOffer::setCenter(double latitude, double longitude)
 {
     center.setLatitude(latitude);
     center.setLongitude(longitude);
+}
+
+DayTimeSpanModel *HelpOffer::getDayTimeSpans()
+{
+    QQmlEngine::setObjectOwnership(&dayTimeSpans, QQmlEngine::CppOwnership);
+    return &dayTimeSpans;
+}
+
+void HelpOffer::addDayTimeSpan(DayTimeSpan *dts)
+{
+    dayTimeSpans.add(dts);
 }
 
 jw::pureReflection *HelpOffer::internalCreate(bool genUuid) const

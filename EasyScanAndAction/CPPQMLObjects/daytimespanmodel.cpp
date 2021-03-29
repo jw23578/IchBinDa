@@ -1,5 +1,20 @@
 #include "daytimespanmodel.h"
 
+bool DayTimeSpanModel::first(true);
+
+DayTimeSpanModel::DayTimeSpanModel():
+    jw78::ObjectListModel("DTS")
+{
+    standardSinceUntil[QTime(8, 0, 0, 0)] = QTime(11, 0, 0, 0);
+    standardSinceUntil[QTime(11, 0, 0, 0)] = QTime(14, 0, 0, 0);
+    standardSinceUntil[QTime(14, 0, 0, 0)] = QTime(17, 0, 0, 0);
+    standardSinceUntil[QTime(17, 0, 0, 0)] = QTime(21, 0, 0, 0);
+    if (first)
+    {
+        qmlRegisterType<DayTimeSpanModel>("jw78.DayTimeSpanModel", 1, 0, "DayTimeSpanModel");
+    }
+}
+
 DayTimeSpanModel::DayTimeSpanModel(QQmlApplicationEngine &engine,
                                    const QString &qmlName):
     jw78::ObjectListModel(engine, qmlName, "DTS")
@@ -8,6 +23,10 @@ DayTimeSpanModel::DayTimeSpanModel(QQmlApplicationEngine &engine,
     standardSinceUntil[QTime(11, 0, 0, 0)] = QTime(14, 0, 0, 0);
     standardSinceUntil[QTime(14, 0, 0, 0)] = QTime(17, 0, 0, 0);
     standardSinceUntil[QTime(17, 0, 0, 0)] = QTime(21, 0, 0, 0);
+    if (first)
+    {
+        qmlRegisterType<DayTimeSpanModel>("jw78.DayTimeSpanModel", 1, 0, "DayTimeSpanModel");
+    }
 }
 
 void DayTimeSpanModel::addDayTimeSpan(const QDate &day, const QTime &since, const QTime &until)
@@ -108,4 +127,9 @@ bool DayTimeSpanModel::contains(const QDate &day,
         }
     }
     return false;
+}
+
+DayTimeSpan *DayTimeSpanModel::dtsAt(int index)
+{
+    return dynamic_cast<DayTimeSpan*>(at(index));
 }

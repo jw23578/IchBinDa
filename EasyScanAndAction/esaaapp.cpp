@@ -23,6 +23,7 @@
 #include "customercard.h"
 #include "jw78core_debug.h"
 #include "qthelper.h"
+#include "extstring.h"
 
 void ESAAApp::checkDevelopMobile()
 {
@@ -1004,19 +1005,10 @@ void ESAAApp::recommend()
     //    mobileExtension.shareText(appName(), appName() + " Kontaktdatenaustausch per QR-Code", content);
 }
 
-std::set<std::string> ESAAApp::invalidEMailDomains;
-
 bool ESAAApp::isEmailValid(const QString &email)
 {
     std::string work(email.toStdString());
-    const std::regex pattern("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,63})$");
-    bool result(std::regex_match(work, pattern));
-    if (result && invalidEMailDomains.size())
-    {
-        std::string domain(work.substr(work.find("@") + 1));
-        return invalidEMailDomains.find(domain) == invalidEMailDomains.end();
-    }
-    return result;
+    return extString::isEMailValid(work);
 }
 
 void ESAAApp::calculateRatios()
@@ -1120,6 +1112,7 @@ void ESAAApp::setIchBinDaScheme()
     setButtonDownColor("white");
     setButtonFromColor("#4581B3");
     setButtonToColor("#364995");
+    emit colorsChanged();
 }
 
 void ESAAApp::setWorkTimeScheme()
@@ -1127,6 +1120,7 @@ void ESAAApp::setWorkTimeScheme()
     setButtonDownColor("white");
     setButtonFromColor("orange");
     setButtonToColor(buttonFromColor().darker(150));
+    emit colorsChanged();
 }
 
 QNetworkReply *ESAAApp::serverPost(const QString &url, const QMap<QString, QString> &variables)

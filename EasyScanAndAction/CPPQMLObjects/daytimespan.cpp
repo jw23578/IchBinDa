@@ -1,8 +1,27 @@
 #include "daytimespan.h"
 
-DayTimeSpan::DayTimeSpan()
+void DayTimeSpan::addVariables()
 {
+    ADD_VARIABLE(m_day);
+    ADD_VARIABLE(m_since);
+    ADD_VARIABLE(m_until);
+    ADD_VARIABLE(helpOfferUuid);
+}
 
+DayTimeSpan::DayTimeSpan():jw78::ProxyObject(),
+    jw78::PersistentObject(true, "DayTimeSpan")
+{
+    addVariables();
+}
+
+DayTimeSpan::DayTimeSpan(const DayTimeSpan &other):
+    jw78::ProxyObject(other),
+    jw78::PersistentObject(other)
+{
+    addVariables();
+    setDay(other.day());
+    setSince(other.since());
+    setUntil(other.until());
 }
 
 QString DayTimeSpan::getDay(QDate dummy)
@@ -35,4 +54,9 @@ QString DayTimeSpan::getUntil(QTime dummy)
 bool DayTimeSpan::operator==(const DayTimeSpan &other)
 {
     return day() == other.day() && since() == other.since() && until() == other.until();
+}
+
+jw::pureReflection *DayTimeSpan::internalCreate(bool genUuid) const
+{
+    return new DayTimeSpan;
 }

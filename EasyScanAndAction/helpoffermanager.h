@@ -14,7 +14,8 @@ class HelpOfferManager: public QObject
 {
     Q_OBJECT
     jw78::ReflectionFactory factory;
-    jw78::PersistentStoreSQLite databaseStore;
+    jw78::PersistentStoreSQLite helpOfferDatabaseStore;
+    jw78::PersistentStoreSQLite dayTimeSpanDatabaseStore;
     jw78::PersistentStoreJWServer serverStore;
     jw78::ObjectListModel myHelpOffers;
     HelpOffer theCurrentHelpOffer;

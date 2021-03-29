@@ -499,18 +499,18 @@ ApplicationWindow
             TimeRecordingEvents
             {
                 id: timerecordingevents
-                onBackPressed: showNewPage(timerecordingevents, timerecordmenuepage)
+                onBackPressed: popPage()
             }
             WorkTimeSpans
             {
                 id: worktimespans
-                onBackPressed: showNewPage(worktimespans, timerecordmenuepage)
+                onBackPressed: popPage()
             }
 
             TimeRecordingMenue
             {
                 id: timerecordmenuepage
-                onBackPressed: showNewPage(timerecordmenuepage, timemainpage)
+                onBackPressed: popPage()
                 onShowTimeEvents: showNewPage(timerecordmenuepage, timerecordingevents)
                 onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespans)
             }
@@ -863,14 +863,13 @@ ApplicationWindow
             }
             showNewPage(scannerpage, questionpage)
         }
+        function onColorsChanged()
+        {
+            setColorAndSizes()
+        }
     }
-
-    Component.onCompleted:
+    function setColorAndSizes()
     {
-        console.log("completed")
-        JW78Utils.screenHeight = height
-        JW78Utils.screenWidth = width
-        ESAA.calculateRatios()
         IDPGlobals.spacing = JW78APP.spacing
         IDPGlobals.screenWidth = width
         IDPGlobals.screenHeight = height
@@ -884,6 +883,15 @@ ApplicationWindow
         IDPGlobals.buttonCircleDownColor = JW78APP.buttonDownColor
         IDPGlobals.buttonCircleFromColor = JW78APP.buttonFromColor
         IDPGlobals.buttonCircleToColor = JW78APP.buttonToColor
+    }
+
+    Component.onCompleted:
+    {
+        console.log("completed")
+        setColorAndSizes()
+        JW78Utils.screenHeight = height
+        JW78Utils.screenWidth = width
+        ESAA.calculateRatios()
     }
     onClosing: {
         close.accepted = false

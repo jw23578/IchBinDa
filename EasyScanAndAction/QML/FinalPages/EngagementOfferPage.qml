@@ -749,6 +749,7 @@ PageWithBackButton
                     onClicked: {
                         theHelpModel.addSelectedToCurrentHelpOffer()
                         TheCurrentHelpOffer.caption = theCaption.displayText
+                        TheCurrentHelpOffer.description = theDecription.text
                         TheCurrentHelpOffer.setCenter(location.latitude,
                                                       location.longitude)
                         TheCurrentHelpOffer.centerRadiusKM = location.currentPositionRadiusKM

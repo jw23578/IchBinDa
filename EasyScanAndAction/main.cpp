@@ -8,6 +8,7 @@
 #include <QtSvg>
 #include <QQuickView>
 #include "jw78core_debug.h"
+#include "jw78extqvector.h"
 
 int main(int argc, char *argv[])
 {
