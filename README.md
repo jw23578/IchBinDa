@@ -7,8 +7,6 @@ Bei einem Scan triggern die enthaltenen Informationen (halb-)automatische Aktion
 Die App eignet sich für Android und iOS.\
 Die QR-Codes werden als PDF und Bilddatei zur Verfügung gestellt und können individuell in Aufsteller oder Speisekarten integriert werden.
 
-Entwickelt werden soll die App in ihrer Basisfunktionalität im OL Civic Data Lab Hackathon [1]. Das Protokoll, also welche Daten/Aktionen im QR-Code ausgetauscht werden können, ist noch nicht festgelegt. Gerade um einen schönen Strauß an Anwendungsmöglichkeiten zu bekommen, bietet sich ein Hackathon mit vielen Teilnehmern aus verschiedensten Fachrichtungen und mit unterschiedlichen Interessen an.
-
 ## Szenario 1 (Kontaktdatenerfassung):
 Aktuell müssen - zum Beispiel in Restaurants und in Frisörläden - zur Kontaktnachverfolgung bei jedem Besuch die Kontaktdaten des Kunden aufgenommen und für wenige Wochen aufbewahrt werden.
 Bis auf kleine Unterschiede im Umfang der erhobenen Daten findet immer der gleiche Vorgang statt.
@@ -57,9 +55,8 @@ Zint [4] \
 Botan [5]
 
 ## Lizenz
-Es wird eine OpenSource-Lizenz; welche - muss noch entschieden werden
+[MIT-LICENSE](https://github.com/jw23578/IchBinDa/blob/master/LICENSE)
 
-[1] https://hackathon.kreativitaet-trifft-technik.de/ \
 [2] https://www.qt.io/, https://doc.qt.io/qt-5/qtqml-index.html \
 [3] https://github.com/ftylitak/qzxing \
 [4] https://github.com/zint/zint \
