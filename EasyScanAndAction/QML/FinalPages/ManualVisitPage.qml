@@ -334,8 +334,9 @@ PageWithBackButton
                     text: qsTr("Der gesuchte Aufenthaltsort war nicht dabei? Gib hier einfach eine Bezeichnung für deinen Standort ein:")
                     font.pixelSize: JW78APP.fontMessageTextPixelsize
                 }
-                ESAALineInputWithCaption
+                IDPLineEditWithCaption
                 {
+                    containedCaption: true
                     width: parent.width - 2 * JW78APP.spacing
                     caption: qsTr("Name des Geschäfts oder Orts")
                     anchors.horizontalCenter: parent.horizontalCenter
