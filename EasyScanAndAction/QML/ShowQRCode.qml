@@ -58,13 +58,14 @@ ESAAPage
                 font.pixelSize: ESAA.fontTextPixelsize * 0.9
                 text: "QR-Code an folgende E-Mail-Adresse senden:"
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithTopCaption
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - ESAA.spacing
                 caption: "QR-Code senden an"
                 id: qrCodeEMailAdresse
                 inputMethodHints: Qt.ImhEmailCharactersOnly
+                containedCaption: true
             }
         }
     }
