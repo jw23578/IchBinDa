@@ -58,7 +58,7 @@ ESAAPage
                 font.pixelSize: ESAA.fontTextPixelsize * 0.9
                 text: "QR-Code an folgende E-Mail-Adresse senden:"
             }
-            IDPLineEditWithTopCaption
+            IDPLineEditWithCaption
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - ESAA.spacing

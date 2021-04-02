@@ -138,7 +138,7 @@ PageWithBackButton
         anchors.verticalCenterOffset: -parent.height / 10
         anchors.margins: ESAA.spacing * 2
         spacing: ESAA.spacing
-        IDPLineEditWithTopCaption
+        IDPLineEditWithCaption
         {
             containedCaption: true
             caption: qsTr("Login (E-Mail)")
@@ -147,7 +147,7 @@ PageWithBackButton
             anchors.right: parent.right
             inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
         }
-        IDPLineEditWithTopCaption
+        IDPLineEditWithCaption
         {
             containedCaption: true
             echoMode: TextInput.Password

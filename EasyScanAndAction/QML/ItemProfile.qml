@@ -61,7 +61,7 @@ Item
                     coverContainer: profileRectangle
                 }
 
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("Vorname")
@@ -70,7 +70,7 @@ Item
                     coverContainer: profileRectangle
                     id: fstname
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("Nachname")
@@ -79,7 +79,7 @@ Item
                     id: surname
                     coverContainer: profileRectangle
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("Straße")
@@ -88,7 +88,7 @@ Item
                     id: street
                     coverContainer: profileRectangle
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("Hausnummer")
@@ -97,7 +97,7 @@ Item
                     id: housenumber
                     coverContainer: profileRectangle
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("PLZ")
@@ -106,7 +106,7 @@ Item
                     id: zip
                     coverContainer: profileRectangle
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     width: parent.width
                     caption: qsTr("Ort")

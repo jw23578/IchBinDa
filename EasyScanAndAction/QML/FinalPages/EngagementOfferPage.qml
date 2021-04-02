@@ -225,7 +225,7 @@ PageWithBackButton
                     coverContainer: helpInfo
                 }
 
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     containedCaption: true
                     id: theCaption
@@ -313,7 +313,7 @@ PageWithBackButton
                     fontSizeFactor: 2
                     coverContainer: helpOffer
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     containedCaption: true
                     id: name
@@ -322,7 +322,7 @@ PageWithBackButton
                     text: MainPerson.fstname
                     coverContainer: helpOffer
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     containedCaption: true
                     id: surname
@@ -331,7 +331,7 @@ PageWithBackButton
                     text: MainPerson.surname
                     coverContainer: helpOffer
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     containedCaption: true
                     id: phonenumber
@@ -340,7 +340,7 @@ PageWithBackButton
                     text: JW78APP.mobile
                     coverContainer: helpOffer
                 }
-                IDPLineEditWithTopCaption
+                IDPLineEditWithCaption
                 {
                     containedCaption: true
                     id: email
