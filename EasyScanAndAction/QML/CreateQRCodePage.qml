@@ -74,11 +74,10 @@ ESAAPage
             id: theColumn
             width: parent.width - 2 * ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
                 inputMethodHints: Qt.ImhDigitsOnly
-                id: qrCodeNumber
+                id: qrCodeNumber2
                 width: parent.width
                 caption: qsTr("Betreiber Code")
                 helpText: "Mit einem bestimmten Betreiber Code können die Kontaktdaten mit einem bestimmten Satz von Schlüsseln kodiert und dekodiert werden." +
@@ -88,10 +87,10 @@ ESAAPage
                 onHelpClicked: ESAA.showMessage(ht)
                 visible: false
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
                 id: facilityName
+                containedCaption: true
                 width: parent.width
                 caption: qsTr("Name des Geschäfts")
                 helpText: "Dieser Name wird dem Besucher angezeigt, wenn er den QR-Code eingescannt hat."

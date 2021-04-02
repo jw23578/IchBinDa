@@ -880,6 +880,7 @@ ApplicationWindow
         IDPGlobals.fontPixelSizeInput = JW78APP.fontInputPixelsize
         IDPGlobals.roundedDesignRadius = JW78APP.radius
         IDPGlobals.defaultBorderColor = JW78APP.lineInputBorderColor
+        IDPGlobals.defaultButtonColor = JW78APP.buttonFromColor
         IDPGlobals.buttonCircleDownColor = JW78APP.buttonDownColor
         IDPGlobals.buttonCircleFromColor = JW78APP.buttonFromColor
         IDPGlobals.buttonCircleToColor = JW78APP.buttonToColor
