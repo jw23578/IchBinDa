@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ".."
 import "../BasePages"
 import "../Comp"
+import "qrc:/foundation"
 
 PageWithBackButton {
     caption: "Kundenkarte speichern"
@@ -27,8 +28,9 @@ PageWithBackButton {
         fillMode: Image.PreserveAspectFit
     }
 
-    ESAALineInputWithCaption
+    IDPLineEditWithCaption
     {
+        containedCaption: true
         caption: "Bezeichnung"
         id: cardName
         anchors.left: parent.left
