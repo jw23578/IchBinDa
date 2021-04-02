@@ -96,9 +96,9 @@ ESAAPage
                 helpText: "Dieser Name wird dem Besucher angezeigt, wenn er den QR-Code eingescannt hat."
                 onHelpClicked: ESAA.showMessage(ht)
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: logoUrl
                 caption: "Logo-Url"
                 width: parent.width
@@ -114,9 +114,9 @@ ESAAPage
                 helpText: "Diese Farbe wird angezeigt, wenn ein Besucher seine Daten gesendet hat, so kann - zusammen mit dem Logo - schnell erkannt werden, dass der richtige Besuch angezeigt wird."
                 onHelpClicked: ESAA.showMessage(ht)
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: contactReceiveEMail
                 caption: "Kontaktdaten senden an (E-Mail-Adresse)"
                 width: parent.width
@@ -124,9 +124,9 @@ ESAAPage
                 helpText: "An diese E-Mail-Adresse werden die verschlüsselten Kontaktdaten des Besuchers gesendet."
                 onHelpClicked: ESAA.showMessage(ht)
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: anonymReceiveEMail
                 caption: "Anonym senden an (E-Mail-Adresse)"
                 width: parent.width
@@ -134,9 +134,9 @@ ESAAPage
                 helpText: "An diese E-Mail-Adresse wird ausschließlich eine Besuchsinfo gesendet, ohne Kontaktdaten des Besuchers."
                 onHelpClicked: ESAA.showMessage(ht)
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: visitCounts
                 caption: "Jeden xten Besuch anzeigen"
                 width: parent.width
@@ -304,49 +304,49 @@ ESAAPage
                 text: "Informationen für den Kunden/Besucher:"
                 wrapMode: Text.WordWrap
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: websiteURL
                 caption: "Url zur Webseite"
                 width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: foodMenue
                 caption: "Url zur Speisekarte (Webseite oder PDF)"
                 width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: drinksMenue
                 caption: "Url zur Getränkekarte (Webseite oder PDF)"
                 width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: lunchMenue
                 caption: "Url zur Mittagskarte (Webseite oder PDF)"
                 width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: individualURL1
                 caption: "Url zur individuellen Nutzung (Webseite oder PDF)"
                 width: parent.width
                 inputMethodHints: Qt.ImhUrlCharactersOnly
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
-                color: createqrcodepage.textColor
+                containedCaption: true
                 id: individualURL1Caption
                 caption: "Buttontext der Individuellen Url"
                 width: parent.width
