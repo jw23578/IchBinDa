@@ -108,99 +108,51 @@ ESAAPage
             width: parent.width
             spacing: ESAA.spacing / 2
             topPadding: spacing
-
-            ESAALineInputWithCaption
+            IDPTextBorder
             {
-                caption: qsTr("Vorname")
+                horizontalAlignment: Text.AlignLeft
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                focus: true
                 id: fstname
-                text: LastVisit.fstname
+                text: LastVisit.fstname + " " + LastVisit.surname
                 color: textColor
-                readOnly: true
+            }
+            IDPTextBorder
+            {
+                horizontalAlignment: Text.AlignLeft
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: ESAA.lastVisitStreet + " " + ESAA.lastVisitHousenumber
+                color: textColor
+                visible: text.trim().length > 0
+            }
+            IDPTextBorder
+            {
+                horizontalAlignment: Text.AlignLeft
+                width: parent.width - 2 * ESAA.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: ESAA.lastVisitZip + " " + ESAA.lastVisitLocation
+                color: textColor
+                visible: text.trim().length > 0
             }
 
-            ESAALineInputWithCaption
+            IDPTextBorder
             {
-                caption: qsTr("Nachname")
+                horizontalAlignment: Text.AlignLeft
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                id: surname
-                text: LastVisit.surname
-                color: textColor
-                readOnly: true
-            }
-
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Straße")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: street
-                text: ESAA.lastVisitStreet
-                visible: ESAA.lastVisitStreet != ""
-                color: textColor
-                readOnly: true
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Hausnummer")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: housenumber
-                text: ESAA.lastVisitHousenumber
-                visible: ESAA.lastVisitHousenumber != ""
-                inputMethodHints: Qt.ImhPreferNumbers
-                color: textColor
-                readOnly: true
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Postleitzahl")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: zip
-                text: ESAA.lastVisitZip
-                visible: ESAA.lastVisitZip != ""
-                inputMethodHints: Qt.ImhDigitsOnly
-                color: textColor
-                readOnly: true
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("Ort")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: location
-                text: ESAA.lastVisitLocation
-                visible: ESAA.lastVisitLocation != ""
-                color: textColor
-                readOnly: true
-            }
-            ESAALineInputWithCaption
-            {
-                caption: qsTr("E-Mail-Adresse")
-                width: parent.width - 2 * ESAA.spacing
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: emailAdress
                 text: ESAA.lastVisitEmailAdress
                 visible: ESAA.lastVisitEmailAdress != ""
-                inputMethodHints: Qt.ImhEmailCharactersOnly
                 color: textColor
-                readOnly: true
             }
-            ESAALineInputWithCaption
+            IDPTextBorder
             {
-                caption: qsTr("Handynummer")
+                horizontalAlignment: Text.AlignLeft
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
-                id: mobile
                 text: ESAA.lastVisitMobile
                 visible: ESAA.lastVisitMobile != ""
-                inputMethodHints: Qt.ImhDialableCharactersOnly
                 color: textColor
-                readOnly: true
             }
             Item
             {
