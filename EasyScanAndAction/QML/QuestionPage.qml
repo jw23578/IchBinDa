@@ -95,103 +95,114 @@ ESAAPage
                 font.bold: true
                 visible: !meineDaten
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Tischnummer")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: tableNumber
                 visible: !meineDaten && ESAA.tableNumberWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Wer wird besucht")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: whoIsVisited
                 visible: !meineDaten && ESAA.whoIsVisitedWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Station")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: station
                 visible: !meineDaten && ESAA.stationWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Raumnummer")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: room
                 visible: !meineDaten && ESAA.roomWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Block")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: block
                 visible: !meineDaten && ESAA.blockWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Sitzplatz")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: seatNumber
                 visible: !meineDaten && ESAA.seatNumberWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Vorname")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 focus: true
                 id: fstname
                 text: MainPerson.fstname
-                color: textColor
+                textColor: textColor
             }
 
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Nachname")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: surname
                 text: MainPerson.surname
-                color: textColor
+                textColor: textColor
             }
 
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Straße")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: street
                 text: MainPerson.street
                 visible: meineDaten || ESAA.adressWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Hausnummer")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: housenumber
                 text: MainPerson.housenumber
                 visible: meineDaten || ESAA.adressWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Postleitzahl")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -199,20 +210,22 @@ ESAAPage
                 text: MainPerson.zip
                 visible: meineDaten || ESAA.adressWanted
                 inputMethodHints: Qt.ImhDigitsOnly
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Ort")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: location
                 text: MainPerson.location
                 visible: meineDaten || ESAA.adressWanted
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("Handynummer")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -220,10 +233,11 @@ ESAAPage
                 text: ESAA.mobile
                 visible: meineDaten || ESAA.mobileWanted
                 inputMethodHints: Qt.ImhDialableCharactersOnly
-                color: textColor
+                textColor: textColor
             }
-            ESAALineInputWithCaption
+            IDPLineEditWithCaption
             {
+                containedCaption: true
                 caption: qsTr("E-Mail-Adresse")
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -231,7 +245,7 @@ ESAAPage
                 text: MainPerson.emailAdress
                 visible: meineDaten || ESAA.emailWanted
                 inputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhLowercaseOnly
-                color: textColor
+                textColor: textColor
             }
             Repeater
             {
