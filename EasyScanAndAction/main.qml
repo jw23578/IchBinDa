@@ -22,32 +22,24 @@ ApplicationWindow
         id: devDings
         property bool inDev: visible
         visible: false
-        SwipeView
+        Column
         {
-            id: theSwipeView
-            anchors.margins: IDPGlobals.spacing
-            anchors.bottom: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            interactive: false
-            Item
+            width: parent.width * 8 / 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+            IDPTextBorder
             {
-                Column
-                {
-                    anchors.fill: parent
-                    spacing: IDPGlobals.spacing
-                    Rectangle
-                    {
-                        width: parent.width
-                        height: IDPGlobals.spacing
-                        color: "white"
-                        border.width: 1
-                        border.color: "black"
-                    }
-                }
+                width: parent.width
+                text: "Moin Moin " + height
+            }
+            IDPLineEditWithCaption
+            {
+                containedCaption: true
+                width: parent.width
+                text: "Moin " + height
             }
         }
+
     }
     width: 300
     height: 480
@@ -889,10 +881,10 @@ ApplicationWindow
     Component.onCompleted:
     {
         console.log("completed")
-        setColorAndSizes()
         JW78Utils.screenHeight = height
         JW78Utils.screenWidth = width
         ESAA.calculateRatios()
+        setColorAndSizes()
     }
     onClosing: {
         close.accepted = false
