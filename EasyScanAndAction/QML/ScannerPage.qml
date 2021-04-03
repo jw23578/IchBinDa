@@ -51,6 +51,11 @@ ESAAPage
 
     function myHideFunction()
     {
+        if (camera == null)
+        {
+            return;
+        }
+
         camera.stop()
         var space = IDPGlobals.spacing * 2
         camera.moveOut(space, 0, parent.width - 2 * space, 0, parent.width / 15)
