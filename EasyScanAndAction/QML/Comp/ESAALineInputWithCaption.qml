@@ -17,6 +17,11 @@ FocusScope
     signal helpClicked(string ht)
     property alias font: input.font
     property alias echoMode: input.echoMode
+    property alias validator: input.validator
+    property alias inputMask: input.inputMask
+    property alias maximumLength: input.maximumLength
+    property alias suffix: input.suffix
+
 
     ESAATextInput
     {

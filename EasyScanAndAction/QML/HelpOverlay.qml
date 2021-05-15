@@ -24,7 +24,7 @@ Item
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         opacity: 0.8
-        color: ESAA.buttonColor
+        color: ESAA.mainColor
     }
 
     IDPText

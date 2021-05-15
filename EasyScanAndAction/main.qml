@@ -247,7 +247,7 @@ ApplicationWindow
         {
             id: header
             width: parent.width
-            height: parent.height / 16
+            height: splashheader.headerHeight * 1.5
         }
         Item
         {
@@ -255,7 +255,7 @@ ApplicationWindow
             id: contentItem
             width: parent.width
             height: parent.height - y
-            clip: true
+            clip: false
             QuestionPage
             {
                 id: questionpage
@@ -299,7 +299,7 @@ ApplicationWindow
                 onBackPressed: {
                     var space = IDPGlobals.spacing * 2
                     cameraLoader.item.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
-                                             space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+                                             space, ESAA.camTop, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
                     takePictureForm.activate(cameraLoader.item, customercardslist.imageSaved, false)
                 }
                 onCardSaved: showNewPage(theCurrentPage, customercardslist)
@@ -331,7 +331,7 @@ ApplicationWindow
                 {
                     var space = IDPGlobals.spacing * 2
                     cameraLoader.item.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
-                                             space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+                                             space, ESAA.camTop, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
                     takePictureForm.activate(cameraLoader.item, imageSaved, false)
                 }
                 onShowCustomerCard:
@@ -621,13 +621,8 @@ ApplicationWindow
         }
         SplashHeader
         {
+            z: 11
             id: splashheader
-            onProfileIconClicked:
-            {
-                openProfile.start()
-                scannerpage.myHideFunction()
-            }
-
             onSplashDone:
             {
                 if (!ESAA.aggrementChecked)
@@ -651,6 +646,24 @@ ApplicationWindow
                 }
             }
             onHelpClicked: showNewPage(theCurrentPage, firststart)
+        }
+        Loader
+        {
+            active: false
+            id: cameraLoader
+            z: 10
+            source: "qrc:/QML/Comp/CamVideoScan.qml"
+            asynchronous: false
+            onLoaded: {
+                item.stop()
+                showNewPage(theCurrentPage, scannerpage)
+            }
+            Connections {
+                target: cameraLoader.item
+                function onTagFound(tag) {
+                    scannerpage.tagFound(tag)
+                }
+            }
         }
         transform: Rotation {
             id: rotation
@@ -753,24 +766,6 @@ ApplicationWindow
             }
         }
     }
-    Loader
-    {
-        active: false
-        id: cameraLoader
-        z: 10
-        source: "qrc:/QML/Comp/CamVideoScan.qml"
-        asynchronous: false
-        onLoaded: {
-            item.stop()
-            showNewPage(theCurrentPage, scannerpage)
-        }
-        Connections {
-            target: cameraLoader.item
-            function onTagFound(tag) {
-                scannerpage.tagFound(tag)
-            }
-        }
-    }
 
     IDPButtonCircleMulti
     {
@@ -822,6 +817,11 @@ ApplicationWindow
     Connections
     {
         target: ESAA
+        function onProfileIconClicked()
+        {
+            openProfile.start()
+            scannerpage.myHideFunction()
+        }
 
         function onYesNoQuestion(mt, yescallback, nocallback)
         {
@@ -866,8 +866,8 @@ ApplicationWindow
         IDPGlobals.screenWidth = width
         IDPGlobals.screenHeight = height
         IDPGlobals.buttonCircleFontPixelSize = JW78APP.fontButtonPixelsize * 0.8
-        IDPGlobals.textFontColor = ESAA.fontColor
-        IDPGlobals.textFontPixelSize = ESAA.fontTextPixelsize
+        IDPGlobals.textFontColor = JW78APP.fontColor
+        IDPGlobals.textFontPixelSize = JW78APP.fontTextPixelsize
         IDPGlobals.fontFamily = "Roboto-Regular"
         IDPGlobals.fontPixelSizeInput = JW78APP.fontInputPixelsize
         IDPGlobals.roundedDesignRadius = JW78APP.radius
@@ -876,6 +876,9 @@ ApplicationWindow
         IDPGlobals.buttonCircleDownColor = JW78APP.buttonDownColor
         IDPGlobals.buttonCircleFromColor = JW78APP.buttonFromColor
         IDPGlobals.buttonCircleToColor = JW78APP.buttonToColor
+        IDPGlobals.defaultFontColorInput = JW78APP.mainColor
+        IDPGlobals.focusedFontColorInput = JW78APP.mainColor
+        ESAA.camTop = splashheader.headerHeight * 1.5
     }
 
     Component.onCompleted:

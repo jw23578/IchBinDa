@@ -1,17 +1,10 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
 Rectangle
 {
     color: "white"
-//    Image
-//    {
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: bgImage1.top
-//        mipmap: true
-//        source: "qrc:/images/background.png"
-//        fillMode: Image.PreserveAspectFit
-//    }
+    id: background
     Image
     {
         id: bgImage1

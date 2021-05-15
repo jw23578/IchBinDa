@@ -492,6 +492,36 @@ bool ESAAApp::keyNumberOK(int number)
     return encrypter.keyNumberOK(number);
 }
 
+void ESAAApp::clearTicketData()
+{
+    ticketData.clear();
+}
+
+void ESAAApp::addTicketData(QString name, int priceInCent)
+{
+    sTicketData t;
+    t.name = name;
+    t.priceInCent = priceInCent;
+    ticketData.push_back(t);
+}
+
+QString ESAAApp::getTicketName(int index)
+{
+    return ticketData[index].name;
+}
+
+QString ESAAApp::getTicketPriceString(int index)
+{
+    QString p(QString::number(ticketData[index].priceInCent / 100.0, 'f', 2));
+    p.replace(".", ",");
+    return p + "€";
+}
+
+double ESAAApp::getTicketPrice(int index)
+{
+    return ticketData[index].priceInCent / 100.0;
+}
+
 void ESAAApp::clearYesQuestions()
 {
     yesQuestions.clear();
@@ -712,6 +742,23 @@ void ESAAApp::interpretExtendedQRCodeData(const QString &qrCodeJSON)
         }
     }
     setYesQuestionCount(yesQuestions.size());
+    clearTicketData();
+    for (int i(0); i < 20; ++i)
+    {
+        QString ticketName("ticketName");
+        ticketName += QString::number(i);
+        QString ticketPriceInCent("ticketPriceInCent");
+        ticketPriceInCent += QString::number(i);
+        QString tn(data[ticketName].toString());
+        int tp(data[ticketPriceInCent].toInt());
+        if (tn.size() && tp > 0)
+        {
+            addTicketData(tn, tp);
+        }
+    }
+    setTicketDataCount(ticketData.size());
+    qDebug() << "ticketDataCount: " << ticketDataCount();
+    currentQRCodeData.setPaypalClientId(data["paypalClientId"].toString());
     currentQRCodeData.setWebsiteURL(data["websiteURL"].toString());
     currentQRCodeData.setFoodMenueURL(data["foodMenueURL"].toString());
     currentQRCodeData.setDrinksMenueURL(data["drinksMenueURL"].toString());
@@ -900,7 +947,8 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
                                 const QString &drinksMenueURL,
                                 const QString &individualURL1,
                                 const QString &individualURL1Caption,
-                                const QString &lunchMenueURL)
+                                const QString &lunchMenueURL,
+                                const QString &paypalClientId)
 {
     SLocationInfo &li(email2locationInfo[contactReceiveEMail]);
     if (li.locationId == "")
@@ -954,6 +1002,12 @@ QString ESAAApp::generateQRCode(const int qrCodeNumer,
     qr["individualURL1"] = individualURL1;
     qr["individualURL1Caption"] = individualURL1Caption;
     qr["lunchMenueURL"] = lunchMenueURL;
+    for (size_t i(0); i < ticketData.size(); ++i)
+    {
+        qr[QString("ticketName") + QString::number(i)] = ticketData[i].name;
+        qr[QString("ticketPriceInCent") + QString::number(i)] = ticketData[i].priceInCent;
+    }
+    qr["paypalClientId"] = paypalClientId;
     facilityIdToPost = li.locationId;
     qrCodeDataToPost = QJsonDocument(qr).toJson(QJsonDocument::Compact);
     qrCodes.clear();
@@ -973,6 +1027,7 @@ void ESAAApp::sendQRCode(const QString &qrCodeReceiver, const QString &facilityN
 void ESAAApp::postQRCodeData(QString const &filename, QByteArray const &data)
 {
     QString url(baseServerURL() + fileStoreMethod);
+    qDebug() << "postQRCodeData URL: " << url;
     QJsonObject json;
     json["name"] = "idbQRCodeData";
     json["filename"] = filename;
@@ -1032,16 +1087,16 @@ void ESAAApp::calculateRatios()
     qreal m_ratioFont = qMin(height*refDpi/(dpi*refHeight), width*refDpi/(dpi*refWidth));
     qDebug() << "m_ratio: " << m_ratio;
     qDebug() << "m_ratioFont: " << m_ratioFont;
-    double baseFontSize(20);
+    double baseFontSize(22);
     double baseSpacing(31);
 #ifdef DMOBILEDEVICE
     baseFontSize = 18;
 #endif
-    setFontInputPixelsize(m_ratioFont * baseFontSize * 0.8);
+    setFontInputPixelsize(m_ratioFont * baseFontSize * 1.1);
     setFontButtonPixelsize(m_ratioFont * baseFontSize);
     setFontMessageTextPixelsize(m_ratioFont * baseFontSize * 1.3);
     setSpacing(baseSpacing * m_ratio);
-    setFontTextPixelsize(m_ratioFont * baseFontSize * 0.8);
+    setFontTextPixelsize(m_ratioFont * baseFontSize);
     setHeaderFontPixelsize(m_ratioFont * baseFontSize * 1.5);
     setContentFontPixelsize(m_ratioFont * baseFontSize * 1.2);
 }
@@ -1109,9 +1164,10 @@ void ESAAApp::saveKontaktsituation(const QString &name, const QString &adress)
 
 void ESAAApp::setIchBinDaScheme()
 {
+    setFontColor(mainColor());
     setButtonDownColor("white");
-    setButtonFromColor("#4581B3");
-    setButtonToColor("#364995");
+    setButtonFromColor(mainColor());
+    setButtonToColor(buttonFromColor().darker(150));
     emit colorsChanged();
 }
 
@@ -1254,6 +1310,11 @@ void ESAAApp::requestLoginCode(QString loginEMail)
     });
 
     emit requestLoginCodeSuccessful();
+}
+
+void ESAAApp::clickProfileIcon()
+{
+    emit profileIconClicked();
 }
 
 bool ESAAApp::appendAVisit(Visit *aVisit)

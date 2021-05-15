@@ -28,7 +28,7 @@ ESAAPage
         camera.scan = true
         var space = IDPGlobals.spacing * 2
         camera.moveIn(space, 0, parent.width - 2 * space, 0, parent.width / 15,
-                      space, JW78Utils.screenHeight / 16 + IDPGlobals.spacing, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
+                      space, ESAA.camTop, parent.width - 2 * space, parent.width - 2* space, parent.width / 15)
         camera.start()
         if (!ESAA.isActiveVisit(1))
         {

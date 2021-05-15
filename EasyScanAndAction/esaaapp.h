@@ -58,6 +58,7 @@ class ESAAApp: public QObject
     JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
+    JWPROPERTY(int, camTop, CamTop, 0)
 
     JWPROPERTY(QString, baseServerURL, BaseServerURL, "");
     QString secToken;
@@ -69,12 +70,13 @@ class ESAAApp: public QObject
     JWPROPERTY(QColor, textColor, TextColor, "white");
     JWPROPERTY(QColor, textBackgroundColor, TextBackgroundColor, "#191928");
     JWPROPERTY(QColor, backgroundTopColor, BackgroundTopColor, "#191928");
-    JWPROPERTY(QColor, fontColor, FontColor, "#0E79B2")
+    JWPROPERTY(QColor, fontColor, FontColor, "#6C63FF"); // "#0E79B2")
     JWPROPERTY(QColor, buttonColor, ButtonColor, "#4581B3");
 
     JWPROPERTY(QColor, buttonDownColor, ButtonDownColor, "white");
-    JWPROPERTY(QColor, buttonFromColor, ButtonFromColor, "#4581B3");
-    JWPROPERTY(QColor, buttonToColor, ButtonToColor, "#364995");
+    JWPROPERTY(QColor, mainColor, MainColor, "#6C63FF");
+    JWPROPERTY(QColor, buttonFromColor, ButtonFromColor, "#6C63FF");
+    JWPROPERTY(QColor, buttonToColor, ButtonToColor, "#6C63FF");
     JWPROPERTY(QColor, disabledButtonFromColor, DisabledButtonFromColor, "#d0d0d0");
     JWPROPERTY(QColor, disabledButtonToColor, DisabledButtonToColor, "#c0c0c0");
 
@@ -95,6 +97,7 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, firstStart, FirstStart, true);
     JWPROPERTY(bool, aggrementChecked, AggreementChecked, false)
     JWPROPERTY(int, yesQuestionCount, YesQuestionCount, 0);
+    JWPROPERTY(int, ticketDataCount, TicketDataCount, 0);
     std::set<QString> qrCodes;
 
     // Aktuelle Location
@@ -168,6 +171,12 @@ private:
     QDateTime lastActionDateTime;
     QJsonObject jsonData2Send;
 
+    struct sTicketData {
+        QString name;
+        int priceInCent;
+    };
+    std::vector<sTicketData> ticketData;
+
     std::vector<QString> yesQuestions;
     QByteArray qrCodeDataToPost;
     QString facilityIdToPost;
@@ -181,6 +190,11 @@ public:
     void runTests();
 
     Q_INVOKABLE bool keyNumberOK(int number);
+    Q_INVOKABLE void clearTicketData();
+    Q_INVOKABLE void addTicketData(QString name, int priceInCent);
+    Q_INVOKABLE QString getTicketName(int index);
+    Q_INVOKABLE QString getTicketPriceString(int index);
+    Q_INVOKABLE double getTicketPrice(int index);
     Q_INVOKABLE void clearYesQuestions();
     Q_INVOKABLE void addYesQuestions(const QString &yq);
     Q_INVOKABLE QString getYesQuestion(int index);
@@ -222,7 +236,8 @@ public:
                                        const QString &drinksMenueURL,
                                        const QString &individualURL1,
                                        const QString &individualURL1Caption,
-                                       const QString &lunchMenueURL);
+                                       const QString &lunchMenueURL,
+                                       const QString &paypalClientId);
     Q_INVOKABLE void sendQRCode(const QString &qrCodeReceiver, const QString &facilityName, const QString &logoUrl);
 
     Q_INVOKABLE void recommend();
@@ -250,6 +265,7 @@ public:
     Q_INVOKABLE void registerAccount(QString loginEMail,
                                      QString password);
     Q_INVOKABLE void requestLoginCode(QString loginEMail);
+    Q_INVOKABLE void clickProfileIcon();
 
 signals:
     void showWaitMessageSignal(const QString &mt);
@@ -264,7 +280,7 @@ signals:
     void requestLoginCodeSuccessful();
     void colorsChanged();
 
-
+    void profileIconClicked();
 };
 
 #endif // ESAAAPP_H

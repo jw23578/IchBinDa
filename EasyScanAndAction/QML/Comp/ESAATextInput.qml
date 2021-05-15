@@ -15,6 +15,10 @@ FocusScope
     property string helpText: ""
     property alias font: input.font
     property alias echoMode: input.echoMode
+    property alias validator: input.validator
+    property alias inputMask: input.inputMask
+    property alias maximumLength: input.maximumLength
+    property alias suffix: suffixText.text
     Rectangle
     {
         id: rectangle
@@ -43,7 +47,7 @@ FocusScope
             anchors.leftMargin: parent.border.width + 4
             anchors.topMargin: parent.border.width + 4
             anchors.bottomMargin: parent.border.width + 4
-            anchors.rightMargin: parent.border.width + 4 - colorEdit ? colorRect.width : 0
+            anchors.rightMargin: parent.border.width + 4 - (colorEdit ? colorRect.width : 0)
             verticalAlignment: Text.AlignVCenter
             font.family: "Roboto-Regular"
             font.pixelSize: JW78APP.fontInputPixelsize
@@ -55,6 +59,15 @@ FocusScope
                 colorRect.color = displayText
             }
         }
+        Text {
+            anchors.right: input.right
+            anchors.verticalCenter: input.verticalCenter
+            id: suffixText
+            font: input.font
+            color: input.color
+            visible: input.displayText != ""
+        }
+
         Rectangle
         {
             color: "black"

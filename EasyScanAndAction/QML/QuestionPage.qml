@@ -1,7 +1,9 @@
 import QtQuick 2.15
+import QtWebView 1.15
 import QtQuick.Controls 2.15
 import "Comp"
 import "qrc:/foundation"
+import "qrc:/javascript/IDPRequestFunctions.js" as IDPRequest
 
 ESAAPage
 {
@@ -489,12 +491,175 @@ ESAAPage
             close()
         }
     }
+    IDPFadeInOutRectangle
+    {
+        anchors.fill: parent
+        id: ticketForm
+        opacity: JW78APP.ticketDataCount > 0 ? 1 : 0
+        property variant ticketCount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ESAAFlickable
+        {
+            id: ticketFlick
+            anchors.margins: ESAA.spacing
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            contentHeight: theTicketColumn.height * 1.4
+            Column
+            {
+                parent: ticketFlick.contentItem
+                id: theTicketColumn
+                y: ESAA.spacing
+                width: parent.width
+                spacing: ESAA.spacing
+                IDPText
+                {
+                    width: parent.width - 2 * ESAA.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Tickets"
+                    color: textColor
+                    font.pixelSize: ESAA.fontTextPixelsize * 1.5
+                    font.bold: true
+                }
+                Repeater
+                {
+                    model: JW78APP.ticketDataCount
+                    Column
+                    {
+                        width: parent.width
+                        id: oneTicketColumn
+                        property int changeCounter: 1
+                        spacing: ESAA.spacing / 2
+                        IDPText
+                        {
+                            width: parent.width - 2 * ESAA.spacing
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            horizontalAlignment: Text.AlignRight
+                            text: oneTicketColumn.changeCounter > 0 ? ticketForm.ticketCount[index] + " * " + JW78APP.getTicketName(index) + " " + JW78APP.getTicketPriceString(index) : ""
+                            color: textColor
+                            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+                        }
+                        Row
+                        {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: JW78APP.spacing * 4
+                            IDPButtonCircle
+                            {
+                                width: JW78Utils.screenWidth / 8
+                                text: "+"
+                                onClicked: {
+                                    ticketForm.ticketCount[index] += 1
+                                    oneTicketColumn.changeCounter += 1
+                                }
+                            }
+                            IDPButtonCircle
+                            {
+                                width: JW78Utils.screenWidth / 8
+                                text: "-"
+                                onClicked: {
+                                    if (ticketForm.ticketCount[index] == 0)
+                                    {
+                                        return;
+                                    }
+
+                                    ticketForm.ticketCount[index] -= 1
+                                    oneTicketColumn.changeCounter -= 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        CentralActionButton
+        {
+            id: buyButton
+            property string actionId: ""
+            text: "Jetzt Tickets<br>kaufen"
+            anchors.horizontalCenterOffset: noBuyButton.visible ? -noBuyButton.anchors.horizontalCenterOffset  : 0
+            function startPayment(data)
+            {
+                var amount = 0.0
+                for (var i = 0; i < JW78APP.ticketDataCount; ++i)
+                {
+                    amount += ticketForm.ticketCount[i] * JW78APP.getTicketPrice(i)
+                }
+
+                buyButton.actionId = data.responseText
+                console.log("ActionID: " + actionId);
+                var url = "https://www.jw78.de/payment.php?"
+                url += "actionId=" + actionId
+                url += "&amount=" + amount
+                url += "&clientId=" + CurrentQRCodeData.paypalClientId
+                console.log("url: " + url)
+                Qt.openUrlExternally(url)
+                paypalwait.opacity = 1
+            }
+            function errorOnStartPayment()
+            {
+
+            }
+            onClicked: {
+                IDPRequest.request("https://www.jw78.de/startPayment.php", startPayment, errorOnStartPayment)
+            }
+        }
+        CentralActionButton
+        {
+            id: noBuyButton
+            text: "Ohne Tickets<br>einchecken"
+            anchors.horizontalCenterOffset: parent.width / 6
+        }
+    }
+
+
     BackButton
     {
         visible: !ESAA.firstStart
         onClicked: {
             ESAA.ignoreQRCode()
             abort()
+        }
+    }
+    IDPFadeInOutRectangle
+    {
+        id: paypalwait
+        anchors.fill: parent
+        Text {
+            anchors.centerIn: parent
+            text: qsTr("Bitte die Bezahlung abschließen")
+        }
+        Timer
+        {
+            id: waitTimer
+            running: paypalwait.visible
+            interval: 2000
+            repeat: true
+            function paymentInProgress(data)
+            {
+                console.log("paymentInProgress" + data.responseText);
+                if (data.responseText.indexOf("404 Not Found") >= 0)
+                {
+                    console.log("paymentFinished");
+                    paypalwait.opacity = 0;
+                    JW78APP.ticketDataCount = 0
+                }
+                else
+                {
+                    console.log("paymentInProgress" + data.responseText);
+                }
+            }
+            function paymentError()
+            {
+                console.log("paymentError");
+            }
+
+            onTriggered:
+            {
+                var url = "https://www.jw78.de/paymentStateFiles/paymentInProgress" + buyButton.actionId + ".txt"
+                console.log(url)
+                IDPRequest.request(url, paymentInProgress, paymentError)
+            }
         }
     }
 }

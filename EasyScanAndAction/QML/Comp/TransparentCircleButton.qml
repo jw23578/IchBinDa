@@ -78,7 +78,7 @@ Button
 
     background: Rectangle {
         id: background
-        color: control.down ? control.buttonDownColor : ESAA.buttonColor
+        color: control.down ? control.buttonDownColor : control.buttonColor
         opacity: enabled ? 1 : 0.3
         border.color:  control.buttonDownColor
         border.width: 1

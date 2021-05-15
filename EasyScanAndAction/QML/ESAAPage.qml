@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "qrc:/foundation"
 
 Background
 {
@@ -23,6 +24,7 @@ Background
     id: thePage
     color: "white"
     property int targetOutX: -width
+    property int targetOutY: -height
     width: parent.width
     height: parent.height
     opacity: 0
@@ -70,19 +72,64 @@ Background
         }
         onStopped: hided()
     }
+    property int aniDuration: IDPGlobals.slowAnimationDuration * 2
+
+    ParallelAnimation
+    {
+        id: moveInYAnimation
+        NumberAnimation
+        {
+            target: thePage
+            property: "y"
+            to: 0
+            duration: thePage.aniDuration
+        }
+
+        NumberAnimation {
+            target: thePage
+            property: "opacity"
+            duration: thePage.aniDuration
+            to: 1
+        }
+        onStopped: showed()
+    }
+    ParallelAnimation
+    {
+        id: moveOutYAnimation
+        NumberAnimation
+        {
+            target: thePage
+            property: "y"
+            to: targetOutY
+            duration: thePage.aniDuration
+        }
+
+        NumberAnimation {
+            target: thePage
+            property: "opacity"
+            duration: thePage.aniDuration
+            to: 0
+        }
+        onStopped: hided()
+    }
 
     function show(moveLeft)
     {
         showing()        
         opacity = 0.8
-        x = moveLeft ? width : -width
-        y = 0
-        moveInAnimation.start()
+//        x = moveLeft ? width : -width
+//        y = 0
+//        moveInAnimation.start()
+        x = 0
+        y = moveLeft ? -height : height
+        moveInYAnimation.start()
     }
     function hide(moveLeft)
     {
-        targetOutX = moveLeft ? -width: width
         hiding()
-        moveOutAnimation.start()
+//        targetOutX = moveLeft ? -width: width
+//        moveOutAnimation.start()
+        targetOutY = moveLeft ? -height : height
+        moveOutYAnimation.start()
     }
 }

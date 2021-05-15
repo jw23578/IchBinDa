@@ -43,6 +43,8 @@ class Visit: public jw78::ProxyObject
     JWPROPERTY(QString, individualURL1Caption, IndividualURL1Caption, "");
     JWPROPERTY(QString, lunchMenueURL, LunchMenueURL, "");
 
+    JWPROPERTY(QString, paypalClientId, PaypalClientId, "");
+
     QDateTime visitBegin;
     QDateTime visitEnd;
 public:
