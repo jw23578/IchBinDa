@@ -49,5 +49,13 @@
         <file>images/engagement_2.png</file>
         <file>images/user.svg</file>
         <file>images/noProfileImage.svg</file>
+        <file>images/mobileImage1.svg</file>
+        <file>images/mobileImage2.svg</file>
+        <file>images/mobileImage3.svg</file>
+        <file>images/mobileImage4.svg</file>
+        <file>images/mobileImage8.svg</file>
+        <file>images/mobileImage7.svg</file>
+        <file>images/mobileImage6.svg</file>
+        <file>images/mobileImage5.svg</file>
     </qresource>
 </RCC>

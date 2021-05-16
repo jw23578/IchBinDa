@@ -57,6 +57,7 @@ class ESAAApp: public QObject
     JWPROPERTY(bool, isDevelop, IsDevelop, false);
     JWPROPERTY(QString, tempTakenPicture, TempTakenPicture, "");
     // Einstellungen    
+    JWPROPERTY(QColor, circleImageTextColor, CircleImageTextColor, "black");
     JWPROPERTY(QColor, lineInputBorderColor, LineInputBorderColor, "#E9F0F8");
     JWPROPERTY(int, camTop, CamTop, 0)
 

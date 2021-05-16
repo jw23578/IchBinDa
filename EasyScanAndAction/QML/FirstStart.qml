@@ -42,37 +42,52 @@ ESAAPage
     {
         visible: !betreiberinfo.visible && !kundeinfo.visible
         id: theGrid
-        property int buttonSize: JW78Utils.screenWidth / 2
-        property int buttonFontPixelSize: ESAA.fontButtonPixelsize * 1.5
+        property int buttonSize: parent.height / 2.1
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         width: buttonSize
-        topPadding: spacing
-        spacing: buttonSize / 4
-        IDPButtonCircle
+        spacing: IDPGlobals.spacing
+        IDPCircleImage
         {
-            id: b1
-            smallTopText: "Ich bin"
-            text: "Betreiber<br>oder<br>Veranstalter"
+            width: theGrid.buttonSize
+            source: "qrc:/images/mobileImage1.svg"
+            imagesize: width * 0.7
+            layerEnabled: false
+            IDPText
+            {
+                fontSizeFactor: 0.7
+                color: JW78APP.circleImageTextColor
+                anchors.top: parent.top
+                anchors.topMargin: parent.width / 12
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Ich bin<br>Betreiber oder Veranstalter"
+            }
             onClicked:
             {
                 view.contentY = 0
                 betreiberinfo.visible = true
             }
-            width: theGrid.buttonSize
-            font.pixelSize: theGrid.buttonFontPixelSize
         }
-        IDPButtonCircle
+        IDPCircleImage
         {
-            smallTopText: "Ich bin"
-            text: "Kunde<br>oder<br>Besucher"
+            source: "qrc:/images/mobileImage2.svg"
+            imagesize: width * 0.7
+            layerEnabled: false
+            IDPText
+            {
+                fontSizeFactor: 0.7
+                color: JW78APP.circleImageTextColor
+                anchors.top: parent.top
+                anchors.topMargin: parent.width / 12
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Ich bin<br>Kunde oder Besucher"
+            }
             onClicked:
             {
                 view2.contentY = 0
                 kundeinfo.visible = true
             }
             width: theGrid.buttonSize
-            font.pixelSize: theGrid.buttonFontPixelSize
         }
     }
     BackButton

@@ -72,7 +72,6 @@ Background
         }
         onStopped: hided()
     }
-    property int aniDuration: IDPGlobals.slowAnimationDuration * 2
 
     ParallelAnimation
     {
@@ -82,13 +81,13 @@ Background
             target: thePage
             property: "y"
             to: 0
-            duration: thePage.aniDuration
+            duration: IDPGlobals.pageChangeDuration
         }
 
         NumberAnimation {
             target: thePage
             property: "opacity"
-            duration: thePage.aniDuration
+            duration: IDPGlobals.pageChangeDuration
             to: 1
         }
         onStopped: showed()
@@ -101,13 +100,13 @@ Background
             target: thePage
             property: "y"
             to: targetOutY
-            duration: thePage.aniDuration
+            duration: IDPGlobals.pageChangeDuration
         }
 
         NumberAnimation {
             target: thePage
             property: "opacity"
-            duration: thePage.aniDuration
+            duration: IDPGlobals.pageChangeDuration
             to: 0
         }
         onStopped: hided()
@@ -129,7 +128,7 @@ Background
         hiding()
 //        targetOutX = moveLeft ? -width: width
 //        moveOutAnimation.start()
-        targetOutY = moveLeft ? -height : height
+        targetOutY = moveLeft ? height : -height
         moveOutYAnimation.start()
     }
 }

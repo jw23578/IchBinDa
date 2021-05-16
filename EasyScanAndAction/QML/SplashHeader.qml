@@ -12,7 +12,6 @@ Item
     property color gradientToColor: minimized ? ESAA.buttonFromColor : ESAA.buttonToColor
     signal splashDone
     signal helpClicked
-    anchors.top: parent.top
     anchors.left: parent.left
     width: parent.width
     height: parent.height
@@ -210,7 +209,7 @@ Item
             ctx.fillStyle = ESAA.mainColor;
             ctx.fillRect(0, 0, width, height);
         }
-    }
+    }    
     Canvas {
         id: bottomRight
         width: bottomLeft.width
@@ -233,5 +232,20 @@ Item
     {
         pause.start()
     }
+    Behavior on y {
+        NumberAnimation {
+            duration: IDPGlobals.pageChangeDuration
+        }
+    }
+
+    function moveDown()
+    {
+        y = parent.height
+    }
+    function moveUp()
+    {
+        y = 0
+    }
+
     Component.onCompleted: start()
 }

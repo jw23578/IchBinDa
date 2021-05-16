@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "Comp"
+import "qrc:/foundation"
 
 ESAAPage
 {
@@ -11,123 +12,170 @@ ESAAPage
     signal myVisitsClicked
     signal showKontaktTagebuchQRCode;
     caption: "Menü"
-
-    onShowing:
-    {
-        circleMenue.countVisibles()
-        circleMenue.show()
-        shareButton.blink(400)
-        shareButton.rotate(400)
+    color: JW78APP.mainColor
+    onShowing: {
+        theFlickable.contentY = 0
     }
-
-    CircleButtonsMenue
+    Flickable
     {
-        id: circleMenue
-
-        anchors.top: parent.top
-        anchors.bottom: shareButton.top
-        anchors.bottomMargin: ESAA.spacing * 2
+        id: theFlickable
         anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.min(parent.width - 2 * ESAA.spacing, contentWidth)
-
-        buttonTexts: [
-            qsTr("QR-Code<br>anlegen"),
-            qsTr("Kontaktdaten<br>bearbeiten"),
-            qsTr("<b>IchBinDa!</b><br>im Internet"),
-            qsTr("Meine<br>Besuche<br>") + AllVisits.count,
-            qsTr("Hilfe"),
-            qsTr("Spenden"),
-            qsTr("Im Falle<br>des Falles"),
-            qsTr("Kontakt<br>tagebuch<br>QR-Code")]
-        buttonSmallTopTexts: [
-            qsTr("Als Betreiber"),
-            qsTr("Als Besucher"),
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""]
-        alertAniRunnings: [
-            false,
-            MainPerson.fstname == "" || MainPerson.surname == "",
-            false,
-            false,
-            false,
-            false,
-            false,
-            false]
-        repeatAlertAnis: [
-            false,
-            MainPerson.fstname == "" || MainPerson.surname == "",
-            false,
-            false,
-            false,
-            false,
-            false,
-            false]
-        visibles: [
-            true,
-            true,
-            true,
-            AllVisits.count > 0,
-            true,
-            true,
-            true,
-            true]
-
-        onClicked: {
-            console.log(buttonText)
-            if (buttonText == buttonTexts[0])
+        anchors.top: parent.top
+        anchors.topMargin: IDPGlobals.spacing
+        anchors.bottomMargin: IDPGlobals.spacing
+        width: parent.width - IDPGlobals.spacing * 2
+        anchors.bottom: backbutton.top
+        clip: true
+        contentHeight: theGrid.height
+        Grid
+        {
+            width: parent.width
+            columns: 2
+            spacing: IDPGlobals.spacing
+            id: theGrid
+            property int elemWidth: (width - spacing) / columns
+            IDPCircleImage
             {
-                editQRCode()
-                return
+                source: "qrc:/images/mobileImage3.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Als Besucher<br>Kontakten bearbeiten"
+                }
+                onClicked: editContactData()
             }
-            if (buttonText == buttonTexts[1])
+            IDPCircleImage
             {
-                editContactData()
-                return
+                source: "qrc:/images/mobileImage4.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Als Betreiber<br>QR-Code anlegen"
+                }
+                onClicked: editQRCode()
             }
-            if (buttonText == buttonTexts[2])
+            IDPCircleImage
             {
-                Qt.openUrlExternally("https://www.app-ichbinda.de")
-                return
+                source: "qrc:/images/mobileImage5.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Kontakttagebuch"
+                }
+                onClicked: showKontaktTagebuchQRCode()
             }
-            if (buttonText == buttonTexts[3])
+            IDPCircleImage
             {
-                myVisitsClicked()
-                return
+                source: "qrc:/images/mobileImage6.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Spenden"
+                }
+                onClicked: Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
             }
-            if (buttonText == buttonTexts[4])
+            IDPCircleImage
             {
-                help()
-                return
+                source: "qrc:/images/mobileImage7.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Hilfe"
+                }
+                onClicked: help()
             }
-            if (buttonText == buttonTexts[5])
+            IDPCircleImage
             {
-                Qt.openUrlExternally("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M29Q4NYS8DXYJ&source=url")
-                return
+                source: "qrc:/images/mobileImage8.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "IchBinDa im<br>Internet"
+                }
+                onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de")
             }
-            if (buttonText == buttonTexts[6])
+            IDPCircleImage
             {
-                Qt.openUrlExternally("https://www.app-ichbinda.de/index.html#for-operator-in-case")
-                return
+                source: "qrc:/images/mobileImage8.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Meine Besuche"
+                }
+                onClicked: myVisitsClicked()
             }
-            if (buttonText == buttonTexts[7])
+            IDPCircleImage
             {
-                showKontaktTagebuchQRCode()
-                return
+                source: "qrc:/images/mobileImage8.svg"
+                width: theGrid.elemWidth
+                imagesize: width * 0.7
+                layerEnabled: false
+                IDPText
+                {
+                    fontSizeFactor: 0.7
+                    color: JW78APP.circleImageTextColor
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width / 12
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Im Falle<br>des Falles"
+                }
+                onClicked: Qt.openUrlExternally("https://www.app-ichbinda.de/index.html#for-operator-in-case")
             }
         }
-    }
-
-    ShareButton
-    {
-        id: shareButton
     }
     BackButton
     {
         onClicked: close()
+        id: backbutton
     }
     onBackPressed:
     {

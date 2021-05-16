@@ -95,6 +95,16 @@ ApplicationWindow
             return;
         }
         theMultiButton.close()
+        var direction = false
+        if (nextPage === menuepage)
+        {
+            splashheader.moveDown()
+            direction = true
+        }
+        else
+        {
+            splashheader.moveUp()
+        }
 
         theCurrentPage = nextPage;
         previousPage = currentPage
@@ -103,7 +113,6 @@ ApplicationWindow
             currentPage.z = 0
             currentPage.hide(direction)
         }
-        var direction = true
         nextPage.z = 1
         nextPage.show(direction)
         splashheader.headerText = nextPage.caption
@@ -453,7 +462,7 @@ ApplicationWindow
                 {
                     showNewPage(firststart, scannerpage)
                 }
-                onBack: showNewPage(firststart, menuepage)
+                onBack: showNewPage(firststart, previousPage)
                 onEditContactData:
                 {
                     ESAA.facilityName = "MeineDaten"
@@ -507,29 +516,6 @@ ApplicationWindow
                 onShowWorkTimeBrutto: showNewPage(timerecordmenuepage, worktimespans)
             }
 
-            MenuePage
-            {
-                id: menuepage
-                onClose:
-                {
-                    showNewPage(menuepage, scannerpage)
-                }
-                onEditContactData:
-                {
-                    ESAA.facilityName = "MeineDaten"
-                    showNewPage(menuepage, questionpage)
-                }
-                onEditQRCode:
-                {
-                    showNewPage(menuepage, createqrcodepage)
-                }
-                onHelp:
-                {
-                    showNewPage(menuepage, firststart)
-                }
-                onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
-                onShowKontaktTagebuchQRCode: funcShowKontaktTagebuchQRCode()
-            }
             AgreePage
             {
                 id: agreepage
@@ -598,7 +584,29 @@ ApplicationWindow
                 showNewPage(scannerpage, menuepage)
             }
         }
-
+        MenuePage
+        {
+            id: menuepage
+            onClose:
+            {
+                showNewPage(menuepage, scannerpage)
+            }
+            onEditContactData:
+            {
+                ESAA.facilityName = "MeineDaten"
+                showNewPage(menuepage, questionpage)
+            }
+            onEditQRCode:
+            {
+                showNewPage(menuepage, createqrcodepage)
+            }
+            onHelp:
+            {
+                showNewPage(menuepage, firststart)
+            }
+            onMyVisitsClicked: showNewPage(menuepage, myvisitspage)
+            onShowKontaktTagebuchQRCode: funcShowKontaktTagebuchQRCode()
+        }
 
 
         ESAASendedDataPage
