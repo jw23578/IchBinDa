@@ -1,0 +1,2 @@
+# qmldir
+singleton IBDGlobals IBDGlobals.qml

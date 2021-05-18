@@ -10,6 +10,7 @@ Background
     signal backPressed
     focus: true
     property string caption: ""
+    property url captionImageSource: ""
     Keys.onReleased:
     {
         if (event.key == Qt.Key_Back)

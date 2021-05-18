@@ -8,7 +8,8 @@ import "qrc:/foundation"
 
 ESAAPage
 {
-    caption: "QR-Code einlesen"
+    caption: "QR-Code scannen"
+    captionImageSource: "qrc:/images/headerImage2.svg"
     property var camera: null
     property var multiButton: null
 

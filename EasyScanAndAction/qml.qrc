@@ -54,5 +54,7 @@
         <file>QML/ItemProfile.qml</file>
         <file>QML/FinalPages/WantToHelpPage.qml</file>
         <file>QML/Comp/DoneButton.qml</file>
+        <file>QML/IBDGlobals.qml</file>
+        <file>QML/qmldir</file>
     </qresource>
 </RCC>

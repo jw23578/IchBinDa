@@ -71,7 +71,7 @@ ESAAPage
                     height: parent.height - ESAA.spacing * 2
                     width: height
                     radius: width / 2
-                    color: ESAA.buttonColor
+                    color: ESAA.mainColor
                     visible: logo.source == ""
                 }
             }
@@ -90,21 +90,21 @@ ESAAPage
                 {
                     width: parent.width
                     text: Visit.count + ". Besuch bei: "
-                    color: JW78APP.headerFontColor
+                    horizontalAlignment: Text.AlignLeft
                 }
                 IDPText
                 {
                     width: parent.width
                     text: Visit.facilityName
                     font.pixelSize: ESAA.headerFontPixelsize
-                    color: JW78APP.headerFontColor
+                    horizontalAlignment: Text.AlignLeft
                 }
                 IDPText
                 {
                     width: parent.width
                     font.pixelSize: ESAA.contentFontPixelsize
-                    color: JW78APP.contentFontColor
                     text: JW78Utils.shortDayOfWeek(Visit.begin) + " " + JW78Utils.formatDate(Visit.begin) + " " + JW78Utils.formatTime(Visit.begin)
+                    horizontalAlignment: Text.AlignLeft
                 }
                 Item
                 {

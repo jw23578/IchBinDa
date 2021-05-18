@@ -68,6 +68,15 @@ ApplicationWindow
         showKontaktTagebuchQRCode.qrCodeFileName = ESAA.generateKontaktTagebuchQRCode()
         showNewPage(theCurrentPage, showKontaktTagebuchQRCode)
     }
+    function callMenue()
+    {
+        if (theCurrentPage == timemainpage)
+        {
+            showNewPage(timemainpage, timerecordmenuepage)
+            return
+        }
+        showNewPage(scannerpage, menuepage)
+    }
 
     property var pages: []
 
@@ -115,17 +124,9 @@ ApplicationWindow
         }
         nextPage.z = 1
         nextPage.show(direction)
-        splashheader.headerText = nextPage.caption
+        splashheader.setCaption(nextPage.caption,
+                                nextPage.captionImageSource)
 
-        if (nextPage === scannerpage || nextPage == timemainpage)
-        {
-            hideAndShowCallMenueButton.start()
-        }
-        else
-        {
-            hideAndShowCallMenueButton.stop()
-            hideCallMenueButton.start()
-        }
         nextPage.forceActiveFocus()
         pages.push(nextPage)
     }
@@ -256,7 +257,7 @@ ApplicationWindow
         {
             id: header
             width: parent.width
-            height: splashheader.headerHeight * 1.5
+            height: IBDGlobals.headerHeight * 1.5
         }
         Item
         {
@@ -534,56 +535,6 @@ ApplicationWindow
             }
         }
 
-        SequentialAnimation
-        {
-            id: hideAndShowCallMenueButton
-            NumberAnimation {
-                target: callMenueButton
-                property: "anchors.verticalCenterOffset"
-                duration: 500
-                easing.type: Easing.InOutQuint
-                to: width
-            }
-            NumberAnimation {
-                target: callMenueButton
-                property: "anchors.verticalCenterOffset"
-                duration: 500
-                easing.type: Easing.InOutQuint
-                to: 0 // callMenueButton.width / 6
-            }
-        }
-        NumberAnimation {
-            target: callMenueButton
-            property: "anchors.verticalCenterOffset"
-            duration: 1000
-            easing.type: Easing.InOutQuint
-            id: hideCallMenueButton
-            to: width
-        }
-
-        IDPButtonCircle
-        {
-            id: callMenueButton
-            visible: !ESAA.firstStart
-            alertAniRunning: MainPerson.fstname == "" || ESAA.surname == ""
-            repeatAlertAni: MainPerson.fstname == "" || ESAA.surname == ""
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.bottom
-            verticalImageOffset: -height / 4
-            imageSizeFactor: 0.7
-            source: "qrc:/images/menue_weiss.svg"
-            downSource: "qrc:/images/menue_blau.svg"
-            onClicked:
-            {
-                if (theCurrentPage == timemainpage)
-                {
-                    showNewPage(timemainpage, timerecordmenuepage)
-                    return
-                }
-
-                showNewPage(scannerpage, menuepage)
-            }
-        }
         MenuePage
         {
             id: menuepage
@@ -631,6 +582,7 @@ ApplicationWindow
         {
             z: 11
             id: splashheader
+            onBarClicked: callMenue()
             onSplashDone:
             {
                 if (!ESAA.aggrementChecked)
@@ -781,12 +733,12 @@ ApplicationWindow
         opacity: 0
         id: theMultiButton
         x: scannerpage.x + JW78Utils.screenWidth / 300 * 150 - width / 2
-        y: JW78Utils.screenHeight / 480 * 360 - height / 2
+        y: JW78Utils.screenHeight / 480 * 420 - height / 2
         visible: !ESAA.firstStart && scannerpage.visible && opacity > 0
         texts: ["Kunden<br>karten", "", "Kontakt<br>situation<br>eintragen",
             "Kontakt<br>tagebuch<br>QR-Code", "Engagement"]
         optionCount: JW78APP.isDevelop ? 5 : 4
-        yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : smallWidth
+        yMoveOnOpen: JW78APP.isDevelop ? -smallWidth : 0
         stepAngle: JW78APP.isDevelop ? 72 : 60
         clickEvents: [function() {showNewPage(scannerpage, customercardslist)},
         function() {ESAA.recommend()},
@@ -795,8 +747,8 @@ ApplicationWindow
         function() {showNewPage(theCurrentPage, engagementstart)}]
         sources: ["", "qrc:/images/share_weiss.svg"]
         downSources: ["", "qrc:/images/share_blau.svg"]
-        onOpenClicked: hideCallMenueButton.start()
-        onCloseClicked: hideAndShowCallMenueButton.start()
+        onOpenClicked: {}
+        onCloseClicked: {}
     }
 
     YesNoQuestionPage
@@ -886,7 +838,7 @@ ApplicationWindow
         IDPGlobals.buttonCircleToColor = JW78APP.buttonToColor
         IDPGlobals.defaultFontColorInput = JW78APP.mainColor
         IDPGlobals.focusedFontColorInput = JW78APP.mainColor
-        ESAA.camTop = splashheader.headerHeight * 1.5
+        ESAA.camTop = IBDGlobals.headerHeight * 1.7
     }
 
     Component.onCompleted:

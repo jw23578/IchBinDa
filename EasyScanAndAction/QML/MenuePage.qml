@@ -11,6 +11,7 @@ ESAAPage
     signal help
     signal myVisitsClicked
     signal showKontaktTagebuchQRCode;
+    clip: true
     caption: "Menü"
     color: JW78APP.mainColor
     onShowing: {
@@ -24,7 +25,7 @@ ESAAPage
         anchors.topMargin: IDPGlobals.spacing
         anchors.bottomMargin: IDPGlobals.spacing
         width: parent.width - IDPGlobals.spacing * 2
-        anchors.bottom: backbutton.top
+        anchors.bottom: bottomHeader.top
         clip: true
         contentHeight: theGrid.height
         Grid
@@ -172,14 +173,41 @@ ESAAPage
             }
         }
     }
-    BackButton
+//    BackButton
+//    {
+//        onClicked: close()
+//        id: backbutton
+//    }
+//    onBackPressed:
+//    {
+//        console.log("menuepage back")
+//        close()
+//    }
+    Rectangle
     {
-        onClicked: close()
-        id: backbutton
-    }
-    onBackPressed:
-    {
-        console.log("menuepage back")
-        close()
+        id: bottomHeader
+        width: parent.width
+        height: IBDGlobals.headerHeight * 2
+        anchors.verticalCenter: parent.bottom
+        radius: height / 2
+        z: 10
+        Rectangle
+        {
+            id: theBar
+            anchors.top: parent.top
+            anchors.topMargin: parent.height / 4
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width / 4
+            height: IDPGlobals.spacing / 1.5
+            radius: height / 2
+            color: "#EBEBF3"
+            MouseArea
+            {
+                anchors.fill: parent
+                anchors.margins: -IDPGlobals.spacing / 2
+                onClicked: close()
+            }
+        }
+
     }
 }

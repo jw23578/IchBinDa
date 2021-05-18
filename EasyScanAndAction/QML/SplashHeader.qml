@@ -5,18 +5,99 @@ import "qrc:/foundation"
 Item
 {
     id: splashscreen
-    property int headerHeight: parent.height / 10
     property color gradientFromColor: ESAA.buttonFromColor
     property bool minimized: false
     property alias headerText: headerCaption.text
     property color gradientToColor: minimized ? ESAA.buttonFromColor : ESAA.buttonToColor
     signal splashDone
     signal helpClicked
+    signal barClicked
     anchors.left: parent.left
     width: parent.width
     height: parent.height
     property int rectHeight: height
     property int rectWidth: width
+    property url imageSource: ""
+    function setCaption(newCaption, newImageSource)
+    {
+        headerCaption2.text = newCaption
+        showTextAni.start()
+        imageSource = newImageSource
+        headerImage.source = imageSource
+        showImageAni.start()
+    }
+    SequentialAnimation
+    {
+        id: showImageAni
+
+        ParallelAnimation
+        {
+            NumberAnimation
+            {
+                target: headerImage
+                property: "width"
+                to: IBDGlobals.headerHeight * 0.75
+                duration: IDPGlobals.pageChangeDuration
+            }
+            NumberAnimation
+            {
+                target: headerImage
+                property: "anchors.bottomMargin"
+                to: IBDGlobals.headerHeight * 0.75
+                duration: IDPGlobals.pageChangeDuration
+                onStopped: headerImage.source = imageSource
+                easing.type: Easing.OutQuad
+            }
+        }
+        ParallelAnimation
+        {
+            NumberAnimation
+            {
+                target: headerImage
+                property: "width"
+                to: IBDGlobals.headerHeight
+                duration: IDPGlobals.pageChangeDuration
+            }
+            NumberAnimation
+            {
+                target: headerImage
+                property: "anchors.bottomMargin"
+                to: 0
+                duration: IDPGlobals.pageChangeDuration
+                easing.type: Easing.InQuad
+            }
+        }
+    }
+
+    SequentialAnimation
+    {
+        id: showTextAni
+
+        PauseAnimation {
+            duration: IDPGlobals.pageChangeDuration / 2
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: headerCaption
+                property: "width"
+                to: 0
+                duration: IDPGlobals.pageChangeDuration
+            }
+            NumberAnimation {
+                target: headerCaption2
+                property: "x"
+                to: IBDGlobals.headerHeight // splashscreen.headerHeight
+                duration: IDPGlobals.pageChangeDuration
+            }
+        }
+        onStopped: {
+            headerCaption.text = headerCaption2.text
+            headerCaption.width = headerCaption.contentWidth
+            headerCaption.x = IBDGlobals.headerHeight
+            headerCaption2.x = splashscreen.width
+        }
+    }
+
     Behavior on gradientToColor {
         ColorAnimation {
             duration: JW78Utils.longAniDuration
@@ -34,18 +115,44 @@ Item
         height: parent.rectHeight
         opacity: 1
         color: ESAA.mainColor
-//        gradient: Gradient
-//        {
-//            orientation: Gradient.Horizontal
-//            GradientStop {position: 0.0; color: splashscreen.gradientFromColor}
-//            GradientStop {position: 1.0; color: splashscreen.gradientToColor}
-//        }
+        clip: true
+        //        gradient: Gradient
+        //        {
+        //            orientation: Gradient.Horizontal
+        //            GradientStop {position: 0.0; color: splashscreen.gradientFromColor}
+        //            GradientStop {position: 1.0; color: splashscreen.gradientToColor}
+        //        }
         IDPText
         {
-            anchors.centerIn: parent
+            x: IBDGlobals.headerHeight
+            anchors.bottom: parent.bottom
             id: headerCaption
             color: ESAA.textColor
-            font.pixelSize: ESAA.fontTextPixelsize * 0.8
+            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            clip: true
+            font.bold: true
+            opacity: 0.8
+        }
+        IDPText
+        {
+            x: parent.width
+            anchors.bottom: parent.bottom
+            id: headerCaption2
+            color: ESAA.textColor
+            font.pixelSize: ESAA.fontTextPixelsize * 1.5
+            font.bold: true
+            opacity: 0.8
+        }
+        Image
+        {
+            id: headerImage
+            height: parent.height / 1.5
+            width: parent.height
+            anchors.horizontalCenterOffset: parent.width / 6
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            mipmap: true
+            fillMode: Image.PreserveAspectFit
         }
 
         Logo
@@ -54,7 +161,7 @@ Item
             y: (parent.height - height) / 2
             width: Math.min(parent.height, parent.width)
             height: width
-            visible: parent.height != splashscreen.headerHeight || !JW78APP.loggedIn
+            visible: parent.height != IBDGlobals.headerHeight || !JW78APP.loggedIn
         }
 
         Behavior on height {
@@ -93,9 +200,9 @@ Item
         Item
         {
             id: profileItem
-            visible: parent.height == splashscreen.headerHeight && JW78APP.loggedIn
+            visible: parent.height == IBDGlobals.headerHeight && JW78APP.loggedIn
             width: height
-            height: splashscreen.headerHeight
+            height: IBDGlobals.headerHeight
             Image
             {
                 id: profileImage
@@ -115,7 +222,7 @@ Item
         }
 
         onHeightChanged: {
-            if (height == splashscreen.headerHeight)
+            if (height == IBDGlobals.headerHeight)
             {
                 rotateProfileImage.start()
             }
@@ -135,7 +242,7 @@ Item
             anchors.right: parent.right
             anchors.rightMargin: IDPGlobals.spacing
             anchors.verticalCenter: parent.verticalCenter
-            width: splashscreen.headerHeight * 0.8
+            width: IBDGlobals.headerHeight * 0.8
             height: width
             source: "qrc:/images/help.svg"
             opacity: 0
@@ -165,7 +272,7 @@ Item
         function minimize()
         {
             splashscreen.minimized = true
-            height = splashscreen.headerHeight
+            height = IBDGlobals.headerHeight
             logo.qrCodeOffset = parent.height / 10 / 8
             logo.claimImageX = parent.height / 10 / 8
             longWait.start()
@@ -195,7 +302,7 @@ Item
     }
     Canvas {
         id: bottomLeft
-        width: splashscreen.headerHeight
+        width: IBDGlobals.headerHeight
         height: width
         anchors.top: topRect.bottom
         onPaint: {
@@ -209,7 +316,7 @@ Item
             ctx.fillStyle = ESAA.mainColor;
             ctx.fillRect(0, 0, width, height);
         }
-    }    
+    }
     Canvas {
         id: bottomRight
         width: bottomLeft.width
@@ -228,6 +335,24 @@ Item
             ctx.fillRect(0, 0, width, height);
         }
     }
+    Rectangle
+    {
+        id: theBar
+        anchors.top: topRect.bottom
+        anchors.topMargin: IBDGlobals.headerHeight / 4
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width / 4
+        height: IDPGlobals.spacing / 1.5
+        radius: height / 2
+        color: "#EBEBF3"
+        MouseArea
+        {
+            anchors.fill: parent
+            anchors.margins: -IDPGlobals.spacing / 2
+            onClicked: splashscreen.barClicked()
+        }
+    }
+
     function start()
     {
         pause.start()

@@ -56,6 +56,7 @@ ESAAPage
     property bool meineDaten: ESAA.facilityName == "MeineDaten"
     property color textColor: ESAA.buttonColor
     caption: ESAA.facilityName
+    captionImageSource: "qrc:/images/headerImage2.svg"
     ESAAFlickable
     {
         id: theFlick

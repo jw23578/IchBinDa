@@ -57,5 +57,7 @@
         <file>images/mobileImage7.svg</file>
         <file>images/mobileImage6.svg</file>
         <file>images/mobileImage5.svg</file>
+        <file>images/headerImage1.svg</file>
+        <file>images/headerImage2.svg</file>
     </qresource>
 </RCC>

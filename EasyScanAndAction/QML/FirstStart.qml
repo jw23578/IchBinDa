@@ -8,6 +8,7 @@ ESAAPage
     signal startNow
     signal back
     caption: "Hilfe"
+    captionImageSource: "qrc:/images/headerImage1.svg"
     function goStartNow()
     {
         betreiberinfo.visible = false
