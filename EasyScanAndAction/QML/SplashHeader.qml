@@ -9,8 +9,8 @@ Item
     property bool minimized: false
     property alias headerText: headerCaption.text
     property color gradientToColor: minimized ? ESAA.buttonFromColor : ESAA.buttonToColor
+    property alias showMenueButton: theBar.visible
     signal splashDone
-    signal helpClicked
     signal barClicked
     anchors.left: parent.left
     width: parent.width
@@ -18,11 +18,13 @@ Item
     property int rectHeight: height
     property int rectWidth: width
     property url imageSource: ""
-    function setCaption(newCaption, newImageSource)
+    property double headerImageSizeFactor: 1.0
+    function setCaption(newCaption, newImageSource, newHeaderImageSizeFactor)
     {
         headerCaption2.text = newCaption
         showTextAni.start()
         imageSource = newImageSource
+        headerImageSizeFactor = newHeaderImageSizeFactor
         headerImage.source = imageSource
         showImageAni.start()
     }
@@ -55,7 +57,7 @@ Item
             {
                 target: headerImage
                 property: "width"
-                to: IBDGlobals.headerHeight
+                to: IBDGlobals.headerHeight * headerImageSizeFactor
                 duration: IDPGlobals.pageChangeDuration
             }
             NumberAnimation
@@ -146,8 +148,8 @@ Item
         Image
         {
             id: headerImage
-            height: parent.height / 1.5
-            width: parent.height
+            height: width / 1.5
+            width: parent.height * headerImageSizeFactor
             anchors.horizontalCenterOffset: parent.width / 6
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
@@ -228,54 +230,12 @@ Item
             }
         }
 
-        Image
-        {
-            property int changeCounter: 0
-            Timer
-            {
-                interval: 10000
-                repeat: true
-                running: true
-                onTriggered: helpImage.changeCounter += 1
-            }
-            id: helpImage
-            anchors.right: parent.right
-            anchors.rightMargin: IDPGlobals.spacing
-            anchors.verticalCenter: parent.verticalCenter
-            width: IBDGlobals.headerHeight * 0.8
-            height: width
-            source: "qrc:/images/help.svg"
-            opacity: 0
-            visible: !ESAA.isActiveVisit(helpImage.changeCounter)
-            fillMode: Image.PreserveAspectFit
-            mipmap: true
-            Behavior on opacity {
-                NumberAnimation
-                {
-                    duration: JW78Utils.longAniDuration
-                }
-            }
-            MouseArea
-            {
-                enabled: !ESAA.isActiveVisit(helpImage.changeCounter)
-                anchors.fill: parent
-                onClicked: splashscreen.helpClicked()
-            }
-        }
-
-        PauseAnimation {
-            duration: 3000
-            id: longWait
-            onStopped: helpImage.opacity = 1
-        }
-
         function minimize()
         {
             splashscreen.minimized = true
             height = IBDGlobals.headerHeight
             logo.qrCodeOffset = parent.height / 10 / 8
             logo.claimImageX = parent.height / 10 / 8
-            longWait.start()
         }
 
         PauseAnimation {

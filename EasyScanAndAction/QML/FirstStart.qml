@@ -9,6 +9,7 @@ ESAAPage
     signal back
     caption: "Hilfe"
     captionImageSource: "qrc:/images/headerImage1.svg"
+    showMenueButton: false
     function goStartNow()
     {
         betreiberinfo.visible = false
@@ -125,7 +126,7 @@ ESAAPage
                       "Die Kontaktdaten der Kunden/Besucher werden verschlüsselt in der Mail übertragen und können nicht von dir ausgelesen werden.<br>" +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.buttonColor
+                color: JW78APP.mainColor
 
             }
         }
@@ -174,7 +175,7 @@ ESAAPage
 //                      "so dass Veranstaltungen bei denen es möglicherweise nachzuverfolgende Kontakte gab markiert werden können. " +
                       "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                       "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos.<br>"
-                color: ESAA.buttonColor
+                color: JW78APP.mainColor
             }
         }
         IDPButtonCircle

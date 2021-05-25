@@ -8,6 +8,8 @@ import "qrc:/javascript/IDPRequestFunctions.js" as IDPRequest
 ESAAPage
 {
     caption: "QR-Code erstellen"
+    captionImageSource: "qrc:/images/mobileImage4.svg"
+    headerImageSizeFactor: 1.3
     id: createqrcodepage
     signal close
     signal showCode
@@ -70,6 +72,21 @@ ESAAPage
                                              lunchMenue.displayText,
                                              paypalclientid.displayText);
     }
+    component HighlightBar : Rectangle {
+            color: JW78APP.mainColor
+            radius: height / 2
+            property int space: IDPGlobals.spacing / 2
+            x: positionView.currentItem.x + positionView.currentItem.width / 2 - positionView.currentItem.contentWidth / 2 - space
+            y: positionView.currentItem.y + positionView.currentItem.height / 2 - positionView.currentItem.contentHeight / 2 - space
+            width: positionView.currentItem.contentWidth + 2 * space
+            height: positionView.currentItem.contentHeight + 2 * space
+            Behavior on width { SpringAnimation {
+                    duration: IDPGlobals.fastAnimationDuration
+                    spring: 2; damping: 0.1 } }
+            Behavior on x { SpringAnimation {
+                    duration: IDPGlobals.fastAnimationDuration
+                    spring: 3; damping: 0.2 } }
+        }
     ListView
     {
         ListModel {
@@ -91,18 +108,28 @@ ESAAPage
                 caption: "Tickets"
             }
         }
+        highlight: HighlightBar {}
+        highlightFollowsCurrentItem: false
         model: itemModel
         delegate: Item {
             width: textItem.width + IDPGlobals.spacing * 2
             height: textItem.height + IDPGlobals.spacing * 3
+            property alias contentHeight: textItem.contentHeight
+            property alias contentWidth: textItem.contentWidth
             IDPText {
-                fontSizeFactor: 1.2
+                fontSizeFactor: 0.8
+                font.bold: true
                 anchors.centerIn: parent
                 width: contentWidth
                 height: contentHeight
                 id: textItem
                 text: caption
-                color: positionView.currentIndex == index ? IDPGlobals.textFontColor : IDPGlobals.textFontColorInactive
+                color: positionView.currentIndex == index ? "white" : IDPGlobals.textFontColorInactive
+                Behavior on color {
+                    ColorAnimation {
+                        duration: IDPGlobals.fastAnimationDuration
+                    }
+                }
             }
             MouseArea
             {

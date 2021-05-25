@@ -8,9 +8,11 @@ Background
     signal hiding;
     signal hided;
     signal backPressed
+    property bool showMenueButton: true
     focus: true
     property string caption: ""
     property url captionImageSource: ""
+    property double headerImageSizeFactor: 1.0
     Keys.onReleased:
     {
         if (event.key == Qt.Key_Back)

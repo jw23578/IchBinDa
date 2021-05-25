@@ -59,5 +59,7 @@
         <file>images/mobileImage5.svg</file>
         <file>images/headerImage1.svg</file>
         <file>images/headerImage2.svg</file>
+        <file>images/thumbs-down.svg</file>
+        <file>images/thumbs-up.svg</file>
     </qresource>
 </RCC>

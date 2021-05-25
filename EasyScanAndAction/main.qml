@@ -68,15 +68,6 @@ ApplicationWindow
         showKontaktTagebuchQRCode.qrCodeFileName = ESAA.generateKontaktTagebuchQRCode()
         showNewPage(theCurrentPage, showKontaktTagebuchQRCode)
     }
-    function callMenue()
-    {
-        if (theCurrentPage == timemainpage)
-        {
-            showNewPage(timemainpage, timerecordmenuepage)
-            return
-        }
-        showNewPage(scannerpage, menuepage)
-    }
 
     property var pages: []
 
@@ -114,6 +105,7 @@ ApplicationWindow
         {
             splashheader.moveUp()
         }
+        splashheader.showMenueButton = nextPage.showMenueButton
 
         theCurrentPage = nextPage;
         previousPage = currentPage
@@ -125,7 +117,8 @@ ApplicationWindow
         nextPage.z = 1
         nextPage.show(direction)
         splashheader.setCaption(nextPage.caption,
-                                nextPage.captionImageSource)
+                                nextPage.captionImageSource,
+                                nextPage.headerImageSizeFactor)
 
         nextPage.forceActiveFocus()
         pages.push(nextPage)
@@ -582,7 +575,7 @@ ApplicationWindow
         {
             z: 11
             id: splashheader
-            onBarClicked: callMenue()
+            onBarClicked: showNewPage(theCurrentPage, menuepage)
             onSplashDone:
             {
                 if (!ESAA.aggrementChecked)
@@ -605,7 +598,6 @@ ApplicationWindow
                     }
                 }
             }
-            onHelpClicked: showNewPage(theCurrentPage, firststart)
         }
         Loader
         {

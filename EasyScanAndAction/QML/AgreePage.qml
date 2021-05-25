@@ -5,7 +5,9 @@ import "Comp"
 ESAAPage
 {
     signal agreed
+    showMenueButton: false
     caption: "Zustimmung"
+    captionImageSource: "qrc:/images/mobileImage1.svg"
 
     ESAAFlickable
     {
@@ -38,24 +40,30 @@ ESAAPage
                   "<br><br>Pro Besuch wird ein zufälliges anonymes Token erzeugt das mit Datum/Uhrzeit und einem Locationtoken auf einem Server gespeichert wird. Über diese Token können keine persönlichen Daten in Erfahrung gebracht werden." +
                   "<br><br>Diese App und der Hersteller sind nicht für die korrekte Handhabung der Daten verantwortlich und übernehmen keinerlei Haftung." +
                   "<br>Die Benutzung dieser App ist <b>freiwillig</b> und kostenlos."
-            color: ESAA.buttonColor
-
+            color: JW78APP.mainColor
         }
     }
-
-    TwoCircleButtons
+    TwoCircleImages
     {
         id: buttons
         anchors.bottom: parent.bottom
         anchors.bottomMargin: ESAA.spacing
-        leftText: "Verstanden"
+        leftSource: "qrc:/images/thumbs-up.svg"
+        leftImagesize: buttonSize / 2
+        rightImagesize: buttonSize / 2
+        leftCircle.color: JW78APP.mainColor
+        leftCircle.layerEnabled: false
         onLeftClicked:
         {
             ESAA.aggrementChecked = true
             ESAA.saveData()
             agreed()
         }
-        rightText: "Beenden"
+        rightSource: "qrc:/images/thumbs-down.svg"
+        rightCircle.color: "transparent"
+        rightCircle.border.color: JW78APP.mainColor
+        rightCircle.layerEnabled: false
         onRightClicked: Qt.quit()
+
     }
 }

@@ -56,5 +56,6 @@
         <file>QML/Comp/DoneButton.qml</file>
         <file>QML/IBDGlobals.qml</file>
         <file>QML/qmldir</file>
+        <file>QML/Comp/TwoCircleImages.qml</file>
     </qresource>
 </RCC>
