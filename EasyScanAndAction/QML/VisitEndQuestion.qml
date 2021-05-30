@@ -8,6 +8,8 @@ ESAAPage
     id: message
     signal close;
     signal endVisit;
+    caption: "Besuch beenden"
+    showMenueButton: false
     onBackPressed:
     {
         close()

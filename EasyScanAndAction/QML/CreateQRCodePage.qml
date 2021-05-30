@@ -600,11 +600,6 @@ ESAAPage
             createQRCode()
         }
     }
-    BackButton
-    {
-        id: theBackbutton
-        onClicked: close()
-    }
     IDPSelectForm
     {
         anchors.fill: parent

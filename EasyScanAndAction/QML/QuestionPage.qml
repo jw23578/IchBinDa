@@ -20,10 +20,15 @@ ESAAPage
     signal saveMeineDaten;
     signal close
     signal abort
-    onBackPressed:
-    {
-        abort()
+    onAbort: {
+        JW78APP.ignoreQRCode()
     }
+
+    onClose:
+    {
+        JW78APP.ignoreQRCode()
+    }
+
     property var elemToFocus: null
     function setElemToFocus(elem)
     {
@@ -610,18 +615,10 @@ ESAAPage
             id: noBuyButton
             text: "Ohne Tickets<br>einchecken"
             anchors.horizontalCenterOffset: parent.width / 6
+            onClicked: JW78APP.ticketDataCount = 0
         }
     }
 
-
-    BackButton
-    {
-        visible: !ESAA.firstStart
-        onClicked: {
-            ESAA.ignoreQRCode()
-            abort()
-        }
-    }
     IDPFadeInOutRectangle
     {
         id: paypalwait

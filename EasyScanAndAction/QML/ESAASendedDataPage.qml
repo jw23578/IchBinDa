@@ -12,8 +12,9 @@ ESAAPage
     {
         close()
     }
+    showMenueButton: false
+    caption: "Gesendet Daten"
 
-    property color textColor: ESAA.buttonColor
     Column
     {
         id: theColumn1
@@ -32,7 +33,6 @@ ESAAPage
             width: parent.width - 2 * ESAA.spacing
             anchors.horizontalCenter: parent.horizontalCenter
             text: LastVisit.facilityName
-            color: textColor
             font.pixelSize: ESAA.fontTextPixelsize * 1.5
             font.bold: true
         }
@@ -83,7 +83,6 @@ ESAAPage
             id: messageText
             width: parent.width
 //            font.pixelSize: ESAA.fontMessageTextPixelsize
-            color: textColor
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             horizontalAlignment: Text.horizontalCenter
             text: "Folgende Daten wurden verschlüsselt an " + LastVisit.facilityName + " übertragen"
@@ -115,7 +114,6 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: fstname
                 text: LastVisit.fstname + " " + LastVisit.surname
-                color: textColor
             }
             IDPTextBorder
             {
@@ -123,7 +121,6 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: ESAA.lastVisitStreet + " " + ESAA.lastVisitHousenumber
-                color: textColor
                 visible: text.trim().length > 0
             }
             IDPTextBorder
@@ -132,7 +129,6 @@ ESAAPage
                 width: parent.width - 2 * ESAA.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: ESAA.lastVisitZip + " " + ESAA.lastVisitLocation
-                color: textColor
                 visible: text.trim().length > 0
             }
 
@@ -143,7 +139,6 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: ESAA.lastVisitEmailAdress
                 visible: ESAA.lastVisitEmailAdress != ""
-                color: textColor
             }
             IDPTextBorder
             {
@@ -152,7 +147,6 @@ ESAAPage
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: ESAA.lastVisitMobile
                 visible: ESAA.lastVisitMobile != ""
-                color: textColor
             }
             Item
             {

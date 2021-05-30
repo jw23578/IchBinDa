@@ -24,11 +24,6 @@ ESAAPage
         source: qrCodeFileName ? "file://" + qrCodeFileName : ""
     }
 
-    BackButton
-    {
-        id: quitButton
-        onClicked: back()
-    }
     HelpOverlay
     {
         visible: true

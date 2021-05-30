@@ -259,6 +259,13 @@ Item
                 logo.claimImageX = parent.width / 8
             }
         }
+        Flickable
+        {
+            visible: theBar.visible
+            anchors.fill: parent
+            flickableDirection: Flickable.VerticalFlick
+            onFlickStarted: splashscreen.barClicked()
+        }
     }
     Canvas {
         id: bottomLeft
@@ -308,7 +315,7 @@ Item
         MouseArea
         {
             anchors.fill: parent
-            anchors.margins: -IDPGlobals.spacing / 2
+            anchors.margins: -IDPGlobals.spacing
             onClicked: splashscreen.barClicked()
         }
     }

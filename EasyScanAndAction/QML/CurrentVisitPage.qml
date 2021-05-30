@@ -5,6 +5,7 @@ import "qrc:/foundation"
 ESAAPage
 {
     caption: "Du bist hier:"
+    showMenueButton: false
     signal questionVisitEnd;
     Item
     {

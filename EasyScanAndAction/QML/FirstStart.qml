@@ -16,21 +16,6 @@ ESAAPage
         kundeinfo.visible = false
         startNow()
     }
-    function backFunction()
-    {
-        if (betreiberinfo.visible || kundeinfo.visible)
-        {
-            betreiberinfo.visible = false
-            kundeinfo.visible = false
-            return
-        }
-        back()
-    }
-
-    onBackPressed:
-    {
-        backFunction()
-    }
 
     signal editContactData
     function goEditContactData()
@@ -91,11 +76,6 @@ ESAAPage
             }
             width: theGrid.buttonSize
         }
-    }
-    BackButton
-    {
-        visible: !ESAA.firstStart
-        onClicked: backFunction()
     }
     Item
     {

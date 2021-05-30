@@ -191,6 +191,12 @@ ESAAPage
         anchors.verticalCenter: parent.bottom
         radius: height / 2
         z: 10
+        Flickable
+        {
+            anchors.fill: parent
+            flickableDirection: Flickable.VerticalFlick
+            onFlickStarted: close()
+        }
         Rectangle
         {
             id: theBar
@@ -204,7 +210,7 @@ ESAAPage
             MouseArea
             {
                 anchors.fill: parent
-                anchors.margins: -IDPGlobals.spacing / 2
+                anchors.margins: -IDPGlobals.spacing
                 onClicked: close()
             }
         }

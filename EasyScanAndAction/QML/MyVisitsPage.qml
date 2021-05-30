@@ -43,7 +43,7 @@ ESAAPage
         anchors.margins: ESAA.spacing
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: backbutton.top
+        anchors.bottom: parent.bottom
         anchors.bottomMargin: ESAA.spacing
         spacing: 1
         model: AllVisits
@@ -119,15 +119,5 @@ ESAAPage
                 }
             }
         }
-    }
-
-    BackButton
-    {
-        id: backbutton
-        onClicked: close()
-    }
-    onBackPressed:
-    {
-        close()
     }
 }
